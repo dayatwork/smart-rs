@@ -96,3 +96,27 @@ export const assignStaff = cookies => async data => {
 
   return await res.json();
 };
+
+export const checkEmployeeExists = async (
+  cookies,
+  institution_id,
+  employee_id
+) => {
+  const formattedInstitutionId = institution_id.replace(/['"]+/g, '');
+  const formattedId = employee_id.replace(/['"]+/g, '');
+
+  const res = await fetch(
+    `${process.env.REACT_APP_HUMAN_CAPITAL_API}/employee/employee-exist?id=${formattedId}&institution_id=${formattedInstitutionId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error check employee');
+  }
+  return await res.json();
+};

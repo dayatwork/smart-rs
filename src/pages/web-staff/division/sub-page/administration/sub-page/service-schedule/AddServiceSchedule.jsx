@@ -75,7 +75,7 @@ export const AddServiceSchedule = () => {
     }
   );
   const { data: resStaff, isFetching: isFetchingStaff } = useQuery(
-    ['accounts', selectedInstitution],
+    ['employees', selectedInstitution],
     () => getRegisteredStaff(cookies, selectedInstitution),
     { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );

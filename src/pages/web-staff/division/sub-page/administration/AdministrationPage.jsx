@@ -4,7 +4,10 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
 import { SubMenuGrid } from '../../../../../components/web-staff/shared/sub-menu';
 import { subMenus } from './subMenus';
-import { ServiceSchedulePage, AddServiceSchedule } from './sub-page/service-schedule';
+import {
+  ServiceSchedulePage,
+  AddServiceSchedule,
+} from './sub-page/service-schedule';
 
 export const AdministrationPage = () => {
   const { path } = useRouteMatch();
@@ -13,7 +16,7 @@ export const AdministrationPage = () => {
     <Box pb="24">
       <Switch>
         <Route exact path={path}>
-          <SubMenuGrid title="Administration" subMenus={subMenus} />
+          <SubMenuGrid title="Administrasi" subMenus={subMenus} />
         </Route>
         <Route exact path={`${path}/service-schedule`}>
           <ServiceSchedulePage />

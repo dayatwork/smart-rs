@@ -28,8 +28,14 @@ import {
   // Text,
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from 'react-table';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+// import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md';
 import { ImFileEmpty } from 'react-icons/im';
 
 import { GlobalFilter } from './GlobalFilter';
@@ -71,7 +77,8 @@ const PaginationTable = ({
           justify={{ base: 'stretch', md: 'space-between' }}
           direction={{ base: 'column', md: 'row' }}
           mb="4"
-          align={{ base: 'end', md: 'center' }}>
+          align={{ base: 'end', md: 'center' }}
+        >
           <Box></Box>
           <Box>{action}</Box>
         </Flex>
@@ -91,7 +98,8 @@ const PaginationTable = ({
         justify={{ base: 'stretch', md: 'space-between' }}
         direction={{ base: 'column', md: 'row' }}
         mb="4"
-        align={{ base: 'end', md: 'center' }}>
+        align={{ base: 'end', md: 'center' }}
+      >
         <GlobalFilter
           mb={{ base: '3', md: '0' }}
           filter={globalFilter}
@@ -108,18 +116,20 @@ const PaginationTable = ({
           overflow="hidden"
           size="sm"
           // size={dense ? 'sm' : 'md'}
-          {...props}>
+          {...props}
+        >
           <Thead>
-            {headerGroups.map((headerGroup) => (
+            {headerGroups.map(headerGroup => (
               <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+                {headerGroup.headers.map(column => (
                   <Th
                     // key={column.id}
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     isNumeric={column.isNumeric}
                     bgColor="gray.200"
                     color="gray.700"
-                    py="2">
+                    py="2"
+                  >
                     {column.render('Header')}
                     <chakra.span pl="4">
                       {column.isSorted ? (
@@ -137,19 +147,23 @@ const PaginationTable = ({
           </Thead>
           <Tbody {...getTableBodyProps()}>
             {isLoading && (
-              <TableSkeleton cols={skeletonCols || 5} rows={skeletonRows || 3} />
+              <TableSkeleton
+                cols={skeletonCols || 5}
+                rows={skeletonRows || 3}
+              />
             )}
-            {page.map((row) => {
+            {page.map(row => {
               prepareRow(row);
               return (
                 <Tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
+                  {row.cells.map(cell => (
                     <Td
                       // fontSize={dense ? 'sm' : 'md'}
                       fontSize="md"
                       {...cell.getCellProps()}
                       isNumeric={cell.column.isNumeric}
-                      maxW="md">
+                      maxW="md"
+                    >
                       {cell.render('Cell')}
                     </Td>
                   ))}
@@ -164,7 +178,8 @@ const PaginationTable = ({
           justify={{ base: 'center', lg: 'space-between' }}
           align="center"
           mt="6"
-          mr="1">
+          mr="1"
+        >
           <HStack px="2">
             {/* <Switch
               id="dense"
@@ -179,7 +194,11 @@ const PaginationTable = ({
             </Text> */}
           </HStack>
           <Box>
-            <Stack direction={{ base: 'column', lg: 'row' }} spacing="4" align="center">
+            <Stack
+              direction={{ base: 'column', lg: 'row' }}
+              spacing="4"
+              align="center"
+            >
               <HStack>
                 <Box as="span">
                   Page <strong>{pageIndex + 1}</strong> of{' '}
@@ -196,10 +215,11 @@ const PaginationTable = ({
                     value={pageIndex + 1}
                     min={1}
                     max={pageCount}
-                    onChange={(value) => {
+                    onChange={value => {
                       const pageNumber = value ? Number(value) - 1 : 0;
                       gotoPage(pageNumber);
-                    }}>
+                    }}
+                  >
                     <NumberInputField />
                     <NumberInputStepper>
                       <NumberIncrementStepper />
@@ -212,7 +232,8 @@ const PaginationTable = ({
                   size="sm"
                   w="28"
                   value={pageSize}
-                  onChange={(e) => setPageSize(Number(e.target.value))}>
+                  onChange={e => setPageSize(Number(e.target.value))}
+                >
                   <option value={5}>Show 5</option>
                   <option value={10}>Show 10</option>
                   <option value={25}>Show 25</option>
@@ -224,25 +245,29 @@ const PaginationTable = ({
                 <Button
                   onClick={() => gotoPage(0)}
                   disabled={!canPreviousPage}
-                  size="sm">{`<<`}</Button>
+                  size="sm"
+                >{`<<`}</Button>
                 <Button
                   leftIcon={<FaArrowLeft />}
                   onClick={() => previousPage()}
                   disabled={!canPreviousPage}
-                  size="sm">
+                  size="sm"
+                >
                   Previous
                 </Button>
                 <Button
                   rightIcon={<FaArrowRight />}
                   onClick={() => nextPage()}
                   disabled={!canNextPage}
-                  size="sm">
+                  size="sm"
+                >
                   Next
                 </Button>
                 <Button
                   onClick={() => gotoPage(pageCount - 1)}
                   disabled={!canNextPage}
-                  size="sm">{`>>`}</Button>
+                  size="sm"
+                >{`>>`}</Button>
               </HStack>
             </Stack>
           </Box>

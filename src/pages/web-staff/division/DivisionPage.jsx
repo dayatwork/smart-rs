@@ -9,7 +9,7 @@ import {
   ContentWrapper,
 } from '../../../components/web-staff/shared/sub-menu';
 import { subMenus } from './subMenus';
-import { AdministrationPage } from './sub-page';
+import { AdministrationPage, HumanCapitalPage, FinancePage } from './sub-page';
 
 export const DivisionPage = () => {
   const { path } = useRouteMatch();
@@ -18,7 +18,11 @@ export const DivisionPage = () => {
     <AppShell>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
-          <SubMenuSideBar title="Division" titleLink="/division" subMenus={subMenus} />
+          <SubMenuSideBar
+            title="Division"
+            titleLink="/division"
+            subMenus={subMenus}
+          />
           <ContentWrapper>
             <Switch>
               <Route exact path={path}>
@@ -26,6 +30,12 @@ export const DivisionPage = () => {
               </Route>
               <Route path={`${path}/administration`}>
                 <AdministrationPage />
+              </Route>
+              <Route path={`${path}/human-capital`}>
+                <HumanCapitalPage />
+              </Route>
+              <Route path={`${path}/finance`}>
+                <FinancePage />
               </Route>
             </Switch>
           </ContentWrapper>
