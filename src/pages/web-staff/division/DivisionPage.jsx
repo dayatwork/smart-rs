@@ -9,7 +9,12 @@ import {
   ContentWrapper,
 } from '../../../components/web-staff/shared/sub-menu';
 import { subMenus } from './subMenus';
-import { AdministrationPage, HumanCapitalPage, FinancePage } from './sub-page';
+import {
+  AdministrationPage,
+  HumanCapitalPage,
+  FinancePage,
+  InfrastructurePage,
+} from './sub-page';
 
 export const DivisionPage = () => {
   const { path } = useRouteMatch();
@@ -36,6 +41,9 @@ export const DivisionPage = () => {
               </Route>
               <Route path={`${path}/finance`}>
                 <FinancePage />
+              </Route>
+              <Route path={`${path}/infrastructure`}>
+                <InfrastructurePage />
               </Route>
             </Switch>
           </ContentWrapper>
