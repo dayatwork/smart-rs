@@ -1,0 +1,18 @@
+[
+  {
+    "value": "single",
+    "text": "Belum kawin"
+  },
+  {
+    "value": "married",
+    "text": "Kawin"
+  },
+  {
+    "value": "divorced",
+    "text": "Cerai hidup"
+  },
+  {
+    "value": "deathDivorce",
+    "text": "Cerai mati"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "value": "No School",
+    "text": "Tidak/ belum sekolah"
+  },
+  {
+    "value": "Primary school",
+    "text": "Belum tamat SD/ sederajat"
+  },
+  {
+    "value": "Primary school graduate",
+    "text": "Tamat SD/ sederajat"
+  },
+  {
+    "value": "Junior high school",
+    "text": "SMP/ sederajat"
+  },
+  {
+    "value": "Senior high school",
+    "text": "SMA/ sederajat"
+  },
+  {
+    "value": "Associate I",
+    "text": "Diploma I/II"
+  },
+  {
+    "value": "Associate II",
+    "text": "Akademi/ Diploma III/ Sarjana Muda"
+  },
+  {
+    "value": "Bachelor",
+    "text": "Diploma IV/ Strata I"
+  },
+  {
+    "value": "Master",
+    "text": "Strata II"
+  },
+  {
+    "value": "Doctor",
+    "text": "Strata III"
+  }
+]

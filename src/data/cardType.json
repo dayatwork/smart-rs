@@ -1,0 +1,31 @@
+[
+  {
+    "value": "idCard",
+    "text": "KTP"
+  },
+  {
+    "value": "driverLicenseCard",
+    "text": "SIM"
+  },  
+  {
+    "value": "studentCard",
+    "text": "Kartu Pelajar"
+  },
+  {
+    "value": "passport",
+    "text": "Passport"
+  },
+  {
+    "value": "permanentResidencePermitCard",
+    "text": "Kartu Izin Tinggal Tetap (KITAP)"
+  },
+  {
+    "value": "temporaryResidencePermitCard",
+    "text": "Kartu Izin Tinggal Sementara (KITAS)"
+  },
+  {
+    "value": "foreignIdCard",
+    "text": "KTP WNA"
+  }
+]
+
