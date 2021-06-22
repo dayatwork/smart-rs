@@ -16,7 +16,7 @@ import PaginationTable from '../../../../../components/shared/tables/PaginationT
 // import { PrivateComponent } from 'components/common/PrivateComponent';
 // import { Permissions } from 'constants/permissions';
 
-export const WaitingPatient = ({ selectedInstitution }) => {
+export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
   const history = useHistory();
   const [cookies] = useCookies(['token']);
   const { employeeDetail } = useContext(AuthContext);
@@ -32,7 +32,7 @@ export const WaitingPatient = ({ selectedInstitution }) => {
   } = useQuery(
     ['booking-list', selectedInstitution],
     () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const handleCreateSoap = useCallback(
@@ -59,22 +59,31 @@ export const WaitingPatient = ({ selectedInstitution }) => {
         };
         const res = await createSoap(cookies, dataCreateSoap);
         await updateBookingStatus(cookies, dataUpdateBookingStatus);
-        await queryClient.invalidateQueries(['booking-list', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'booking-list',
+          selectedInstitution,
+        ]);
         SetIsLoadingCreateSoap(false);
         history.replace(`/events/examination/details/${res.data.id}`);
       } catch (error) {
         SetIsLoadingCreateSoap(false);
       }
     },
-    [cookies, selectedInstitution, history, queryClient, employeeDetail?.employee_id],
+    [
+      cookies,
+      selectedInstitution,
+      history,
+      queryClient,
+      employeeDetail?.employee_id,
+    ]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
-        ?.filter((booking) => booking.booking_status === 'done')
-        .map((booking) => {
+        ?.filter(booking => booking.booking_status === 'done')
+        .map(booking => {
           return {
             booking_id: booking.id,
             patient_id: booking.patient_id,
@@ -89,7 +98,7 @@ export const WaitingPatient = ({ selectedInstitution }) => {
             transaction_number: booking.transaction_number,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList],
+    [dataBookingList?.data, isSuccessBookingList]
   );
 
   const columns = React.useMemo(
@@ -133,17 +142,20 @@ export const WaitingPatient = ({ selectedInstitution }) => {
               handleCreateSoap(
                 row.original.patient_id,
                 row.original.booking_id,
-                row.original.transaction_number,
+                row.original.transaction_number
               )
             }
-            isLoading={isLoadingCreateSoap && patient === row.original.patient_id}>
+            isLoading={
+              isLoadingCreateSoap && patient === row.original.patient_id
+            }
+          >
             Start Anamnesis
           </Button>
           // </PrivateComponent>
         ),
       },
     ],
-    [handleCreateSoap, isLoadingCreateSoap, patient],
+    [handleCreateSoap, isLoadingCreateSoap, patient]
   );
 
   return (

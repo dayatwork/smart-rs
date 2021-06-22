@@ -1,7 +1,12 @@
 import { HiOutlineHome } from 'react-icons/hi';
-import { RiBuilding4Line, RiHandHeartFill } from 'react-icons/ri';
+// import { RiBuilding4Line, RiHandHeartFill } from 'react-icons/ri';
 import { GiStethoscope, GiOrganigram, GiMedicines } from 'react-icons/gi';
-import { FaMoneyBillWave, FaUsersCog, FaUserSecret, FaUserCog } from 'react-icons/fa';
+import {
+  FaMoneyBillWave,
+  FaUsersCog,
+  FaUserSecret,
+  FaUserCog,
+} from 'react-icons/fa';
 import { BsListCheck } from 'react-icons/bs';
 
 export const menus = [
@@ -15,21 +20,21 @@ export const menus = [
     text: 'Master',
     icon: FaUserSecret,
   },
-  {
-    to: '/department',
-    text: 'Department',
-    icon: RiBuilding4Line,
-  },
+  // {
+  //   to: '/department',
+  //   text: 'Department',
+  //   icon: RiBuilding4Line,
+  // },
   {
     to: '/division',
     text: 'Division',
     icon: GiOrganigram,
   },
-  {
-    to: '/services',
-    text: 'Services',
-    icon: RiHandHeartFill,
-  },
+  // {
+  //   to: '/services',
+  //   text: 'Services',
+  //   icon: RiHandHeartFill,
+  // },
   {
     to: '/events',
     text: 'Events',
@@ -59,5 +64,20 @@ export const menus = [
     to: '/institution-management',
     text: 'Institution Management',
     icon: FaUsersCog,
+  },
+];
+
+export const extendedMenu = [
+  {
+    to: '/patient/active',
+  },
+  {
+    to: '/patient/history',
+  },
+  {
+    to: '/patient/soap/:soapId',
+  },
+  {
+    to: '/patient/soap-result/:soapId',
   },
 ];

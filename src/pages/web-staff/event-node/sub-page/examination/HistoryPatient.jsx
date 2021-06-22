@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 import { getSoaps } from '../../../../../api/medical-record-services/soap';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 
-export const HistoryPatient = ({ selectedInstitution }) => {
+export const HistoryPatient = ({ selectedInstitution, fromPatientMenu }) => {
   const [cookies] = useCookies(['token']);
 
   const {
@@ -19,13 +19,13 @@ export const HistoryPatient = ({ selectedInstitution }) => {
   } = useQuery(
     ['soap-list', 'completed', selectedInstitution],
     () => getSoaps(cookies, selectedInstitution, 'completed'),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccessSoapList &&
-      dataSoapList?.data.map((soap) => ({
+      dataSoapList?.data.map(soap => ({
         id: soap?.id,
         soap_date: soap?.date,
         soap_number: soap?.soap_number,
@@ -37,7 +37,7 @@ export const HistoryPatient = ({ selectedInstitution }) => {
         status: soap?.status,
         transaction_number: soap?.transaction_number,
       })),
-    [dataSoapList?.data, isSuccessSoapList],
+    [dataSoapList?.data, isSuccessSoapList]
   );
 
   const columns = React.useMemo(
@@ -78,13 +78,18 @@ export const HistoryPatient = ({ selectedInstitution }) => {
             colorScheme="purple"
             variant="outline"
             as={Link}
-            to={`/events/examination/result/${row.original.id}`}>
+            to={
+              fromPatientMenu
+                ? `/patient/soap-result/${row.original.id}`
+                : `/events/examination/result/${row.original.id}`
+            }
+          >
             Result
           </Button>
         ),
       },
     ],
-    [],
+    [fromPatientMenu]
   );
 
   return (

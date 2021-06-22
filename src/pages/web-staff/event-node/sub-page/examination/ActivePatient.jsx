@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 import { getSoaps } from '../../../../../api/medical-record-services/soap';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 
-export const ActivePatient = ({ selectedInstitution }) => {
+export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
   const [cookies] = useCookies(['token']);
 
   const {
@@ -19,13 +19,13 @@ export const ActivePatient = ({ selectedInstitution }) => {
   } = useQuery(
     ['soap-list', 'process', selectedInstitution],
     () => getSoaps(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccessSoapList &&
-      dataSoapList?.data.map((soap) => ({
+      dataSoapList?.data.map(soap => ({
         id: soap?.id,
         soap_date: soap?.date,
         soap_number: soap?.soap_number,
@@ -37,7 +37,7 @@ export const ActivePatient = ({ selectedInstitution }) => {
         status: soap?.status,
         transaction_number: soap?.transaction_number,
       })),
-    [dataSoapList?.data, isSuccessSoapList],
+    [dataSoapList?.data, isSuccessSoapList]
   );
 
   const columns = React.useMemo(
@@ -72,7 +72,8 @@ export const ActivePatient = ({ selectedInstitution }) => {
             as="span"
             rounded="md"
             fontWeight="semibold"
-            color={value === 'Critical' ? 'red.500' : 'black'}>
+            color={value === 'Critical' ? 'red.500' : 'black'}
+          >
             {value}
           </Box>
         ),
@@ -86,7 +87,13 @@ export const ActivePatient = ({ selectedInstitution }) => {
         Header: 'Action',
 
         Cell: () => (
-          <Button size="sm" p="2" rounded="md" fontWeight="semibold" colorScheme="green">
+          <Button
+            size="sm"
+            p="2"
+            rounded="md"
+            fontWeight="semibold"
+            colorScheme="green"
+          >
             Call Now
           </Button>
         ),
@@ -99,13 +106,18 @@ export const ActivePatient = ({ selectedInstitution }) => {
             colorScheme="purple"
             variant="outline"
             as={Link}
-            to={`/events/examination/details/${row.original.id}`}>
+            to={
+              fromPatientMenu
+                ? `/patient/soap/${row.original.id}`
+                : `/events/examination/details/${row.original.id}`
+            }
+          >
             Details
           </Button>
         ),
       },
     ],
-    [],
+    [fromPatientMenu]
   );
 
   return (

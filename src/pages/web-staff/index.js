@@ -5,3 +5,4 @@ export * from './user-management';
 export * from './event-node';
 export * from './pharmacy';
 export * from './division';
+export * from './patient';

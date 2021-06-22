@@ -19,26 +19,28 @@ export const NavLink = ({ children, icon, to, isPrimaryMenu, isMobile }) => {
   return (
     <Link to={to}>
       <Box
-        bgColor={match(to, pathname) ? 'gray.300' : 'gray.100'}
+        // bgColor={match(to, pathname) ? 'gray.300' : 'gray.100'}
+        bgColor={match(to, pathname) ? 'purple.600' : 'gray.100'}
         _hover={{ bgColor: 'white', color: 'purple.600' }}
-        color={match(to, pathname) ? 'gray.900' : 'gray.800'}
+        // color={match(to, pathname) ? 'gray.900' : 'gray.800'}
+        color={match(to, pathname) ? 'gray.100' : 'gray.800'}
         display="flex"
         alignItems="center"
         px={{ base: '3', '2xl': '4' }}
         py={{ base: '2', '2xl': '3' }}
         fontSize={{ base: 'md', '2xl': 'md' }}
         fontWeight="medium"
-        // rounded="md"
-        mb={isMobile ? '2' : '0'}
-        // boxShadow="sm"
+        rounded="md"
+        // mb={isMobile ? '2' : '0'}
+        mb={isMobile ? '2' : '2'}
       >
         <Icon
           as={icon}
-          // w="7"
-          // h="7"
-          w={{ base: '6', '2xl': '7' }}
-          h={{ base: '6', '2xl': '7' }}
-          mr={isPrimaryMenu | isMobile ? '3' : '0'}
+          // w={{ base: '6', '2xl': '7' }}
+          // h={{ base: '6', '2xl': '7' }}
+          w="6"
+          h="6"
+          mr={isPrimaryMenu || isMobile ? '3' : '0'}
         />
         <Box as="span">{children}</Box>
       </Box>

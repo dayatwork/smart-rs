@@ -35,6 +35,9 @@ import {
   EventNodePage,
   PharmacyPage,
   DivisionPage,
+  PatientPage,
+  PatientSoapPage,
+  PatientSoapResultPage,
 } from './pages/web-staff';
 
 const AuthenticatedRoute = ({ children, ...rest }) => {
@@ -115,6 +118,15 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/division">
         <DivisionPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/patient/soap/:soapId">
+        <PatientSoapPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/patient/soap-result/:soapId">
+        <PatientSoapResultPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/patient">
+        <PatientPage />
       </AuthenticatedRoute>
     </Switch>
   );
