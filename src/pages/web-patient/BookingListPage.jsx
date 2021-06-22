@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Button, Flex, Heading } from '@chakra-ui/react';
+import { Badge, Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
@@ -9,8 +9,10 @@ import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import {
   BookingTable,
   CreateNewBooking,
+  OrderTable,
 } from '../../components/web-patient/booking-list';
 import { getUserBookingList } from '../../api/booking-services/booking';
+import { getUserOrderList } from '../../api/payment-services/user-order';
 
 export const BookingListPage = () => {
   const [cookies] = useCookies(['token']);
@@ -21,10 +23,16 @@ export const BookingListPage = () => {
     isSuccess: isSuccessBooking,
   } = useQuery('user-booking-list', () => getUserBookingList(cookies.token));
 
-  const data = React.useMemo(
+  const {
+    data: dataOrder,
+    isLoading: isLoadingOrder,
+    isSuccess: isSuccessOrder,
+  } = useQuery('user-order-list', () => getUserOrderList(cookies));
+
+  const data1 = React.useMemo(
     () =>
       isSuccessBooking &&
-      dataBooking?.data?.map((booking) => {
+      dataBooking?.data?.map(booking => {
         return {
           id: booking.id,
           doctor_name: booking.doctor_name,
@@ -32,10 +40,10 @@ export const BookingListPage = () => {
           status: booking.booking_status,
         };
       }),
-    [isSuccessBooking, dataBooking?.data],
+    [isSuccessBooking, dataBooking?.data]
   );
 
-  const columns = React.useMemo(
+  const columns1 = React.useMemo(
     () => [
       {
         Header: 'Dokter',
@@ -69,14 +77,89 @@ export const BookingListPage = () => {
               as={Link}
               to={`/doctor/detail/${row.original.id}`}
               variant="link"
-              colorScheme="blue">
+              colorScheme="blue"
+            >
               Detail
             </Button>
           );
         },
       },
     ],
-    [],
+    []
+  );
+
+  const data2 = React.useMemo(
+    () =>
+      isSuccessOrder &&
+      dataOrder?.data?.map(order => {
+        return {
+          id: order.id,
+          transaction_number: order.transaction_number,
+          invoice_date: order.invoice_date,
+          due_date: order.due_date,
+          total_price: order.total_price,
+          status: order.status,
+          method_name: order.method_name,
+        };
+      }),
+    [isSuccessOrder, dataOrder?.data]
+  );
+
+  const columns2 = React.useMemo(
+    () => [
+      {
+        Header: 'ID',
+        accessor: 'id',
+        Cell: ({ value }) => <Box>{value?.substring(0, 5)}...</Box>,
+      },
+      {
+        Header: 'Transaction Number',
+        accessor: 'transaction_number',
+      },
+      {
+        Header: 'Invoice Date',
+        accessor: 'invoice_date',
+      },
+      {
+        Header: 'Due Date',
+        accessor: 'due_date',
+      },
+      {
+        Header: 'Total Price',
+        accessor: 'total_price',
+        Cell: ({ value }) => formatter.format(value),
+      },
+      {
+        Header: 'Payment Method',
+        accessor: 'method_name',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({ value }) => {
+          if (value?.toLowerCase() === 'paid') {
+            return <Badge colorScheme="green">{value}</Badge>;
+          }
+          return <Badge>{value}</Badge>;
+        },
+      },
+      {
+        Header: 'Detail',
+        Cell: ({ row }) => {
+          return (
+            <Button
+              as={Link}
+              to={`/doctor/order/${row.original.id}`}
+              variant="link"
+              colorScheme="blue"
+            >
+              Detail
+            </Button>
+          );
+        },
+      },
+    ],
+    []
   );
 
   return (
@@ -94,12 +177,31 @@ export const BookingListPage = () => {
         </Heading>
 
         <BookingTable
-          data={data || []}
-          columns={columns}
+          data={data1 || []}
+          columns={columns1}
           isLoading={isLoadingBooking}
           skeletonCols={4}
+        />
+
+        <Divider my="4" />
+
+        <Heading fontSize="lg" mb="4">
+          History Order
+        </Heading>
+
+        <OrderTable
+          data={data2 || []}
+          columns={columns2}
+          isLoading={isLoadingOrder}
+          skeletonCols={8}
         />
       </Wrapper>
     </Flex>
   );
 };
+
+const formatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+  minimumFractionDigits: 0,
+});

@@ -26,6 +26,7 @@ import {
   CollectMedicineList,
   CollectMedicineDetails,
   PaymentList,
+  PaymentDetails,
 } from './sub-page';
 
 export const EventNodePage = () => {
@@ -92,6 +93,9 @@ export const EventNodePage = () => {
               </Route>
               <Route exact path={`${path}/payment`}>
                 <PaymentList />
+              </Route>
+              <Route exact path={`${path}/payment/:id`}>
+                <PaymentDetails />
               </Route>
             </Switch>
           </ContentWrapper>

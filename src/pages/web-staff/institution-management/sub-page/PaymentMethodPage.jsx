@@ -174,7 +174,7 @@ export const PaymentMethodPage = () => {
               columns={columns}
               data={data || []}
               isLoading={isLoadingPaymentMethods}
-              skeletonCols={5}
+              skeletonCols={6}
               action={
                 <Button colorScheme="purple" onClick={onModalOpen}>
                   Add New Payment Method

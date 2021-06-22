@@ -26,7 +26,7 @@ import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { BsSearch } from 'react-icons/bs';
 import { ImFileEmpty } from 'react-icons/im';
 
-export const BookingTable = ({
+export const OrderTable = ({
   columns,
   data,
   isLoading,
@@ -51,7 +51,7 @@ export const BookingTable = ({
         <VStack py="20">
           <Icon as={ImFileEmpty} h={10} w={10} color="blue.600" />
           <Text color="blue.600" fontWeight="semibold">
-            Belum ada history pemeriksaan
+            Belum ada history order
           </Text>
         </VStack>
       </Box>
@@ -68,14 +68,14 @@ export const BookingTable = ({
         <HStack>
           <FormControl minW={{ md: '320px' }} id="search">
             <InputGroup size="sm" bg="white">
-              <FormLabel srOnly>Filter by name or email</FormLabel>
+              <FormLabel srOnly>Filter</FormLabel>
               <InputLeftElement pointerEvents="none" color="gray.400">
                 <BsSearch />
               </InputLeftElement>
               <Input
                 rounded="base"
                 type="search"
-                placeholder="Filter by doctor name..."
+                placeholder="Search..."
                 value={globalFilter || ''}
                 onChange={e => setGlobalFilter(e.target.value)}
               />

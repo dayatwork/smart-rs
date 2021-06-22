@@ -2,7 +2,12 @@ import 'react-day-picker/lib/style.css';
 import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import { AuthContext } from './contexts/authContext';
 import {
@@ -20,6 +25,7 @@ import {
   BookingDoctorPage,
   BookingListPage,
   BookingDetailPage,
+  OrderDetailPage,
 } from './pages/web-patient';
 import {
   DashboardPage,
@@ -84,6 +90,9 @@ const AppRoutes = () => {
       <AuthenticatedRoute path="/doctor/booking">
         <BookingDoctorPage />
       </AuthenticatedRoute>
+      <AuthenticatedRoute path="/doctor/order/:id">
+        <OrderDetailPage />
+      </AuthenticatedRoute>
 
       {/* Web Staff Routes */}
       <AuthenticatedRoute path="/dashboard">
@@ -122,7 +131,7 @@ const App = () => {
     setUser(cookies.user);
   }, [cookies.token, cookies.user]);
 
-  const logout = async (callback) => {
+  const logout = async callback => {
     removeCookie('token');
     removeCookie('user');
     callback();

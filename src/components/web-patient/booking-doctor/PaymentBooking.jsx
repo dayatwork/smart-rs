@@ -24,6 +24,8 @@ import QRCode from 'qrcode.react';
 
 import { createBooking } from '../../../api/booking-services/booking';
 import { getServicePriceDetails } from '../../../api/finance-services/service-price';
+import { getPaymentMethods } from '../../../api/institution-services/payment-method';
+import { createOrder } from '../../../api/payment-services/order';
 
 const formatter = new Intl.NumberFormat('id-ID', {
   style: 'currency',
@@ -45,6 +47,15 @@ export const PaymentBooking = ({
   const [cookies] = useCookies(['token']);
   const [bookingData, setBookingData] = useState(null);
   const queryClient = useQueryClient();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+
+  const { data: dataPaymentMethods } = useQuery(
+    ['payment-methods', selectedSchedule?.institution?.id],
+    () => getPaymentMethods(cookies, selectedSchedule?.institution?.id),
+    {
+      enabled: Boolean(selectedSchedule?.institution?.id),
+    }
+  );
 
   const {
     data: dataServicePrice,
@@ -70,6 +81,10 @@ export const PaymentBooking = ({
   );
 
   const handleBooking = async () => {
+    if (!selectedPaymentMethod) return;
+
+    const paymentMethod = JSON.parse(selectedPaymentMethod);
+
     try {
       if (selectedSchedule && selectedTime) {
         let data;
@@ -105,6 +120,28 @@ export const PaymentBooking = ({
         }
         setIsLoading(true);
         const res = await createBooking(cookies, data);
+        const orderData = {
+          type: '02',
+          address_id: null,
+          event_node: 'Booking',
+          estimate_time_id: selectedTime?.id,
+          method_id: paymentMethod?.id,
+          institution_id: selectedSchedule?.institution?.id,
+          method_name: paymentMethod?.name,
+          transaction_number: res?.data?.transaction_number,
+          transfer_to: paymentMethod?.account_number,
+          tax: dataServicePrice?.data?.tax,
+          discount: null,
+          items: [
+            {
+              product_id: dataServicePrice?.data?.service_id,
+              price: dataServicePrice?.data?.total_price,
+              quantity: 1,
+              description: null,
+            },
+          ],
+        };
+        await createOrder(cookies)(orderData);
         await queryClient.invalidateQueries('user-booking-list');
         setBookingData(res?.data);
         setIsLoading(false);
@@ -181,10 +218,19 @@ export const PaymentBooking = ({
             </Text>
             <FormControl id="payment_method" my="4">
               <VisuallyHidden as="label">Metode Pembayaran</VisuallyHidden>
-              <Select>
+              <Select
+                value={selectedPaymentMethod}
+                onChange={e => setSelectedPaymentMethod(e.target.value)}
+              >
                 <option value="">Pilih Metode Pembayaran</option>
-                <option value="sehat-ri">Sehat RI</option>
-                <option value="debit">Debit Card / Kredit Card</option>
+                {dataPaymentMethods?.data?.map(paymentMethod => (
+                  <option
+                    key={paymentMethod.id}
+                    value={JSON.stringify(paymentMethod)}
+                  >
+                    {paymentMethod.name}
+                  </option>
+                ))}
               </Select>
             </FormControl>
             <Button
@@ -193,9 +239,9 @@ export const PaymentBooking = ({
               colorScheme="blue"
               my="2"
               onClick={handleBooking}
-              disabled={isLoadingServicePrice}
+              disabled={isLoadingServicePrice || !selectedPaymentMethod}
             >
-              Bayar Sekarang
+              Booking
             </Button>
           </Box>
           {bookingData && (

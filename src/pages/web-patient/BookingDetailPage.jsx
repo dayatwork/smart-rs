@@ -47,11 +47,12 @@ export const BookingDetailPage = () => {
     isOpen: isCancelOpen,
   } = useDisclosure();
 
-  const { data: dataBookingDetail, isLoading: isLoadingBookingDetail } = useQuery(
-    ['booking-detail', params.id],
-    () => getBookingDetail(cookies, params.id),
-    { enabled: Boolean(params.id) },
-  );
+  const { data: dataBookingDetail, isLoading: isLoadingBookingDetail } =
+    useQuery(
+      ['booking-detail', params.id],
+      () => getBookingDetail(cookies, params.id),
+      { enabled: Boolean(params.id) }
+    );
 
   const status = dataBookingDetail?.data?.booking_status?.toLowerCase();
 
@@ -60,7 +61,7 @@ export const BookingDetailPage = () => {
     () => getQRCode(cookies, params.id),
     {
       enabled: params.id && status !== 'cancel',
-    },
+    }
   );
 
   const handleCancel = async () => {
@@ -119,7 +120,8 @@ export const BookingDetailPage = () => {
           rounded="lg"
           px="2"
           py="1"
-          _hover={{ bg: 'gray.50' }}>
+          _hover={{ bg: 'gray.50' }}
+        >
           <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
           Back to list
         </Box>
@@ -128,12 +130,14 @@ export const BookingDetailPage = () => {
           <Heading fontSize="2xl" mb="8">
             Detail Booking
           </Heading>
-          {dataBookingDetail?.data?.booking_status?.toLowerCase() === 'booked' && (
+          {dataBookingDetail?.data?.booking_status?.toLowerCase() ===
+            'booked' && (
             <Button
               onClick={onCancelOpen}
               colorScheme="red"
               variant="ghost"
-              isDisabled={isLoadingBookingDetail || isLoadingQR}>
+              isDisabled={isLoadingBookingDetail || isLoadingQR}
+            >
               Cancel Booking
             </Button>
           )}
@@ -177,16 +181,22 @@ export const BookingDetailPage = () => {
                   />
                   <Property
                     label="Service Name"
-                    value={dataBookingDetail?.data?.schedule?.service_data?.name}
+                    value={
+                      dataBookingDetail?.data?.schedule?.service_data?.name
+                    }
                   />
                   <Property
                     label="Doctor Name"
-                    value={dataBookingDetail?.data?.schedule?.employee_data?.name}
+                    value={
+                      dataBookingDetail?.data?.schedule?.employee_data?.name
+                    }
                   />
                   <Property
                     label="Date"
-                    value={`${dataBookingDetail?.data?.schedule?.days}, ${new Date(
-                      dataBookingDetail?.data?.schedule?.date,
+                    value={`${
+                      dataBookingDetail?.data?.schedule?.days
+                    }, ${new Date(
+                      dataBookingDetail?.data?.schedule?.date
                     ).toLocaleDateString('id-ID', {
                       day: 'numeric',
                       month: 'long',
@@ -217,7 +227,12 @@ export const BookingDetailPage = () => {
   );
 };
 
-const CancelBookingAlert = ({ isOpen, onClose, handleCancel, isLoadingCancel }) => {
+const CancelBookingAlert = ({
+  isOpen,
+  onClose,
+  handleCancel,
+  isLoadingCancel,
+}) => {
   return (
     <>
       <AlertDialog isOpen={isOpen} onClose={onClose}>
@@ -237,7 +252,8 @@ const CancelBookingAlert = ({ isOpen, onClose, handleCancel, isLoadingCancel }) 
                 colorScheme="red"
                 onClick={handleCancel}
                 ml={3}
-                isLoading={isLoadingCancel}>
+                isLoading={isLoadingCancel}
+              >
                 Cancel Booking
               </Button>
             </AlertDialogFooter>
@@ -248,7 +264,7 @@ const CancelBookingAlert = ({ isOpen, onClose, handleCancel, isLoadingCancel }) 
   );
 };
 
-export const Card = (props) => (
+export const Card = props => (
   <Box
     bg="white"
     rounded={{
@@ -260,10 +276,16 @@ export const Card = (props) => (
   />
 );
 
-export const CardHeader = (props) => {
+export const CardHeader = props => {
   const { title, action } = props;
   return (
-    <Flex align="center" justify="space-between" px="6" py="4" borderBottomWidth="1px">
+    <Flex
+      align="center"
+      justify="space-between"
+      px="6"
+      py="4"
+      borderBottomWidth="1px"
+    >
       <Heading as="h2" fontSize="lg">
         {title}
       </Heading>
@@ -272,9 +294,9 @@ export const CardHeader = (props) => {
   );
 };
 
-export const CardContent = (props) => <Box {...props} />;
+export const CardContent = props => <Box {...props} />;
 
-export const Property = (props) => {
+export const Property = props => {
   const { label, value, ...flexProps } = props;
   return (
     <Flex
@@ -288,7 +310,8 @@ export const Property = (props) => {
       _even={{
         bg: 'gray.50',
       }}
-      {...flexProps}>
+      {...flexProps}
+    >
       <Box as="dt" minWidth="180px">
         {label}
       </Box>

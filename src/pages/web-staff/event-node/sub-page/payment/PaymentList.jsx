@@ -45,7 +45,6 @@ export const PaymentList = () => {
     () =>
       isSuccessInstitutionOrderList &&
       dataInstitutionOrderList?.data?.map(order => {
-        console.log('order', order);
         return {
           id: order?.id,
           transaction_number: order?.transaction_number,
@@ -89,6 +88,9 @@ export const PaymentList = () => {
         Header: 'Status',
         accessor: 'status',
         Cell: ({ value }) => {
+          if (value.toLowerCase() === 'paid') {
+            return <Badge colorScheme="green">{value}</Badge>;
+          }
           return <Badge>{value}</Badge>;
         },
       },
@@ -103,7 +105,14 @@ export const PaymentList = () => {
       {
         Header: 'Detail',
         Cell: ({ row }) => (
-          <Button as={Link} to={`/events/payment/${row.original.id}`}></Button>
+          <Button
+            as={Link}
+            to={`/events/payment/${row.original.id}`}
+            variant="link"
+            colorScheme="purple"
+          >
+            Detail
+          </Button>
         ),
       },
     ],

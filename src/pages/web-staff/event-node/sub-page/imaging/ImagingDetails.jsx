@@ -82,7 +82,12 @@ export const ImagingDetails = () => {
   if (isLoadingRadiologyDetails) {
     return (
       <Center h="48">
-        <Spinner colorScheme="purple" size="lg" />
+        <Spinner
+          thickness="4px"
+          emptyColor="gray.200"
+          color="purple.500"
+          size="xl"
+        />
       </Center>
     );
   }

@@ -1,13 +1,14 @@
-export const uploadOrderReceipt = cookies => async data => {
+export const uploadOrderReceipt = async (cookies, data) => {
   const res = await fetch(
     `${process.env.REACT_APP_PAYMENT_API}/order/manual/receipt`,
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         Authorization: `Bearer ${cookies?.token}`,
       },
-      body: JSON.stringify(data),
+      // body: JSON.stringify(data),
+      body: data,
     }
   );
 
@@ -38,7 +39,7 @@ export const updateUploadOrderReceipt = cookies => async data => {
   return await res.json();
 };
 
-export const getOrderReceiptDetail = async (cookies, id) => {
+export const getPaymentSlipDetail = async (cookies, id) => {
   const formattedId = id.replace(/['"]+/g, '');
   const res = await fetch(
     `${process.env.REACT_APP_PAYMENT_API}/order/manual/detail?id=${formattedId}`,
@@ -57,14 +58,17 @@ export const getOrderReceiptDetail = async (cookies, id) => {
   return await res.json();
 };
 
-export const verifyPayment = async cookies => {
+export const verifyPayment = async (cookies, data) => {
+  console.log({ data });
   const res = await fetch(
     `${process.env.REACT_APP_PAYMENT_API}/order/manual/verify`,
     {
       method: 'PUT',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${cookies?.token}`,
       },
+      body: JSON.stringify(data),
     }
   );
 
