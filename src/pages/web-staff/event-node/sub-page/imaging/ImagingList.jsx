@@ -4,7 +4,6 @@ import {
   Badge,
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -12,13 +11,13 @@ import {
   Select,
   Spinner,
 } from '@chakra-ui/react';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { getRadiologyList } from '../../../../../api/radiology-services/radiology';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
+import { BackButton } from '../../../../../components/shared/BackButton';
 import { ImagingDetailsModal } from '../../../../../components/web-staff/event-node/imaging';
 
 export const ImagingList = () => {
@@ -187,64 +186,45 @@ export const ImagingList = () => {
     [handleStart]
   );
 
-  console.log({ dataRadiologyList });
-
   return (
-    <>
+    <Box>
       {isFetchingRadiologyList && (
-        <Spinner top="10" right="12" position="absolute" colorScheme="purple" />
+        <Spinner top="8" right="12" position="absolute" color="purple" />
       )}
-      <Box py={{ base: '0', lg: '4' }}>
-        <FormControl id="name" mb="4" maxW="xs">
-          <FormLabel>Institution</FormLabel>
-          <Select
-            name="institution"
-            value={selectedInstitution}
-            onChange={e => setSelectedInstitution(e.target.value)}
-          >
-            <option value="">Select Institution</option>
-            {isSuccessInstitution &&
-              resInstitution?.data?.map(institution => (
-                <option key={institution.id} value={institution.id}>
-                  {institution.name}
-                </option>
-              ))}
-          </Select>
-        </FormControl>
-        <ImagingDetailsModal
-          isOpen={isDetailOpen}
-          onClose={onDetailClose}
-          selectedRadiology={selectedRadiology}
+      <ImagingDetailsModal
+        isOpen={isDetailOpen}
+        onClose={onDetailClose}
+        selectedRadiology={selectedRadiology}
+      />
+      <BackButton to="/events" text="Back to Events List" />
+      <Heading mb="6" fontSize="3xl">
+        Imaging List
+      </Heading>
+      <FormControl id="name" mb="4" maxW="xs">
+        <FormLabel>Institution</FormLabel>
+        <Select
+          name="institution"
+          value={selectedInstitution}
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
+          <option value="">Select Institution</option>
+          {isSuccessInstitution &&
+            resInstitution?.data?.map(institution => (
+              <option key={institution.id} value={institution.id}>
+                {institution.name}
+              </option>
+            ))}
+        </Select>
+      </FormControl>
+
+      {selectedInstitution && (
+        <PaginationTable
+          columns={columns}
+          data={data || []}
+          isLoading={isLoadingRadiologyList}
+          skeletonCols={9}
         />
-        <Box>
-          <Button
-            display={{ base: 'inline-flex', lg: 'none' }}
-            as={Link}
-            to="/events"
-            leftIcon={<FaArrowLeft />}
-            mb="4"
-          >
-            Events
-          </Button>
-          <Flex justify="space-between" align="center" mb="4">
-            <Heading fontSize="3xl">Imaging</Heading>
-          </Flex>
-          <PaginationTable
-            columns={columns}
-            data={data || []}
-            isLoading={isLoadingRadiologyList}
-            skeletonCols={9}
-            // action={
-            //   <Button
-            //     colorScheme="purple"
-            //     onClick={onOpenRequestRadiologyModal}
-            //   >
-            //     Tambah Imaging
-            //   </Button>
-            // }
-          />
-        </Box>
-      </Box>
-    </>
+      )}
+    </Box>
   );
 };

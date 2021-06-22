@@ -19,6 +19,7 @@ import {
   ExaminationResultPage,
   ExaminationDetailPage,
   ImagingList,
+  ImagingDetails,
 } from './sub-page';
 
 export const EventNodePage = () => {
@@ -62,8 +63,11 @@ export const EventNodePage = () => {
               <Route path={`${path}/examination`}>
                 <ExaminationPage />
               </Route>
-              <Route path={`${path}/imaging`}>
+              <Route exact path={`${path}/imaging`}>
                 <ImagingList />
+              </Route>
+              <Route exact path={`${path}/imaging/details/:id`}>
+                <ImagingDetails />
               </Route>
             </Switch>
           </ContentWrapper>
