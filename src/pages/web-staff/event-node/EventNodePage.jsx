@@ -20,6 +20,9 @@ import {
   ExaminationDetailPage,
   ImagingList,
   ImagingDetails,
+  BloodDrawList,
+  BloodTestList,
+  BloodTestResult,
 } from './sub-page';
 
 export const EventNodePage = () => {
@@ -68,6 +71,15 @@ export const EventNodePage = () => {
               </Route>
               <Route exact path={`${path}/imaging/details/:id`}>
                 <ImagingDetails />
+              </Route>
+              <Route exact path={`${path}/blood-draw`}>
+                <BloodDrawList />
+              </Route>
+              <Route exact path={`${path}/blood-test`}>
+                <BloodTestList />
+              </Route>
+              <Route exact path={`${path}/blood-test-result/:id`}>
+                <BloodTestResult />
               </Route>
             </Switch>
           </ContentWrapper>
