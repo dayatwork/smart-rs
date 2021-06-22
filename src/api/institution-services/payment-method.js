@@ -55,3 +55,23 @@ export const createPaymentMethod = cookies => async data => {
 
   return await res.json();
 };
+
+export const updatePaymentMethod = cookies => async data => {
+  const res = await fetch(
+    `${process.env.REACT_APP_INSTITUTION_API}/payment-method/update`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Update Institution Payment Method');
+  }
+
+  return await res.json();
+};

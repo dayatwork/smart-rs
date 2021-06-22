@@ -14,6 +14,8 @@ import {
   SimpleGrid,
   Checkbox,
   Text,
+  Input,
+  Box,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
@@ -25,24 +27,29 @@ import {
 } from '../../../../api/institution-services/payment-method';
 import { getPaymentMethods as getPaymentMethodsMaster } from '../../../../api/master-data-services/payment-method';
 
-export const AddPaymentMethodModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddPaymentMethodModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
+  const paymentMethods = watch('paymentMethods');
 
   const { data: dataPaymentMethodsMaster } = useQuery(
     'master-payment-methods',
     () => getPaymentMethodsMaster(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataPaymentMethods } = useQuery(
     ['insitution-payment-methods', selectedInstitution],
     () => getPaymentMethods(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createPaymentMethod(cookies), {
@@ -80,11 +87,19 @@ export const AddPaymentMethodModal = ({ isOpen, onClose, selectedInstitution }) 
     },
   });
 
-  const onSubmit = async (values) => {
-    const { paymentMethods } = values;
+  const onSubmit = async values => {
+    const { paymentMethods, accountNumbers } = values;
     const formattedPaymentMethods = paymentMethods
-      .filter((payment) => !!payment)
-      .map((type) => JSON.parse(type));
+      .map((type, index) => {
+        if (type) {
+          return {
+            ...JSON.parse(type),
+            account_number: accountNumbers[index],
+          };
+        }
+        return type;
+      })
+      .filter(payment => payment);
     const data = {
       institution_id: selectedInstitution,
       data: formattedPaymentMethods,
@@ -103,28 +118,40 @@ export const AddPaymentMethodModal = ({ isOpen, onClose, selectedInstitution }) 
             <VisuallyHidden as="label">Payment Method</VisuallyHidden>
             <SimpleGrid columns={3} gap="2">
               {dataPaymentMethodsMaster?.data
-                ?.filter((paymentMethod) => {
+                ?.filter(paymentMethod => {
                   const alreadyPaymentMethods = dataPaymentMethods?.data?.map(
-                    (paymentMethod) => paymentMethod.master_method_id,
+                    paymentMethod => paymentMethod.master_method_id
                   );
                   return !alreadyPaymentMethods?.includes(paymentMethod.id);
                 })
                 .map((method, index) => (
-                  <Checkbox
-                    key={method.id}
-                    value={JSON.stringify({
-                      master_method_id: method.id,
-                      name: method.name,
-                      alias: method.alias,
-                      description: method.description,
-                    })}
-                    colorScheme="purple"
-                    {...register(`paymentMethods[${index}]`)}>
-                    <Text fontWeight="semibold">{method.name}</Text>
-                    <Text fontSize="sm" color="gray.500" fontWeight="medium">
-                      {method.description}
-                    </Text>
-                  </Checkbox>
+                  <Box key={method.id}>
+                    <Checkbox
+                      value={JSON.stringify({
+                        master_method_id: method.id,
+                        name: method.name,
+                        alias: method.alias,
+                        description: method.description,
+                      })}
+                      colorScheme="purple"
+                      {...register(`paymentMethods[${index}]`)}
+                    >
+                      <Text fontWeight="semibold">{method.name}</Text>
+                      <Text fontSize="sm" color="gray.500" fontWeight="medium">
+                        {method.description}
+                      </Text>
+                    </Checkbox>
+                    <Input
+                      mt="2"
+                      type="number"
+                      placeholder="Account Number"
+                      size="sm"
+                      {...register(`accountNumbers[${index}]`)}
+                      disabled={Boolean(
+                        paymentMethods && !paymentMethods[index]
+                      )}
+                    />
+                  </Box>
                 ))}
             </SimpleGrid>
           </FormControl>
@@ -137,7 +164,8 @@ export const AddPaymentMethodModal = ({ isOpen, onClose, selectedInstitution }) 
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Add
           </Button>
         </ModalFooter>
