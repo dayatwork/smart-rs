@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, utils } from '@hassanmojab/react-modern-calendar-datepicker';
+import DayPicker, { DateUtils } from 'react-day-picker';
 import {
   Box,
   Button,
@@ -21,15 +21,18 @@ import {
   RadioGroup,
   Radio,
   useToast,
+  Flex,
 } from '@chakra-ui/react';
 import 'react-day-picker/lib/style.css';
 import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
+import format from 'date-fns/format';
+import { Helmet } from 'react-helmet-async';
 
 import {
   getServices,
   getScheduleEstimatedTimes,
-  getBookingSchedules,
+  getBookingSchedulesInstitution,
 } from '../../../../../../../api/institution-services/service';
 import {
   getRadiologyCategoriesName,
@@ -41,16 +44,17 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [selectedService, setSelectedService] = useState(
-    'b192973b-70c6-464d-98f2-327184874b5a',
+    'b192973b-70c6-464d-98f2-327184874b5a'
   );
   const [selectedSchedule, setSelectedSchedule] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDayRange, setSelectedDayRange] = useState({
-    from: '',
-    to: '',
+    from: undefined,
+    to: undefined,
   });
   const [description, setDescription] = useState('');
-  const [isLoadingRequestRadiology, setIsLoadingRequestRadiology] = useState(false);
+  const [isLoadingRequestRadiology, setIsLoadingRequestRadiology] =
+    useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const queryClient = useQueryClient();
@@ -58,124 +62,10 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   // ==========================
   // ======= Calendar =========
   // ==========================
-  const maximumDate = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 2,
-    day: new Date().getDate(),
-  };
-
-  const myCustomLocale = {
-    // months list by order
-    months: [
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember',
-    ],
-
-    // week days by order
-    weekDays: [
-      {
-        name: 'Minggu', // used for accessibility
-        short: 'M', // displayed at the top of days' rows
-        isWeekend: true, // is it a formal weekend or not?
-      },
-      {
-        name: 'Senin',
-        short: 'S',
-      },
-      {
-        name: 'Selasa',
-        short: 'S',
-      },
-      {
-        name: 'Rabu',
-        short: 'R',
-      },
-      {
-        name: 'Kamis',
-        short: 'K',
-      },
-      {
-        name: "Jum'at",
-        short: 'J',
-      },
-      {
-        name: 'Sabtu',
-        short: 'S',
-      },
-    ],
-
-    // just play around with this number between 0 and 6
-    weekStartingIndex: 0,
-
-    // return a { year: number, month: number, day: number } object
-    getToday(gregorainTodayObject) {
-      return gregorainTodayObject;
-    },
-
-    // return a native JavaScript date here
-    toNativeDate(date) {
-      return new Date(date.year, date.month - 1, date.day);
-    },
-
-    // return a number for date's month length
-    getMonthLength(date) {
-      return new Date(date.year, date.month, 0).getDate();
-    },
-
-    // return a transformed digit to your locale
-    transformDigit(digit) {
-      return digit;
-    },
-
-    // texts in the date picker
-    nextMonth: 'Next Month',
-    previousMonth: 'Previous Month',
-    openMonthSelector: 'Open Month Selector',
-    openYearSelector: 'Open Year Selector',
-    closeMonthSelector: 'Close Month Selector',
-    closeYearSelector: 'Close Year Selector',
-    defaultPlaceholder: 'Select...',
-
-    // for input range value
-    from: 'from',
-    to: 'to',
-
-    // used for input value when multi dates are selected
-    digitSeparator: ',',
-
-    // if your provide -2 for example, year will be 2 digited
-    yearLetterSkip: 0,
-
-    // is your language rtl or ltr?
-    isRtl: false,
-  };
-
   const startDate =
-    selectedDayRange.from &&
-    new Date(
-      `${selectedDayRange.from.year}-${selectedDayRange.from.month}-${selectedDayRange.from.day}`,
-    )
-      .toISOString()
-      .split('T')[0];
-
+    selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
   const endDate =
-    selectedDayRange.to &&
-    new Date(
-      `${selectedDayRange.to.year}-${selectedDayRange.to.month}-${selectedDayRange.to.day}`,
-    )
-      .toISOString()
-      .split('T')[0];
-
+    selectedDayRange.to && format(selectedDayRange.to, 'yyyy-MM-dd');
   // ==========================
   // ===== End Calendar =======
   // ==========================
@@ -183,7 +73,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const { data: dataServices } = useQuery(
     ['services', dataSoap?.institution_id],
     () => getServices(cookies, dataSoap?.institution_id),
-    { enabled: Boolean(dataSoap?.institution_id) },
+    { enabled: Boolean(dataSoap?.institution_id) }
   );
 
   const {
@@ -193,15 +83,16 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   } = useQuery(
     ['booking-schedule', { selectedService, startDate, endDate }],
     () =>
-      getBookingSchedules(cookies, {
+      getBookingSchedulesInstitution(cookies, {
         startDate,
         endDate,
         serviceId: selectedService,
         institutionId: dataSoap?.institution_id,
       }),
     {
-      enabled: Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
-    },
+      enabled:
+        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+    }
   );
 
   const {
@@ -211,8 +102,11 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   } = useQuery(
     ['estimated-times', JSON.parse(selectedSchedule || '{}')?.detailId],
     () =>
-      getScheduleEstimatedTimes(cookies, JSON.parse(selectedSchedule || '{}')?.detailId),
-    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) },
+      getScheduleEstimatedTimes(
+        cookies,
+        JSON.parse(selectedSchedule || '{}')?.detailId
+      ),
+    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
   );
   const {
     data: dataCategories,
@@ -221,7 +115,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   } = useQuery(
     ['radiology-categories-name', dataSoap?.institution_id],
     () => getRadiologyCategoriesName(cookies, dataSoap?.institution_id),
-    { enabled: Boolean(dataSoap?.institution_id) },
+    { enabled: Boolean(dataSoap?.institution_id) }
   );
 
   const {
@@ -229,13 +123,21 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     isLoading: isLoadingSubcategories,
     isSuccess: isSuccessSubcategories,
   } = useQuery(
-    ['radiology-subcategories-name', dataSoap?.institution_id, selectedCategory],
+    [
+      'radiology-subcategories-name',
+      dataSoap?.institution_id,
+      selectedCategory,
+    ],
     () =>
-      getRadiologySubCategoriesName(cookies, dataSoap?.institution_id, selectedCategory),
-    { enabled: Boolean(dataSoap?.institution_id) && Boolean(selectedCategory) },
+      getRadiologySubCategoriesName(
+        cookies,
+        dataSoap?.institution_id,
+        selectedCategory
+      ),
+    { enabled: Boolean(dataSoap?.institution_id) && Boolean(selectedCategory) }
   );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const { id: soap_id, patient_id, institution_id } = dataSoap;
     const { employee_id, date } = JSON.parse(selectedSchedule);
@@ -256,7 +158,10 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     try {
       setIsLoadingRequestRadiology(true);
       await createRadiology(cookies)(data);
-      await queryClient.invalidateQueries(['radiology-list', data.institution_id]);
+      await queryClient.invalidateQueries([
+        'radiology-list',
+        data.institution_id,
+      ]);
       setIsLoadingRequestRadiology(false);
 
       setSelectedService('');
@@ -291,6 +196,9 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Helmet>
+        <style>{customStyle}</style>
+      </Helmet>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Request Radiology Test</ModalHeader>
@@ -301,17 +209,19 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
             <Select
               bg="white"
               value={selectedService}
-              onChange={(e) => {
+              onChange={e => {
                 setSelectedSchedule('');
                 setSelectedService(e.target.value);
-              }}>
+              }}
+            >
               <option>Pilih Layanan</option>
               {dataServices?.data
                 ?.filter(
-                  (service) =>
-                    service.master_service_id === '0dcb09ce-cfee-4d6c-bf9c-23048be9c526',
+                  service =>
+                    service.master_service_id ===
+                    '0dcb09ce-cfee-4d6c-bf9c-23048be9c526'
                 )
-                ?.map((service) => (
+                ?.map(service => (
                   <option key={service.id} value={service.id}>
                     {service.name}
                   </option>
@@ -323,11 +233,12 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
             <Select
               bg="white"
               value={selectedCategory}
-              onChange={(e) => {
+              onChange={e => {
                 setSelectedCategory(e.target.value);
-              }}>
+              }}
+            >
               <option>Pilih Category</option>
-              {dataCategories?.data?.map((category) => (
+              {dataCategories?.data?.map(category => (
                 <option key={category.category_id} value={category.category_id}>
                   {category.category_name}
                 </option>
@@ -345,14 +256,16 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               <Select
                 bg="white"
                 value={selectedSubcategory}
-                onChange={(e) => {
+                onChange={e => {
                   setSelectedSubcategory(e.target.value);
-                }}>
+                }}
+              >
                 <option>Pilih Sub Category</option>
-                {dataSubcategories?.data?.map((subcategory) => (
+                {dataSubcategories?.data?.map(subcategory => (
                   <option
                     key={subcategory.subcategory_id}
-                    value={subcategory.subcategory_id}>
+                    value={subcategory.subcategory_id}
+                  >
                     {subcategory.subcategory_name}
                   </option>
                 ))}
@@ -362,20 +275,21 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
           {selectedSubcategory && (
             <FormControl mb="4">
               <FormLabel>Jadwal</FormLabel>
-              <Calendar
-                value={selectedDayRange}
-                onChange={(value) => {
-                  setSelectedSchedule('');
-                  setSelectedDayRange(value);
-                }}
-                shouldHighlightWeekends
-                // minimumDate={utils().getToday()}
-                minimumDate={utils().getToday()}
-                maximumDate={maximumDate}
-                colorPrimary="#2B6CB0"
-                colorPrimaryLight="#BEE3F8"
-                locale={myCustomLocale}
-              />
+              <Box
+                border="1px"
+                borderColor="gray.200"
+                px="4"
+                py="2"
+                rounded="md"
+                bgColor="white"
+              >
+                <ScheduleDate
+                  range={selectedDayRange}
+                  selectedDayRange={selectedDayRange}
+                  setSelectedDayRange={setSelectedDayRange}
+                  setSelectedSchedule={setSelectedSchedule}
+                />
+              </Box>
             </FormControl>
           )}
           {isLoadingSchedules && (
@@ -393,9 +307,10 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               <FormLabel>Schedule</FormLabel>
               <Select
                 value={selectedSchedule}
-                onChange={(e) => setSelectedSchedule(e.target.value)}>
+                onChange={e => setSelectedSchedule(e.target.value)}
+              >
                 <option>Select Schedule</option>
-                {dataSchedules?.data?.map((schedule) => {
+                {dataSchedules?.data?.map(schedule => {
                   return (
                     <option
                       key={schedule.id}
@@ -405,9 +320,11 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
                         date: schedule?.date,
                         employee_id: schedule?.employee?.id,
                         employee_name: schedule?.employee?.name,
-                      })}>
-                      Dokter: {schedule?.employee?.name} --- Tanggal: {schedule.date} ---
-                      Pukul: {schedule.start_time}-{schedule.end_time}
+                      })}
+                    >
+                      Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
+                      {schedule.date} --- Pukul: {schedule.start_time}-
+                      {schedule.end_time}
                     </option>
                   );
                 })}
@@ -425,7 +342,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               <RadioGroup onChange={setSelectedTime} value={selectedTime}>
                 <SimpleGrid columns={4} gap="6">
                   {dataEstimatedTimes &&
-                    dataEstimatedTimes?.data?.map((time) => (
+                    dataEstimatedTimes?.data?.map(time => (
                       <Radio
                         id={time.id}
                         disabled={time.status}
@@ -434,7 +351,8 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
                           value: time.available_time,
                         })}
                         key={time.id}
-                        colorScheme="purple">
+                        colorScheme="purple"
+                      >
                         <Text color={time.status ? 'red' : 'green'}>
                           {time.available_time}
                         </Text>
@@ -453,7 +371,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               <Textarea
                 rows="6"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={e => setDescription(e.target.value)}
               />
             </FormControl>
           )}
@@ -464,9 +382,10 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
             Close
           </Button>
           <Button
-            colorScheme="green"
+            colorScheme="purple"
             onClick={handleSubmit}
-            isLoading={isLoadingRequestRadiology}>
+            isLoading={isLoadingRequestRadiology}
+          >
             Submit
           </Button>
         </ModalFooter>
@@ -474,3 +393,89 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     </Modal>
   );
 };
+
+const ScheduleDate = ({
+  range,
+  selectedDayRange,
+  setSelectedDayRange,
+  setSelectedSchedule,
+}) => {
+  const handleDayClick = (day, modifiers = {}) => {
+    setSelectedSchedule('');
+    if (modifiers.disabled) {
+      return;
+    }
+    const selectedRange = DateUtils.addDayToRange(day, selectedDayRange);
+    setSelectedDayRange(selectedRange);
+  };
+
+  const handleResetClick = () => {
+    setSelectedDayRange({ from: undefined, to: undefined });
+  };
+
+  return (
+    <Box className="RangeExample">
+      <DayPicker
+        className="Selectable"
+        numberOfMonths={1}
+        selectedDays={[range.from, { from: range.from, to: range.to }]}
+        modifiers={{
+          start: range.from,
+          end: range.to,
+          sunday: { daysOfWeek: [0] },
+        }}
+        onDayClick={handleDayClick}
+        disabledDays={{ before: new Date() }}
+      />
+      <Flex>
+        {range.from && range.to && (
+          <Button
+            mb="2"
+            // w="full"
+            display="block"
+            colorScheme="purple"
+            size="sm"
+            onClick={handleResetClick}
+          >
+            Reset
+          </Button>
+        )}
+      </Flex>
+    </Box>
+  );
+};
+
+const customStyle = `
+  .Selectable
+    .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+    background-color: #f0f8ff !important;
+    color: #805AD5 !important;
+  }
+  .Selectable .DayPicker-Day {
+    border-radius: 0 !important;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--today {
+    background-color: #f0f8ff !important;
+    color: #805AD5;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--start {
+    background-color: #805AD5 !important;
+    color: #f0f8ff !important;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--end {
+    background-color: #805AD5 !important;
+    color: #f0f8ff !important;
+  }
+  .Selectable .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+  }
+  .Selectable .DayPicker-Day--end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+  }
+  .DayPicker-Day--today {
+    color: #9F7AEA !important;
+    background-color: #ffffff !important;
+  }
+`;

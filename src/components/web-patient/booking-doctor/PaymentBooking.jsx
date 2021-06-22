@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -18,7 +19,7 @@ import {
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { HiPencilAlt } from 'react-icons/hi';
 import { useCookies } from 'react-cookie';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import QRCode from 'qrcode.react';
 
 import { createBooking } from '../../../api/booking-services/booking';
@@ -38,28 +39,34 @@ export const PaymentBooking = ({
   selectedSchedule,
   selectedTime,
 }) => {
+  const history = useHistory();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [cookies] = useCookies(['token']);
   const [bookingData, setBookingData] = useState(null);
+  const queryClient = useQueryClient();
 
   const {
     data: dataServicePrice,
     isLoading: isLoadingServicePrice,
     isSuccess: isSuccessServicePrice,
   } = useQuery(
-    ['service-price', selectedSchedule?.service?.id, selectedSchedule?.institution?.id],
+    [
+      'service-price',
+      selectedSchedule?.service?.id,
+      selectedSchedule?.institution?.id,
+    ],
     () =>
       getServicePriceDetails(
         cookies,
         selectedSchedule?.institution?.id,
-        selectedSchedule?.service?.id,
+        selectedSchedule?.service?.id
       ),
     {
       enabled:
         Boolean(selectedSchedule?.service?.id) &&
         Boolean(selectedSchedule?.institution?.id),
-    },
+    }
   );
 
   const handleBooking = async () => {
@@ -98,6 +105,7 @@ export const PaymentBooking = ({
         }
         setIsLoading(true);
         const res = await createBooking(cookies, data);
+        await queryClient.invalidateQueries('user-booking-list');
         setBookingData(res?.data);
         setIsLoading(false);
         toast({
@@ -107,6 +115,9 @@ export const PaymentBooking = ({
           duration: 2000,
           isClosable: true,
         });
+        if (res?.data?.id) {
+          history.replace(`/doctor/detail/${res?.data?.id}`);
+        }
       }
     } catch (error) {
       setIsLoading(false);
@@ -145,12 +156,14 @@ export const PaymentBooking = ({
             overflow="hidden"
             px="6"
             py="4"
-            mb="6">
+            mb="6"
+          >
             <Box
               fontSize="sm"
               textTransform="uppercase"
               fontWeight="bold"
-              color="gray.500">
+              color="gray.500"
+            >
               Deposit Pendaftaran
             </Box>
             {isLoadingServicePrice && (
@@ -180,7 +193,8 @@ export const PaymentBooking = ({
               colorScheme="blue"
               my="2"
               onClick={handleBooking}
-              disabled={isLoadingServicePrice}>
+              disabled={isLoadingServicePrice}
+            >
               Bayar Sekarang
             </Button>
           </Box>
@@ -196,7 +210,8 @@ export const PaymentBooking = ({
         <Button
           leftIcon={<FaArrowLeft />}
           disabled={currentStep.value === 'Step 1'}
-          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+        >
           Back
         </Button>
         <Button leftIcon={<FaArrowRight />} disabled>
@@ -207,7 +222,11 @@ export const PaymentBooking = ({
   );
 };
 
-const DoctorDetails = ({ setCurrentStepIndex, selectedSchedule, selectedTime }) => (
+const DoctorDetails = ({
+  setCurrentStepIndex,
+  selectedSchedule,
+  selectedTime,
+}) => (
   <Box
     maxW="3xl"
     mx="auto"
@@ -215,22 +234,27 @@ const DoctorDetails = ({ setCurrentStepIndex, selectedSchedule, selectedTime }) 
     bg="white"
     shadow="base"
     overflow="hidden"
-    mb="6">
+    mb="6"
+  >
     <Flex align="center" justify="space-between" px="6" py="4" bg="gray.50">
       <Text as="h3" fontWeight="bold" fontSize="lg">
         Detail Dokter
       </Text>
       <Button
-        onClick={() => setCurrentStepIndex((prev) => prev - 1)}
+        onClick={() => setCurrentStepIndex(prev => prev - 1)}
         variant="outline"
         minW="20"
-        leftIcon={<HiPencilAlt />}>
+        leftIcon={<HiPencilAlt />}
+      >
         Ubah Jadwal
       </Button>
     </Flex>
     <Divider />
     <Box>
-      <Description title="Nama Dokter" value={selectedSchedule?.employee?.name} />
+      <Description
+        title="Nama Dokter"
+        value={selectedSchedule?.employee?.name}
+      />
       <Description title="SMF" value={selectedSchedule?.employee?.profession} />
       <Description title="Layanan" value={selectedSchedule?.service?.name} />
       <Description
@@ -249,16 +273,18 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
     rounded={{ md: 'lg' }}
     bg="white"
     shadow="base"
-    overflow="hidden">
+    overflow="hidden"
+  >
     <Flex align="center" justify="space-between" px="6" py="4" bg="gray.50">
       <Text as="h3" fontWeight="bold" fontSize="lg">
         Detail Pasien
       </Text>
       <Button
-        onClick={() => setCurrentStepIndex((prev) => prev - 2)}
+        onClick={() => setCurrentStepIndex(prev => prev - 2)}
         variant="outline"
         minW="20"
-        leftIcon={<HiPencilAlt />}>
+        leftIcon={<HiPencilAlt />}
+      >
         Edit
       </Button>
     </Flex>
@@ -282,7 +308,11 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
         }
         py="3"
       />
-      <Description title="Tanggal Lahir" value={patientData?.birth_date} py="3" />
+      <Description
+        title="Tanggal Lahir"
+        value={patientData?.birth_date}
+        py="3"
+      />
       <Description title="Alamat" value={patientData?.address} py="3" />
       <Divider my="2" />
 
@@ -291,12 +321,24 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
           <Heading px="6" fontSize="lg" fontWeight="semibold" py="2">
             Health Info
           </Heading>
-          <Description title="Golongan Darah" value={patientData?.blood_type} py="3" />
-          <Description title="Tinggi Badan" value={`${patientData?.height} cm`} py="3" />
-          <Description title="Berat Badan" value={`${patientData?.weight} kg`} py="3" />
+          <Description
+            title="Golongan Darah"
+            value={patientData?.blood_type}
+            py="3"
+          />
+          <Description
+            title="Tinggi Badan"
+            value={`${patientData?.height} cm`}
+            py="3"
+          />
+          <Description
+            title="Berat Badan"
+            value={`${patientData?.weight} kg`}
+            py="3"
+          />
           <Description
             title="Alergi"
-            value={patientData.allergies.map((alergy) => alergy.label).join(', ')}
+            value={patientData.allergies.map(alergy => alergy.label).join(', ')}
             py="3"
           />
         </>
@@ -306,7 +348,13 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
 );
 
 const Description = ({ title, value, ...rest }) => (
-  <Flex as="dl" direction={{ base: 'column', sm: 'row' }} px="6" py="4" {...rest}>
+  <Flex
+    as="dl"
+    direction={{ base: 'column', sm: 'row' }}
+    px="6"
+    py="4"
+    {...rest}
+  >
     <Box as="dt" flexBasis="25%">
       {title}:
     </Box>

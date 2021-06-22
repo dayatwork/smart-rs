@@ -18,6 +18,7 @@ import {
   ExaminationPage,
   ExaminationResultPage,
   ExaminationDetailPage,
+  ImagingList,
 } from './sub-page';
 
 export const EventNodePage = () => {
@@ -27,7 +28,11 @@ export const EventNodePage = () => {
     <AppShell>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
-          <SubMenuSideBar title="Events" titleLink="/events" subMenus={subMenus} />
+          <SubMenuSideBar
+            title="Events"
+            titleLink="/events"
+            subMenus={subMenus}
+          />
           <ContentWrapper>
             <Switch>
               <Route exact path={path}>
@@ -56,6 +61,9 @@ export const EventNodePage = () => {
               </Route>
               <Route path={`${path}/examination`}>
                 <ExaminationPage />
+              </Route>
+              <Route path={`${path}/imaging`}>
+                <ImagingList />
               </Route>
             </Switch>
           </ContentWrapper>

@@ -135,7 +135,7 @@ export const AssignNewStaffPage = () => {
     onSettled: async (data, error) => {
       setIsLoadingAssign(false);
       if (data) {
-        await queryClient.invalidateQueries('accounts');
+        await queryClient.invalidateQueries(['employees', selectedInstitution]);
         setErrMessage('');
         clearErrors();
         toast({

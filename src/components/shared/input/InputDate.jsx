@@ -30,9 +30,18 @@ function YearMonthForm({ date, localeUtils, onChange }) {
     years.push(i);
   }
 
+  // function handleChange(e) {
+  //   const { year, month } = e.target.form;
+  //   onChange(new Date(year.value, month.value));
+  // }
+
   function handleChange(e) {
-    const { year, month } = e.target.form;
-    onChange(new Date(year.value, month.value));
+    if (e.target.name === 'year') {
+      onChange(new Date(e.target.value, date.getMonth()));
+    }
+    if (e.target.name === 'month') {
+      onChange(new Date(date.getFullYear(), e.target.value));
+    }
   }
 
   return (
@@ -45,7 +54,7 @@ function YearMonthForm({ date, localeUtils, onChange }) {
         ))}
       </select>
       <select name="year" onChange={handleChange} value={date.getFullYear()}>
-        {years.map((year) => (
+        {years.map(year => (
           <option key={year} value={year}>
             {year}
           </option>
@@ -82,7 +91,7 @@ export const InputDate = ({
               format={FORMAT}
               formatDate={formatDate}
               parseDate={parseDate}
-              onDayChange={(v) => {
+              onDayChange={v => {
                 onChange(v);
               }}
               dayPickerProps={{
@@ -104,7 +113,7 @@ export const InputDate = ({
               format={FORMAT}
               formatDate={formatDate}
               parseDate={parseDate}
-              onDayChange={(v) => {
+              onDayChange={v => {
                 onChange(v);
               }}
               dayPickerProps={{
@@ -124,7 +133,7 @@ export const InputDate = ({
             format={FORMAT}
             formatDate={formatDate}
             parseDate={parseDate}
-            onDayChange={(v) => {
+            onDayChange={v => {
               onChange(v);
             }}
             placeholder="dd/MM/yyyy"
