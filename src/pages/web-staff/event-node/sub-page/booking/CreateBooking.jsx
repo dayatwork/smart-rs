@@ -52,32 +52,34 @@ export const CreateBooking = () => {
   });
   const [isLoadingBooking, setIsLoadingBooking] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
   );
   const queryClient = useQueryClient();
 
-  const startDate = selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
-  const endDate = selectedDayRange.to && format(selectedDayRange.to, 'yyyy-MM-dd');
+  const startDate =
+    selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
+  const endDate =
+    selectedDayRange.to && format(selectedDayRange.to, 'yyyy-MM-dd');
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataServices } = useQuery(
     ['services', selectedInstitution],
     () => getServices(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const { data: dataHospitalPatients } = useQuery(
     ['hospital-patients', selectedInstitution],
     () => getHospitalPatients(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
-  const searchPatient = async (patientId) => {
+  const searchPatient = async patientId => {
     if (patientId && selectedInstitution) {
       try {
         setFoundPatient(null);
@@ -106,7 +108,7 @@ export const CreateBooking = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const patient_id = foundPatient.patient_id;
     const service_id = selectedService;
@@ -122,7 +124,8 @@ export const CreateBooking = () => {
     };
     try {
       setIsLoadingBooking(true);
-      await createOnsiteBooking(cookies, data);
+      const res = await createOnsiteBooking(cookies, data);
+      console.log({ res });
       await queryClient.invalidateQueries('booking-list');
       setIsLoadingBooking(false);
       setHasSearch(false);
@@ -168,8 +171,9 @@ export const CreateBooking = () => {
         institutionId: selectedInstitution,
       }),
     {
-      enabled: Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
-    },
+      enabled:
+        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+    }
   );
 
   const {
@@ -179,8 +183,11 @@ export const CreateBooking = () => {
   } = useQuery(
     ['estimated-times', JSON.parse(selectedSchedule || '{}')?.detailId],
     () =>
-      getScheduleEstimatedTimes(cookies, JSON.parse(selectedSchedule || '{}')?.detailId),
-    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) },
+      getScheduleEstimatedTimes(
+        cookies,
+        JSON.parse(selectedSchedule || '{}')?.detailId
+      ),
+    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
   );
 
   const handleDayClick = (day, modifiers = {}) => {
@@ -214,10 +221,11 @@ export const CreateBooking = () => {
           bg="white"
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -231,12 +239,13 @@ export const CreateBooking = () => {
               <FormLabel>Select Patient</FormLabel>
               <Select
                 bg="white"
-                onChange={(e) => {
+                onChange={e => {
                   searchPatient(e.target.value);
                 }}
-                mb="4">
+                mb="4"
+              >
                 <option value="">Select Patient</option>
-                {dataHospitalPatients?.data?.map((patient) => (
+                {dataHospitalPatients?.data?.map(patient => (
                   <option key={patient.id} value={patient?.patient_id}>
                     {patient?.patient?.name} - {patient?.patient_number}
                   </option>
@@ -254,14 +263,29 @@ export const CreateBooking = () => {
                   </Center>
                 )}
                 {foundPatient ? (
-                  <Box bg="white" p="4" border="1px" borderColor="gray.200" rounded="md">
-                    <Description title="Patient ID" value={foundPatient.patient_id} />
+                  <Box
+                    bg="white"
+                    p="4"
+                    border="1px"
+                    borderColor="gray.200"
+                    rounded="md"
+                  >
+                    <Description
+                      title="Patient ID"
+                      value={foundPatient.patient_id}
+                    />
                     <Description
                       title="Patient Number"
                       value={foundPatient.patient_number}
                     />
-                    <Description title="Name" value={foundPatient.patient.name} />
-                    <Description title="Email" value={foundPatient.patient.email} />
+                    <Description
+                      title="Name"
+                      value={foundPatient.patient.name}
+                    />
+                    <Description
+                      title="Email"
+                      value={foundPatient.patient.email}
+                    />
                     <Description
                       title="Phone Number"
                       value={foundPatient.patient.phone_number}
@@ -281,12 +305,13 @@ export const CreateBooking = () => {
                 <Select
                   bg="white"
                   value={selectedService}
-                  onChange={(e) => {
+                  onChange={e => {
                     setSelectedSchedule('');
                     setSelectedService(e.target.value);
-                  }}>
+                  }}
+                >
                   <option value="">Pilih Layanan</option>
-                  {dataServices?.data?.map((service) => (
+                  {dataServices?.data?.map(service => (
                     <option key={service.id} value={service.id}>
                       {service.name}
                     </option>
@@ -304,7 +329,8 @@ export const CreateBooking = () => {
                   px="4"
                   py="2"
                   rounded="md"
-                  bgColor="white">
+                  bgColor="white"
+                >
                   <ScheduleDate
                     range={selectedDayRange}
                     handleDayClick={handleDayClick}
@@ -337,21 +363,24 @@ export const CreateBooking = () => {
                 <Select
                   bg="white"
                   value={selectedSchedule}
-                  onChange={(e) => {
+                  onChange={e => {
                     setSelectedSchedule(e.target.value);
                     setSelectedTime('');
-                  }}>
+                  }}
+                >
                   <option value="">Select Schedule</option>
-                  {dataSchedules?.data?.map((schedule) => {
+                  {dataSchedules?.data?.map(schedule => {
                     return (
                       <option
                         key={schedule.id}
                         value={JSON.stringify({
                           id: schedule?.schedule_id,
                           detailId: schedule.id,
-                        })}>
-                        Dokter: {schedule?.employee?.name} --- Tanggal: {schedule.date}{' '}
-                        --- Pukul: {schedule.start_time}-{schedule.end_time}
+                        })}
+                      >
+                        Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
+                        {schedule.date} --- Pukul: {schedule.start_time}-
+                        {schedule.end_time}
                       </option>
                     );
                   })}
@@ -380,16 +409,18 @@ export const CreateBooking = () => {
                   p="4"
                   border="1px"
                   borderColor="gray.200"
-                  rounded="md">
+                  rounded="md"
+                >
                   <SimpleGrid columns={4} gap="6">
                     {dataEstimatedTimes &&
-                      dataEstimatedTimes?.data?.map((time) => (
+                      dataEstimatedTimes?.data?.map(time => (
                         <Radio
                           id={time.id}
                           disabled={time.status}
                           value={time.id}
                           key={time.id}
-                          colorScheme="purple">
+                          colorScheme="purple"
+                        >
                           <Text color={time.status ? 'red' : 'green'}>
                             {time.available_time}
                           </Text>
@@ -411,7 +442,8 @@ export const CreateBooking = () => {
               colorScheme="purple"
               type="submit"
               disabled={!selectedSchedule || !selectedTime}
-              isLoading={isLoadingBooking}>
+              isLoading={isLoadingBooking}
+            >
               Book
             </Button>
           )}
@@ -441,7 +473,11 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
         className="Selectable"
         numberOfMonths={2}
         selectedDays={[range.from, { from: range.from, to: range.to }]}
-        modifiers={{ start: range.from, end: range.to, sunday: { daysOfWeek: [0] } }}
+        modifiers={{
+          start: range.from,
+          end: range.to,
+          sunday: { daysOfWeek: [0] },
+        }}
         onDayClick={handleDayClick}
         disabledDays={{ before: new Date() }}
       />
@@ -454,7 +490,8 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
             colorScheme="purple"
             variant="ghost"
             size="sm"
-            onClick={handleResetClick}>
+            onClick={handleResetClick}
+          >
             Reset
           </Button>
         )}

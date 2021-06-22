@@ -6,3 +6,4 @@ export * from './imaging';
 export * from './blood-draw';
 export * from './blood-test';
 export * from './collect-medicine';
+export * from './payment';

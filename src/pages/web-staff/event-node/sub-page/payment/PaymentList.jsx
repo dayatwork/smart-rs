@@ -1,0 +1,149 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Badge,
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Select,
+  Spinner,
+} from '@chakra-ui/react';
+import { useQuery } from 'react-query';
+import { useCookies } from 'react-cookie';
+
+import { getInstitutions } from '../../../../../api/institution-services/institution';
+import { getInstitutionOrderList } from '../../../../../api/payment-services/order';
+import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
+import { BackButton } from '../../../../../components/shared/BackButton';
+
+export const PaymentList = () => {
+  const [cookies] = useCookies(['token']);
+  const [selectedInstitution, setSelectedInstitution] = useState(
+    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+  );
+
+  const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
+    'institutions',
+    () => getInstitutions(cookies),
+    { staleTime: Infinity }
+  );
+
+  const {
+    data: dataInstitutionOrderList,
+    isSuccess: isSuccessInstitutionOrderList,
+    isLoading: isLoadingInstitutionOrderList,
+    isFetching: isFetchingInstitutionOrderList,
+  } = useQuery(
+    ['institution-order-list', selectedInstitution],
+    () => getInstitutionOrderList(cookies, selectedInstitution),
+    { enabled: Boolean(selectedInstitution) }
+  );
+
+  const data = React.useMemo(
+    () =>
+      isSuccessInstitutionOrderList &&
+      dataInstitutionOrderList?.data?.map(order => {
+        console.log('order', order);
+        return {
+          id: order?.id,
+          transaction_number: order?.transaction_number,
+          invoice_date: order?.invoice_date,
+          total_price: order?.total_price,
+          due_date: order?.due_date,
+          status: order?.status,
+          method_id: order?.method_id,
+          method_name: order?.method_name,
+          institution_id: order?.institution_id,
+          type: order?.type,
+        };
+      }),
+    [dataInstitutionOrderList?.data, isSuccessInstitutionOrderList]
+  );
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'ID',
+        accessor: 'id',
+        Cell: ({ value }) => <Box>{value?.substring(0, 5)}...</Box>,
+      },
+      {
+        Header: 'Transaction Number',
+        accessor: 'transaction_number',
+      },
+      {
+        Header: 'Invoice Date',
+        accessor: 'invoice_date',
+      },
+      {
+        Header: 'Total Price',
+        accessor: 'total_price',
+      },
+      {
+        Header: 'Due Date',
+        accessor: 'due_date',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({ value }) => {
+          return <Badge>{value}</Badge>;
+        },
+      },
+      {
+        Header: 'Method',
+        accessor: 'method_name',
+      },
+      {
+        Header: 'Type',
+        accessor: 'type',
+      },
+      {
+        Header: 'Detail',
+        Cell: ({ row }) => (
+          <Button as={Link} to={`/events/payment/${row.original.id}`}></Button>
+        ),
+      },
+    ],
+    []
+  );
+
+  return (
+    <Box>
+      {isFetchingInstitutionOrderList && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
+      <BackButton to="/events" text="Back to Events List" />
+      <Heading mb="6" fontSize="3xl">
+        Payment
+      </Heading>
+      <FormControl id="name" mb="4" maxW="xs">
+        <FormLabel>Institution</FormLabel>
+        <Select
+          name="institution"
+          value={selectedInstitution}
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
+          <option value="">Select Institution</option>
+          {isSuccessInstitution &&
+            resInstitution?.data?.map(institution => (
+              <option key={institution.id} value={institution.id}>
+                {institution.name}
+              </option>
+            ))}
+        </Select>
+      </FormControl>
+
+      {selectedInstitution && (
+        <PaginationTable
+          columns={columns}
+          data={data || []}
+          isLoading={isLoadingInstitutionOrderList}
+          skeletonCols={9}
+        />
+      )}
+    </Box>
+  );
+};
