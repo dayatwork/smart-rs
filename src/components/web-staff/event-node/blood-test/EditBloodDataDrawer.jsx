@@ -20,7 +20,7 @@ import { useCookies } from 'react-cookie';
 import { useMutation, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 
-import { editLaboratoryBlood } from '../../../../../api/laboratory-services/blood';
+import { editLaboratoryBlood } from '../../../../api/laboratory-services/blood';
 
 export const EditBloodDataDrawer = ({
   isOpen,
