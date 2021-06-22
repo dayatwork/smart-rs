@@ -29,7 +29,6 @@ export const ImagingDetailsModal = ({ isOpen, onClose, selectedRadiology }) => {
       history.push(`/events/imaging/details/${selectedRadiology?.id}`);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
     }
   };
 

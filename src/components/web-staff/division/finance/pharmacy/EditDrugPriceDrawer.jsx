@@ -88,11 +88,8 @@ export const EditDrugPriceDrawer = ({
       currency: values.currency,
     };
 
-    // console.log(drug);
     await mutate(drug);
   };
-
-  // console.log({ selectedDrug });
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm" sele>

@@ -76,7 +76,6 @@ export const ImagingDetails = () => {
         duration: 2000,
         isClosable: true,
       });
-      console.log(error);
     }
   };
 

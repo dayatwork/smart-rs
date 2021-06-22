@@ -43,11 +43,12 @@ export const DrugReceiptDetailPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: dataDrugOrderDetail, isLoading: isLoadingDrugOrderDetail } = useQuery(
-    ['drug-order-detail', params?.id],
-    () => getOrderDrugDetail(cookies, params?.id),
-    { enabled: Boolean(params?.id) },
-  );
+  const { data: dataDrugOrderDetail, isLoading: isLoadingDrugOrderDetail } =
+    useQuery(
+      ['drug-order-detail', params?.id],
+      () => getOrderDrugDetail(cookies, params?.id),
+      { enabled: Boolean(params?.id) }
+    );
 
   const handleCreatePackage = async () => {
     const data = {
@@ -55,8 +56,7 @@ export const DrugReceiptDetailPage = () => {
     };
     try {
       setIsLoadingCreatePackage(true);
-      const res = await createPackage(cookies)(data);
-      console.log({ res });
+      await createPackage(cookies)(data);
       await queryClient.invalidateQueries('drugs-order');
       setIsLoadingCreatePackage(false);
       toast({
@@ -66,9 +66,8 @@ export const DrugReceiptDetailPage = () => {
         duration: 2000,
         isClosable: true,
       });
-      history.push('/pharmacy/packaging');
+      history.push('/pharmacy/receipt');
     } catch (error) {
-      console.log(error);
       setIsLoadingCreatePackage(false);
       toast({
         title: 'Error',
@@ -138,7 +137,7 @@ export const DrugReceiptDetailPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {dataDrugOrderDetail?.data?.drug_list?.map((drug) => (
+            {dataDrugOrderDetail?.data?.drug_list?.map(drug => (
               <Tr key={drug.id}>
                 <Td>{drug?.drug_name}</Td>
                 <Td>
@@ -183,7 +182,8 @@ const ConfirmCreatePackageModal = ({
           <Button
             colorScheme="purple"
             onClick={handleCreatePackage}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Create
           </Button>
         </ModalFooter>
@@ -195,7 +195,13 @@ const ConfirmCreatePackageModal = ({
 const Description = ({ title, value, ...props }) => {
   return (
     <Flex as="dl" direction={{ base: 'column', sm: 'row' }} py="2" {...props}>
-      <Box as="dt" flexBasis="25%" fontWeight="semibold" color="gray.600" mr="4">
+      <Box
+        as="dt"
+        flexBasis="25%"
+        fontWeight="semibold"
+        color="gray.600"
+        mr="4"
+      >
         {title}
       </Box>
       <Box as="dd" flex="1" fontWeight="semibold">

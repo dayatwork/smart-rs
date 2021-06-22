@@ -99,8 +99,6 @@ export const CreateScheduleModal = ({
       data: schedulesFormatted,
     };
 
-    // console.log(data);
-
     await mutate(data);
   };
 

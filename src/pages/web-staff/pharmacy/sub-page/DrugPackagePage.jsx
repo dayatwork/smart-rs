@@ -40,13 +40,13 @@ export const DrugPackagePage = () => {
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
   );
   const [selectedDrugOrder, setSelectedDrugOrder] = useState(null);
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
-    () => getInstitutions(cookies),
+    () => getInstitutions(cookies)
   );
 
   const {
@@ -63,22 +63,22 @@ export const DrugPackagePage = () => {
   } = useQuery(
     ['drugs-packages', selectedInstitution],
     () => getDrugPackages(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const handleProcessPackaging = useCallback(
-    (id) => {
-      const drug = dataDrugPackages?.data.find((drug) => drug.id === id);
+    id => {
+      const drug = dataDrugPackages?.data.find(drug => drug.id === id);
       setSelectedDrugOrder(drug);
       onProcessPackageOpen();
     },
-    [dataDrugPackages?.data, onProcessPackageOpen],
+    [dataDrugPackages?.data, onProcessPackageOpen]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessDrugPackages &&
-      dataDrugPackages?.data?.map((drugPackages) => {
+      dataDrugPackages?.data?.map(drugPackages => {
         return {
           id: drugPackages.id,
           receipt_id: drugPackages?.receipt_id,
@@ -88,7 +88,7 @@ export const DrugPackagePage = () => {
           status: drugPackages?.status,
         };
       }),
-    [dataDrugPackages?.data, isSuccessDrugPackages],
+    [dataDrugPackages?.data, isSuccessDrugPackages]
   );
 
   // console.log({ dataDrugOrders });
@@ -108,7 +108,8 @@ export const DrugPackagePage = () => {
                   setClipboardValue(value);
                   onCopy();
                 }}
-                _hover={{ cursor: 'pointer' }}>
+                _hover={{ cursor: 'pointer' }}
+              >
                 {value?.substring(0, 5)}
               </Box>
               {hasCopied && clipboardValue === value && (
@@ -123,7 +124,8 @@ export const DrugPackagePage = () => {
                   position="absolute"
                   right="-4"
                   px="1"
-                  rounded="md">
+                  rounded="md"
+                >
                   Copied!
                 </Box>
               )}
@@ -184,7 +186,8 @@ export const DrugPackagePage = () => {
                 as={Link}
                 colorScheme="purple"
                 // to={`${path}/${row.original.receipt_id}`}
-                to={`${path}/${row.original.id}`}>
+                to={`${path}/${row.original.id}`}
+              >
                 Details
               </Button>
             </HStack>
@@ -199,7 +202,8 @@ export const DrugPackagePage = () => {
               <Button
                 colorScheme="purple"
                 size="sm"
-                onClick={() => handleProcessPackaging(row.original.id)}>
+                onClick={() => handleProcessPackaging(row.original.id)}
+              >
                 Start
               </Button>
             );
@@ -208,7 +212,7 @@ export const DrugPackagePage = () => {
         },
       },
     ],
-    [clipboardValue, hasCopied, onCopy, path, handleProcessPackaging],
+    [clipboardValue, hasCopied, onCopy, path, handleProcessPackaging]
   );
 
   return (
@@ -231,10 +235,11 @@ export const DrugPackagePage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -266,8 +271,6 @@ const ConfirmProcessPackageModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
-  console.log({ selectedDrugPackage });
-
   const data = {
     id: selectedDrugPackage?.id,
     status: 'process',
@@ -276,8 +279,7 @@ const ConfirmProcessPackageModal = ({
   const handleStartPackaging = async () => {
     try {
       setIsLoading(true);
-      const res = await processPackage(cookies)(data);
-      console.log({ res });
+      await processPackage(cookies)(data);
       await queryClient.invalidateQueries('drugs-order');
       setIsLoading(false);
       toast({
@@ -315,7 +317,8 @@ const ConfirmProcessPackageModal = ({
           <Button
             colorScheme="purple"
             onClick={handleStartPackaging}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Start
           </Button>
         </ModalFooter>

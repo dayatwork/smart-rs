@@ -97,13 +97,11 @@ export const AssignNewStaffPage = () => {
       if (data.identity.length) {
         setIsLoadingSearch(true);
         const res = await checkRegisteredEmployee(cookies, data);
-        console.log(res);
         setIsLoadingSearch(false);
         setUsers(res.data);
       }
     } catch (error) {
       setIsLoadingSearch(false);
-      console.log(error);
     }
   };
   // ==============================
@@ -260,8 +258,8 @@ export const AssignNewStaffPage = () => {
                     <Th>User Id</Th>
                     <Th>Name</Th>
                     <Th>Identity</Th>
-                    <Th>SMF</Th>
                     <Th>Role</Th>
+                    <Th>SMF</Th>
                     <Th>Status</Th>
                   </Tr>
                 </Thead>

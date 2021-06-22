@@ -1,45 +1,32 @@
-import React, { useRef, useState } from 'react';
-import { useParams, useHistory, Redirect } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import {
-  Badge,
   Box,
   Button,
   Center,
   Divider,
   Flex,
   Heading,
-  HStack,
   ListItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   SimpleGrid,
   Spinner,
   Text,
   UnorderedList,
-  useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { FaPrint } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
 
-import { Logo } from '../../../../components/shared/Logo';
-import { getOrderDrugDetail } from '../../../../api/pharmacy-services/receipt';
 import {
-  completePackage,
-  getDrugPackageDetail,
-} from '../../../../api/pharmacy-services/package';
-import { BackButton } from '../../../../components/shared/BackButton';
+  getOrderDrugDetail,
+  getOrderDrugQRCode,
+} from '../../../../../api/pharmacy-services/receipt';
+import { Logo } from '../../../../../components/shared/Logo';
+import { BackButton } from '../../../../../components/shared/BackButton';
 
-export const DrugPackageDetailPage = () => {
+export const CollectMedicineDetails = () => {
   const params = useParams();
-
   const [cookies] = useCookies(['token']);
   const printRef = useRef();
   const printRef2 = useRef();
@@ -50,34 +37,25 @@ export const DrugPackageDetailPage = () => {
     content: () => printRef2.current,
   });
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: dataDrugOrderDetail, isLoading: isLoadingDrugOrderDetail } =
+    useQuery(
+      ['drug-order-detail', params?.id],
+      () => getOrderDrugDetail(cookies, params?.id),
+      { enabled: Boolean(params?.id) }
+    );
 
   const {
-    data: dataDrugPackageDetail,
-
-    isLoading: isLoadingDrugPackageDetail,
+    data: dataDrugOrderQRCode,
+    isLoading: isLoadingDrugOrderQRCode,
+    isSuccess: isSuccessDrugOrderQRCode,
+    isFetching: isFetchingDrugOrderQRCode,
   } = useQuery(
-    ['drugs-package-detail', params?.id],
-    () => getDrugPackageDetail(cookies, params?.id),
+    ['drug-order-qrcode', params?.id],
+    () => getOrderDrugQRCode(cookies, params?.id),
     { enabled: Boolean(params?.id) }
   );
 
-  const { data: dataDrugOrderDetail, isLoading: isLoadingDrugOrderDetail } =
-    useQuery(
-      ['drug-order-detail', dataDrugPackageDetail?.data?.receipt_id],
-      () =>
-        getOrderDrugDetail(cookies, dataDrugPackageDetail?.data?.receipt_id),
-      { enabled: Boolean(dataDrugPackageDetail?.data?.receipt_id) }
-    );
-
-  if (
-    dataDrugPackageDetail?.code === 404 ||
-    dataDrugPackageDetail?.code === 400
-  ) {
-    return <Redirect to="/pharmacy/packaging" />;
-  }
-
-  if (isLoadingDrugPackageDetail || isLoadingDrugOrderDetail) {
+  if (isLoadingDrugOrderDetail || isLoadingDrugOrderQRCode) {
     return (
       <Center h="60">
         <Spinner
@@ -93,31 +71,31 @@ export const DrugPackageDetailPage = () => {
 
   return (
     <Box>
-      <ConfirmCompletePackageModal
-        onClose={onClose}
-        isOpen={isOpen}
-        packageDetail={dataDrugPackageDetail?.data}
-        orderDetail={dataDrugOrderDetail?.data}
+      <BackButton
+        to="/events/collect-medicine"
+        text="Back to Collect Medicine List"
       />
-
-      <BackButton to="/pharmacy" text="Back to Packaging List" />
-      <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="3xl">Package Details</Heading>
-        <HStack>
-          {dataDrugPackageDetail?.data?.status === 'process' && (
-            <Button colorScheme="purple" onClick={onOpen}>
-              Complete
-            </Button>
+      <Flex justify="space-between" align="center" mb="6">
+        <Heading fontSize="3xl">Medicine Details</Heading>
+        {isSuccessDrugOrderQRCode &&
+          !isFetchingDrugOrderQRCode &&
+          dataDrugOrderQRCode?.data?.status !== 'delivered' && (
+            <Text>
+              Status:{' '}
+              <Box as="span" fontWeight="semibold">
+                Not ready
+              </Box>
+            </Text>
           )}
-          {dataDrugPackageDetail?.data?.status === 'completed' && (
-            <Flex align="center">
-              <Text mr="2" fontWeight="semibold">
-                Status:{' '}
-              </Text>
-              <Badge colorScheme="green">Completed</Badge>
-            </Flex>
+        {isSuccessDrugOrderQRCode &&
+          dataDrugOrderQRCode?.data?.status === 'delivered' && (
+            <Text>
+              Status:{' '}
+              <Box color="green" as="span" fontWeight="semibold">
+                Delivered
+              </Box>
+            </Text>
           )}
-        </HStack>
       </Flex>
       <Divider my="2" />
       <Box>
@@ -148,13 +126,8 @@ export const DrugPackageDetailPage = () => {
               fontSize="md"
             />
             <Description
-              title="Nama Pasien"
+              title="Nama pasien"
               value={dataDrugOrderDetail?.data?.patient_name}
-              fontSize="md"
-            />
-            <Description
-              title="Nomor Pasien"
-              value={dataDrugPackageDetail?.data?.patient_data?.patient_number}
               fontSize="md"
             />
             <Description
@@ -290,76 +263,6 @@ export const DrugPackageDetailPage = () => {
         </Box>
       </Box>
     </Box>
-  );
-};
-
-const ConfirmCompletePackageModal = ({
-  isOpen,
-  onClose,
-  packageDetail,
-  orderDetail,
-}) => {
-  const toast = useToast();
-  const history = useHistory();
-  const [cookies] = useCookies(['token']);
-  const [isLoading, setIsLoading] = useState(false);
-  const queryClient = useQueryClient();
-
-  const handleCompletePackaging = async () => {
-    const data = {
-      id: packageDetail?.id,
-      status: 'completed',
-    };
-    try {
-      setIsLoading(true);
-      await completePackage(cookies)(data);
-      await queryClient.invalidateQueries([
-        'drugs-packages',
-        packageDetail?.institution_id,
-      ]);
-      setIsLoading(false);
-      toast({
-        title: 'Success',
-        description: 'Packaging Completed',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
-      history.push(`/pharmacy/packaging`);
-    } catch (error) {
-      setIsLoading(false);
-      toast({
-        title: 'Error',
-        description: 'Error complete packaging',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Complete Packaging</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>Finish packaging? </ModalBody>
-
-        <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            Close
-          </Button>
-          <Button
-            colorScheme="purple"
-            onClick={handleCompletePackaging}
-            isLoading={isLoading}
-          >
-            Finish
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
   );
 };
 
