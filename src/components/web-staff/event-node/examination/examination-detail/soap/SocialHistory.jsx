@@ -50,7 +50,7 @@ export const SocialHistory = ({ patientDetail, userDetails }) => {
   } = useQuery(
     ['patient-social-history', patientDetail?.patient_id],
     () => getPatientSocialHistories(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity }
   );
 
   return (
@@ -62,11 +62,25 @@ export const SocialHistory = ({ patientDetail, userDetails }) => {
         userDetails={userDetails}
       />
       <Box p="4">
-        <Flex justify="space-between" align="center" mb="2">
-          <Heading as="h3" fontSize="xl" color="purple.500">
+        <Flex
+          justify="space-between"
+          mb="2"
+          align={{ base: 'stretch', md: 'center' }}
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <Heading
+            as="h3"
+            fontSize="xl"
+            color="purple.500"
+            mb={{ base: '2', md: '0' }}
+          >
             Social History
           </Heading>
-          <Button onClick={onOpenSocialHistoryModal} colorScheme="green" size="sm">
+          <Button
+            onClick={onOpenSocialHistoryModal}
+            colorScheme="green"
+            size="sm"
+          >
             Update Social History
           </Button>
         </Flex>
@@ -77,7 +91,7 @@ export const SocialHistory = ({ patientDetail, userDetails }) => {
         )}
         {isSuccessSocialHistories && (
           <Box px="4">
-            {resSocialHistories?.data.map((socialHistory) => (
+            {resSocialHistories?.data.map(socialHistory => (
               <Description
                 key={socialHistory.id}
                 title={socialHistory.social_history_name}
@@ -96,7 +110,12 @@ export const SocialHistory = ({ patientDetail, userDetails }) => {
   );
 };
 
-const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails }) => {
+const UpdateSocialHistoryModal = ({
+  isOpen,
+  onClose,
+  patientDetail,
+  userDetails,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const {
@@ -109,7 +128,7 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
   const { data: res } = useQuery(
     'master-social-histories',
     () => getSocialHistories(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -118,16 +137,16 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
   } = useQuery(
     ['patient-social-history', patientDetail?.patient_id],
     () => getPatientSocialHistories(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity }
   );
 
   const queryClient = useQueryClient();
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { social_history } = value;
     const formatted = social_history
-      .filter((soc_history) => soc_history !== false)
-      .map((soc_history) => JSON.parse(soc_history));
+      .filter(soc_history => soc_history !== false)
+      .map(soc_history => JSON.parse(soc_history));
 
     const data = {
       user_id: patientDetail?.patient?.user_id,
@@ -176,7 +195,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
             <VStack align="stretch" spacing="8">
               {res?.data.map((socialHistory, index) => {
                 const found = dataPatientSocialHistories?.data?.find(
-                  (socHistory) => socHistory.social_history_id === socialHistory.id,
+                  socHistory =>
+                    socHistory.social_history_id === socialHistory.id
                 );
 
                 if (socialHistory.name === 'Water intake') {
@@ -190,7 +210,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                           social_history_id: found?.social_history_id,
                           social_history_name: found?.social_history_name,
                           value: found?.value,
-                        })}>
+                        })}
+                      >
                         <Stack>
                           {age >= 9 && age <= 13 && gender === 'male' && (
                             <>
@@ -202,7 +223,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 10 cups or 2.4 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 10 cups or 2.4 L/day
                               </Radio>
                               <Radio
@@ -213,7 +235,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 10 cups or 2.4 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 10 cups or 2.4 L/day
                               </Radio>
                             </>
@@ -228,7 +251,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 9 cups or 2.1 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 9 cups or 2.1 L/day
                               </Radio>
                               <Radio
@@ -239,7 +263,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 9 cups or 2.1 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 9 cups or 2.1 L/day
                               </Radio>
                             </>
@@ -254,7 +279,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 13 cups or 3.3 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 13 cups or 3.3 L/day
                               </Radio>
                               <Radio
@@ -265,7 +291,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 13 cups or 3.3 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 13 cups or 3.3 L/day
                               </Radio>
                             </>
@@ -280,7 +307,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 10 cups or 2.3 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 10 cups or 2.3 L/day
                               </Radio>
                               <Radio
@@ -291,7 +319,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 10 cups or 2.3 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 10 cups or 2.3 L/day
                               </Radio>
                             </>
@@ -306,7 +335,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 15 cups or 3.7 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 15 cups or 3.7 L/day
                               </Radio>
                               <Radio
@@ -317,7 +347,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 15 cups or 3.7 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 15 cups or 3.7 L/day
                               </Radio>
                             </>
@@ -332,7 +363,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'More than 11 cups or 2.7 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 More than 11 cups or 2.7 L/day
                               </Radio>
                               <Radio
@@ -343,7 +375,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                                   social_history_name: socialHistory.name,
                                   value: 'Less than 11 cups or 2.7 L/day',
                                 })}
-                                {...register(`social_history[${index}]`)}>
+                                {...register(`social_history[${index}]`)}
+                              >
                                 Less than 11 cups or 2.7 L/day
                               </Radio>
                             </>
@@ -364,16 +397,18 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
                         social_history_name: found?.social_history_name,
                         value: found?.value,
                       })}
-                      {...register(`social_history[${index}]`)}>
+                      {...register(`social_history[${index}]`)}
+                    >
                       <option>Select {socialHistory.name}</option>
-                      {socialHistory?.default_value?.map((value) => (
+                      {socialHistory?.default_value?.map(value => (
                         <option
                           key={value}
                           value={JSON.stringify({
                             social_history_id: socialHistory.id,
                             social_history_name: socialHistory.name,
                             value: value,
-                          })}>
+                          })}
+                        >
                           {value}
                         </option>
                       ))}
@@ -392,7 +427,8 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
           <Button
             isLoading={isSubmitting}
             colorScheme="green"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Update
           </Button>
         </ModalFooter>
@@ -401,7 +437,7 @@ const UpdateSocialHistoryModal = ({ isOpen, onClose, patientDetail, userDetails 
   );
 };
 
-const calculateAge = (birthDate) => {
+const calculateAge = birthDate => {
   if (!birthDate) return null;
   return new Date().getFullYear() - new Date(birthDate).getFullYear();
 };
@@ -414,7 +450,8 @@ const Description = ({ title, value, ...props }) => {
       // px="6"
       py="1"
       _even={{ bgColor: 'gray.50' }}
-      {...props}>
+      {...props}
+    >
       <Box as="dt" flexBasis="35%" fontWeight="semibold" color="gray.600">
         {title}
       </Box>

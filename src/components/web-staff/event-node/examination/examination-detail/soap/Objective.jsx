@@ -14,6 +14,7 @@ import {
   Input,
   SimpleGrid,
   VisuallyHidden,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
@@ -31,11 +32,12 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
   const [, setErrMessage] = useState(false);
   const { register, handleSubmit, reset, clearErrors } = useForm();
   const queryClient = useQueryClient();
+  const objectiveGridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
   const { data: dataPatientObjectives } = useQuery(
     ['patient-objective', soapId],
     () => getPatientObjective(cookies, soapId),
-    { enabled: Boolean(soapId), staleTime: Infinity },
+    { enabled: Boolean(soapId), staleTime: Infinity }
   );
 
   const { mutate } = useMutation(updatePatientObjective(cookies), {
@@ -63,7 +65,7 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { objectives } = value;
     const payload = {
       data: objectives,
@@ -96,7 +98,12 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                  <SimpleGrid columns={3} columnGap="8" rowGap="4" py="4">
+                  <SimpleGrid
+                    columns={objectiveGridColumns}
+                    columnGap="8"
+                    rowGap="4"
+                    py="4"
+                  >
                     {dataPatientObjectives?.data?.soap_objective_details
                       ?.sort(compare)
                       ?.map((objective, index) => {
@@ -114,19 +121,22 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
                                 // disabled
                                 display="none"
                                 {...register(
-                                  `objectives[${index}].soap_objective_detail_id`,
+                                  `objectives[${index}].soap_objective_detail_id`
                                 )}
                               />
                             </FormControl>
                             <FormControl
                               id={objective.soap_objective_template_name}
-                              mr="2">
+                              mr="2"
+                            >
                               <FormLabel>
                                 {objective.soap_objective_template_name}
                               </FormLabel>
                               <Input
                                 defaultValue={objective.description}
-                                {...register(`objectives[${index}].description`)}
+                                {...register(
+                                  `objectives[${index}].description`
+                                )}
                               />
                             </FormControl>
                           </Flex>
@@ -135,7 +145,10 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
                   </SimpleGrid>
 
                   <Flex justify="flex-end">
-                    <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+                    <Button
+                      onClick={handleSubmit(onSubmit)}
+                      isLoading={isLoading}
+                    >
                       Save
                     </Button>
                   </Flex>

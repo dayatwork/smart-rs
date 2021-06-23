@@ -16,6 +16,7 @@ import {
   Center,
   Spinner,
   Skeleton,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import QRCode from 'qrcode.react';
 import { useQuery } from 'react-query';
@@ -31,37 +32,44 @@ import { getPatientAllergies } from '../../../../../api/medical-record-services/
 
 export const PatientProfile = ({ dataSoap }) => {
   const [cookies] = useCookies(['token']);
-  const { data: dataPatientDetail, isLoading: isLoadingPatientDetail } = useQuery(
-    ['hospital-patients', dataSoap.institution_id, dataSoap.patient_id],
-    () =>
-      getHospitalPatientById(cookies, {
-        institution_id: dataSoap.institution_id,
-        patient_id: dataSoap.patient_id,
-      }),
-    {
-      enabled: Boolean(dataSoap.institution_id) && Boolean(dataSoap.patient_id),
-    },
-  );
+  const avatarSize = useBreakpointValue({ base: 'lg', md: 'xl' });
+
+  const { data: dataPatientDetail, isLoading: isLoadingPatientDetail } =
+    useQuery(
+      ['hospital-patients', dataSoap.institution_id, dataSoap.patient_id],
+      () =>
+        getHospitalPatientById(cookies, {
+          institution_id: dataSoap.institution_id,
+          patient_id: dataSoap.patient_id,
+        }),
+      {
+        enabled:
+          Boolean(dataSoap.institution_id) && Boolean(dataSoap.patient_id),
+      }
+    );
 
   const { data: dataUserDetails, isLoading: isLoadingUserDetails } = useQuery(
     ['user-details', dataPatientDetail?.data?.patient?.email],
     () => getUsersByIdentity(cookies, dataPatientDetail?.data?.patient?.email),
-    { enabled: Boolean(dataPatientDetail?.data?.patient?.email) },
+    { enabled: Boolean(dataPatientDetail?.data?.patient?.email) }
   );
 
   return (
     <Box>
       <Flex
-        p="10"
-        align={{ base: 'baseline', md: 'center' }}
+        p={{ base: '6', lg: '10' }}
+        // align={{ base: 'baseline', md: 'center' }}
+        align="center"
         justify="space-between"
         bg="white"
         boxShadow="md"
         direction={{ base: 'column', md: 'row' }}
-        mb="8">
+        mb="8"
+      >
         <Flex align="center" px="4" mb={{ base: '4', lg: '0' }}>
           <Avatar
-            size="xl"
+            size={avatarSize}
+            // size="xl"
             name="Segun Adebayo"
             src="https://bit.ly/broken-link"
             mr={{ base: '4', lg: '10' }}
@@ -126,29 +134,55 @@ export const PatientProfile = ({ dataSoap }) => {
 };
 
 const Profile = ({ patient, isLoadingPatientDetail }) => (
-  <Box px="6">
+  <Box px={{ base: '2', md: '6' }}>
     <Description
       title="Name"
-      value={isLoadingPatientDetail ? <Skeleton height="20px" w="xs" /> : patient?.name}
+      value={
+        isLoadingPatientDetail ? (
+          <Skeleton height="20px" w="xs" />
+        ) : (
+          patient?.name
+        )
+      }
     />
     <Description
       title="Email"
-      value={isLoadingPatientDetail ? <Skeleton height="20px" w="xs" /> : patient?.email}
+      value={
+        isLoadingPatientDetail ? (
+          <Skeleton height="20px" w="xs" />
+        ) : (
+          patient?.email
+        )
+      }
     />
     <Description
       title="Patient Type"
-      value={isLoadingPatientDetail ? <Skeleton height="20px" w="xs" /> : patient?.type}
+      value={
+        isLoadingPatientDetail ? (
+          <Skeleton height="20px" w="xs" />
+        ) : (
+          patient?.type
+        )
+      }
     />
     <Description
       title="Nationality"
       value={
-        isLoadingPatientDetail ? <Skeleton height="20px" w="xs" /> : patient?.nationality
+        isLoadingPatientDetail ? (
+          <Skeleton height="20px" w="xs" />
+        ) : (
+          patient?.nationality
+        )
       }
     />
     <Description
       title="Phone Number"
       value={
-        isLoadingPatientDetail ? <Skeleton height="20px" w="xs" /> : patient?.phone_number
+        isLoadingPatientDetail ? (
+          <Skeleton height="20px" w="xs" />
+        ) : (
+          patient?.phone_number
+        )
       }
     />
     <Description
@@ -166,33 +200,36 @@ const Profile = ({ patient, isLoadingPatientDetail }) => (
 
 const HealthInfo = ({ patientDetail, userDetail }) => {
   const [cookies] = useCookies(['token']);
+  const healthInfoGridColumns = useBreakpointValue({ base: 1, lg: 2 });
 
-  const { data: dataPatientVitalSign, isLoading: isLoadingPatientVitalSign } = useQuery(
-    ['vital-sign', patientDetail?.patient_id],
-    () => getPatientVitalSign(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id) },
-  );
+  const { data: dataPatientVitalSign, isLoading: isLoadingPatientVitalSign } =
+    useQuery(
+      ['vital-sign', patientDetail?.patient_id],
+      () => getPatientVitalSign(cookies, patientDetail?.patient_id),
+      { enabled: Boolean(patientDetail?.patient_id) }
+    );
 
   const { data: resMedHistories, isLoading: isLoadingMedHistory } = useQuery(
     ['patient-medical-history', patientDetail?.patient_id],
-    () => getPatientMedicalHistories(cookies, patientDetail?.patient_id),
+    () => getPatientMedicalHistories(cookies, patientDetail?.patient_id)
   );
 
   const { data: resFamHistories, isLoading: isLoadingFamHistory } = useQuery(
     ['patient-family-history', patientDetail?.patient_id],
-    () => getPatientFamilyHistories(cookies, patientDetail?.patient_id),
+    () => getPatientFamilyHistories(cookies, patientDetail?.patient_id)
   );
 
-  const { data: resSocialHistories, isLoading: isLoadingSocialHistory } = useQuery(
-    ['patient-social-history', patientDetail?.patient_id],
-    () => getPatientSocialHistories(cookies, patientDetail?.patient_id),
-  );
+  const { data: resSocialHistories, isLoading: isLoadingSocialHistory } =
+    useQuery(['patient-social-history', patientDetail?.patient_id], () =>
+      getPatientSocialHistories(cookies, patientDetail?.patient_id)
+    );
 
-  const { data: dataPatientAllergies, isLoading: isLoadingPatientAllergies } = useQuery(
-    ['patient-allergies', patientDetail?.patient_id],
-    () => getPatientAllergies(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id) },
-  );
+  const { data: dataPatientAllergies, isLoading: isLoadingPatientAllergies } =
+    useQuery(
+      ['patient-allergies', patientDetail?.patient_id],
+      () => getPatientAllergies(cookies, patientDetail?.patient_id),
+      { enabled: Boolean(patientDetail?.patient_id) }
+    );
 
   if (
     isLoadingPatientVitalSign ||
@@ -203,27 +240,39 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
   ) {
     return (
       <Center h="40">
-        <Spinner thickness="4px" emptyColor="gray.200" color="purple.500" size="md" />
+        <Spinner
+          thickness="4px"
+          emptyColor="gray.200"
+          color="purple.500"
+          size="md"
+        />
       </Center>
     );
   }
 
   return (
-    <SimpleGrid columns={2}>
-      <Box px="6">
+    <SimpleGrid columns={healthInfoGridColumns}>
+      <Box px={{ base: '2', md: '6' }}>
         <Description
           title="Sex"
-          value={userDetail?.usersId[0]?.gender ? userDetail?.usersId[0]?.gender : '-'}
+          value={
+            userDetail?.usersId[0]?.gender
+              ? userDetail?.usersId[0]?.gender
+              : '-'
+          }
         />
         <Description
           title="Date of Birth"
           value={
             userDetail?.usersId[0]?.birth_date
-              ? new Date(userDetail?.usersId[0]?.birth_date).toLocaleDateString('id-ID', {
-                  day: '2-digit',
-                  month: 'long',
-                  year: 'numeric',
-                })
+              ? new Date(userDetail?.usersId[0]?.birth_date).toLocaleDateString(
+                  'id-ID',
+                  {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                  }
+                )
               : '-'
           }
         />
@@ -268,7 +317,9 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
           value={
             resMedHistories?.code === 404
               ? '-'
-              : resMedHistories?.data?.map((medHistory) => medHistory?.name).join(', ')
+              : resMedHistories?.data
+                  ?.map(medHistory => medHistory?.name)
+                  .join(', ')
           }
         />
         <Description
@@ -277,12 +328,12 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
             resFamHistories?.code === 404
               ? '-'
               : resFamHistories?.data
-                  ?.map((famHistory) => famHistory?.family_history_name)
+                  ?.map(famHistory => famHistory?.family_history_name)
                   .join(', ')
           }
         />
       </Box>
-      <Box px="6">
+      <Box px={{ base: '2', md: '6' }}>
         <Box mb="6">
           <Heading py="4" fontSize="lg">
             Allergies
@@ -293,7 +344,7 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
                 Drugs
               </Text>
               <UnorderedList px="4">
-                {dataPatientAllergies?.data?.Drugs?.map((drug) => (
+                {dataPatientAllergies?.data?.Drugs?.map(drug => (
                   <ListItem key={drug.id} py="2">
                     {drug.name}
                   </ListItem>
@@ -305,7 +356,7 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
                 Food
               </Text>
               <UnorderedList px="4">
-                {dataPatientAllergies?.data?.Food?.map((food) => (
+                {dataPatientAllergies?.data?.Food?.map(food => (
                   <ListItem key={food.id} py="2">
                     {food.name}
                   </ListItem>
@@ -317,7 +368,7 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
                 Others
               </Text>
               <UnorderedList px="4">
-                {dataPatientAllergies?.data?.Others?.map((allergy) => (
+                {dataPatientAllergies?.data?.Others?.map(allergy => (
                   <ListItem key={allergy.id} py="2">
                     {allergy.name}
                   </ListItem>
@@ -330,7 +381,7 @@ const HealthInfo = ({ patientDetail, userDetail }) => {
           <Heading py="4" fontSize="lg">
             Social History
           </Heading>
-          {resSocialHistories?.data?.map((history) => (
+          {resSocialHistories?.data?.map(history => (
             <Description
               key={history?.id}
               py="2"
@@ -350,10 +401,17 @@ const Description = ({ title, value, ...props }) => {
       as="dl"
       direction={{ base: 'column', sm: 'row' }}
       // px="6"
-      py="4"
+      py={{ base: '2', md: '4' }}
       // _even="gray.50"
-      {...props}>
-      <Box as="dt" flexBasis="25%" fontWeight="semibold" color="gray.600" mr="4">
+      {...props}
+    >
+      <Box
+        as="dt"
+        flexBasis="25%"
+        fontWeight="semibold"
+        color="gray.600"
+        mr="4"
+      >
         {title}
       </Box>
       <Box as="dd" flex="1" fontWeight="semibold">

@@ -47,7 +47,7 @@ export const FamilyHistory = ({ patientDetail }) => {
   } = useQuery(
     ['patient-family-history', patientDetail?.patient_id],
     () => getPatientFamilyHistories(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity }
   );
 
   return (
@@ -58,11 +58,25 @@ export const FamilyHistory = ({ patientDetail }) => {
         patientDetail={patientDetail}
       />
       <Box p="4">
-        <Flex justify="space-between" align="center" mb="2">
-          <Heading as="h3" fontSize="xl" color="purple.500">
+        <Flex
+          justify="space-between"
+          mb="2"
+          align={{ base: 'stretch', md: 'center' }}
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <Heading
+            as="h3"
+            fontSize="xl"
+            color="purple.500"
+            mb={{ base: '2', md: '0' }}
+          >
             Family History
           </Heading>
-          <Button onClick={onOpenFamilyHistoryModal} colorScheme="green" size="sm">
+          <Button
+            onClick={onOpenFamilyHistoryModal}
+            colorScheme="green"
+            size="sm"
+          >
             Update Family History
           </Button>
         </Flex>
@@ -74,8 +88,10 @@ export const FamilyHistory = ({ patientDetail }) => {
         {isSuccessFamHistories && (
           <Box>
             <UnorderedList pl="5">
-              {resFamHistories?.data.map((famHistory) => (
-                <ListItem key={famHistory.id}>{famHistory.family_history_name}</ListItem>
+              {resFamHistories?.data.map(famHistory => (
+                <ListItem key={famHistory.id}>
+                  {famHistory.family_history_name}
+                </ListItem>
               ))}
             </UnorderedList>
           </Box>
@@ -104,20 +120,20 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
   const { data: res } = useQuery(
     'master-family-histories',
     () => getFamilyHistories(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataPatientFamHistories } = useQuery(
     ['patient-family-history', patientDetail?.patient_id],
     () => getPatientFamilyHistories(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity }
   );
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { family_history } = value;
     const formatted = family_history
-      .filter((fam_history) => fam_history !== false)
-      .map((fam_history) => JSON.parse(fam_history));
+      .filter(fam_history => fam_history !== false)
+      .map(fam_history => JSON.parse(fam_history));
 
     const data = {
       user_id: patientDetail?.patient?.user_id,
@@ -162,7 +178,8 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
             <SimpleGrid columns={3} gap="3">
               {res?.data.map((familyHistory, index) => {
                 const isCheck = dataPatientFamHistories?.data?.find(
-                  (famHistory) => famHistory.family_history_id === familyHistory.id,
+                  famHistory =>
+                    famHistory.family_history_id === familyHistory.id
                 );
                 return (
                   <Checkbox
@@ -174,7 +191,8 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
                     })}
                     defaultChecked={!!isCheck}
                     isDisabled={Boolean(isCheck)}
-                    {...register(`family_history[${index}]`)}>
+                    {...register(`family_history[${index}]`)}
+                  >
                     {familyHistory.name}
                   </Checkbox>
                 );
@@ -190,7 +208,8 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
           <Button
             isLoading={isSubmitting}
             colorScheme="green"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Update
           </Button>
         </ModalFooter>

@@ -25,6 +25,7 @@ import {
   Spinner,
   useToast,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -38,6 +39,7 @@ import {
 
 export const Allergies = ({ patientDetail }) => {
   const [cookies] = useCookies(['token']);
+  const allergiesGridColumns = useBreakpointValue({ base: 1, md: 2, xl: 3 });
   const {
     isOpen: isOpenAllergiesModal,
     onOpen: onOpenAllergiesModal,
@@ -51,7 +53,7 @@ export const Allergies = ({ patientDetail }) => {
   } = useQuery(
     ['patient-allergies', patientDetail?.patient?.user_id],
     () => getPatientAllergies(cookies, patientDetail?.patient?.user_id),
-    { enabled: Boolean(patientDetail?.patient?.user_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient?.user_id), staleTime: Infinity }
   );
 
   return (
@@ -62,8 +64,18 @@ export const Allergies = ({ patientDetail }) => {
         patientDetail={patientDetail}
       />
       <Box p="4">
-        <Flex justify="space-between" align="center" mb="2">
-          <Heading as="h3" fontSize="xl" color="purple.500">
+        <Flex
+          justify="space-between"
+          mb="2"
+          align={{ base: 'stretch', md: 'center' }}
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <Heading
+            as="h3"
+            fontSize="xl"
+            color="purple.500"
+            mb={{ base: '2', md: '0' }}
+          >
             Allergies
           </Heading>
           <Button onClick={onOpenAllergiesModal} colorScheme="green" size="sm">
@@ -76,7 +88,7 @@ export const Allergies = ({ patientDetail }) => {
           </Center>
         )}
         {isSuccessPatientAllergies && (
-          <SimpleGrid columns={3} px="3" gap="4">
+          <SimpleGrid columns={allergiesGridColumns} px="3" gap="4">
             <Box p="2">
               {dataPatientAllergies?.data?.Drugs && (
                 <Heading as="h4" fontSize="md" fontWeight="medium" mb="1.5">
@@ -84,7 +96,7 @@ export const Allergies = ({ patientDetail }) => {
                 </Heading>
               )}
               <UnorderedList>
-                {dataPatientAllergies?.data?.Drugs?.map((drug) => (
+                {dataPatientAllergies?.data?.Drugs?.map(drug => (
                   <ListItem key={drug.id}>{drug.name}</ListItem>
                 ))}
               </UnorderedList>
@@ -97,7 +109,7 @@ export const Allergies = ({ patientDetail }) => {
               )}
 
               <UnorderedList>
-                {dataPatientAllergies?.data?.Food?.map((food) => (
+                {dataPatientAllergies?.data?.Food?.map(food => (
                   <ListItem key={food.id}>{food.name}</ListItem>
                 ))}
               </UnorderedList>
@@ -110,7 +122,7 @@ export const Allergies = ({ patientDetail }) => {
               )}
 
               <UnorderedList>
-                {dataPatientAllergies?.data?.Others?.map((allergy) => (
+                {dataPatientAllergies?.data?.Others?.map(allergy => (
                   <ListItem key={allergy.id}>{allergy.name}</ListItem>
                 ))}
               </UnorderedList>
@@ -134,15 +146,17 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
   const { register, handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
 
-  const { data: res } = useQuery('allergies-group', () => getAllergiesByGroup(cookies));
+  const { data: res } = useQuery('allergies-group', () =>
+    getAllergiesByGroup(cookies)
+  );
 
   const { data: dataPatientAllergies } = useQuery(
     ['patient-allergies', patientDetail?.patient?.user_id],
     () => getPatientAllergies(cookies, patientDetail?.patient?.user_id),
-    { enabled: Boolean(patientDetail?.patient?.user_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient?.user_id), staleTime: Infinity }
   );
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const allergies = [
       ...value.foodAllergies,
       ...value.drugAllergies,
@@ -150,8 +164,8 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
     ];
 
     const formatted = allergies
-      .filter((allergy) => allergy !== false)
-      .map((allergy) => JSON.parse(allergy));
+      .filter(allergy => allergy !== false)
+      .map(allergy => JSON.parse(allergy));
 
     const data = {
       user_id: patientDetail?.patient?.user_id,
@@ -211,7 +225,7 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                   <SimpleGrid columns={2} gap="3">
                     {res?.data.Drugs.map((allergy, index) => {
                       const isCheck = dataPatientAllergies?.data?.Drugs?.find(
-                        (drug) => drug.id === allergy.id,
+                        drug => drug.id === allergy.id
                       );
                       return (
                         <Checkbox
@@ -222,7 +236,8 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                             allergy_name: allergy.name,
                           })}
                           defaultChecked={!!isCheck}
-                          {...register(`drugAllergies[${index}]`)}>
+                          {...register(`drugAllergies[${index}]`)}
+                        >
                           {allergy.name}
                         </Checkbox>
                       );
@@ -238,7 +253,7 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                   <SimpleGrid columns={2} gap="3">
                     {res?.data.Food.map((allergy, index) => {
                       const isCheck = dataPatientAllergies?.data?.Food?.find(
-                        (food) => food.id === allergy.id,
+                        food => food.id === allergy.id
                       );
                       return (
                         <Checkbox
@@ -249,7 +264,8 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                             allergy_name: allergy.name,
                           })}
                           defaultChecked={!!isCheck}
-                          {...register(`foodAllergies[${index}]`)}>
+                          {...register(`foodAllergies[${index}]`)}
+                        >
                           {allergy.name}
                         </Checkbox>
                       );
@@ -261,7 +277,7 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                 <SimpleGrid columns={1} gap="3">
                   {res?.data.Others.map((allergy, index) => {
                     const isCheck = dataPatientAllergies?.data?.Others?.find(
-                      (other) => other.id === allergy.id,
+                      other => other.id === allergy.id
                     );
                     return (
                       <Checkbox
@@ -272,7 +288,8 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
                           allergy_name: allergy.name,
                         })}
                         defaultChecked={!!isCheck}
-                        {...register(`othersAllergies[${index}]`)}>
+                        {...register(`othersAllergies[${index}]`)}
+                      >
                         {allergy.name}
                       </Checkbox>
                     );
@@ -290,7 +307,8 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
           <Button
             isLoading={isLoadingSubmit}
             colorScheme="green"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Update
           </Button>
         </ModalFooter>

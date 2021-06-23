@@ -14,6 +14,7 @@ import {
   Input,
   Text,
   FormHelperText,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useQuery, useQueryClient } from 'react-query';
@@ -57,11 +58,17 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
   const [age, setAge] = useState(null);
   const { register, handleSubmit, setValue } = useForm();
   const queryClient = useQueryClient();
+  const vitalSignGridColumns = useBreakpointValue({
+    base: 1,
+    md: 2,
+    lg: 3,
+    xl: 4,
+  });
 
   const { data: dataPatientVitalSign } = useQuery(
     ['vital-sign', patientDetail?.patient?.user_id],
     () => getPatientVitalSign(cookies, patientDetail?.patient?.user_id),
-    { enabled: Boolean(patientDetail?.patient?.user_id) },
+    { enabled: Boolean(patientDetail?.patient?.user_id) }
   );
 
   useEffect(() => {
@@ -69,28 +76,32 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
       setValue('blood_type', dataPatientVitalSign?.data?.blood_type);
       setValue(
         'waist_circumference',
-        Number(dataPatientVitalSign?.data?.waist_circumference || '0'),
+        Number(dataPatientVitalSign?.data?.waist_circumference || '0')
       );
       setValue(
         'head_circumference',
-        Number(dataPatientVitalSign?.data?.head_circumference || '0'),
+        Number(dataPatientVitalSign?.data?.head_circumference || '0')
       );
-      setOxygenSaturation(Number(dataPatientVitalSign?.data?.oxygen_saturation || '0'));
+      setOxygenSaturation(
+        Number(dataPatientVitalSign?.data?.oxygen_saturation || '0')
+      );
       setBloodPressureNum(
-        Number(dataPatientVitalSign?.data?.blood_pressure_numerator || '0'),
+        Number(dataPatientVitalSign?.data?.blood_pressure_numerator || '0')
       );
       setBloodPressureDen(
-        Number(dataPatientVitalSign?.data?.blood_pressure_denominator || '0'),
+        Number(dataPatientVitalSign?.data?.blood_pressure_denominator || '0')
       );
       setPulseRate(Number(dataPatientVitalSign?.data?.pulse_rate || '0'));
-      setRespiratoryRate(Number(dataPatientVitalSign?.data?.respiratory_rate || '0'));
+      setRespiratoryRate(
+        Number(dataPatientVitalSign?.data?.respiratory_rate || '0')
+      );
       setHeight(Number(dataPatientVitalSign?.data?.height || '0'));
       setWeight(Number(dataPatientVitalSign?.data?.weight || '0'));
       setTemp(Number(dataPatientVitalSign?.data?.temperature || '0'));
     }, 1000);
   }, [dataPatientVitalSign?.data, setValue]);
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { blood_type, waist_circumference, head_circumference } = value;
 
     const data = {
@@ -146,10 +157,12 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
   useEffect(() => {
     const status = getBmiStatus(bmi);
     const patientTempStatus = getBodyTemperatureStatus(Number(temp || 0));
-    const patientOxyStatus = getOxygenSaturationStatus(Number(oxygenSaturation || 0));
+    const patientOxyStatus = getOxygenSaturationStatus(
+      Number(oxygenSaturation || 0)
+    );
     const patientBloodPressureStatus = getBloodPressureStatus(
       Number(bloodPressureNum || 0),
-      Number(bloodPressureDen || 0),
+      Number(bloodPressureDen || 0)
     );
     const patientPulseRateStatus = age
       ? getPulseRateStatus(Number(pulseRate || 0), Number(age))
@@ -177,7 +190,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
   useEffect(() => {
     setAge(
       new Date().getFullYear() -
-        new Date(userDetail?.usersId[0]?.birth_date).getFullYear(),
+        new Date(userDetail?.usersId[0]?.birth_date).getFullYear()
     );
   }, [userDetail?.usersId]);
 
@@ -189,14 +202,15 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
       rounded="md"
       boxShadow="sm"
       mt="2"
-      mb="6">
+      mb="6"
+    >
       {dataPatientVitalSign?.data && (
-        <SimpleGrid columns={4} rowGap="6" columnGap="4">
+        <SimpleGrid columns={vitalSignGridColumns} rowGap="6" columnGap="4">
           <FormControl maxW="60" id="name">
             <FormLabel>Blood Type</FormLabel>
             <Select size="sm" {...register('blood_type')}>
               <option value="">Pilih Golongan Darah</option>
-              {BloodType.map((type) => (
+              {BloodType.map(type => (
                 <option key={type.value} value={type.value}>
                   {type.text}
                 </option>
@@ -212,9 +226,10 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   name="blood_pressure_numerator"
                   type="number"
                   value={bloodPressureNum}
-                  onChange={(e) => setBloodPressureNum(e.target.value)}
+                  onChange={e => setBloodPressureNum(e.target.value)}
                   borderColor={`${
-                    bloodPressureStatus === 'Normal' || bloodPressureStatus === 'Ideal'
+                    bloodPressureStatus === 'Normal' ||
+                    bloodPressureStatus === 'Ideal'
                       ? 'green.200'
                       : bloodPressureStatus === 'Pre-Hypertension'
                       ? 'yellow.200'
@@ -240,9 +255,10 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   name="blood_pressure_denominator"
                   type="number"
                   value={bloodPressureDen}
-                  onChange={(e) => setBloodPressureDen(e.target.value)}
+                  onChange={e => setBloodPressureDen(e.target.value)}
                   borderColor={`${
-                    bloodPressureStatus === 'Normal' || bloodPressureStatus === 'Ideal'
+                    bloodPressureStatus === 'Normal' ||
+                    bloodPressureStatus === 'Ideal'
                       ? 'green.200'
                       : bloodPressureStatus === 'Pre-Hypertension'
                       ? 'yellow.200'
@@ -272,7 +288,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : 'normal'
               }
               color={`${
-                bloodPressureStatus === 'Normal' || bloodPressureStatus === 'Ideal'
+                bloodPressureStatus === 'Normal' ||
+                bloodPressureStatus === 'Ideal'
                   ? 'green.500'
                   : bloodPressureStatus === 'Pre-Hypertension'
                   ? 'yellow.500'
@@ -288,7 +305,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : bloodPressureStatus === 'Moderate Hypotension'
                   ? 'blue.300'
                   : 'blue.500'
-              }`}>
+              }`}
+            >
               {bloodPressureStatus}
             </FormHelperText>
           </FormControl>
@@ -299,17 +317,26 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                 type="number"
                 name="pulse_rate"
                 value={pulseRate}
-                onChange={(e) => setPulseRate(e.target.value)}
+                onChange={e => setPulseRate(e.target.value)}
                 borderColor={`${
-                  age ? (pulseRateStatus === 'Normal' ? 'green.200' : 'yellow.200') : null
+                  age
+                    ? pulseRateStatus === 'Normal'
+                      ? 'green.200'
+                      : 'yellow.200'
+                    : null
                 }`}
               />
               <InputRightAddon children="X/mnt" />
             </InputGroup>
             <FormHelperText
               color={`${
-                age ? (pulseRateStatus === 'Normal' ? 'green.500' : 'yellow.500') : null
-              }`}>
+                age
+                  ? pulseRateStatus === 'Normal'
+                    ? 'green.500'
+                    : 'yellow.500'
+                  : null
+              }`}
+            >
               {pulseRateStatus}
             </FormHelperText>
           </FormControl>
@@ -320,7 +347,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                 type="number"
                 name="respiratory_rate"
                 value={respiratoryRate}
-                onChange={(e) => setRespiratoryRate(e.target.value)}
+                onChange={e => setRespiratoryRate(e.target.value)}
                 borderColor={`${
                   age
                     ? respiratoryRateStatus === 'Normal'
@@ -342,7 +369,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                     ? 'yellow.500'
                     : 'red.500'
                   : null
-              }`}>
+              }`}
+            >
               {respiratoryRateStatus}
             </FormHelperText>
           </FormControl>
@@ -353,7 +381,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                 type="number"
                 name="oxygen_saturation"
                 value={oxygenSaturation}
-                onChange={(e) => setOxygenSaturation(e.target.value)}
+                onChange={e => setOxygenSaturation(e.target.value)}
                 borderColor={`${
                   oxygenSaturationStatus === 'Normal'
                     ? 'green.200'
@@ -368,7 +396,9 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
             </InputGroup>
             <FormHelperText
               fontWeight={
-                oxygenSaturationStatus === 'Hypoxic - Stage 3' ? 'semibold' : 'normal'
+                oxygenSaturationStatus === 'Hypoxic - Stage 3'
+                  ? 'semibold'
+                  : 'normal'
               }
               color={`${
                 oxygenSaturationStatus === 'Normal'
@@ -378,7 +408,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : oxygenSaturationStatus === 'Hypoxic - Stage 1'
                   ? 'orange.500'
                   : 'red.500'
-              }`}>
+              }`}
+            >
               {oxygenSaturationStatus}
             </FormHelperText>
           </FormControl>
@@ -389,7 +420,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                 type="number"
                 name="temperature"
                 value={temp}
-                onChange={(e) => setTemp(e.target.value)}
+                onChange={e => setTemp(e.target.value)}
                 borderColor={`${
                   tempStatus === 'Normal'
                     ? 'green.200'
@@ -411,7 +442,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : tempStatus === 'Fever/ Hyperthermia'
                   ? 'orange.500'
                   : 'red.500'
-              }`}>
+              }`}
+            >
               {tempStatus}
             </FormHelperText>
           </FormControl>
@@ -421,7 +453,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
               <Input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={e => setWeight(e.target.value)}
               />
               <InputRightAddon children="kg" />
             </InputGroup>
@@ -432,7 +464,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
               <Input
                 type="number"
                 value={height}
-                onChange={(e) => setHeight(e.target.value)}
+                onChange={e => setHeight(e.target.value)}
               />
               <InputRightAddon children="cm" />
             </InputGroup>
@@ -452,7 +484,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : bmiStatus === 'Obesity'
                   ? 'red.200'
                   : 'gray.200'
-              }`}>
+              }`}
+            >
               {bmi}
             </Text>
             <FormHelperText
@@ -464,7 +497,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
                   : bmiStatus === 'Obesity'
                   ? 'red.500'
                   : 'gray.500'
-              }`}>
+              }`}
+            >
               {bmiStatus}
             </FormHelperText>
           </FormControl>
@@ -512,7 +546,8 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
           mt="2"
           w="24"
           onClick={handleSubmit(onSubmit)}
-          isLoading={isLoading}>
+          isLoading={isLoading}
+        >
           Save
         </Button>
       </Flex>

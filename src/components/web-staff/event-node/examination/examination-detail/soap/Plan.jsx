@@ -4,11 +4,11 @@ import {
   Box,
   Heading,
   VStack,
-  HStack,
   Button,
   useDisclosure,
   Text,
   Divider,
+  Stack,
 } from '@chakra-ui/react';
 import 'react-day-picker/lib/style.css';
 import { useQuery } from 'react-query';
@@ -66,21 +66,36 @@ export const Plan = ({ patientDetail, dataSoap }) => {
             <Heading fontSize="lg" fontWeight="semibold" mb="4">
               Procedure
             </Heading>
-            <HStack>
-              <Button size="sm" onClick={onOpenRequestLabModal} colorScheme="green">
+            <Stack direction={{ base: 'column', md: 'row' }}>
+              <Button
+                size="sm"
+                onClick={onOpenRequestLabModal}
+                colorScheme="green"
+              >
                 Request Lab Test
               </Button>
-              <Button size="sm" onClick={onOpenRequestRadiologyModal} colorScheme="green">
+              <Button
+                size="sm"
+                onClick={onOpenRequestRadiologyModal}
+                colorScheme="green"
+              >
                 Request Radiology Test
               </Button>
-              <Button size="sm" onClick={onOpenAppointmentModal} colorScheme="green">
+              <Button
+                size="sm"
+                onClick={onOpenAppointmentModal}
+                colorScheme="green"
+              >
                 Follow up Appointment
               </Button>
-            </HStack>
+            </Stack>
           </Box>
           <Divider />
           <Box w="full" px="4">
-            <TablePrescription dataSoap={dataSoap} patientDetail={patientDetail} />
+            <TablePrescription
+              dataSoap={dataSoap}
+              patientDetail={patientDetail}
+            />
           </Box>
         </VStack>
       </Box>
@@ -113,26 +128,28 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
       getPatientPrescription(
         cookies,
         dataSoap?.institution_id,
-        dataSoap?.soap_plans[0]?.id,
+        dataSoap?.soap_plans[0]?.id
       ),
     {
-      enabled: Boolean(dataSoap?.institution_id) && Boolean(dataSoap?.soap_plans[0]?.id),
-    },
+      enabled:
+        Boolean(dataSoap?.institution_id) &&
+        Boolean(dataSoap?.soap_plans[0]?.id),
+    }
   );
 
   const handleEdit = useCallback(
-    (id) => {
-      const prescription = dataPrescription?.data?.find((p) => p.id === id);
+    id => {
+      const prescription = dataPrescription?.data?.find(p => p.id === id);
       setSelectedPrescription(prescription);
       onOpenEditPrescriptionDrawer();
     },
-    [dataPrescription?.data, onOpenEditPrescriptionDrawer],
+    [dataPrescription?.data, onOpenEditPrescriptionDrawer]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessPrescription &&
-      dataPrescription?.data?.map((prescription) => {
+      dataPrescription?.data?.map(prescription => {
         return {
           id: prescription.id,
           drug_id: prescription.drug_id,
@@ -147,7 +164,7 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
           end_at: prescription.end_at,
         };
       }),
-    [isSuccessPrescription, dataPrescription?.data],
+    [isSuccessPrescription, dataPrescription?.data]
   );
 
   const columns = React.useMemo(
@@ -208,14 +225,15 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
             <Button
               colorScheme="purple"
               variant="link"
-              onClick={() => handleEdit(row.original.id)}>
+              onClick={() => handleEdit(row.original.id)}
+            >
               Edit
             </Button>
           );
         },
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
@@ -240,7 +258,11 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
         skeletonCols={9}
         isLoading={isLoadingPrescription}
         action={
-          <Button onClick={onOpenAddPrescriptionModal} colorScheme="green" size="sm">
+          <Button
+            onClick={onOpenAddPrescriptionModal}
+            colorScheme="green"
+            size="sm"
+          >
             Add Prescription
           </Button>
         }

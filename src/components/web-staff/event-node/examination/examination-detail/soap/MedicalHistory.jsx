@@ -47,7 +47,7 @@ export const MedicalHistory = ({ patientDetail }) => {
   } = useQuery(
     ['patient-medical-history', patientDetail?.patient_id],
     () => getPatientMedicalHistories(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity },
+    { enabled: Boolean(patientDetail?.patient_id), staleTime: Infinity }
   );
 
   return (
@@ -58,11 +58,25 @@ export const MedicalHistory = ({ patientDetail }) => {
         patientDetail={patientDetail}
       />
       <Box p="4">
-        <Flex justify="space-between" align="center" mb="2">
-          <Heading as="h3" fontSize="xl" color="purple.500">
+        <Flex
+          justify="space-between"
+          mb="2"
+          align={{ base: 'stretch', md: 'center' }}
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <Heading
+            as="h3"
+            fontSize="xl"
+            color="purple.500"
+            mb={{ base: '2', md: '0' }}
+          >
             Medical History
           </Heading>
-          <Button onClick={onOpenMedicalHistoryModal} colorScheme="green" size="sm">
+          <Button
+            onClick={onOpenMedicalHistoryModal}
+            colorScheme="green"
+            size="sm"
+          >
             Update Medical History
           </Button>
         </Flex>
@@ -74,7 +88,7 @@ export const MedicalHistory = ({ patientDetail }) => {
         {isSuccessMedHistories && (
           <Box>
             <UnorderedList pl="5">
-              {resMedHistories?.data.map((medHistory) => (
+              {resMedHistories?.data.map(medHistory => (
                 <ListItem key={medHistory.id}>{medHistory.name}</ListItem>
               ))}
             </UnorderedList>
@@ -100,19 +114,19 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
   const { data: res } = useQuery(
     'master-medical-histories',
     () => getMedicalHistories(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataPatientMedHistories } = useQuery(
     ['patient-medical-history', patientDetail?.patient_id],
-    () => getPatientMedicalHistories(cookies, patientDetail?.patient_id),
+    () => getPatientMedicalHistories(cookies, patientDetail?.patient_id)
   );
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { medical_history } = value;
     const formatted = medical_history
-      .filter((med_history) => med_history !== false)
-      .map((med_history) => JSON.parse(med_history));
+      .filter(med_history => med_history !== false)
+      .map(med_history => JSON.parse(med_history));
 
     const data = {
       user_id: patientDetail?.patient?.user_id,
@@ -160,7 +174,8 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
             <SimpleGrid columns={4} gap="3">
               {res?.data.map((medicalHistory, index) => {
                 const isCheck = dataPatientMedHistories?.data?.find(
-                  (medHistory) => medHistory.medical_history_id === medicalHistory.id,
+                  medHistory =>
+                    medHistory.medical_history_id === medicalHistory.id
                 );
 
                 return (
@@ -173,7 +188,8 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
                     })}
                     defaultChecked={!!isCheck}
                     isDisabled={Boolean(isCheck)}
-                    {...register(`medical_history[${index}]`)}>
+                    {...register(`medical_history[${index}]`)}
+                  >
                     {medicalHistory.name}
                   </Checkbox>
                 );
@@ -189,7 +205,8 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
           <Button
             isLoading={isLoadingSubmit}
             colorScheme="green"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Update
           </Button>
         </ModalFooter>

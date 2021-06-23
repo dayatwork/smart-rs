@@ -63,16 +63,23 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
   } = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { data: dataPatientSymptoms, isLoading: isLoadingPatientSymptoms } = useQuery(
-    ['patient-symptoms', patientDetail?.patient_id, soapSubjectives[0]?.id],
-    () => getPatientSymptoms(cookies, patientDetail?.patient_id, soapSubjectives[0]?.id),
-    {
-      enabled: Boolean(patientDetail?.patient_id) && Boolean(soapSubjectives[0]?.id),
-      staleTime: Infinity,
-    },
-  );
+  const { data: dataPatientSymptoms, isLoading: isLoadingPatientSymptoms } =
+    useQuery(
+      ['patient-symptoms', patientDetail?.patient_id, soapSubjectives[0]?.id],
+      () =>
+        getPatientSymptoms(
+          cookies,
+          patientDetail?.patient_id,
+          soapSubjectives[0]?.id
+        ),
+      {
+        enabled:
+          Boolean(patientDetail?.patient_id) && Boolean(soapSubjectives[0]?.id),
+        staleTime: Infinity,
+      }
+    );
 
-  const handleDelete = async (id) => {
+  const handleDelete = async id => {
     try {
       const data = {
         id,
@@ -107,7 +114,7 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
     }
   };
 
-  const onSubmitPatientComplaint = async (value) => {
+  const onSubmitPatientComplaint = async value => {
     try {
       const data = {
         id: soapSubjectives[0]?.id,
@@ -159,7 +166,10 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
         <Divider my="6" />
         <FamilyHistory patientDetail={patientDetail} />
         <Divider my="6" />
-        <SocialHistory patientDetail={patientDetail} userDetails={userDetails} />
+        <SocialHistory
+          patientDetail={patientDetail}
+          userDetails={userDetails}
+        />
         <Divider my="6" />
 
         <Box px="4" maxW="xl">
@@ -169,22 +179,35 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
             <Button
               size="sm"
               onClick={handleSubmit(onSubmitPatientComplaint)}
-              isLoading={isLoadingUpdatePatientComplaint}>
+              isLoading={isLoadingUpdatePatientComplaint}
+            >
               Save
             </Button>
           </FormControl>
         </Box>
         <Divider my="6" />
         <Box mb="4" py="4">
-          <Flex justify="space-between" px="4" align="center" mb="3">
-            <Heading as="h3" fontSize="xl" color="purple.500">
+          <Flex
+            justify="space-between"
+            px="4"
+            mb="3"
+            align={{ base: 'stretch', md: 'center' }}
+            flexDir={{ base: 'column', md: 'row' }}
+          >
+            <Heading
+              as="h3"
+              fontSize="xl"
+              color="purple.500"
+              mb={{ base: '2', md: '0' }}
+            >
               Symptom
             </Heading>
             <Button
               onClick={onOpenAddSymptomModal}
               colorScheme="green"
               leftIcon={<FaPlus />}
-              size="sm">
+              size="sm"
+            >
               Add Symptom
             </Button>
           </Flex>
@@ -198,49 +221,59 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
               defaultIndex={[0]}
               allowMultiple
               border="1px"
-              borderColor="gray.200">
-              {dataPatientSymptoms?.data?.patient_symptom_details?.map((symptom) => (
-                <AccordionItem key={symptom?.id}>
-                  <h2>
-                    <AccordionButton>
-                      <Box flex="1" textAlign="left">
-                        {symptom?.symptom_name}
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <Description title="Symptom" value={symptom?.symptom_name} />
-                    <Description title="Onset" value={symptom?.onset} />
-                    <Description title="Location" value={symptom?.location} />
-                    <Description title="Duration" value={symptom?.duration} />
-                    <Description
-                      title="Characterization"
-                      value={symptom?.characterization}
-                    />
-                    <Description
-                      title="Alleviating & Aggravating Factors"
-                      value={symptom?.alleviating_and_aggravating_factors}
-                    />
-                    <Description title="Radiation" value={symptom?.radiation} />
-                    <Description
-                      title="Temporal Factor"
-                      value={symptom?.temporal_factor}
-                    />
-                    <Description title="Severity" value={symptom?.severity} />
-                    <Flex justify="flex-end" mt="2">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="red"
-                        isLoading={isLoadingDelete}
-                        onClick={() => handleDelete(symptom.id)}>
-                        Delete
-                      </Button>
-                    </Flex>
-                  </AccordionPanel>
-                </AccordionItem>
-              ))}
+              borderColor="gray.200"
+            >
+              {dataPatientSymptoms?.data?.patient_symptom_details?.map(
+                symptom => (
+                  <AccordionItem key={symptom?.id}>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          {symptom?.symptom_name}
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Description
+                        title="Symptom"
+                        value={symptom?.symptom_name}
+                      />
+                      <Description title="Onset" value={symptom?.onset} />
+                      <Description title="Location" value={symptom?.location} />
+                      <Description title="Duration" value={symptom?.duration} />
+                      <Description
+                        title="Characterization"
+                        value={symptom?.characterization}
+                      />
+                      <Description
+                        title="Alleviating & Aggravating Factors"
+                        value={symptom?.alleviating_and_aggravating_factors}
+                      />
+                      <Description
+                        title="Radiation"
+                        value={symptom?.radiation}
+                      />
+                      <Description
+                        title="Temporal Factor"
+                        value={symptom?.temporal_factor}
+                      />
+                      <Description title="Severity" value={symptom?.severity} />
+                      <Flex justify="flex-end" mt="2">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="red"
+                          isLoading={isLoadingDelete}
+                          onClick={() => handleDelete(symptom.id)}
+                        >
+                          Delete
+                        </Button>
+                      </Flex>
+                    </AccordionPanel>
+                  </AccordionItem>
+                )
+              )}
             </Accordion>
           </Box>
         </Box>
@@ -263,48 +296,55 @@ const AddSymptomModal = ({
   const [, setErrMessage] = useState('');
   const { register, handleSubmit, reset, clearErrors } = useForm();
 
-  const { data: dataSymptoms } = useQuery('master-symptoms', () => getSymptoms(cookies), {
-    staleTime: Infinity,
-  });
+  const { data: dataSymptoms } = useQuery(
+    'master-symptoms',
+    () => getSymptoms(cookies),
+    {
+      staleTime: Infinity,
+    }
+  );
 
   const queryClient = useQueryClient();
 
-  const { mutate: createSymptomMutate } = useMutation(createPatientSymptom(cookies), {
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: async (data, error) => {
-      setIsLoading(false);
-      onClose();
-      if (data) {
-        await queryClient.invalidateQueries([
-          'patient-symptoms',
-          patientDetail?.patient_id,
-          soapSubjectives[0]?.id,
-        ]);
-        setErrMessage('');
-        reset();
-        clearErrors();
-        toast({
-          title: 'Success',
-          description: `Symptom berhasil ditambahkan`,
-          status: 'success',
-          duration: 2000,
-          isClosable: true,
-        });
-      }
+  const { mutate: createSymptomMutate } = useMutation(
+    createPatientSymptom(cookies),
+    {
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onSettled: async (data, error) => {
+        setIsLoading(false);
+        onClose();
+        if (data) {
+          await queryClient.invalidateQueries([
+            'patient-symptoms',
+            patientDetail?.patient_id,
+            soapSubjectives[0]?.id,
+          ]);
+          setErrMessage('');
+          reset();
+          clearErrors();
+          toast({
+            title: 'Success',
+            description: `Symptom berhasil ditambahkan`,
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          });
+        }
 
-      if (error) {
-        setErrMessage(error.message || 'Error');
-      }
-    },
-    onError: () => {
-      // mutation error
-    },
-    onSuccess: () => {
-      // mutation success
-    },
-  });
+        if (error) {
+          setErrMessage(error.message || 'Error');
+        }
+      },
+      onError: () => {
+        // mutation error
+      },
+      onSuccess: () => {
+        // mutation success
+      },
+    }
+  );
 
   const { mutate: addSymptomMutate } = useMutation(addPatientSymptom(cookies), {
     onMutate: () => {
@@ -343,7 +383,7 @@ const AddSymptomModal = ({
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const {
       symptom,
       onset,
@@ -397,7 +437,7 @@ const AddSymptomModal = ({
             <FormLabel>Symptom</FormLabel>
             <Select {...register('symptom', { required: 'Select symptom' })}>
               <option value="">Select symptom</option>
-              {dataSymptoms?.data?.map((symptom) => (
+              {dataSymptoms?.data?.map(symptom => (
                 <option
                   key={symptom.id}
                   value={JSON.stringify({ id: symptom.id, name: symptom.name })}
@@ -458,7 +498,8 @@ const AddSymptomModal = ({
           <Button
             colorScheme="green"
             onClick={handleSubmit(onSubmit)}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Create
           </Button>
         </ModalFooter>
@@ -476,7 +517,8 @@ const Description = ({ title, value, ...props }) => {
       py="1"
       // _even="gray.50"
       _even={{ bgColor: 'gray.100' }}
-      {...props}>
+      {...props}
+    >
       <Box as="dt" flexBasis="35%" color="gray.600">
         {title}
       </Box>
