@@ -47,7 +47,9 @@ export const BookingChart = ({ selectedInstitution, dataBookingList }) => {
     <Box
       mb="12"
       bgColor="white"
-      p="10"
+      px="10"
+      pt="12"
+      pb="8"
       rounded="xl"
       shadow="base"
       overflow="auto"
