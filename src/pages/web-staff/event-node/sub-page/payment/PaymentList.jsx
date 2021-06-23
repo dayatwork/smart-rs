@@ -120,7 +120,7 @@ export const PaymentList = ({ fromFinanceMenu }) => {
         ),
       },
     ],
-    []
+    [fromFinanceMenu]
   );
 
   return (
