@@ -20,7 +20,10 @@ import {
   AddMenuModal,
   EditMenuDrawer,
 } from '../../../../components/web-staff/master/menu';
-import { getMenus, getMenuById } from '../../../../api/application-services/menu';
+import {
+  getMenus,
+  getMenuById,
+} from '../../../../api/application-services/menu';
 import { getApplicationById } from '../../../../api/application-services/application';
 
 export const MenuPage = () => {
@@ -48,17 +51,17 @@ export const MenuPage = () => {
   });
 
   const handleEdit = React.useCallback(
-    (menuId) => {
-      const app = resMenu?.data.find((menu) => menu.id === menuId);
+    menuId => {
+      const app = resMenu?.data.find(menu => menu.id === menuId);
       setSelectedMenu(app);
       onDrawerOpen();
     },
-    [onDrawerOpen, resMenu?.data],
+    [onDrawerOpen, resMenu?.data]
   );
 
   const data = React.useMemo(
     () =>
-      resMenu?.data?.map((menu) => {
+      resMenu?.data?.map(menu => {
         return {
           id: menu.id,
           app: menu.app_id,
@@ -68,7 +71,7 @@ export const MenuPage = () => {
           status: menu.status,
         };
       }),
-    [resMenu?.data],
+    [resMenu?.data]
   );
 
   const columns = React.useMemo(
@@ -85,7 +88,7 @@ export const MenuPage = () => {
           const { data: resApp, isLoading } = useQuery(
             ['app', value],
             () => getApplicationById(cookies, value),
-            { enabled: Boolean(value), staleTime: Infinity },
+            { enabled: Boolean(value), staleTime: Infinity }
           );
           if (isLoading) return <Skeleton height="40px" />;
           return resApp?.data?.name || '-';
@@ -102,7 +105,7 @@ export const MenuPage = () => {
           const { data: resMenu } = useQuery(
             ['menu', value],
             () => getMenuById(cookies, value),
-            { enabled: Boolean(value), staleTime: Infinity },
+            { enabled: Boolean(value), staleTime: Infinity }
           );
           return resMenu?.data?.name || '-';
         },
@@ -129,12 +132,14 @@ export const MenuPage = () => {
         ),
       },
     ],
-    [cookies, handleEdit],
+    [cookies, handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <AddMenuModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditMenuDrawer
         isOpen={isDrawerOpen}

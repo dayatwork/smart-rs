@@ -47,17 +47,17 @@ export const EventNodePage = () => {
   });
 
   const handleEdit = useCallback(
-    (eventId) => {
-      const event = resEventNode?.data.find((event) => event.id === eventId);
+    eventId => {
+      const event = resEventNode?.data.find(event => event.id === eventId);
       setSelectedEventNode(event);
       onDrawerOpen();
     },
-    [resEventNode?.data, onDrawerOpen],
+    [resEventNode?.data, onDrawerOpen]
   );
 
   const data = React.useMemo(
     () =>
-      resEventNode?.data?.map((eventNode) => {
+      resEventNode?.data?.map(eventNode => {
         return {
           id: eventNode.id,
           app: eventNode.app_id,
@@ -66,7 +66,7 @@ export const EventNodePage = () => {
           path: eventNode.path,
         };
       }),
-    [resEventNode?.data],
+    [resEventNode?.data]
   );
 
   const columns = React.useMemo(
@@ -83,7 +83,7 @@ export const EventNodePage = () => {
           const { data: resApp, isLoading } = useQuery(
             ['app', value],
             () => getApplicationById(cookies, value),
-            { enabled: Boolean(value) },
+            { enabled: Boolean(value) }
           );
           if (isLoading) return <Skeleton height="40px" />;
           return resApp?.data?.name || '-';
@@ -115,12 +115,14 @@ export const EventNodePage = () => {
         ),
       },
     ],
-    [handleEdit, cookies],
+    [handleEdit, cookies]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <AddEventNodeModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditEventNodeDrawer
         isOpen={isDrawerOpen}

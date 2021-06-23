@@ -48,7 +48,9 @@ export const RoutePage = () => {
     data: resRoute,
     isFetching,
     isLoading,
-  } = useQuery('master-routes', () => getRoutes(cookies), { staleTime: Infinity });
+  } = useQuery('master-routes', () => getRoutes(cookies), {
+    staleTime: Infinity,
+  });
 
   const handleEdit = useCallback(() => {
     onDrawerOpen();
@@ -60,7 +62,7 @@ export const RoutePage = () => {
 
   const data = React.useMemo(
     () =>
-      resRoute?.data?.map((route) => {
+      resRoute?.data?.map(route => {
         return {
           id: route.id,
           app: route.app_id,
@@ -71,7 +73,7 @@ export const RoutePage = () => {
           status: route.status,
         };
       }),
-    [resRoute?.data],
+    [resRoute?.data]
   );
 
   const columns = React.useMemo(
@@ -88,7 +90,7 @@ export const RoutePage = () => {
           const { data: resApp, isLoading } = useQuery(
             ['app', value],
             () => getApplicationById(cookies, value),
-            { enabled: Boolean(value) },
+            { enabled: Boolean(value) }
           );
           if (isLoading) return <Skeleton height="40px" />;
           return resApp?.data?.name || '-';
@@ -101,7 +103,7 @@ export const RoutePage = () => {
           const { data: resMenu, isLoading } = useQuery(
             ['menu', value],
             () => getMenuById(cookies, value),
-            { enabled: Boolean(value) },
+            { enabled: Boolean(value) }
           );
           if (isLoading) return <Skeleton height="40px" />;
           return resMenu?.data?.name || '-';
@@ -143,12 +145,14 @@ export const RoutePage = () => {
         ),
       },
     ],
-    [handleEdit, handleDelete, cookies],
+    [handleEdit, handleDelete, cookies]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <AddRouteModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditRouteDrawer isOpen={isDrawerOpen} onClose={onDrawerClose} />
       <DeleteRouteAlert isOpen={isAlertOpen} onClose={onAlertClose} />

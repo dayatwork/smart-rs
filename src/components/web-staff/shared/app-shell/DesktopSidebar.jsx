@@ -28,7 +28,12 @@ export const DesktopSidebar = () => {
       {/* <Logo /> */}
       <Box h="full" overflowY="auto" py="4" px="3">
         {menus.map(menu => (
-          <NavLink key={menu.to} isPrimaryMenu icon={menu.icon} to={menu.to}>
+          <NavLink
+            key={menu.to}
+            isPrimaryMenu={isPrimaryMenu}
+            icon={menu.icon}
+            to={menu.to}
+          >
             {isPrimaryMenu && menu.text}
           </NavLink>
         ))}

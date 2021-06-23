@@ -40,7 +40,7 @@ export const NavLink = ({ children, icon, to, isPrimaryMenu, isMobile }) => {
           // h={{ base: '6', '2xl': '7' }}
           w="6"
           h="6"
-          mr={isPrimaryMenu || isMobile ? '3' : '0'}
+          mr={isPrimaryMenu || isMobile ? '3' : null}
         />
         <Box as="span">{children}</Box>
       </Box>
