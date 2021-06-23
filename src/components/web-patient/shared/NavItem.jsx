@@ -2,7 +2,7 @@ import { Box, HStack } from '@chakra-ui/react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-const DesktopNavItem = (props) => {
+const DesktopNavItem = props => {
   const { icon, label, href = '#', active } = props;
   return (
     <HStack
@@ -16,7 +16,8 @@ const DesktopNavItem = (props) => {
       transition="all 0.2s"
       color="gray.200"
       _hover={{ bg: 'whiteAlpha.200' }}
-      _activeLink={{ bg: 'blackAlpha.300', color: 'white' }}>
+      _activeLink={{ bg: 'blackAlpha.300', color: 'white' }}
+    >
       {icon && (
         <Box aria-hidden fontSize="md">
           {icon}
@@ -27,7 +28,7 @@ const DesktopNavItem = (props) => {
   );
 };
 
-const MobileNavItem = (props) => {
+const MobileNavItem = props => {
   const { label, href = '#', active, ...otherProps } = props;
   return (
     <Box
@@ -41,7 +42,8 @@ const MobileNavItem = (props) => {
       aria-current={active ? 'page' : undefined}
       _hover={{ bg: 'whiteAlpha.200' }}
       _activeLink={{ bg: 'blackAlpha.300', color: 'white' }}
-      {...otherProps}>
+      {...otherProps}
+    >
       {label}
     </Box>
   );
