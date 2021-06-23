@@ -16,6 +16,7 @@ import {
   SimpleGrid,
   Spinner,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useQuery } from 'react-query';
@@ -44,12 +45,28 @@ export const SelectDoctor = ({
   setSelectedTime,
 }) => {
   const [cookies] = useCookies(['token']);
+  const selectDoctorGridTemplate = useBreakpointValue({
+    base: 'repeat(1, 1fr)',
+    md: 'repeat(2, 1fr)',
+    lg: 'repeat(4, 1fr)',
+  });
+  const doctorScheduleGridColumns = useBreakpointValue({
+    base: 1,
+    xl: 2,
+  });
+  const timeGridColumns = useBreakpointValue({
+    base: 2,
+    xl: 3,
+  });
 
-  const startDate = selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
-  const endDate = selectedDayRange.to && format(selectedDayRange.to, 'yyyy-MM-dd');
+  const startDate =
+    selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
+  const endDate =
+    selectedDayRange.to && format(selectedDayRange.to, 'yyyy-MM-dd');
 
-  const { data: dataServices, isLoading: isLoadingService } = useQuery('services', () =>
-    getServices(cookies),
+  const { data: dataServices, isLoading: isLoadingService } = useQuery(
+    'services',
+    () => getServices(cookies)
   );
 
   const {
@@ -76,8 +93,9 @@ export const SelectDoctor = ({
         last: selectedPagination?.last,
       }),
     {
-      enabled: Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
-    },
+      enabled:
+        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+    }
   );
 
   const {
@@ -87,7 +105,7 @@ export const SelectDoctor = ({
   } = useQuery(
     ['patient-booking-estimated-time', selectedSchedule?.id],
     () => getScheduleEstimatedTimes(cookies, selectedSchedule?.id),
-    { enabled: Boolean(selectedSchedule?.id) },
+    { enabled: Boolean(selectedSchedule?.id) }
   );
 
   const handleDayClick = (day, modifiers = {}) => {
@@ -104,20 +122,21 @@ export const SelectDoctor = ({
 
   return (
     <>
-      <Grid gridTemplateColumns="repeat(4, 1fr)" gap="10">
+      <Grid gridTemplateColumns={selectDoctorGridTemplate} gap="10">
         <GridItem>
           <FormControl id="first-name" mb="4">
             <FormLabel>Pilih Layanan</FormLabel>
             <Select
               bg="white"
               value={selectedService}
-              onChange={(e) => {
+              onChange={e => {
                 setSelectedSchedule(null);
                 setSelectedService(e.target.value);
               }}
-              disabled={isLoadingService}>
+              disabled={isLoadingService}
+            >
               <option>Pilih Layanan</option>
-              {dataServices?.data?.map((service) => (
+              {dataServices?.data?.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
                 </option>
@@ -132,7 +151,8 @@ export const SelectDoctor = ({
               px="4"
               py="2"
               rounded="md"
-              bgColor="white">
+              bgColor="white"
+            >
               <ScheduleDate
                 range={selectedDayRange}
                 handleDayClick={handleDayClick}
@@ -141,7 +161,7 @@ export const SelectDoctor = ({
             </Box>
           </FormControl>
         </GridItem>
-        <GridItem colSpan={2}>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
           {isLoadingSchedules && (
             <Center h="full">
               <Spinner
@@ -159,22 +179,29 @@ export const SelectDoctor = ({
                 Jadwal dokter yang tersedia
               </Heading>
 
-              <SimpleGrid columns={2} gap="4">
-                {dataSchedules?.data?.map((schedule) => {
+              <SimpleGrid columns={doctorScheduleGridColumns} gap="4">
+                {dataSchedules?.data?.map(schedule => {
                   return (
                     <Box
                       cursor="pointer"
                       onClick={() => setSelectedSchedule(schedule)}
                       key={schedule.id}
-                      bg={selectedSchedule?.id === schedule.id ? 'blue.100' : 'white'}
+                      bg={
+                        selectedSchedule?.id === schedule.id
+                          ? 'blue.100'
+                          : 'white'
+                      }
                       boxShadow="md"
                       px="6"
                       py="4"
                       rounded="md"
                       border="2px"
                       borderColor={
-                        selectedSchedule?.id === schedule.id ? 'blue.500' : 'transparent'
-                      }>
+                        selectedSchedule?.id === schedule.id
+                          ? 'blue.500'
+                          : 'transparent'
+                      }
+                    >
                       <Box>
                         <Text fontSize="md" color="blue.500" fontWeight="bold">
                           {schedule?.institution?.name}
@@ -187,7 +214,8 @@ export const SelectDoctor = ({
                           mb="1"
                           fontSize="sm"
                           fontWeight="semibold"
-                          color="gray.500">
+                          color="gray.500"
+                        >
                           {schedule?.employee?.profession}
                         </Text>
                         <Text fontWeight="semibold" color="gray.700">
@@ -207,17 +235,20 @@ export const SelectDoctor = ({
                     {dataSchedules?.pageLength} pages
                   </Text>
                   <ButtonGroup variant="outline" size="sm">
-                    {dataSchedules?.pagination?.map((pag) => (
+                    {dataSchedules?.pagination?.map(pag => (
                       <Button
                         key={pag.page}
                         borderColor={
-                          pag.page === selectedPagination.page ? 'blue.500' : 'gray.200'
+                          pag.page === selectedPagination.page
+                            ? 'blue.500'
+                            : 'gray.200'
                         }
                         onClick={() => {
                           // setSelectedTime("");
                           // setSelectedSchedule({});
                           setSelectedPagination(pag);
-                        }}>
+                        }}
+                      >
                         {pag.page}
                       </Button>
                     ))}
@@ -252,8 +283,8 @@ export const SelectDoctor = ({
               <Heading fontWeight="semibold" fontSize="lg" mb="3">
                 Waktu yang tersedia
               </Heading>
-              <SimpleGrid columns={3} gap="4">
-                {dataEstimatedTimes?.data?.map((time) => {
+              <SimpleGrid columns={timeGridColumns} gap="4">
+                {dataEstimatedTimes?.data?.map(time => {
                   return (
                     <Center
                       as="button"
@@ -272,8 +303,11 @@ export const SelectDoctor = ({
                       rounded="md"
                       border="2px"
                       borderColor={
-                        selectedTime?.id === time.id ? 'blue.500' : 'transparent'
-                      }>
+                        selectedTime?.id === time.id
+                          ? 'blue.500'
+                          : 'transparent'
+                      }
+                    >
                       {time.available_time}
                     </Center>
                   );
@@ -301,7 +335,8 @@ export const SelectDoctor = ({
         <Button
           leftIcon={<FaArrowLeft />}
           disabled={currentStep.value === 'Step 1'}
-          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+        >
           Back
         </Button>
         <Button
@@ -309,7 +344,8 @@ export const SelectDoctor = ({
           colorScheme="blue"
           ml="2"
           disabled={!selectedSchedule || !selectedTime}
-          onClick={() => setCurrentStepIndex(currentStepIndex + 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
+        >
           Next
         </Button>
       </Box>
@@ -319,16 +355,22 @@ export const SelectDoctor = ({
 
 const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
   return (
-    <Box className="RangeExample">
-      <DayPicker
-        className="Selectable"
-        numberOfMonths={1}
-        selectedDays={[range.from, { from: range.from, to: range.to }]}
-        modifiers={{ start: range.from, end: range.to, sunday: { daysOfWeek: [0] } }}
-        onDayClick={handleDayClick}
-        disabledDays={{ before: new Date() }}
-      />
-      <Flex>
+    <Box>
+      <Center className="RangeExample">
+        <DayPicker
+          className="Selectable"
+          numberOfMonths={1}
+          selectedDays={[range.from, { from: range.from, to: range.to }]}
+          modifiers={{
+            start: range.from,
+            end: range.to,
+            sunday: { daysOfWeek: [0] },
+          }}
+          onDayClick={handleDayClick}
+          disabledDays={{ before: new Date() }}
+        />
+      </Center>
+      <Flex maxW="60" mx="auto">
         {range.from && range.to && (
           <Button
             mb="2"
@@ -336,7 +378,8 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
             display="block"
             colorScheme="blue"
             size="sm"
-            onClick={handleResetClick}>
+            onClick={handleResetClick}
+          >
             Reset
           </Button>
         )}

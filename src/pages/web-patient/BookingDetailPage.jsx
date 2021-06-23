@@ -20,6 +20,7 @@ import {
   Text,
   useDisclosure,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -40,6 +41,10 @@ export const BookingDetailPage = () => {
   const params = useParams();
   const [isLoadingCancel, setIsLoadingCancel] = useState(false);
   const queryClient = useQueryClient();
+  const bookingDetailGridTemplate = useBreakpointValue({
+    base: 'repeat(1, 1fr)',
+    md: 'repeat(3, 1fr)',
+  });
 
   const {
     onClose: onCancelClose,
@@ -154,7 +159,7 @@ export const BookingDetailPage = () => {
             />
           </Center>
         ) : (
-          <Grid templateColumns="repeat(3, 1fr)" gap="10">
+          <Grid templateColumns={bookingDetailGridTemplate} gap="10">
             <GridItem colSpan={2}>
               <Card>
                 <CardHeader
@@ -211,7 +216,7 @@ export const BookingDetailPage = () => {
               </Card>
             </GridItem>
             {dataQR && (
-              <GridItem colSpan={1}>
+              <GridItem colSpan={{ base: 2, md: 1 }}>
                 <Card>
                   <CardHeader title="QR Code Booking" />
                   <Center py="10">
@@ -312,7 +317,7 @@ export const Property = props => {
       }}
       {...flexProps}
     >
-      <Box as="dt" minWidth="180px">
+      <Box as="dt" flexBasis={{ base: '40%', md: '30%' }}>
         {label}
       </Box>
       <Box as="dd" flex="1" fontWeight="semibold">

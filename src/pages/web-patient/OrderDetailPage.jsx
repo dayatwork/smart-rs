@@ -15,6 +15,7 @@ import {
   FormLabel,
   Icon,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -36,9 +37,15 @@ export const OrderDetailPage = () => {
   const [cookies] = useCookies(['token']);
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch } = useForm({
+    payment_slip: '',
+  });
   const paymentSlipWatch = watch('payment_slip');
   const queryClient = useQueryClient();
+  const orderDetailGridTemplate = useBreakpointValue({
+    base: 'repeat(1, 1fr)',
+    xl: 'repeat(3, 1fr)',
+  });
 
   const { data: dataUserOrderDetail, isLoading: isLoadingUserOrderDetail } =
     useQuery(
@@ -106,6 +113,7 @@ export const OrderDetailPage = () => {
   };
 
   console.log({ paymentSlipWatch });
+  console.log({ length: paymentSlipWatch?.length });
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
@@ -148,7 +156,7 @@ export const OrderDetailPage = () => {
             />
           </Center>
         ) : (
-          <Grid templateColumns="repeat(3, 1fr)" gap="10">
+          <Grid templateColumns={orderDetailGridTemplate} gap="10">
             <GridItem colSpan={2}>
               <Card>
                 <CardHeader title="Order Info" />
@@ -207,7 +215,7 @@ export const OrderDetailPage = () => {
               </Card>
             </GridItem>
             {dataUserOrderDetail?.data?.status !== 'paid' && (
-              <GridItem colSpan={1}>
+              <GridItem colSpan={{ base: 2, xl: 1 }}>
                 <Card>
                   <CardHeader title="Payment Info" />
                   <CardContent>
@@ -255,7 +263,7 @@ export const OrderDetailPage = () => {
                           <FormLabel
                             border="2px"
                             borderStyle="dashed"
-                            p="6"
+                            p="10"
                             borderRadius="5px"
                             textAlign="center"
                             cursor="pointer"
@@ -263,7 +271,7 @@ export const OrderDetailPage = () => {
                             borderColor="blue.500"
                             color="blue.500"
                           >
-                            {paymentSlipWatch ? (
+                            {paymentSlipWatch?.length ? (
                               paymentSlipWatch[0]?.name
                             ) : (
                               <Icon
@@ -286,6 +294,7 @@ export const OrderDetailPage = () => {
                           colorScheme="blue"
                           w="full"
                           isLoading={isLoading}
+                          disabled={!paymentSlipWatch?.length}
                         >
                           Upload
                         </Button>

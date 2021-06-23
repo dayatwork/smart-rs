@@ -13,6 +13,7 @@ import {
   Center,
   Spinner,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
@@ -58,22 +59,24 @@ export const PatientData = ({
   const [isLoadingFetchProfile, setIsLoadingFetchProfile] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const queryClient = useQueryClient();
+  const patientDataGridColumns = useBreakpointValue({ base: 1, lg: 2 });
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
-    () => getAllergiesByGroup(cookies),
+    () => getAllergiesByGroup(cookies)
   );
 
-  const { data: dataPatientAllergies, isLoading: isLoadingPatientAllergies } = useQuery(
-    ['patient-allergy', cookies.user.id],
-    () => getPatientAllergies(cookies, cookies.user.id),
-    { enabled: Boolean(cookies.user.id) },
-  );
+  const { data: dataPatientAllergies, isLoading: isLoadingPatientAllergies } =
+    useQuery(
+      ['patient-allergy', cookies.user.id],
+      () => getPatientAllergies(cookies, cookies.user.id),
+      { enabled: Boolean(cookies.user.id) }
+    );
 
-  const { data: dataPatientVitalSign, isLoading: isLoadingPatientVitalSign } = useQuery(
-    ['patient-vital-sign', cookies?.user?.id],
-    () => getPatientVitalSign(cookies, cookies?.user?.id),
-  );
+  const { data: dataPatientVitalSign, isLoading: isLoadingPatientVitalSign } =
+    useQuery(['patient-vital-sign', cookies?.user?.id], () =>
+      getPatientVitalSign(cookies, cookies?.user?.id)
+    );
 
   useEffect(() => {
     if (dataPatientAllergies?.code === 404) {
@@ -82,8 +85,8 @@ export const PatientData = ({
     const patientAllergies = [];
     if (dataPatientAllergies?.data) {
       Object.entries(dataPatientAllergies?.data).forEach(([, value]) => {
-        return value?.forEach((v) =>
-          patientAllergies.push({ label: v.name, value: v.id }),
+        return value?.forEach(v =>
+          patientAllergies.push({ label: v.name, value: v.id })
         );
       });
     }
@@ -94,21 +97,21 @@ export const PatientData = ({
     setOptions([
       {
         label: 'Obat-obatan',
-        options: dataAllergies?.data?.Drugs.map((drug) => ({
+        options: dataAllergies?.data?.Drugs.map(drug => ({
           label: drug.name,
           value: drug.id,
         })),
       },
       {
         label: 'Makanan',
-        options: dataAllergies?.data?.Food?.map((food) => ({
+        options: dataAllergies?.data?.Food?.map(food => ({
           label: food.name,
           value: food.id,
         })),
       },
       {
         label: 'Lain-lain',
-        options: dataAllergies?.data?.Others?.map((allergy) => ({
+        options: dataAllergies?.data?.Others?.map(allergy => ({
           label: allergy.name,
           value: allergy.id,
         })),
@@ -133,13 +136,15 @@ export const PatientData = ({
     reset,
   ]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { height, weight, blood_type } = values;
     const data = {
       height,
       weight,
       blood_type,
-      allergies: allergies.length ? allergies?.map((allergy) => allergy.value) : null,
+      allergies: allergies.length
+        ? allergies?.map(allergy => allergy.value)
+        : null,
     };
 
     setPatientData({
@@ -163,7 +168,10 @@ export const PatientData = ({
       setIsLoadingSubmit(true);
       await createUserVitalSign(cookies, data);
       await queryClient.invalidateQueries(['patient-allergy', cookies.user.id]);
-      await queryClient.invalidateQueries(['patient-vital-sign', cookies?.user?.id]);
+      await queryClient.invalidateQueries([
+        'patient-vital-sign',
+        cookies?.user?.id,
+      ]);
       await updateUserDetail(cookies)(dataUser);
       setIsLoadingSubmit(true);
       setCurrentStepIndex(currentStepIndex + 1);
@@ -224,11 +232,13 @@ export const PatientData = ({
     const fetchProfile = async () => {
       setIsLoadingFetchProfile(true);
       const fetchedProfile = await getUserProfile(cookies?.token);
-      setPatientData((prev) => ({
+      setPatientData(prev => ({
         ...prev,
         phone_number: Number(fetchedProfile?.data?.phone_number),
         email: fetchedProfile?.data?.email,
-        identity_number: Number(fetchedProfile?.data?.usersId[0]?.identity_number),
+        identity_number: Number(
+          fetchedProfile?.data?.usersId[0]?.identity_number
+        ),
         gender: fetchedProfile?.data?.usersId[0]?.gender,
         marital_status: fetchedProfile?.data?.usersId[0]?.marital_status,
         address: fetchedProfile?.data?.usersId[0]?.address,
@@ -242,7 +252,10 @@ export const PatientData = ({
     }
   }, [cookies, setPatientData, patient]);
 
-  if (patient === 'me' && (isLoadingFetchProfile || isLoadingPatientVitalSign)) {
+  if (
+    patient === 'me' &&
+    (isLoadingFetchProfile || isLoadingPatientVitalSign)
+  ) {
     return (
       <Center h="48">
         <Spinner
@@ -258,8 +271,22 @@ export const PatientData = ({
 
   return (
     <>
-      <SimpleGrid columns={patient === 'me' ? 2 : 1} gap="8" maxW="4xl" mx="auto">
-        <VStack spacing="3" bg="white" boxShadow="md" px="10" pt="4" pb="8" rounded="md">
+      <SimpleGrid
+        // columns={patient === 'me' ? 2 : 1}
+        columns={patientDataGridColumns}
+        gap="8"
+        maxW="4xl"
+        mx="auto"
+      >
+        <VStack
+          spacing="3"
+          bg="white"
+          boxShadow="md"
+          px="10"
+          pt="4"
+          pb="8"
+          rounded="md"
+        >
           <Heading fontSize="xl" fontWeight="bold" mb="4">
             Profile Info
           </Heading>
@@ -267,11 +294,17 @@ export const PatientData = ({
             columns={patient === 'me' ? 1 : 2}
             w="full"
             rowGap="3"
-            columnGap="10">
-            <FormControl id="fullname" isInvalid={errors.fullname ? true : false}>
+            columnGap="10"
+          >
+            <FormControl
+              id="fullname"
+              isInvalid={errors.fullname ? true : false}
+            >
               <FormLabel>Nama Lengkap</FormLabel>
               <Input
-                {...register('fullname', { required: 'Nama lengkap harus diisi' })}
+                {...register('fullname', {
+                  required: 'Nama lengkap harus diisi',
+                })}
               />
               <FormErrorMessage>
                 {errors.fullname && errors.fullname.message}
@@ -283,19 +316,29 @@ export const PatientData = ({
                 readOnly={patient === 'me'}
                 {...register('email', { required: 'Email harus diisi' })}
               />
-              <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl id="phone_number" isInvalid={errors.phone_number ? true : false}>
+            <FormControl
+              id="phone_number"
+              isInvalid={errors.phone_number ? true : false}
+            >
               <FormLabel>No Hp</FormLabel>
               <Input
                 type="number"
-                {...register('phone_number', { required: 'Nomor HP harus diisi' })}
+                {...register('phone_number', {
+                  required: 'Nomor HP harus diisi',
+                })}
               />
               <FormErrorMessage>
                 {errors.phone_number && errors.phone_number.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl id="birth_date" isInvalid={errors.birth_date ? true : false}>
+            <FormControl
+              id="birth_date"
+              isInvalid={errors.birth_date ? true : false}
+            >
               <FormLabel>Tanggal Lahir</FormLabel>
               <InputDate name="birth_date" control={control} />
               <FormErrorMessage>
@@ -304,12 +347,16 @@ export const PatientData = ({
             </FormControl>
             <FormControl
               id="identity_number"
-              isInvalid={errors.identity_number ? true : false}>
+              isInvalid={errors.identity_number ? true : false}
+            >
               <FormLabel>NIK</FormLabel>
               <Input
                 type="number"
-                onInput={(e) =>
-                  setValue('identity_number', e.target.value.slice(0, e.target.maxLength))
+                onInput={e =>
+                  setValue(
+                    'identity_number',
+                    e.target.value.slice(0, e.target.maxLength)
+                  )
                 }
                 maxLength="16"
                 {...register('identity_number', {
@@ -323,7 +370,11 @@ export const PatientData = ({
             </FormControl>
             <FormControl id="gender" isInvalid={errors.gender ? true : false}>
               <FormLabel>Jenis Kelamin</FormLabel>
-              <Select {...register('gender', { required: 'Jenis kelamin harus diisi' })}>
+              <Select
+                {...register('gender', {
+                  required: 'Jenis kelamin harus diisi',
+                })}
+              >
                 <option value="">Pilih jenis kelamin</option>
                 <option value="male">Laki-laki</option>
                 <option value="female">Perempuan</option>
@@ -334,14 +385,16 @@ export const PatientData = ({
             </FormControl>
             <FormControl
               id="marital_status"
-              isInvalid={errors.marital_status ? true : false}>
+              isInvalid={errors.marital_status ? true : false}
+            >
               <FormLabel>Status Perkawinan</FormLabel>
               <Select
                 {...register('marital_status', {
                   required: 'Status perkawinan harus diisi',
-                })}>
+                })}
+              >
                 <option value="">Pilih status perkawinan</option>
-                {maritalStatusData.map((status) => (
+                {maritalStatusData.map(status => (
                   <option value={status.value} key={status.value}>
                     {status.text}
                   </option>
@@ -357,7 +410,8 @@ export const PatientData = ({
                 <Select
                   {...register('responsible_status', {
                     required: 'Status perkawinan harus diisi',
-                  })}>
+                  })}
+                >
                   <option>Pilih status penanggung jawab</option>
                   <option value="suami-istri">Suami/istri</option>
                   <option value="orang-tua">Orang tua</option>
@@ -380,17 +434,24 @@ export const PatientData = ({
             px="10"
             pt="4"
             pb="8"
-            rounded="md">
+            rounded="md"
+          >
             <Heading fontSize="xl" fontWeight="bold" mb="4">
               Health Info
             </Heading>
-            <FormControl id="blood_type" isInvalid={errors.blood_type ? true : false}>
+            <FormControl
+              id="blood_type"
+              isInvalid={errors.blood_type ? true : false}
+            >
               <FormLabel>Golongan Darah</FormLabel>
               <Select
                 isDisabled={isLoadingPatientVitalSign}
-                {...register('blood_type', { required: 'Golongan darah harus diisi' })}>
+                {...register('blood_type', {
+                  required: 'Golongan darah harus diisi',
+                })}
+              >
                 <option value="">Pilih Golongan Darah</option>
-                {bloodType.map((type) => (
+                {bloodType.map(type => (
                   <option key={type.value} value={type.value}>
                     {type.text}
                   </option>
@@ -405,7 +466,9 @@ export const PatientData = ({
               <Input
                 type="number"
                 isDisabled={isLoadingPatientVitalSign}
-                {...register('height', { required: 'Tinggi badan harus diisi' })}
+                {...register('height', {
+                  required: 'Tinggi badan harus diisi',
+                })}
               />
               <FormErrorMessage>
                 {errors.height && errors.height.message}
@@ -429,7 +492,8 @@ export const PatientData = ({
                 isMulti
                 isLoading={isLoadingAllergies || isLoadingPatientAllergies}
                 value={allergies}
-                onChange={setAllergies}></ReactSelect>
+                onChange={setAllergies}
+              ></ReactSelect>
             </FormControl>
           </VStack>
         )}
@@ -438,7 +502,8 @@ export const PatientData = ({
       <Box mt="14" textAlign="right">
         <Button
           leftIcon={<FaArrowLeft />}
-          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+        >
           Back
         </Button>
         <Button
@@ -446,7 +511,8 @@ export const PatientData = ({
           colorScheme="blue"
           ml="2"
           onClick={handleSubmit(onSubmit)}
-          isLoading={isLoadingSubmit}>
+          isLoading={isLoadingSubmit}
+        >
           Next
         </Button>
       </Box>

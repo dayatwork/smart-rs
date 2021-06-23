@@ -15,6 +15,7 @@ import {
   useToast,
   Center,
   Spinner,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { HiPencilAlt } from 'react-icons/hi';
@@ -48,6 +49,11 @@ export const PaymentBooking = ({
   const [bookingData, setBookingData] = useState(null);
   const queryClient = useQueryClient();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const paymentBookingGridTemplate = useBreakpointValue({
+    base: 'repeat(1, 1fr)',
+    md: 'repeat(2, 1fr)',
+    xl: 'repeat(3, 1fr)',
+  });
 
   const { data: dataPaymentMethods } = useQuery(
     ['payment-methods', selectedSchedule?.institution?.id],
@@ -170,7 +176,7 @@ export const PaymentBooking = ({
 
   return (
     <>
-      <Grid templateColumns="repeat(3, 1fr)" gap="10">
+      <Grid templateColumns={paymentBookingGridTemplate} gap="10">
         <GridItem colSpan={2}>
           <DoctorDetails
             setCurrentStepIndex={setCurrentStepIndex}
@@ -183,7 +189,7 @@ export const PaymentBooking = ({
             setCurrentStepIndex={setCurrentStepIndex}
           />
         </GridItem>
-        <GridItem>
+        <GridItem colSpan={{ base: 2, xl: 1 }}>
           <Box
             maxW="3xl"
             mx="auto"
@@ -398,10 +404,10 @@ const Description = ({ title, value, ...rest }) => (
     as="dl"
     direction={{ base: 'column', sm: 'row' }}
     px="6"
-    py="4"
+    py={{ base: '2', md: '4' }}
     {...rest}
   >
-    <Box as="dt" flexBasis="25%">
+    <Box as="dt" flexBasis={{ base: '40%', md: '25%' }}>
       {title}:
     </Box>
     <Box as="dd" flex="1" fontWeight="semibold">
