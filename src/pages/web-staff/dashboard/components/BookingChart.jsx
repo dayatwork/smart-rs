@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 import {
   ResponsiveContainer,
@@ -10,20 +10,8 @@ import {
   Legend,
   Bar,
 } from 'recharts';
-import { useQuery } from 'react-query';
-import { useCookies } from 'react-cookie';
 
-import { getBookingList } from '../../../../api/booking-services/booking';
-
-export const BookingChart = ({ selectedInstitution }) => {
-  const [cookies] = useCookies(['token']);
-
-  const { data: dataBookingList, isLoading: isLoadingBookingList } = useQuery(
-    ['booking-list', selectedInstitution],
-    () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) }
-  );
-
+export const BookingChart = ({ selectedInstitution, dataBookingList }) => {
   var goBackDays = 7;
 
   var today = new Date();
@@ -45,62 +33,15 @@ export const BookingChart = ({ selectedInstitution }) => {
       canceled: dataBookingList?.data?.filter(
         booking =>
           new Date(booking.date).toLocaleDateString('id-ID') === date &&
-          booking.status === 'canceled'
+          booking.booking_status === 'cancel'
       ).length,
       checkedin: dataBookingList?.data?.filter(
         booking =>
           new Date(booking.date).toLocaleDateString('id-ID') === date &&
-          booking.status === 'done'
+          booking.booking_status === 'done'
       ).length,
     };
   });
-
-  // console.log({ dataChart });
-
-  // const chartBarData = [
-  //   {
-  //     name: 'Page A',
-  //     booking: 4000,
-  //     canceled: 2400,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page B',
-  //     booking: 3000,
-  //     canceled: 1398,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page C',
-  //     booking: 2000,
-  //     canceled: 9800,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page D',
-  //     booking: 2780,
-  //     canceled: 3908,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page E',
-  //     booking: 1890,
-  //     canceled: 4800,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page F',
-  //     booking: 2390,
-  //     canceled: 3800,
-  //     checkedin: 1200,
-  //   },
-  //   {
-  //     name: 'Page G',
-  //     booking: 3490,
-  //     canceled: 4300,
-  //     checkedin: 1200,
-  //   },
-  // ];
 
   return (
     <Box

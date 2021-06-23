@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import {
   Box,
+  Center,
   Divider,
   Flex,
   FormControl,
   FormLabel,
   Heading,
   Select,
+  Spinner,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
@@ -16,6 +18,7 @@ import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
 import { BookingStatus, BookingChart } from './components';
 
 import { getInstitutions } from '../../../api/institution-services/institution';
+import { getBookingList } from '../../../api/booking-services/booking';
 
 export const DashboardPage = () => {
   const [cookies] = useCookies(['token']);
@@ -28,6 +31,12 @@ export const DashboardPage = () => {
     'institutions',
     () => getInstitutions(cookies),
     { staleTime: Infinity }
+  );
+
+  const { data: dataBookingList, isLoading: isLoadingBookingList } = useQuery(
+    ['booking-list', selectedInstitution],
+    () => getBookingList(cookies, selectedInstitution),
+    { enabled: Boolean(selectedInstitution) }
   );
 
   return (
@@ -53,15 +62,34 @@ export const DashboardPage = () => {
                   ))}
               </Select>
             </FormControl>
-            <Heading fontSize="xl" mb="4">
-              Booking Statistics
-            </Heading>
-            <BookingStatus selectedInstitution={selectedInstitution} />
-            <Divider my="4" />
-            <Heading fontSize="xl" mb="4">
-              Booking Chart
-            </Heading>
-            <BookingChart selectedInstitution={selectedInstitution} />
+            {isLoadingBookingList ? (
+              <Center py="10">
+                <Spinner
+                  thickness="4px"
+                  emptyColor="gray.200"
+                  color="purple.500"
+                  size="xl"
+                />
+              </Center>
+            ) : (
+              <>
+                <Heading fontSize="xl" mb="4">
+                  Booking Statistics
+                </Heading>
+                <BookingStatus
+                  selectedInstitution={selectedInstitution}
+                  dataBookingList={dataBookingList}
+                />
+                <Divider my="4" />
+                <Heading fontSize="xl" mb="4">
+                  Booking Chart
+                </Heading>
+                <BookingChart
+                  selectedInstitution={selectedInstitution}
+                  dataBookingList={dataBookingList}
+                />
+              </>
+            )}
           </ContentWrapper>
         </Flex>
       </Box>

@@ -1,36 +1,10 @@
-import { Box, Center, Spinner, Stack, StackDivider } from '@chakra-ui/react';
+import { Box, Stack, StackDivider } from '@chakra-ui/react';
 import * as React from 'react';
 import { HiCheckCircle, HiClock, HiExclamationCircle } from 'react-icons/hi';
-import { useQuery } from 'react-query';
-import { useCookies } from 'react-cookie';
 
 import { StatCard } from './StatCard';
-import { getBookingList } from '../../../../api/booking-services/booking';
 
-export const BookingStatus = ({ selectedInstitution }) => {
-  const [cookies] = useCookies(['token']);
-
-  const { data: dataBookingList, isLoading: isLoadingBookingList } = useQuery(
-    ['booking-list', selectedInstitution],
-    () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) }
-  );
-
-  if (isLoadingBookingList) {
-    return (
-      <Center py="10">
-        <Spinner
-          thickness="4px"
-          emptyColor="gray.200"
-          color="purple.500"
-          size="xl"
-        />
-      </Center>
-    );
-  }
-
-  console.log({ dataBookingList });
-
+export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
   return (
     <Box
       as="section"
