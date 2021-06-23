@@ -208,7 +208,7 @@ export const DrugInventoryPage = () => {
       <Heading mb="6" fontSize="3xl">
         Drug Inventory
       </Heading>
-      {user?.role?.alias && (
+      {user?.role?.alias === 'super-admin' && (
         <FormControl id="name" mb="4" maxW="xs">
           <FormLabel>Institution</FormLabel>
           <Select

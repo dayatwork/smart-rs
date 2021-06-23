@@ -128,7 +128,7 @@ export const AccountPage = () => {
       <Heading mb="6" fontSize="3xl">
         Account
       </Heading>
-      {user?.role?.alias && (
+      {user?.role?.alias === 'super-admin' && (
         <FormControl id="name" mb="4" maxW="xs">
           <FormLabel>Institution</FormLabel>
           <Select

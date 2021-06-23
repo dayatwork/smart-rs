@@ -195,7 +195,7 @@ export const BloodDrawList = () => {
         Blood Draw List
       </Heading>
 
-      {user?.role?.alias && (
+      {user?.role?.alias === 'super-admin' && (
         <FormControl id="name" mb="4" maxW="xs">
           <FormLabel>Institution</FormLabel>
           <Select

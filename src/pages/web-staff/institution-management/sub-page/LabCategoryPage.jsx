@@ -154,7 +154,7 @@ export const LabCategoryPage = () => {
         Lab Category
       </Heading>
       <Box>
-        {user?.role?.alias && (
+        {user?.role?.alias === 'super-admin' && (
           <FormControl id="name" mb="4" maxW="xs">
             <FormLabel>Institution</FormLabel>
             <Select

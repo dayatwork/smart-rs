@@ -217,7 +217,7 @@ export const CreateBooking = () => {
       <Heading mb="6" fontSize="3xl">
         Create New Booking
       </Heading>
-      {user?.role?.alias && (
+      {user?.role?.alias === 'super-admin' && (
         <FormControl id="name" mb="4" maxW="xs">
           <FormLabel>Institution</FormLabel>
           <Select
