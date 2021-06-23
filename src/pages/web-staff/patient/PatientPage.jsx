@@ -64,9 +64,7 @@ export const PatientPage = () => {
         <Flex h="full">
           <ContentWrapper>
             <Box>
-              <Heading mb="6" fontSize="3xl">
-                Patient
-              </Heading>
+              <Heading mb="6">Patient</Heading>
               <FormControl id="name" mb="4" maxW="xs">
                 <FormLabel>Institution</FormLabel>
                 <Select

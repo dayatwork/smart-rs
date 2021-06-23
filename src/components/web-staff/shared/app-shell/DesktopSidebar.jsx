@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 
 import { NavLink } from './NavLink';
 import { menus, extendedMenu } from './menus';
-import { Logo } from './Logo';
+// import { Logo } from './Logo';
 
 export const DesktopSidebar = () => {
   const { pathname } = useLocation();
@@ -25,7 +25,7 @@ export const DesktopSidebar = () => {
 
   return (
     <Box as="nav" h="full" display={{ base: 'none', lg: 'block' }}>
-      <Logo />
+      {/* <Logo /> */}
       <Box h="full" overflowY="auto" py="4" px="3">
         {menus.map(menu => (
           <NavLink key={menu.to} isPrimaryMenu icon={menu.icon} to={menu.to}>

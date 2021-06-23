@@ -32,7 +32,7 @@ const useMobileMenuState = () => {
 };
 
 export const WebPatientNav = ({ active }) => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const { isMenuOpen, toggle } = useMobileMenuState();
 
   return (
@@ -130,7 +130,8 @@ export const WebPatientNav = ({ active }) => {
         />
 
         <HStack spacing="3">
-          {employeeDetail?.employee_id && (
+          {(employeeDetail?.employee_id ||
+            user?.role?.alias === 'super-admin') && (
             <Button
               display={{ base: 'none', lg: 'inline-flex' }}
               as={Link}
