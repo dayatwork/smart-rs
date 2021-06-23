@@ -25,7 +25,6 @@ export const DashboardPage = () => {
   const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    // '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
     employeeDetail?.institution_id || ''
   );
 

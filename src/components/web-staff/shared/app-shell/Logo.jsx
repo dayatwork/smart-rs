@@ -14,7 +14,7 @@ export const Logo = ({ mini, ...rest }) => {
   const [cookies] = useCookies(['token']);
   // const { pathname } = useLocation();
 
-  const { data: dataInstitutions } = useQuery(
+  const { data: dataInstitutions, isLoading: isLoadingInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies)
     // { staleTime: Infinity, cacheTime: Infinity }
@@ -45,7 +45,7 @@ export const Logo = ({ mini, ...rest }) => {
           />
           {mini ? null : (
             <Box>
-              <Text fontSize="md" color="white" fontWeight="bold">
+              <Text fontSize="lg" color="white" fontWeight="bold">
                 {/* HOSPITAL */}
                 {dataInstitutions?.data?.find(
                   institution =>
@@ -59,7 +59,7 @@ export const Logo = ({ mini, ...rest }) => {
                 color="purple.200"
                 mt="-1.5"
               >
-                Dashboard
+                {!isLoadingInstitution && 'Dashboard'}
               </Text>
             </Box>
           )}
