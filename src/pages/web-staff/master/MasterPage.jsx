@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -29,6 +29,7 @@ import {
   PaymentMethodPage,
   PatientTypePage,
 } from './sub-page';
+import { SuperAdminRoute } from '../../../access-control';
 
 export const MasterPage = () => {
   const { path } = useRouteMatch();
@@ -37,66 +38,70 @@ export const MasterPage = () => {
     <AppShell>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
-          <SubMenuSideBar title="Master" titleLink="/master" subMenus={subMenus} />
+          <SubMenuSideBar
+            title="Master"
+            titleLink="/master"
+            subMenus={subMenus}
+          />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
+              <SuperAdminRoute exact path={path}>
                 <SubMenuGrid title="Master" subMenus={subMenus} />
-              </Route>
-              <Route exact path={`${path}/application`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/application`}>
                 <ApplicationPage />
-              </Route>
-              <Route exact path={`${path}/menu`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/menu`}>
                 <MenuPage />
-              </Route>
-              <Route exact path={`${path}/route`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/route`}>
                 <RoutePage />
-              </Route>
-              <Route exact path={`${path}/event-node`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/event-node`}>
                 <EventNodePage />
-              </Route>
-              <Route exact path={`${path}/allergies`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/allergies`}>
                 <AllergiesPage />
-              </Route>
-              <Route exact path={`${path}/family-history`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/family-history`}>
                 <FamilyHistoryPage />
-              </Route>
-              <Route exact path={`${path}/medical-history`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/medical-history`}>
                 <MedicalHistoryPage />
-              </Route>
-              <Route exact path={`${path}/symptom`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/symptom`}>
                 <SymptomPage />
-              </Route>
-              <Route exact path={`${path}/social-history`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/social-history`}>
                 <SocialHistoryPage />
-              </Route>
-              <Route exact path={`${path}/soap-objective`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/soap-objective`}>
                 <SoapObjectivePage />
-              </Route>
-              <Route exact path={`${path}/icd-10`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/icd-10`}>
                 <ICD10Page />
-              </Route>
-              <Route exact path={`${path}/icd-9`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/icd-9`}>
                 <ICD9Page />
-              </Route>
-              <Route exact path={`${path}/laboratory-category`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/laboratory-category`}>
                 <LaboratoryCategoryPage />
-              </Route>
-              <Route exact path={`${path}/radiology-category`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/radiology-category`}>
                 <RadiologyCategoryPage />
-              </Route>
-              <Route exact path={`${path}/profession`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/profession`}>
                 <ProfessionPage />
-              </Route>
-              <Route exact path={`${path}/service`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/service`}>
                 <ServicePage />
-              </Route>
-              <Route exact path={`${path}/payment-method`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/payment-method`}>
                 <PaymentMethodPage />
-              </Route>
-              <Route exact path={`${path}/patient-type`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/patient-type`}>
                 <PatientTypePage />
-              </Route>
+              </SuperAdminRoute>
             </Switch>
           </ContentWrapper>
         </Flex>

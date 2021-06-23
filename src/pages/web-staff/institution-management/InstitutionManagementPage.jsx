@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -22,7 +22,11 @@ import {
   RadiologyCategoryPage,
   PaymentMethodPage,
 } from './sub-page';
-import { PrivateRoute, Permissions } from '../../../access-control';
+import {
+  PrivateRoute,
+  Permissions,
+  SuperAdminRoute,
+} from '../../../access-control';
 
 export const InstitutionManagementPage = () => {
   const { path } = useRouteMatch();
@@ -48,9 +52,9 @@ export const InstitutionManagementPage = () => {
                   subMenus={subMenus}
                 />
               </PrivateRoute>
-              <Route exact path={`${path}/institution`}>
+              <SuperAdminRoute exact path={`${path}/institution`}>
                 <InstitutionPage />
-              </Route>
+              </SuperAdminRoute>
               <PrivateRoute
                 permission={Permissions.indexInstitutionDepartment}
                 exact

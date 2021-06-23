@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -10,6 +10,7 @@ import {
 } from '../../../components/web-staff/shared/sub-menu';
 import { subMenus } from './subMenus';
 import { UsersPage, RolePage } from './sub-page';
+import { SuperAdminRoute } from '../../../access-control';
 
 export const UserManagementPage = () => {
   const { path } = useRouteMatch();
@@ -25,15 +26,15 @@ export const UserManagementPage = () => {
           />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
+              <SuperAdminRoute exact path={path}>
                 <SubMenuGrid title="User Management" subMenus={subMenus} />
-              </Route>
-              <Route exact path={`${path}/users`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/users`}>
                 <UsersPage />
-              </Route>
-              <Route exact path={`${path}/role`}>
+              </SuperAdminRoute>
+              <SuperAdminRoute exact path={`${path}/role`}>
                 <RolePage />
-              </Route>
+              </SuperAdminRoute>
             </Switch>
           </ContentWrapper>
         </Flex>
