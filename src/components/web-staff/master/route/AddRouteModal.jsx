@@ -19,6 +19,7 @@ import {
   Text,
   useToast,
   HStack,
+  Textarea,
 } from '@chakra-ui/react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
@@ -38,10 +39,15 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
   const { register, handleSubmit, control, reset, clearErrors } = useForm({
     defaultValues: {
       routes: [
-        { name: 'Create', description: 'Create description' },
-        { name: 'Read', description: 'Read description' },
-        { name: 'Update', description: 'Update description' },
-        { name: 'Delete', description: 'Delete description' },
+        { name: 'Index', description: 'First page application' },
+        {
+          name: 'Read List',
+          description: 'Read data from API or access table, list, and grid',
+        },
+        { name: 'Create', description: 'Create/ write data' },
+        { name: 'Read Detail', description: 'Read data only detail' },
+        { name: 'Update', description: 'Update/ write data' },
+        { name: 'Delete', description: 'Delete/ write data' },
       ],
     },
   });
@@ -51,7 +57,9 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
   });
   const queryClient = useQueryClient();
 
-  const { data: dataApp } = useQuery('application', () => getApplications(cookies));
+  const { data: dataApp } = useQuery('application', () =>
+    getApplications(cookies)
+  );
 
   const { data: dataMenu } = useQuery('menu', () => getMenus(cookies));
 
@@ -88,10 +96,10 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { app_id, menu_id, routes } = value;
 
-    const data = routes.map((route) => ({
+    const data = routes.map(route => ({
       menu_id,
       name: route.name,
       alias: slugify(route.name, { lower: true }),
@@ -105,18 +113,20 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Create New Route</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box as="form">
+          <Box as="form" w="full">
             <FormControl id="application" mb="4">
               <FormLabel>Application</FormLabel>
-              <Select {...register('app_id', { required: 'Application required' })}>
+              <Select
+                {...register('app_id', { required: 'Application required' })}
+              >
                 <option value="">Select Application</option>
-                {dataApp?.data?.map((app) => (
+                {dataApp?.data?.map(app => (
                   <option key={app.id} value={app.id}>
                     {app.name}
                   </option>
@@ -127,7 +137,7 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
               <FormLabel>Menu</FormLabel>
               <Select {...register('menu_id', { required: 'Menu required' })}>
                 <option value="">Select Menu</option>
-                {dataMenu?.data?.map((menu) => (
+                {dataMenu?.data?.map(menu => (
                   <option key={menu.id} value={menu.id}>
                     {menu.name}
                   </option>
@@ -141,7 +151,7 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
                   <Flex key={value.id}>
                     {/* <FormControl id={`routes-${value.id}`} mb="1"> */}
                     <VisuallyHidden as="label">Routes</VisuallyHidden>
-                    <HStack spacing="2" mb="2">
+                    <HStack spacing="2" mb="2" w="full" align="stretch">
                       <FormControl id={`routes-name-${value.id}`}>
                         <Input
                           mr="2"
@@ -151,22 +161,23 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
                         />
                       </FormControl>
                       <FormControl id={`routes-desc-${value.id}`}>
-                        <Input
+                        <Textarea
                           mr="2"
+                          rows="2"
                           defaultValue={value.description}
                           placeholder="Description"
                           {...register(`routes[${index}].description`)}
                         />
                       </FormControl>
+                      <IconButton
+                        onClick={() => remove(index)}
+                        icon={<FaTrashAlt />}
+                        p="3"
+                        ml="2"
+                        colorScheme="red"
+                      />
                     </HStack>
                     {/* </FormControl> */}
-                    <IconButton
-                      onClick={() => remove(index)}
-                      icon={<FaTrashAlt />}
-                      p="3"
-                      ml="2"
-                      colorScheme="red"
-                    />
                   </Flex>
                 );
               })}
@@ -191,7 +202,8 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

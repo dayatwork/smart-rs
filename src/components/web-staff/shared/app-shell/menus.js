@@ -1,4 +1,4 @@
-import { HiOutlineHome } from 'react-icons/hi';
+// import { HiOutlineHome } from 'react-icons/hi';
 // import { RiBuilding4Line, RiHandHeartFill } from 'react-icons/ri';
 import { GiStethoscope, GiOrganigram, GiMedicines } from 'react-icons/gi';
 import {
@@ -8,12 +8,14 @@ import {
   FaUserCog,
 } from 'react-icons/fa';
 import { BsListCheck } from 'react-icons/bs';
+import { RiDashboardFill } from 'react-icons/ri';
 
 export const menus = [
   {
     to: '/dashboard',
     text: 'Dashboard',
-    icon: HiOutlineHome,
+    // icon: HiOutlineHome,
+    icon: RiDashboardFill,
   },
   {
     to: '/master',
