@@ -6,8 +6,11 @@ export const SubMenuGrid = ({ subMenus, title }) => {
   return (
     <Box pt={{ base: '4', '2xl': '0' }}>
       <Heading mb="6">{title}</Heading>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={{ base: '4', md: '8' }}>
-        {subMenus.map((subMenu) => (
+      <SimpleGrid
+        columns={{ base: 1, md: 2, xl: 3, '2xl': 4 }}
+        gap={{ base: '4', md: '8' }}
+      >
+        {subMenus.map(subMenu => (
           <Center
             key={subMenu.to}
             as={Link}
@@ -19,7 +22,8 @@ export const SubMenuGrid = ({ subMenus, title }) => {
             fontWeight="bold"
             color="purple.600"
             rounded="md"
-            _hover={{ bgColor: 'purple.100' }}>
+            _hover={{ bgColor: 'purple.100' }}
+          >
             {subMenu.text}
           </Center>
         ))}

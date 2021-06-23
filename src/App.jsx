@@ -47,6 +47,8 @@ import {
   PatientSoapResultPage,
 } from './pages/web-staff';
 
+import { AccountSettingPage } from './pages/account-setting/AccountSettingPage';
+
 const AuthenticatedRoute = ({ children, ...rest }) => {
   const { token, user } = useContext(AuthContext);
 
@@ -85,6 +87,11 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/add-health-info">
         <AddHealthInfoPage />
+      </AuthenticatedRoute>
+
+      {/* Account Setting */}
+      <AuthenticatedRoute path="/account-setting" exact>
+        <AccountSettingPage />
       </AuthenticatedRoute>
 
       {/* Web Patient Routes */}

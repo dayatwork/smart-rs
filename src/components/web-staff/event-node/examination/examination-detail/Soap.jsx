@@ -40,7 +40,7 @@ import { SoapHistory } from './soap/SoapHistory';
 export const Soap = ({ dataSoap }) => {
   const [cookies] = useCookies(['token']);
   const [selectedSoapTemplate, setSelectedSoapTemplate] = useState(
-    'general-practitioners',
+    'general-practitioners'
   );
 
   const {
@@ -62,13 +62,13 @@ export const Soap = ({ dataSoap }) => {
       }),
     {
       enabled: Boolean(dataSoap.institution_id) && Boolean(dataSoap.patient_id),
-    },
+    }
   );
 
   const { data: dataUserDetails } = useQuery(
     ['user-details', dataPatientDetail?.data?.patient?.email],
     () => getUsersByIdentity(cookies, dataPatientDetail?.data?.patient?.email),
-    { enabled: Boolean(dataPatientDetail?.data?.patient?.email) },
+    { enabled: Boolean(dataPatientDetail?.data?.patient?.email) }
   );
 
   if (dataSoap?.status === 'completed') {
@@ -94,7 +94,11 @@ export const Soap = ({ dataSoap }) => {
           mb="8"
           // minW="2xl"
         >
-          <Flex align="center" px={{ base: '0', '2xl': '4' }} mb={{ base: '4', lg: '0' }}>
+          <Flex
+            align="center"
+            px={{ base: '0', '2xl': '4' }}
+            mb={{ base: '4', lg: '0' }}
+          >
             <Avatar
               size="xl"
               name="Segun Adebayo"
@@ -155,7 +159,8 @@ export const Soap = ({ dataSoap }) => {
             maxW="sm"
             mr="4"
             value={selectedSoapTemplate}
-            onChange={(e) => setSelectedSoapTemplate(e.target.value)}>
+            onChange={e => setSelectedSoapTemplate(e.target.value)}
+          >
             <option value="">Select SOAP Template</option>
             <option value="general-practitioners">General Practitioners</option>
           </Select>
@@ -170,7 +175,8 @@ export const Soap = ({ dataSoap }) => {
               justify="center"
               bgColor="green.500"
               rounded="full"
-              className="group-hover:bg-indigo-800">
+              className="group-hover:bg-indigo-800"
+            >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 S
               </Box>
@@ -187,7 +193,8 @@ export const Soap = ({ dataSoap }) => {
               justify="center"
               bgColor="yellow.500"
               rounded="full"
-              className="group-hover:bg-indigo-800">
+              className="group-hover:bg-indigo-800"
+            >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 O
               </Box>
@@ -204,7 +211,8 @@ export const Soap = ({ dataSoap }) => {
               justify="center"
               bgColor="pink.500"
               rounded="full"
-              className="group-hover:bg-indigo-800">
+              className="group-hover:bg-indigo-800"
+            >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 A
               </Box>
@@ -221,7 +229,8 @@ export const Soap = ({ dataSoap }) => {
               justify="center"
               bgColor="blue.500"
               rounded="full"
-              className="group-hover:bg-indigo-800">
+              className="group-hover:bg-indigo-800"
+            >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 P
               </Box>
@@ -265,13 +274,15 @@ export const Soap = ({ dataSoap }) => {
                       w="0.5"
                       h="full"
                       bgColor="gray.300"
-                      aria-hidden="true"></Box>
+                      aria-hidden="true"
+                    ></Box>
                     <Flex
                       // as={Link}
                       // to="/"
                       position="relative"
                       align="start"
-                      className="group">
+                      className="group"
+                    >
                       <Flex as="span" h="14" align="center">
                         <Flex
                           as="span"
@@ -283,7 +294,8 @@ export const Soap = ({ dataSoap }) => {
                           justify="center"
                           bgColor="green.500"
                           rounded="full"
-                          className="group-hover:bg-indigo-800">
+                          className="group-hover:bg-indigo-800"
+                        >
                           <Box color="white" fontWeight="bold" fontSize="2xl">
                             S
                           </Box>
@@ -295,13 +307,15 @@ export const Soap = ({ dataSoap }) => {
                         minW="0"
                         direction="column"
                         align="stretch"
-                        w="full">
+                        w="full"
+                      >
                         <Box
                           as="span"
                           fontSize="md"
                           fontWeight="semibold"
                           letterSpacing="0.025em"
-                          textTransform="uppercase">
+                          textTransform="uppercase"
+                        >
                           Subjective (S)
                         </Box>
                         <Box as="span" fontSize="sm" color="gray.500">
@@ -330,13 +344,15 @@ export const Soap = ({ dataSoap }) => {
                       w="0.5"
                       h="full"
                       bgColor="gray.300"
-                      aria-hidden="true"></Box>
+                      aria-hidden="true"
+                    ></Box>
                     <Flex
                       // as={Link}
                       // to="/"
                       position="relative"
                       align="start"
-                      className="group">
+                      className="group"
+                    >
                       <Flex as="span" h="14" align="center">
                         <Flex
                           as="span"
@@ -348,7 +364,8 @@ export const Soap = ({ dataSoap }) => {
                           justify="center"
                           bgColor="yellow.500"
                           rounded="full"
-                          className="group-hover:bg-indigo-800">
+                          className="group-hover:bg-indigo-800"
+                        >
                           <Box color="white" fontWeight="bold" fontSize="2xl">
                             O
                           </Box>
@@ -360,13 +377,15 @@ export const Soap = ({ dataSoap }) => {
                         minW="0"
                         direction="column"
                         align="stretch"
-                        w="full">
+                        w="full"
+                      >
                         <Box
                           as="span"
                           fontSize="md"
                           fontWeight="semibold"
                           letterSpacing="0.025em"
-                          textTransform="uppercase">
+                          textTransform="uppercase"
+                        >
                           Objective (O)
                         </Box>
                         <Box as="span" fontSize="sm" color="gray.500">
@@ -396,13 +415,15 @@ export const Soap = ({ dataSoap }) => {
                       w="0.5"
                       h="full"
                       bgColor="gray.300"
-                      aria-hidden="true"></Box>
+                      aria-hidden="true"
+                    ></Box>
                     <Flex
                       // as={Link}
                       // to="/"
                       position="relative"
                       align="start"
-                      className="group">
+                      className="group"
+                    >
                       <Flex as="span" h="14" align="center">
                         <Flex
                           as="span"
@@ -414,7 +435,8 @@ export const Soap = ({ dataSoap }) => {
                           justify="center"
                           bgColor="pink.500"
                           rounded="full"
-                          className="group-hover:bg-indigo-800">
+                          className="group-hover:bg-indigo-800"
+                        >
                           <Box color="white" fontWeight="bold" fontSize="2xl">
                             A
                           </Box>
@@ -426,13 +448,15 @@ export const Soap = ({ dataSoap }) => {
                         minW="0"
                         direction="column"
                         align="stretch"
-                        w="full">
+                        w="full"
+                      >
                         <Box
                           as="span"
                           fontSize="md"
                           fontWeight="semibold"
                           letterSpacing="0.025em"
-                          textTransform="uppercase">
+                          textTransform="uppercase"
+                        >
                           Assessment (A)
                         </Box>
                         <Box as="span" fontSize="sm" color="gray.500">
@@ -468,7 +492,8 @@ export const Soap = ({ dataSoap }) => {
                       // to="/"
                       position="relative"
                       align="start"
-                      className="group">
+                      className="group"
+                    >
                       <Flex as="span" h="14" align="center">
                         <Flex
                           as="span"
@@ -480,7 +505,8 @@ export const Soap = ({ dataSoap }) => {
                           justify="center"
                           bgColor="blue.500"
                           rounded="full"
-                          className="group-hover:bg-indigo-800">
+                          className="group-hover:bg-indigo-800"
+                        >
                           <Box color="white" fontWeight="bold" fontSize="2xl">
                             P
                           </Box>
@@ -492,13 +518,15 @@ export const Soap = ({ dataSoap }) => {
                         minW="0"
                         direction="column"
                         align="stretch"
-                        w="full">
+                        w="full"
+                      >
                         <Box
                           as="span"
                           fontSize="md"
                           fontWeight="semibold"
                           letterSpacing="0.025em"
-                          textTransform="uppercase">
+                          textTransform="uppercase"
+                        >
                           Plan (P)
                         </Box>
                         <Box as="span" fontSize="sm" color="gray.500">
@@ -646,7 +674,8 @@ export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
             // disabled={!name}
             colorScheme="purple"
             onClick={handleCheckIn}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Complete
           </Button>
         </ModalFooter>

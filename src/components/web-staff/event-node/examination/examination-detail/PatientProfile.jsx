@@ -200,7 +200,7 @@ const Profile = ({ patient, isLoadingPatientDetail }) => (
 
 const HealthInfo = ({ patientDetail, userDetail }) => {
   const [cookies] = useCookies(['token']);
-  const healthInfoGridColumns = useBreakpointValue({ base: 1, lg: 2 });
+  const healthInfoGridColumns = useBreakpointValue({ base: 1, xl: 2 });
 
   const { data: dataPatientVitalSign, isLoading: isLoadingPatientVitalSign } =
     useQuery(
@@ -401,13 +401,13 @@ const Description = ({ title, value, ...props }) => {
       as="dl"
       direction={{ base: 'column', sm: 'row' }}
       // px="6"
-      py={{ base: '2', md: '4' }}
+      py={{ base: '2', md: '3', xl: '4' }}
       // _even="gray.50"
       {...props}
     >
       <Box
         as="dt"
-        flexBasis="25%"
+        flexBasis={{ base: '40%', xl: '25%' }}
         fontWeight="semibold"
         color="gray.600"
         mr="4"
