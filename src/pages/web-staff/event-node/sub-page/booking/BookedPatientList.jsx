@@ -27,8 +27,7 @@ import { getInstitutions } from '../../../../../api/institution-services/institu
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { CancelBookingAlert } from '../../../../../components/web-staff/event-node/booking';
-// import { PrivateComponent } from 'components/common/PrivateComponent';
-// import { Permissions } from 'constants/permissions';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const BookedPatientList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -187,15 +186,15 @@ export const BookedPatientList = () => {
         Cell: ({ row }) => {
           if (row.original.status === 'booked') {
             return (
-              // <PrivateComponent permission={Permissions.updateBooking}>
-              <Button
-                onClick={() => onCancelBookingClick(row?.original?.id)}
-                variant="link"
-                colorScheme="red"
-              >
-                Cancel Booking
-              </Button>
-              // </PrivateComponent>
+              <PrivateComponent permission={Permissions.updateBookingDoctor}>
+                <Button
+                  onClick={() => onCancelBookingClick(row?.original?.id)}
+                  variant="link"
+                  colorScheme="red"
+                >
+                  Cancel Booking
+                </Button>
+              </PrivateComponent>
             );
           }
           return null;
@@ -247,16 +246,16 @@ export const BookedPatientList = () => {
           skeletonCols={8}
           isLoading={isLoadingBookingList}
           action={
-            // <PrivateComponent permission={Permissions.createBooking}>
-            <Button
-              as={Link}
-              to="/events/booking/create"
-              leftIcon={<FaPlus />}
-              colorScheme="purple"
-            >
-              Add New Booking
-            </Button>
-            // </PrivateComponent>
+            <PrivateComponent permission={Permissions.createBookingDoctor}>
+              <Button
+                as={Link}
+                to="/events/booking/create"
+                leftIcon={<FaPlus />}
+                colorScheme="purple"
+              >
+                Add New Booking
+              </Button>
+            </PrivateComponent>
           }
           size="sm"
         />

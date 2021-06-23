@@ -20,6 +20,7 @@ import { getInstitutions } from '../../../../../api/institution-services/institu
 import { getHospitalPatients } from '../../../../../api/patient-services/hospital-patient';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const RegisteredPatientList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -158,13 +159,15 @@ export const RegisteredPatientList = () => {
           isLoading={isLoading}
           skeletonCols={5}
           action={
-            <Button
-              as={Link}
-              to="/events/registration/create"
-              colorScheme="purple"
-            >
-              Register New Patient
-            </Button>
+            <PrivateComponent permission={Permissions.createRegistration}>
+              <Button
+                as={Link}
+                to="/events/registration/create"
+                colorScheme="purple"
+              >
+                Register New Patient
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

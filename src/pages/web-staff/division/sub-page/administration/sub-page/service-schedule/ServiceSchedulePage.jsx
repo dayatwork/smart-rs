@@ -22,6 +22,10 @@ import { AuthContext } from '../../../../../../../contexts/authContext';
 import { getServiceSchedules } from '../../../../../../../api/institution-services/service';
 import PaginationTable from '../../../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 export const ServiceSchedulePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -84,15 +88,19 @@ export const ServiceSchedulePage = () => {
         // accessor: "userId",
         Cell: ({ row }) => (
           <VStack align="flex-start">
-            <Button
-              as={Link}
-              to={`/division/administration/service-schedule/${row.original.id}`}
-              variant="link"
-              size="sm"
-              colorScheme="blue"
+            <PrivateComponent
+              permission={Permissions['read-detailServiceSchedule']}
             >
-              View Detail
-            </Button>
+              <Button
+                as={Link}
+                to={`/division/administration/service-schedule/${row.original.id}`}
+                variant="link"
+                size="sm"
+                colorScheme="blue"
+              >
+                View Detail
+              </Button>
+            </PrivateComponent>
             <Button variant="link" size="sm" colorScheme="green">
               Edit Data
             </Button>
@@ -143,13 +151,15 @@ export const ServiceSchedulePage = () => {
           data={data || []}
           isLoading={isLoading}
           action={
-            <Button
-              as={Link}
-              to="/division/administration/service-schedule/create"
-              colorScheme="purple"
-            >
-              Create New Schedule
-            </Button>
+            <PrivateComponent permission={Permissions.createServiceSchedule}>
+              <Button
+                as={Link}
+                to="/division/administration/service-schedule/create"
+                colorScheme="purple"
+              >
+                Create New Schedule
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

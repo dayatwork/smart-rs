@@ -24,6 +24,7 @@ import {
   DeleteRadiologyCategoryAlert,
 } from '../../../../components/web-staff/institution-management/radiology-category';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const RadiologyCategoryPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -168,9 +169,13 @@ export const RadiologyCategoryPage = () => {
               isLoading={isLoadingRadiologyCategories}
               skeletonCols={4}
               action={
-                <Button colorScheme="purple" onClick={onModalOpen}>
-                  Add New Category
-                </Button>
+                <PrivateComponent
+                  permission={Permissions.createInstitutionRadiology}
+                >
+                  <Button colorScheme="purple" onClick={onModalOpen}>
+                    Add New Category
+                  </Button>
+                </PrivateComponent>
               }
             />
           </>

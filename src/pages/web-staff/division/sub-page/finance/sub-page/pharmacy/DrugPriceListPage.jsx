@@ -27,6 +27,10 @@ import {
   AddDrugPriceModal,
   EditDrugPriceDrawer,
 } from '../../../../../../../components/web-staff/division/finance/pharmacy';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 export const DrugPriceListPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -159,14 +163,16 @@ export const DrugPriceListPage = () => {
       {
         Header: 'Action',
         Cell: ({ row }) => (
-          <HStack>
-            <IconButton
-              aria-label="Edit"
-              colorScheme="blackAlpha"
-              icon={<HiPencilAlt />}
-              onClick={() => handleEdit(row.original.id)}
-            />
-          </HStack>
+          <PrivateComponent permission={Permissions.updateDrugPrice}>
+            <HStack>
+              <IconButton
+                aria-label="Edit"
+                colorScheme="blackAlpha"
+                icon={<HiPencilAlt />}
+                onClick={() => handleEdit(row.original.id)}
+              />
+            </HStack>
+          </PrivateComponent>
         ),
       },
     ],
@@ -224,9 +230,11 @@ export const DrugPriceListPage = () => {
           data={data || []}
           isLoading={isLoadingDrugPrices}
           action={
-            <Button colorScheme="purple" onClick={onAddDrugPriceModalOpen}>
-              Add Drug Price
-            </Button>
+            <PrivateComponent permission={Permissions.createDrugPrice}>
+              <Button colorScheme="purple" onClick={onAddDrugPriceModalOpen}>
+                Add Drug Price
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

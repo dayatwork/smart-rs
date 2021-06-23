@@ -8,6 +8,7 @@ import { getUsers } from '../../../../api/user-services/user-management';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { AssignUserModal } from '../../../../components/web-staff/user-management/users';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { SuperAdminComponent } from '../../../../access-control';
 
 export const UsersPage = () => {
   const [cookies] = useCookies(['token']);
@@ -27,17 +28,17 @@ export const UsersPage = () => {
   } = useQuery('users', () => getUsers(cookies));
 
   const handleAssignUserRole = useCallback(
-    (user) => {
+    user => {
       setSelectedUser(user);
       onAssignModalOpen();
     },
-    [onAssignModalOpen],
+    [onAssignModalOpen]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((user) => {
+      res?.data?.map(user => {
         return {
           id: user.id,
           name: user.name,
@@ -51,7 +52,7 @@ export const UsersPage = () => {
           role_id: user?.role_id,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -95,21 +96,26 @@ export const UsersPage = () => {
       {
         Header: 'Assign',
         Cell: ({ row }) => (
-          <Button
-            colorScheme="purple"
-            size="sm"
-            onClick={() => handleAssignUserRole(row.original)}>
-            Assign
-          </Button>
+          <SuperAdminComponent>
+            <Button
+              colorScheme="purple"
+              size="sm"
+              onClick={() => handleAssignUserRole(row.original)}
+            >
+              Assign
+            </Button>
+          </SuperAdminComponent>
         ),
       },
     ],
-    [handleAssignUserRole],
+    [handleAssignUserRole]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AssignUserModal
         isOpen={isAssignModalOpen}

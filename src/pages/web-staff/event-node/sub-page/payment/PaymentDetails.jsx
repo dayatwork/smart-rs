@@ -32,6 +32,7 @@ import {
   verifyPayment,
 } from '../../../../../api/payment-services/manual-verification';
 import { ImFileEmpty } from 'react-icons/im';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const PaymentDetails = ({ fromFinanceMenu }) => {
   const history = useHistory();
@@ -188,11 +189,15 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
         )}
       </Box>
       {dataOrder?.data?.status !== 'paid' && (
-        <Flex justify="flex-end">
-          <Button colorScheme="purple" onClick={onOpen}>
-            Confirm Payment
-          </Button>
-        </Flex>
+        <PrivateComponent
+          permission={Permissions['manual-verificationPayment']}
+        >
+          <Flex justify="flex-end">
+            <Button colorScheme="purple" onClick={onOpen}>
+              Confirm Payment
+            </Button>
+          </Flex>
+        </PrivateComponent>
       )}
     </Box>
   );

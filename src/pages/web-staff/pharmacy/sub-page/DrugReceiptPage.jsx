@@ -22,6 +22,7 @@ import { getInstitutions } from '../../../../api/institution-services/institutio
 import { getDrugOrders } from '../../../../api/pharmacy-services/receipt';
 import { BackButton } from '../../../../components/shared/BackButton';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugReceiptPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -152,16 +153,18 @@ export const DrugReceiptPage = () => {
             return null;
           }
           return (
-            <HStack>
-              <Button
-                variant="link"
-                as={Link}
-                colorScheme="purple"
-                to={`${path}/${row.original.id}`}
-              >
-                Details
-              </Button>
-            </HStack>
+            <PrivateComponent permission={Permissions['read-detailReceipt']}>
+              <HStack>
+                <Button
+                  variant="link"
+                  as={Link}
+                  colorScheme="purple"
+                  to={`${path}/${row.original.id}`}
+                >
+                  Details
+                </Button>
+              </HStack>
+            </PrivateComponent>
           );
         },
       },

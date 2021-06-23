@@ -22,8 +22,7 @@ import { getInstitutions } from '../../../../../api/institution-services/institu
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { CheckInModal } from '../../../../../components/web-staff/event-node/checkin';
-// import { PrivateComponent } from 'components/common/PrivateComponent';
-// import { Permissions } from 'constants/permissions';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const CheckinPatientList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -154,16 +153,16 @@ export const CheckinPatientList = () => {
         Cell: ({ row }) => {
           if (row.original.status === 'done') return null;
           return (
-            // <PrivateComponent permission={Permissions.createCheckIn}>
-            <Button
-              size="sm"
-              colorScheme="green"
-              onClick={() => handleCheckIn(row.original.id)}
-              disabled={row.original.status !== 'booked'}
-            >
-              Check In
-            </Button>
-            // </PrivateComponent>
+            <PrivateComponent permission={Permissions.createCheckIn}>
+              <Button
+                size="sm"
+                colorScheme="green"
+                onClick={() => handleCheckIn(row.original.id)}
+                disabled={row.original.status !== 'booked'}
+              >
+                Check In
+              </Button>
+            </PrivateComponent>
           );
         },
       },

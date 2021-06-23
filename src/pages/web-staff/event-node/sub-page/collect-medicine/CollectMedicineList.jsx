@@ -36,6 +36,7 @@ import {
 } from '../../../../../api/pharmacy-services/receipt';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const CollectMedicineList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -175,14 +176,16 @@ export const CollectMedicineList = () => {
         Header: 'Details',
         Cell: ({ row }) => {
           return (
-            <Button
-              as={Link}
-              to={`/events/collect-medicine/${row.original.id}`}
-              colorScheme="purple"
-              variant="link"
-            >
-              Details
-            </Button>
+            <PrivateComponent permission={Permissions['read-detailReceipt']}>
+              <Button
+                as={Link}
+                to={`/events/collect-medicine/${row.original.id}`}
+                colorScheme="purple"
+                variant="link"
+              >
+                Details
+              </Button>
+            </PrivateComponent>
           );
         },
       },
@@ -191,13 +194,15 @@ export const CollectMedicineList = () => {
         Cell: ({ row }) => {
           if (row.original.status === 'packed') {
             return (
-              <Button
-                colorScheme="purple"
-                size="sm"
-                onClick={() => handleDeliver(row.original.id)}
-              >
-                Deliver / Take
-              </Button>
+              <PrivateComponent permission={Permissions.updateReceipt}>
+                <Button
+                  colorScheme="purple"
+                  size="sm"
+                  onClick={() => handleDeliver(row.original.id)}
+                >
+                  Deliver / Take
+                </Button>
+              </PrivateComponent>
             );
           }
           return null;

@@ -21,6 +21,10 @@ import { getInstitutions } from '../../../../../../../api/institution-services/i
 import { getServicePrice } from '../../../../../../../api/finance-services/service-price';
 import PaginationTable from '../../../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 export const ServicePriceListPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -148,13 +152,15 @@ export const ServicePriceListPage = () => {
           data={data || []}
           isLoading={isLoading}
           action={
-            <Button
-              colorScheme="purple"
-              as={Link}
-              to="/division/finance/service/create"
-            >
-              Create Service Price
-            </Button>
+            <PrivateComponent permission={Permissions.createServicePrice}>
+              <Button
+                colorScheme="purple"
+                as={Link}
+                to="/division/finance/service/create"
+              >
+                Create Service Price
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

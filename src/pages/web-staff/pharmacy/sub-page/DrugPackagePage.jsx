@@ -34,6 +34,7 @@ import {
 } from '../../../../api/pharmacy-services/package';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugPackagePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -182,17 +183,19 @@ export const DrugPackagePage = () => {
             return null;
           }
           return (
-            <HStack>
-              <Button
-                variant="link"
-                as={Link}
-                colorScheme="purple"
-                // to={`${path}/${row.original.receipt_id}`}
-                to={`${path}/${row.original.id}`}
-              >
-                Details
-              </Button>
-            </HStack>
+            <PrivateComponent permission={Permissions['read-detailPackaging']}>
+              <HStack>
+                <Button
+                  variant="link"
+                  as={Link}
+                  colorScheme="purple"
+                  // to={`${path}/${row.original.receipt_id}`}
+                  to={`${path}/${row.original.id}`}
+                >
+                  Details
+                </Button>
+              </HStack>
+            </PrivateComponent>
           );
         },
       },
@@ -201,13 +204,15 @@ export const DrugPackagePage = () => {
         Cell: ({ row }) => {
           if (row.original.status === 'requested') {
             return (
-              <Button
-                colorScheme="purple"
-                size="sm"
-                onClick={() => handleProcessPackaging(row.original.id)}
-              >
-                Start
-              </Button>
+              <PrivateComponent permission={Permissions.startPackaging}>
+                <Button
+                  colorScheme="purple"
+                  size="sm"
+                  onClick={() => handleProcessPackaging(row.original.id)}
+                >
+                  Start
+                </Button>
+              </PrivateComponent>
             );
           }
           return null;

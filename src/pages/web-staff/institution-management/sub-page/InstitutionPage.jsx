@@ -25,6 +25,7 @@ import {
   AddInstitutionTypeModal,
 } from '../../../../components/web-staff/institution-management/institution';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { SuperAdminComponent } from '../../../../access-control';
 
 export const InstitutionPage = () => {
   return (
@@ -38,12 +39,16 @@ export const InstitutionPage = () => {
       </Heading>
       <Tabs size="lg" colorScheme="purple">
         <TabList>
-          <Tab fontSize="2xl" fontWeight="semibold">
-            Institution Type
-          </Tab>
-          <Tab fontSize="2xl" fontWeight="semibold">
-            Institution
-          </Tab>
+          <SuperAdminComponent>
+            <>
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Institution Type
+              </Tab>
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Institution
+              </Tab>
+            </>
+          </SuperAdminComponent>
         </TabList>
 
         <TabPanels>

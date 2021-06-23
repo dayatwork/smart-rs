@@ -30,6 +30,7 @@ import {
   AddServiceTypeModal,
 } from '../../../../components/web-staff/institution-management/service';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const ServicePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -74,20 +75,34 @@ export const ServicePage = () => {
       {selectedInstitution && (
         <Tabs size="lg" colorScheme="purple">
           <TabList>
-            <Tab fontSize="2xl" fontWeight="semibold">
-              Service Type
-            </Tab>
-            <Tab fontSize="2xl" fontWeight="semibold">
-              Service
-            </Tab>
+            <PrivateComponent
+              permission={Permissions.indexInstitutionServiceType}
+            >
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Service Type
+              </Tab>
+            </PrivateComponent>
+            <PrivateComponent permission={Permissions.indexInstitutionService}>
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Service
+              </Tab>
+            </PrivateComponent>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <ServiceType selectedInstitution={selectedInstitution} />
+              <PrivateComponent
+                permission={Permissions.indexInstitutionServiceType}
+              >
+                <ServiceType selectedInstitution={selectedInstitution} />
+              </PrivateComponent>
             </TabPanel>
             <TabPanel>
-              <Service selectedInstitution={selectedInstitution} />
+              <PrivateComponent
+                permission={Permissions.indexInstitutionService}
+              >
+                <Service selectedInstitution={selectedInstitution} />
+              </PrivateComponent>
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -164,9 +179,13 @@ const ServiceType = ({ selectedInstitution }) => {
         isLoading={isLoadingServiceTypes}
         skeletonCols={3}
         action={
-          <Button colorScheme="purple" onClick={onModalOpen}>
-            Add New Service Type
-          </Button>
+          <PrivateComponent
+            permission={Permissions.createInstitutionServiceType}
+          >
+            <Button colorScheme="purple" onClick={onModalOpen}>
+              Add New Service Type
+            </Button>
+          </PrivateComponent>
         }
       />
     </>
@@ -249,9 +268,11 @@ const Service = ({ selectedInstitution }) => {
         isLoading={isLoadingServices}
         skeletonCols={4}
         action={
-          <Button colorScheme="purple" onClick={onModalOpen}>
-            Add New Service
-          </Button>
+          <PrivateComponent permission={Permissions.createInstitutionService}>
+            <Button colorScheme="purple" onClick={onModalOpen}>
+              Add New Service
+            </Button>
+          </PrivateComponent>
         }
       />
     </>

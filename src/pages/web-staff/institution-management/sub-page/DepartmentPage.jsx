@@ -32,6 +32,7 @@ import {
   AddDepartmentTypeModal,
 } from '../../../../components/web-staff/institution-management/department';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DepartmentPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -76,20 +77,32 @@ export const DepartmentPage = () => {
       {selectedInstitution && (
         <Tabs size="lg" colorScheme="purple">
           <TabList>
-            <Tab fontSize="2xl" fontWeight="semibold">
-              Department Type
-            </Tab>
-            <Tab fontSize="2xl" fontWeight="semibold">
-              Department
-            </Tab>
+            <PrivateComponent permission={Permissions.indexDepartmentType}>
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Department Type
+              </Tab>
+            </PrivateComponent>
+            <PrivateComponent
+              permission={Permissions.indexInstitutionDepartment}
+            >
+              <Tab fontSize="2xl" fontWeight="semibold">
+                Department
+              </Tab>
+            </PrivateComponent>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <DepartmentType selectedInstitution={selectedInstitution} />
+              <PrivateComponent permission={Permissions.indexDepartmentType}>
+                <DepartmentType selectedInstitution={selectedInstitution} />
+              </PrivateComponent>
             </TabPanel>
             <TabPanel>
-              <Department selectedInstitution={selectedInstitution} />
+              <PrivateComponent
+                permission={Permissions.indexInstitutionDepartment}
+              >
+                <Department selectedInstitution={selectedInstitution} />
+              </PrivateComponent>
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -175,9 +188,11 @@ const DepartmentType = ({ selectedInstitution }) => {
         isLoading={isLoadingDepartmentTypes}
         skeletonCols={4}
         action={
-          <Button colorScheme="purple" onClick={onModalOpen}>
-            Add New Deparment Type
-          </Button>
+          <PrivateComponent permission={Permissions.createDepartmentType}>
+            <Button colorScheme="purple" onClick={onModalOpen}>
+              Add New Deparment Type
+            </Button>
+          </PrivateComponent>
         }
       />
     </>
@@ -269,9 +284,13 @@ const Department = ({ selectedInstitution }) => {
         isLoading={isLoadingDepartments}
         skeletonCols={5}
         action={
-          <Button colorScheme="purple" onClick={onModalOpen}>
-            Add New Deparment
-          </Button>
+          <PrivateComponent
+            permission={Permissions.createInstitutionDepartment}
+          >
+            <Button colorScheme="purple" onClick={onModalOpen}>
+              Add New Deparment
+            </Button>
+          </PrivateComponent>
         }
       />
     </>

@@ -35,6 +35,10 @@ import { getInstitutions } from '../../../../../../../api/institution-services/i
 import { getRegisteredStaff } from '../../../../../../../api/human-capital-services/employee';
 import { getEmployeeScheduleById } from '../../../../../../../api/human-capital-services/schedule';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 const initialScheduleDate = {
   from: undefined,
@@ -419,15 +423,17 @@ export const AddServiceSchedule = () => {
               </Box>
             </Box>
           ))}
-          <Flex justify="flex-end" mt="8">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              colorScheme="purple"
-              isLoading={isLoading}
-            >
-              Create
-            </Button>
-          </Flex>
+          <PrivateComponent permission={Permissions.createServiceSchedule}>
+            <Flex justify="flex-end" mt="8">
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                colorScheme="purple"
+                isLoading={isLoading}
+              >
+                Create
+              </Button>
+            </Flex>
+          </PrivateComponent>
         </Box>
       )}
     </Box>

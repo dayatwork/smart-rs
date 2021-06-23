@@ -30,6 +30,10 @@ import { getServices } from '../../../../../../../api/institution-services/servi
 import { getEventNodes } from '../../../../../../../api/institution-services/event-node';
 import { createServicePrice } from '../../../../../../../api/finance-services/service-price';
 import { InputDate } from '../../../../../../../components/shared/input';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 export const CreateServicePricePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -277,16 +281,17 @@ export const CreateServicePricePage = () => {
             <FormLabel>Note</FormLabel>
             <Textarea maxW="md" {...register('note')} />
           </FormControl>
-
-          <Flex justify="flex-end" mt="8">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              colorScheme="purple"
-              isLoading={isLoading}
-            >
-              Create
-            </Button>
-          </Flex>
+          <PrivateComponent permission={Permissions.createServicePrice}>
+            <Flex justify="flex-end" mt="8">
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                colorScheme="purple"
+                isLoading={isLoading}
+              >
+                Create
+              </Button>
+            </Flex>
+          </PrivateComponent>
         </Box>
       )}
     </Box>

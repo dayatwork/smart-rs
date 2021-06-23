@@ -18,6 +18,7 @@ import { getInstitutionRoles } from '../../../../api/human-capital-services/role
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { AddRoleModal } from '../../../../components/web-staff/institution-management/role';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const RolePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -128,9 +129,11 @@ export const RolePage = () => {
           isLoading={isLoadingRole}
           skeletonCols={3}
           action={
-            <Button onClick={onModalOpen} colorScheme="purple">
-              Add New Role
-            </Button>
+            <PrivateComponent permission={Permissions.createInstitutionRole}>
+              <Button onClick={onModalOpen} colorScheme="purple">
+                Add New Role
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

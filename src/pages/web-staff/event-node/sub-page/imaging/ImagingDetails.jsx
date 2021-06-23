@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form';
 import { getRadiologyDetail } from '../../../../../api/radiology-services/radiology';
 import { createRadiologyResult } from '../../../../../api/radiology-services/result';
 import { BackButton } from '../../../../../components/shared/BackButton';
-
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 // import { createRadiologyResult } from "query/radiology/result";
 
 export const ImagingDetails = () => {
@@ -225,16 +225,18 @@ export const ImagingDetails = () => {
           </Flex>
         </Box>
       </Box>
-      <Box textAlign="right" mt="4">
-        <Button
-          colorScheme="purple"
-          size="lg"
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isLoading}
-        >
-          Submit
-        </Button>
-      </Box>
+      <PrivateComponent permission={Permissions.updateImaging}>
+        <Box textAlign="right" mt="4">
+          <Button
+            colorScheme="purple"
+            size="lg"
+            onClick={handleSubmit(onSubmit)}
+            isLoading={isLoading}
+          >
+            Submit
+          </Button>
+        </Box>
+      </PrivateComponent>
     </Box>
   );
 };

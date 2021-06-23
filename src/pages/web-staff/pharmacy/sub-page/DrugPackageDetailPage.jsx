@@ -36,6 +36,7 @@ import {
   getDrugPackageDetail,
 } from '../../../../api/pharmacy-services/package';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugPackageDetailPage = () => {
   const params = useParams();
@@ -105,9 +106,13 @@ export const DrugPackageDetailPage = () => {
         <Heading fontSize="3xl">Package Details</Heading>
         <HStack>
           {dataDrugPackageDetail?.data?.status === 'process' && (
-            <Button colorScheme="purple" onClick={onOpen}>
-              Complete
-            </Button>
+            <PrivateComponent
+              permission={Permissions['make-completePackaging']}
+            >
+              <Button colorScheme="purple" onClick={onOpen}>
+                Complete
+              </Button>
+            </PrivateComponent>
           )}
           {dataDrugPackageDetail?.data?.status === 'completed' && (
             <Flex align="center">

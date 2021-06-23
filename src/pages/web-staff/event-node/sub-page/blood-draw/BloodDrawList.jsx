@@ -22,6 +22,7 @@ import {
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { StartLabTestModal } from '../../../../../components/web-staff/event-node/blood-draw';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const BloodDrawList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -159,17 +160,22 @@ export const BloodDrawList = () => {
         Cell: ({ row }) => {
           if (row.original.status === 'pending') {
             return (
-              <Button
-                onClick={e =>
-                  handleStartBloodTest(row.original.id, row.original.patient_id)
-                }
-                name={row.original.id}
-                colorScheme="purple"
-                size="sm"
-                isLoading={isLoadingGenerateQR}
-              >
-                Start
-              </Button>
+              <PrivateComponent permission={Permissions.createBloodTest}>
+                <Button
+                  onClick={e =>
+                    handleStartBloodTest(
+                      row.original.id,
+                      row.original.patient_id
+                    )
+                  }
+                  name={row.original.id}
+                  colorScheme="purple"
+                  size="sm"
+                  isLoading={isLoadingGenerateQR}
+                >
+                  Start
+                </Button>
+              </PrivateComponent>
             );
           }
           return null;

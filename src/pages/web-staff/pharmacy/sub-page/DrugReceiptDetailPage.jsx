@@ -31,6 +31,7 @@ import { useCookies } from 'react-cookie';
 import { getOrderDrugDetail } from '../../../../api/pharmacy-services/receipt';
 import { createPackage } from '../../../../api/pharmacy-services/package';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugReceiptDetailPage = () => {
   const params = useParams();
@@ -105,9 +106,11 @@ export const DrugReceiptDetailPage = () => {
       <BackButton to="/pharmacy/receipt" text="Back to Receipt List" />
       <Flex justify="space-between" align="center" mb="4">
         <Heading fontSize="3xl">Receipt Details</Heading>
-        <Button colorScheme="purple" onClick={onOpen}>
-          Process to Packaging
-        </Button>
+        <PrivateComponent permission={Permissions.createPackaging}>
+          <Button colorScheme="purple" onClick={onOpen}>
+            Process to Packaging
+          </Button>
+        </PrivateComponent>
       </Flex>
       <Box boxShadow="md" maxW="5xl" py="4" px="6">
         <Description

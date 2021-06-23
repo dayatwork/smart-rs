@@ -24,6 +24,7 @@ import {
   EditPaymentMethodDrawer,
 } from '../../../../components/web-staff/institution-management/payment-method';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const PaymentMethodPage = ({ fromFinanceMenu }) => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -190,9 +191,13 @@ export const PaymentMethodPage = ({ fromFinanceMenu }) => {
               isLoading={isLoadingPaymentMethods}
               skeletonCols={7}
               action={
-                <Button colorScheme="purple" onClick={onModalOpen}>
-                  Add New Payment Method
-                </Button>
+                <PrivateComponent
+                  permission={Permissions.createInstitutionPaymentMethod}
+                >
+                  <Button colorScheme="purple" onClick={onModalOpen}>
+                    Add New Payment Method
+                  </Button>
+                </PrivateComponent>
               }
             />
           </>

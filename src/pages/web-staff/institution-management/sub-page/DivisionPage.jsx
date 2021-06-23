@@ -18,6 +18,7 @@ import { getDivisions } from '../../../../api/institution-services/division';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { AddDivisionModal } from '../../../../components/web-staff/institution-management/division';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DivisionPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -127,9 +128,13 @@ export const DivisionPage = () => {
           isLoading={isLoading}
           skeletonCols={3}
           action={
-            <Button onClick={onModalOpen} colorScheme="purple">
-              Add New Division
-            </Button>
+            <PrivateComponent
+              permission={Permissions.createInstitutionDivision}
+            >
+              <Button onClick={onModalOpen} colorScheme="purple">
+                Add New Division
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

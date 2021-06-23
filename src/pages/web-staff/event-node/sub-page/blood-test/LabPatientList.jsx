@@ -16,6 +16,7 @@ import {
   CreateTestResultModal,
   EditBloodDataDrawer,
 } from '../../../../../components/web-staff/event-node/blood-test';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const LabPatientList = ({ selectedInstitution }) => {
   const [cookies] = useCookies(['token']);
@@ -143,20 +144,24 @@ export const LabPatientList = ({ selectedInstitution }) => {
           }
           return (
             <Stack align="start">
-              <Button
-                size="sm"
-                variant="link"
-                onClick={() => handleUpdate(row?.original?.id)}
-              >
-                Update
-              </Button>
-              <Button
-                size="sm"
-                variant="link"
-                onClick={() => handleCreateResult(row?.original?.id)}
-              >
-                Create Result
-              </Button>
+              <PrivateComponent permission={Permissions.updateBloodTest}>
+                <Button
+                  size="sm"
+                  variant="link"
+                  onClick={() => handleUpdate(row?.original?.id)}
+                >
+                  Update
+                </Button>
+              </PrivateComponent>
+              <PrivateComponent permission={Permissions.createBloodResult}>
+                <Button
+                  size="sm"
+                  variant="link"
+                  onClick={() => handleCreateResult(row?.original?.id)}
+                >
+                  Create Result
+                </Button>
+              </PrivateComponent>
             </Stack>
           );
         },

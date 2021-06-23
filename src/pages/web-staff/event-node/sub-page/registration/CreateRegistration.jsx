@@ -43,9 +43,7 @@ import {
   SelectSubDistrict,
 } from '../../../../../components/shared/input';
 import { BackButton } from '../../../../../components/shared/BackButton';
-
-// import { PrivateComponent } from 'components/common/PrivateComponent';
-// import { Permissions } from 'constants/permissions';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const CreateRegistration = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -662,18 +660,20 @@ export const CreateRegistration = () => {
                           </SimpleGrid>
                         </Box>
                       </Box>
-                      <Box textAlign="right" mb="10">
-                        {/* <PrivateComponent permission={Permissions.createRegistration}> */}
-                        <Button
-                          isLoading={isLoading}
-                          type="submit"
-                          colorScheme="purple"
-                          onClick={handleSubmit(onSubmit)}
-                        >
-                          Create
-                        </Button>
-                        {/* </PrivateComponent> */}
-                      </Box>
+                      <PrivateComponent
+                        permission={Permissions.createRegistration}
+                      >
+                        <Box textAlign="right" mb="10">
+                          <Button
+                            isLoading={isLoading}
+                            type="submit"
+                            colorScheme="purple"
+                            onClick={handleSubmit(onSubmit)}
+                          >
+                            Create
+                          </Button>
+                        </Box>
+                      </PrivateComponent>
                     </Box>
                   </Box>
                 </Box>

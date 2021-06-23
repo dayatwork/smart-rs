@@ -20,6 +20,7 @@ import { getRadiologyList } from '../../../../../api/radiology-services/radiolog
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { ImagingDetailsModal } from '../../../../../components/web-staff/event-node/imaging';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const ImagingList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -149,26 +150,30 @@ export const ImagingList = () => {
           // }
           if (row.original.status === 'requested') {
             return (
-              <Button
-                // variant="link"
-                size="sm"
-                colorScheme="purple"
-                onClick={() => handleStart(row.original)}
-              >
-                Start
-              </Button>
+              <PrivateComponent permission={Permissions.createImaging}>
+                <Button
+                  // variant="link"
+                  size="sm"
+                  colorScheme="purple"
+                  onClick={() => handleStart(row.original)}
+                >
+                  Start
+                </Button>
+              </PrivateComponent>
             );
           }
           if (row.original.status === 'process') {
             return (
-              <Button
-                as={Link}
-                variant="link"
-                colorScheme="purple"
-                to={`/events/imaging/details/${row.original.id}`}
-              >
-                Details
-              </Button>
+              <PrivateComponent permission={Permissions['read-detailImaging']}>
+                <Button
+                  as={Link}
+                  variant="link"
+                  colorScheme="purple"
+                  to={`/events/imaging/details/${row.original.id}`}
+                >
+                  Details
+                </Button>
+              </PrivateComponent>
             );
           }
           return null;

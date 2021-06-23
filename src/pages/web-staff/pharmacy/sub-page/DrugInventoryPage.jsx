@@ -28,6 +28,7 @@ import {
   EditDrugDrawer,
 } from '../../../../components/web-staff/pharmacy/drug-inventory';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugInventoryPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -174,14 +175,16 @@ export const DrugInventoryPage = () => {
       {
         Header: 'Action',
         Cell: ({ row }) => (
-          <HStack>
-            <IconButton
-              aria-label="Edit"
-              colorScheme="blackAlpha"
-              icon={<HiPencilAlt />}
-              onClick={() => handleEdit(row.original.id)}
-            />
-          </HStack>
+          <PrivateComponent permission={Permissions.updateDrugInventory}>
+            <HStack>
+              <IconButton
+                aria-label="Edit"
+                colorScheme="blackAlpha"
+                icon={<HiPencilAlt />}
+                onClick={() => handleEdit(row.original.id)}
+              />
+            </HStack>
+          </PrivateComponent>
         ),
       },
     ],
@@ -234,14 +237,11 @@ export const DrugInventoryPage = () => {
           isLoading={isLoadingDrugs}
           skeletonCols={8}
           action={
-            <HStack>
+            <PrivateComponent permission={Permissions.createDrugInventory}>
               <Button onClick={onAddDrugModalOpen} colorScheme="purple">
                 Add New Drugs
               </Button>
-              {/* <Button onClick={onAssignUserModalOpen} colorScheme="green">
-              Assign User
-            </Button> */}
-            </HStack>
+            </PrivateComponent>
           }
         />
       )}

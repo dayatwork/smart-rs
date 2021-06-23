@@ -18,6 +18,7 @@ import { getInstitutions } from '../../../../api/institution-services/institutio
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { AddFmsModal } from '../../../../components/web-staff/institution-management/fms';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const FMSPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -130,9 +131,13 @@ export const FMSPage = () => {
           isLoading={isLoading}
           skeletonCols={3}
           action={
-            <Button onClick={onModalOpen} colorScheme="purple">
-              Add New SMF
-            </Button>
+            <PrivateComponent
+              permission={Permissions.createMedicalStaffFunctional}
+            >
+              <Button onClick={onModalOpen} colorScheme="purple">
+                Add New SMF
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

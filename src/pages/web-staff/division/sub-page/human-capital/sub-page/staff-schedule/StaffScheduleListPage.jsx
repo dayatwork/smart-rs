@@ -19,6 +19,10 @@ import { getEmployeeSchedules } from '../../../../../../../api/human-capital-ser
 import PaginationTable from '../../../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
 import { CreateStaffScheduleModal } from '../../../../../../../components/web-staff/division/human-capital/staff-schedule';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../../access-control';
 
 export const StaffScheduleListPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -146,9 +150,11 @@ export const StaffScheduleListPage = () => {
           data={data || []}
           isLoading={isLoading}
           action={
-            <Button colorScheme="purple" onClick={onModalOpen}>
-              Create Staff Schedule
-            </Button>
+            <PrivateComponent permission={Permissions.createStaffSchedule}>
+              <Button colorScheme="purple" onClick={onModalOpen}>
+                Create Staff Schedule
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

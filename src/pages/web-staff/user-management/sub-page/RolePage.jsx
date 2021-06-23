@@ -15,6 +15,7 @@ import {
   AssignAccessModal,
 } from '../../../../components/web-staff/user-management/role';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { SuperAdminComponent } from '../../../../access-control';
 
 export const RolePage = () => {
   const [cookies] = useCookies(['token']);
@@ -43,19 +44,21 @@ export const RolePage = () => {
     isSuccess: isSuccessDefaultAccess,
     isLoading: isLoadingDefaultAccess,
     isFetching: isFetchingDefaultAccess,
-  } = useQuery('default-access-control', () => getDefaultAccessControl(cookies));
+  } = useQuery('default-access-control', () =>
+    getDefaultAccessControl(cookies)
+  );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((role) => {
+      res?.data?.map(role => {
         return {
           id: role.id,
           name: role.name,
           alias: role.alias,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -76,13 +79,13 @@ export const RolePage = () => {
         Cell: ({ value }) => (value ? value : '-'),
       },
     ],
-    [],
+    []
   );
 
   const dataDefaultAccess = React.useMemo(
     () =>
       isSuccessDefaultAccess &&
-      resDefaultAccess?.data?.map((access) => {
+      resDefaultAccess?.data?.map(access => {
         return {
           id: access.id,
           role: access.role_id,
@@ -90,7 +93,7 @@ export const RolePage = () => {
           route: access.attribute,
         };
       }),
-    [resDefaultAccess?.data, isSuccessDefaultAccess],
+    [resDefaultAccess?.data, isSuccessDefaultAccess]
   );
 
   const columnsDefaultAccess = React.useMemo(
@@ -107,7 +110,7 @@ export const RolePage = () => {
           const { data: resRole } = useQuery(
             ['user-roles', value],
             () => getRoleById(cookies, value),
-            { enabled: Boolean(value) },
+            { enabled: Boolean(value) }
           );
           return resRole?.data?.name || '-';
         },
@@ -121,7 +124,7 @@ export const RolePage = () => {
         accessor: 'route',
       },
     ],
-    [cookies],
+    [cookies]
   );
 
   return (
@@ -131,7 +134,10 @@ export const RolePage = () => {
       )}
 
       <AddRoleModal isOpen={isModalOpen} onClose={onModalClose} />
-      <AssignAccessModal isOpen={isAssignModalOpen} onClose={onAssignModalClose} />
+      <AssignAccessModal
+        isOpen={isAssignModalOpen}
+        onClose={onAssignModalClose}
+      />
 
       <BackButton to="/user-management" text="Back to User Management List" />
       <Heading mb="6" fontSize="3xl">
@@ -143,9 +149,11 @@ export const RolePage = () => {
         isLoading={isLoading}
         skeletonCols={3}
         action={
-          <Button onClick={onModalOpen} colorScheme="purple">
-            Add New Role
-          </Button>
+          <SuperAdminComponent>
+            <Button onClick={onModalOpen} colorScheme="purple">
+              Add New Role
+            </Button>
+          </SuperAdminComponent>
         }
       />
 
@@ -159,9 +167,11 @@ export const RolePage = () => {
           isLoading={isLoadingDefaultAccess}
           skeletonCols={4}
           action={
-            <Button colorScheme="green" onClick={onAssignModalOpen}>
-              Assign Access Control
-            </Button>
+            <SuperAdminComponent>
+              <Button colorScheme="green" onClick={onAssignModalOpen}>
+                Assign Access Control
+              </Button>
+            </SuperAdminComponent>
           }
         />
       </Box>

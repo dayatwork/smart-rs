@@ -19,6 +19,7 @@ import { getEventNodes } from '../../../../api/institution-services/event-node';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { AddEventNodeModal } from '../../../../components/web-staff/institution-management/event-node';
 import { BackButton } from '../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const EventNodePage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -132,9 +133,13 @@ export const EventNodePage = () => {
           isLoading={isLoading}
           skeletonCols={4}
           action={
-            <Button onClick={onModalOpen} colorScheme="purple">
-              Add New Event Node
-            </Button>
+            <PrivateComponent
+              permission={Permissions.createInstitutionEventNode}
+            >
+              <Button onClick={onModalOpen} colorScheme="purple">
+                Add New Event Node
+              </Button>
+            </PrivateComponent>
           }
         />
       )}

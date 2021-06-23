@@ -36,6 +36,7 @@ import {
 } from '../../../../../api/patient-services/hospital-patient';
 import { getBookingSchedulesInstitution } from '../../../../../api/institution-services/service';
 import { BackButton } from '../../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const CreateBooking = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -440,16 +441,18 @@ export const CreateBooking = () => {
           </VStack>
 
           {selectedTime && (
-            <Button
-              w="full"
-              mt="6"
-              colorScheme="purple"
-              type="submit"
-              disabled={!selectedSchedule || !selectedTime}
-              isLoading={isLoadingBooking}
-            >
-              Book
-            </Button>
+            <PrivateComponent permission={Permissions.createBookingDoctor}>
+              <Button
+                w="full"
+                mt="6"
+                colorScheme="purple"
+                type="submit"
+                disabled={!selectedSchedule || !selectedTime}
+                isLoading={isLoadingBooking}
+              >
+                Book
+              </Button>
+            </PrivateComponent>
           )}
         </Box>
       )}

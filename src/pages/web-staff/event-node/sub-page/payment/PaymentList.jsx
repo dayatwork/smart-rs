@@ -18,6 +18,7 @@ import { getInstitutions } from '../../../../../api/institution-services/institu
 import { getInstitutionOrderList } from '../../../../../api/payment-services/order';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const PaymentList = ({ fromFinanceMenu }) => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -108,18 +109,20 @@ export const PaymentList = ({ fromFinanceMenu }) => {
       {
         Header: 'Detail',
         Cell: ({ row }) => (
-          <Button
-            as={Link}
-            to={
-              fromFinanceMenu
-                ? `/finance/patient-payment/${row.original.id}`
-                : `/events/payment/${row.original.id}`
-            }
-            variant="link"
-            colorScheme="purple"
-          >
-            Detail
-          </Button>
+          <PrivateComponent permission={Permissions['read-detailPayment']}>
+            <Button
+              as={Link}
+              to={
+                fromFinanceMenu
+                  ? `/finance/patient-payment/${row.original.id}`
+                  : `/events/payment/${row.original.id}`
+              }
+              variant="link"
+              colorScheme="purple"
+            >
+              Detail
+            </Button>
+          </PrivateComponent>
         ),
       },
     ],
