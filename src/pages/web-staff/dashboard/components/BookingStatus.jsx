@@ -36,7 +36,7 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiClock />}
               data={{
                 label: 'Total Booking',
-                value: dataBookingList?.data?.length,
+                value: dataBookingList?.data?.length || 0,
                 change: -2.1,
               }}
             />
@@ -45,9 +45,10 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiExclamationCircle />}
               data={{
                 label: 'Total Cancel',
-                value: dataBookingList?.data?.filter(
-                  booking => booking.booking_status === 'cancel'
-                )?.length,
+                value:
+                  dataBookingList?.data?.filter(
+                    booking => booking.booking_status === 'cancel'
+                  )?.length || 0,
                 change: 4.31,
               }}
             />
@@ -56,9 +57,10 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiCheckCircle />}
               data={{
                 label: 'Total Checked In',
-                value: dataBookingList?.data?.filter(
-                  booking => booking.booking_status === 'done'
-                )?.length,
+                value:
+                  dataBookingList?.data?.filter(
+                    booking => booking.booking_status === 'done'
+                  )?.length || 0,
                 change: -4.5,
               }}
             />

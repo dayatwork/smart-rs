@@ -27,19 +27,22 @@ export const BookingChart = ({ selectedInstitution, dataBookingList }) => {
   const chartBarData = datesSorted.map(date => {
     return {
       name: date,
-      booking: dataBookingList?.data?.filter(
-        booking => new Date(booking.date).toLocaleDateString('id-ID') === date
-      ).length,
-      canceled: dataBookingList?.data?.filter(
-        booking =>
-          new Date(booking.date).toLocaleDateString('id-ID') === date &&
-          booking.booking_status === 'cancel'
-      ).length,
-      checkedin: dataBookingList?.data?.filter(
-        booking =>
-          new Date(booking.date).toLocaleDateString('id-ID') === date &&
-          booking.booking_status === 'done'
-      ).length,
+      booking:
+        dataBookingList?.data?.filter(
+          booking => new Date(booking.date).toLocaleDateString('id-ID') === date
+        ).length || 0,
+      canceled:
+        dataBookingList?.data?.filter(
+          booking =>
+            new Date(booking.date).toLocaleDateString('id-ID') === date &&
+            booking.booking_status === 'cancel'
+        ).length || 0,
+      checkedin:
+        dataBookingList?.data?.filter(
+          booking =>
+            new Date(booking.date).toLocaleDateString('id-ID') === date &&
+            booking.booking_status === 'done'
+        ).length || 0,
     };
   });
 
