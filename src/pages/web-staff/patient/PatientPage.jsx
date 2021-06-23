@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Link,
   Route,
@@ -20,6 +20,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../contexts/authContext';
 import { getInstitutions } from '../../../api/institution-services/institution';
 import { WaitingPatient } from '../event-node/sub-page/examination/WaitingPatient';
 import { ActivePatient } from '../event-node/sub-page/examination/ActivePatient';
@@ -43,11 +44,12 @@ const subMenus = [
 ];
 
 export const PatientPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(

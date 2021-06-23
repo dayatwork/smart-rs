@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
@@ -23,6 +23,7 @@ import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import ReactSelect from 'react-select';
 
+import { AuthContext } from '../../../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../../../api/institution-services/institution';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
 import { getServices } from '../../../../../../../api/institution-services/service';
@@ -31,11 +32,12 @@ import { createServicePrice } from '../../../../../../../api/finance-services/se
 import { InputDate } from '../../../../../../../components/shared/input';
 
 export const CreateServicePricePage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const [isLoading, setIsLoading] = useState(false);
   const [eventNode, setEventNode] = useState([]);

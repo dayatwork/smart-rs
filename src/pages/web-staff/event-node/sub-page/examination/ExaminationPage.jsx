@@ -1,6 +1,12 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
-import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import {
+  Link,
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -13,6 +19,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { WaitingPatient } from './WaitingPatient';
@@ -35,17 +42,18 @@ const subMenus = [
 ];
 
 export const ExaminationPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   return (
@@ -59,10 +67,11 @@ export const ExaminationPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -70,7 +79,7 @@ export const ExaminationPage = () => {
         </Select>
       </FormControl>
       <SimpleGrid columns="3">
-        {subMenus.map((subMenu) => (
+        {subMenus.map(subMenu => (
           <Center
             key={subMenu.to}
             as={Link}
@@ -81,7 +90,8 @@ export const ExaminationPage = () => {
             fontSize="xl"
             fontWeight="bold"
             color={pathname === subMenu.to ? 'purple.600' : 'gray.800'}
-            _hover={{ bgColor: 'purple.100' }}>
+            _hover={{ bgColor: 'purple.100' }}
+          >
             {subMenu.text}
           </Center>
         ))}

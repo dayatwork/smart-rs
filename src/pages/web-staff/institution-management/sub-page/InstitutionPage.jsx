@@ -83,14 +83,14 @@ const InstitutionType = () => {
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((type) => {
+      res?.data?.map(type => {
         return {
           id: type.id,
           name: type.name,
           alias: type.alias,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -111,12 +111,14 @@ const InstitutionType = () => {
         Cell: ({ value }) => (value ? value : '-'),
       },
     ],
-    [],
+    []
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddInstitutionTypeModal isOpen={isModalOpen} onClose={onModalClose} />
 
@@ -159,7 +161,7 @@ const Institution = () => {
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((institution) => {
+      res?.data?.map(institution => {
         return {
           id: institution.id,
           name: institution.name,
@@ -168,7 +170,7 @@ const Institution = () => {
           phone_number: institution.phone_number,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -209,12 +211,14 @@ const Institution = () => {
       //   },
       // },
     ],
-    [],
+    []
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddInstitutionModal isOpen={isModalOpen} onClose={onModalClose} />
 

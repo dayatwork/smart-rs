@@ -8,6 +8,12 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import { Center, Icon } from '@chakra-ui/react';
+import { FaHospitalSymbol } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+
+import { getEmployeeDetail } from './api/human-capital-services/employee';
+import { getUserPermissions } from './api/user-services/role-management';
 
 import { AuthContext } from './contexts/authContext';
 import {
@@ -136,27 +142,137 @@ const AppRoutes = () => {
   );
 };
 
+// const App = () => {
+//   const [cookies, , removeCookie] = useCookies();
+
+//   const [token, setToken] = useState(cookies.token);
+//   const [user, setUser] = useState(cookies.user);
+
+//   useEffect(() => {
+//     setToken(cookies.token);
+//     setUser(cookies.user);
+//   }, [cookies.token, cookies.user]);
+
+//   const logout = async callback => {
+//     removeCookie('token');
+//     removeCookie('user');
+//     callback();
+//   };
+
+//   return (
+//     <Router>
+//       <AuthContext.Provider value={{ token, setToken, logout, user, setUser }}>
+//         <AppRoutes />
+//       </AuthContext.Provider>
+//     </Router>
+//   );
+// };
 const App = () => {
-  const [cookies, , removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const [token, setToken] = useState(cookies.token);
   const [user, setUser] = useState(cookies.user);
+  const [employeeDetail, setEmployeeDetail] = useState(cookies.employee);
+  const [permissions, setPermissions] = useState([]);
+  const [isLoadingPermissions, setIsLoadingPermissions] = useState(true);
+  const [isLoadingEmployeeDetail, setIsLoadingEmployeeDetail] = useState(false);
+
+  useEffect(() => {
+    if (!cookies.token || !cookies.user || !cookies.employee) {
+      setIsLoadingPermissions(false);
+      return;
+    }
+
+    const fetchUserPermissions = async () => {
+      try {
+        setIsLoadingPermissions(true);
+        const res = await getUserPermissions(cookies);
+        const userPermissions = Object.entries(res.data).map(
+          ([, value]) => value
+        );
+        setPermissions(userPermissions);
+        setIsLoadingPermissions(false);
+      } catch (error) {
+        setPermissions([]);
+        setIsLoadingPermissions(false);
+      }
+    };
+    fetchUserPermissions();
+  }, [cookies]);
+
+  useEffect(() => {
+    if (!user?.id || !user?.institution_id) {
+      return;
+    }
+    const fetchEmployeeDetail = async () => {
+      try {
+        setIsLoadingEmployeeDetail(true);
+        const resEmployee = await getEmployeeDetail(
+          token,
+          user?.institution_id,
+          user?.id
+        );
+        const employeeDetail = {
+          employee_id: resEmployee?.data?.employee_data?.id,
+          institution_id: resEmployee?.data?.employee_data?.institution_id,
+          employee_number: resEmployee?.data?.employee_data?.employee_number,
+          profession: resEmployee?.data?.employee_data?.profession,
+        };
+        setCookie('employee', JSON.stringify(employeeDetail), { path: '/' });
+        setIsLoadingEmployeeDetail(false);
+      } catch (error) {
+        console.log({ error });
+        setIsLoadingEmployeeDetail(false);
+      }
+    };
+    fetchEmployeeDetail();
+  }, [setCookie, token, user?.id, user?.institution_id]);
 
   useEffect(() => {
     setToken(cookies.token);
     setUser(cookies.user);
-  }, [cookies.token, cookies.user]);
+    setEmployeeDetail(cookies.employee);
+  }, [cookies.token, cookies.user, cookies.employee]);
 
   const logout = async callback => {
     removeCookie('token');
     removeCookie('user');
+    removeCookie('employee');
+    setPermissions([]);
     callback();
   };
 
+  console.log({ user });
+  console.log({ employeeDetail });
+  console.log({ permissions });
+
   return (
     <Router>
-      <AuthContext.Provider value={{ token, setToken, logout, user, setUser }}>
-        <AppRoutes />
+      <AuthContext.Provider
+        value={{
+          token,
+          setToken,
+          logout,
+          user,
+          setUser,
+          permissions,
+          isLoadingPermissions,
+          employeeDetail,
+          setEmployeeDetail,
+        }}
+      >
+        {isLoadingPermissions && isLoadingEmployeeDetail ? (
+          <Center style={{ height: '100vh' }}>
+            <motion.div
+              animate={{ rotate: 180 }}
+              transition={{ duration: 0.3, repeat: Infinity }}
+            >
+              <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" />
+            </motion.div>
+          </Center>
+        ) : (
+          <AppRoutes />
+        )}
       </AuthContext.Provider>
     </Router>
   );

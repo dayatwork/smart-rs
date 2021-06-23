@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import {
   getDepartmentTypes,
   getDepartments,
@@ -33,15 +34,16 @@ import {
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const DepartmentPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: dataInstitutions, isSuccess: isSuccessInstitutions } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   return (
@@ -58,10 +60,11 @@ export const DepartmentPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitutions &&
-            dataInstitutions?.data?.map((institution) => (
+            dataInstitutions?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -110,18 +113,18 @@ const DepartmentType = ({ selectedInstitution }) => {
   } = useQuery(
     ['department-types', selectedInstitution],
     () => getDepartmentTypes(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const data = React.useMemo(
     () =>
       isSuccessDepartmentTypes &&
-      dataDepartmentTypes?.data?.map((type) => ({
+      dataDepartmentTypes?.data?.map(type => ({
         id: type.id,
         name: type.name,
         description: type.description,
       })),
-    [dataDepartmentTypes?.data, isSuccessDepartmentTypes],
+    [dataDepartmentTypes?.data, isSuccessDepartmentTypes]
   );
 
   const columns = React.useMemo(
@@ -150,7 +153,7 @@ const DepartmentType = ({ selectedInstitution }) => {
         ),
       },
     ],
-    [],
+    []
   );
 
   return (
@@ -190,7 +193,7 @@ const Department = ({ selectedInstitution }) => {
   } = useQuery(
     ['departments', selectedInstitution],
     () => getDepartments(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const {
@@ -202,14 +205,14 @@ const Department = ({ selectedInstitution }) => {
   const data = React.useMemo(
     () =>
       isSuccessDepartments &&
-      dataDepartments?.data?.map((department) => ({
+      dataDepartments?.data?.map(department => ({
         id: department.id,
         type: department.department_type.name,
         name: department.name,
         description: department.description,
         events: department.event_node,
       })),
-    [dataDepartments?.data, isSuccessDepartments],
+    [dataDepartments?.data, isSuccessDepartments]
   );
 
   const columns = React.useMemo(
@@ -237,14 +240,14 @@ const Department = ({ selectedInstitution }) => {
         accessor: 'events',
         Cell: ({ value }) => (
           <SimpleGrid columns={3}>
-            {value.map((item) => (
+            {value.map(item => (
               <Badge key={item.id}>{item.name}</Badge>
             ))}
           </SimpleGrid>
         ),
       },
     ],
-    [],
+    []
   );
 
   return (

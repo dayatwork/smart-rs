@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Badge,
@@ -18,6 +18,7 @@ import { FaPlus } from 'react-icons/fa';
 import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import {
   getBookingList,
   cancelBooking,
@@ -30,10 +31,11 @@ import { CancelBookingAlert } from '../../../../../components/web-staff/event-no
 // import { Permissions } from 'constants/permissions';
 
 export const BookedPatientList = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isLoadingCancel, setIsLoadingCancel] = useState(false);
@@ -42,7 +44,7 @@ export const BookedPatientList = () => {
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -53,7 +55,7 @@ export const BookedPatientList = () => {
   } = useQuery(
     ['booking-list', selectedInstitution],
     () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const {
@@ -63,15 +65,17 @@ export const BookedPatientList = () => {
   } = useDisclosure();
 
   const onCancelBookingClick = useCallback(
-    (bookingId) => {
-      const booking = dataBookingList?.data.find((booking) => booking.id === bookingId);
+    bookingId => {
+      const booking = dataBookingList?.data.find(
+        booking => booking.id === bookingId
+      );
       setSelectedBooking(booking);
       onCancelOpen();
     },
-    [onCancelOpen, dataBookingList?.data],
+    [onCancelOpen, dataBookingList?.data]
   );
 
-  const handleCancel = async (id) => {
+  const handleCancel = async id => {
     try {
       setIsLoadingCancel(true);
       await cancelBooking(cookies, id);
@@ -102,10 +106,11 @@ export const BookedPatientList = () => {
       isSuccessBookingList &&
       dataBookingList?.data
         ?.filter(
-          (booking) =>
-            booking.booking_status === 'booked' || booking.booking_status === 'cancel',
+          booking =>
+            booking.booking_status === 'booked' ||
+            booking.booking_status === 'cancel'
         )
-        .map((booking) => {
+        .map(booking => {
           return {
             id: booking?.id,
             patient_name: booking?.patient_name,
@@ -121,7 +126,7 @@ export const BookedPatientList = () => {
             transaction_number: booking?.transaction_number,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList],
+    [dataBookingList?.data, isSuccessBookingList]
   );
 
   const columns = React.useMemo(
@@ -186,7 +191,8 @@ export const BookedPatientList = () => {
               <Button
                 onClick={() => onCancelBookingClick(row?.original?.id)}
                 variant="link"
-                colorScheme="red">
+                colorScheme="red"
+              >
                 Cancel Booking
               </Button>
               // </PrivateComponent>
@@ -196,7 +202,7 @@ export const BookedPatientList = () => {
         },
       },
     ],
-    [onCancelBookingClick],
+    [onCancelBookingClick]
   );
 
   return (
@@ -221,10 +227,11 @@ export const BookedPatientList = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -243,7 +250,8 @@ export const BookedPatientList = () => {
               as={Link}
               to="/events/booking/create"
               leftIcon={<FaPlus />}
-              colorScheme="purple">
+              colorScheme="purple"
+            >
               Add New Booking
             </Button>
             // </PrivateComponent>

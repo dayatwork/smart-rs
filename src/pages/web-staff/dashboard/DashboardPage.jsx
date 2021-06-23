@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   Center,
@@ -13,6 +13,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
+import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
 import { BookingStatus, BookingChart } from './components';
@@ -21,10 +22,11 @@ import { getInstitutions } from '../../../api/institution-services/institution';
 import { getBookingList } from '../../../api/booking-services/booking';
 
 export const DashboardPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
     // '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
-    '4676c84e-13a1-4e09-ba8f-caf89e9ca2a9'
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(

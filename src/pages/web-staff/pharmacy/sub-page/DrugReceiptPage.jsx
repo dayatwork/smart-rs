@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import {
   Box,
@@ -17,23 +17,25 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getDrugOrders } from '../../../../api/pharmacy-services/receipt';
 import { BackButton } from '../../../../components/shared/BackButton';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 
 export const DrugReceiptPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const { path } = useRouteMatch();
   const [cookies] = useCookies(['token']);
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
-    () => getInstitutions(cookies),
+    () => getInstitutions(cookies)
   );
 
   const {
@@ -44,13 +46,13 @@ export const DrugReceiptPage = () => {
   } = useQuery(
     ['drugs-order', selectedInstitution],
     () => getDrugOrders(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccessDrugOrders &&
-      dataDrugOrders?.data?.map((drugOrder) => {
+      dataDrugOrders?.data?.map(drugOrder => {
         return {
           id: drugOrder.id,
           employee_name: drugOrder.employee_name,
@@ -61,7 +63,7 @@ export const DrugReceiptPage = () => {
           patient_name: drugOrder.patient_name,
         };
       }),
-    [dataDrugOrders?.data, isSuccessDrugOrders],
+    [dataDrugOrders?.data, isSuccessDrugOrders]
   );
 
   const columns = React.useMemo(
@@ -78,7 +80,8 @@ export const DrugReceiptPage = () => {
                   setClipboardValue(value);
                   onCopy();
                 }}
-                _hover={{ cursor: 'pointer' }}>
+                _hover={{ cursor: 'pointer' }}
+              >
                 {value?.substring(0, 5)}
               </Box>
               {hasCopied && clipboardValue === value && (
@@ -93,7 +96,8 @@ export const DrugReceiptPage = () => {
                   position="absolute"
                   right="-4"
                   px="1"
-                  rounded="md">
+                  rounded="md"
+                >
                   Copied!
                 </Box>
               )}
@@ -153,7 +157,8 @@ export const DrugReceiptPage = () => {
                 variant="link"
                 as={Link}
                 colorScheme="purple"
-                to={`${path}/${row.original.id}`}>
+                to={`${path}/${row.original.id}`}
+              >
                 Details
               </Button>
             </HStack>
@@ -161,7 +166,7 @@ export const DrugReceiptPage = () => {
         },
       },
     ],
-    [clipboardValue, hasCopied, onCopy, path],
+    [clipboardValue, hasCopied, onCopy, path]
   );
 
   return (
@@ -178,10 +183,11 @@ export const DrugReceiptPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>

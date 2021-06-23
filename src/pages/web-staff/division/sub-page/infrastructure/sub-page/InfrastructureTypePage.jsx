@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Box,
   FormControl,
@@ -16,6 +16,7 @@ import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { HiPencilAlt } from 'react-icons/hi';
 
+import { AuthContext } from '../../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../../api/institution-services/institution';
 import { getInfrastructureTypes } from '../../../../../../api/institution-services/infrastructure';
 import PaginationTable from '../../../../../../components/shared/tables/PaginationTable';
@@ -26,9 +27,10 @@ import {
 } from '../../../../../../components/web-staff/division/infrastructure/type';
 
 export const InfrastructureTypePage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const [selectedInfrastructureType, setSelectedInfrastructureType] =
     useState(null);

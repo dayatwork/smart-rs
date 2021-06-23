@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   Button,
@@ -18,6 +18,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import {
   getServiceTypes,
   getServices,
@@ -31,15 +32,16 @@ import {
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const ServicePage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: dataInstitutions, isSuccess: isSuccessInstitutions } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   return (
@@ -56,10 +58,11 @@ export const ServicePage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitutions &&
-            dataInstitutions?.data?.map((institution) => (
+            dataInstitutions?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -108,18 +111,18 @@ const ServiceType = ({ selectedInstitution }) => {
   } = useQuery(
     ['service-types', selectedInstitution],
     () => getServiceTypes(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccessServiceTypes &&
-      dataServiceTypes?.data?.map((type) => ({
+      dataServiceTypes?.data?.map(type => ({
         id: type.id,
         name: type.name,
         description: type.description,
       })),
-    [dataServiceTypes?.data, isSuccessServiceTypes],
+    [dataServiceTypes?.data, isSuccessServiceTypes]
   );
 
   const columns = React.useMemo(
@@ -140,7 +143,7 @@ const ServiceType = ({ selectedInstitution }) => {
         Cell: ({ value }) => (value ? value : '-'),
       },
     ],
-    [],
+    []
   );
 
   return (
@@ -182,7 +185,7 @@ const Service = ({ selectedInstitution }) => {
     {
       enabled: Boolean(selectedInstitution),
       staleTime: Infinity,
-    },
+    }
   );
 
   const {
@@ -194,13 +197,13 @@ const Service = ({ selectedInstitution }) => {
   const data = React.useMemo(
     () =>
       isSuccessServices &&
-      dataServices?.data?.map((service) => ({
+      dataServices?.data?.map(service => ({
         id: service.id,
         type: service.service_type?.name,
         name: service.name,
         description: service.description,
       })),
-    [dataServices?.data, isSuccessServices],
+    [dataServices?.data, isSuccessServices]
   );
 
   const columns = React.useMemo(
@@ -225,7 +228,7 @@ const Service = ({ selectedInstitution }) => {
         Cell: ({ value }) => (value ? value : '-'),
       },
     ],
-    [],
+    []
   );
 
   return (

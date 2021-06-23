@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   FormControl,
@@ -13,6 +13,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../../../api/institution-services/institution';
 import { getEmployeeSchedules } from '../../../../../../../api/human-capital-services/schedule';
 import PaginationTable from '../../../../../../../components/shared/tables/PaginationTable';
@@ -20,9 +21,10 @@ import { BackButton } from '../../../../../../../components/shared/BackButton';
 import { CreateStaffScheduleModal } from '../../../../../../../components/web-staff/division/human-capital/staff-schedule';
 
 export const StaffScheduleListPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
 
   const {

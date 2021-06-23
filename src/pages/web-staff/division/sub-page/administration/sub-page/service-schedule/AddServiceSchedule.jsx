@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   Box,
@@ -26,6 +26,7 @@ import TimePicker from 'react-time-picker';
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import DayPicker, { DateUtils } from 'react-day-picker';
 
+import { AuthContext } from '../../../../../../../contexts/authContext';
 import {
   getServices,
   createServiceSchedule,
@@ -41,6 +42,7 @@ const initialScheduleDate = {
 };
 
 export const AddServiceSchedule = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const history = useHistory();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +50,7 @@ export const AddServiceSchedule = () => {
   const [range, setRange] = useState(initialScheduleDate);
   const toast = useToast();
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const { register, handleSubmit, watch, control, reset, clearErrors } =
     useForm();

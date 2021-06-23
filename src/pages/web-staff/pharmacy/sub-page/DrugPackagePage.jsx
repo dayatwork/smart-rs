@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 import {
   Box,
@@ -26,6 +26,7 @@ import {
 import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import {
   processPackage,
@@ -35,12 +36,13 @@ import PaginationTable from '../../../../components/shared/tables/PaginationTabl
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const DrugPackagePage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const { path } = useRouteMatch();
   const [cookies] = useCookies(['token']);
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const [selectedDrugOrder, setSelectedDrugOrder] = useState(null);
 

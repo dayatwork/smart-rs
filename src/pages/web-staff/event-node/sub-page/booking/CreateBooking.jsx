@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import {
@@ -23,6 +23,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import format from 'date-fns/format';
 import { Helmet } from 'react-helmet-async';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import {
   getServices,
@@ -37,6 +38,7 @@ import { getBookingSchedulesInstitution } from '../../../../../api/institution-s
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const CreateBooking = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -52,7 +54,7 @@ export const CreateBooking = () => {
   });
   const [isLoadingBooking, setIsLoadingBooking] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const queryClient = useQueryClient();
 

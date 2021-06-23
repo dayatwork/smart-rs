@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import { HiPencilAlt } from 'react-icons/hi';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getPaymentMethods } from '../../../../api/institution-services/payment-method';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
@@ -25,9 +26,10 @@ import {
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const PaymentMethodPage = ({ fromFinanceMenu }) => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id
   );
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 

@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import {
   Box,
   Button,
@@ -6,12 +7,12 @@ import {
   useBoolean,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import React from 'react';
 import { HiHome, HiOutlineMenu, HiX } from 'react-icons/hi';
 import { RiStethoscopeFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
 import { Logo, NavItem, Notification, ProfileDropdown } from '../shared';
+import { AuthContext } from '../../../contexts/authContext';
 
 const useMobileMenuState = () => {
   const [isMenuOpen, actions] = useBoolean();
@@ -31,6 +32,7 @@ const useMobileMenuState = () => {
 };
 
 export const WebPatientNav = ({ active }) => {
+  const { employeeDetail } = useContext(AuthContext);
   const { isMenuOpen, toggle } = useMobileMenuState();
 
   return (
@@ -55,9 +57,15 @@ export const WebPatientNav = ({ active }) => {
           top="16"
           insetX="0"
           zIndex={10}
-          w="full">
+          w="full"
+        >
           <Box px="4">
-            <NavItem.Mobile active={active === 'home'} label="Home" href="/" mb="1" />
+            <NavItem.Mobile
+              active={active === 'home'}
+              label="Home"
+              href="/"
+              mb="1"
+            />
             <NavItem.Mobile
               active={active === 'doctor'}
               label="Doctor"
@@ -122,15 +130,18 @@ export const WebPatientNav = ({ active }) => {
         />
 
         <HStack spacing="3">
-          <Button
-            display={{ base: 'none', lg: 'inline-flex' }}
-            as={Link}
-            to="/dashboard"
-            bg="white"
-            color="purple.500"
-            size="sm">
-            Dashboard Staff
-          </Button>
+          {employeeDetail?.employee_id && (
+            <Button
+              display={{ base: 'none', lg: 'inline-flex' }}
+              as={Link}
+              to="/dashboard"
+              bg="white"
+              color="purple.500"
+              size="sm"
+            >
+              Dashboard Staff
+            </Button>
+          )}
           <Notification display={{ base: 'none', lg: 'inline-flex' }} />
           <ProfileDropdown />
         </HStack>

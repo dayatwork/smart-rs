@@ -8,6 +8,10 @@ const AuthContext = createContext({
   token: null,
   setToken: () => {},
   cookie: null,
+  permissions: [],
+  isLoadingPermissions: true,
+  employeeDetail: null,
+  setEmployeeDetail: () => {},
 });
 
 export { AuthContext };

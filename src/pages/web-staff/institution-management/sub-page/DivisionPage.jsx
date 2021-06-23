@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getDivisions } from '../../../../api/institution-services/division';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
@@ -19,15 +20,16 @@ import { AddDivisionModal } from '../../../../components/web-staff/institution-m
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const DivisionPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -44,20 +46,20 @@ export const DivisionPage = () => {
   } = useQuery(
     ['divisions', selectedInstitution],
     () => getDivisions(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((type) => {
+      res?.data?.map(type => {
         return {
           id: type.id,
           name: type.name,
           description: type.description,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -78,12 +80,14 @@ export const DivisionPage = () => {
         Cell: ({ value }) => (value ? value : '-'),
       },
     ],
-    [],
+    []
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddDivisionModal
         isOpen={isModalOpen}
@@ -103,10 +107,11 @@ export const DivisionPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>

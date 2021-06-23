@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   FormControl,
@@ -13,21 +13,23 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getAccounts } from '../../../../api/human-capital-services/account';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const AccountPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const [cookies] = useCookies(['token']);
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -38,13 +40,13 @@ export const AccountPage = () => {
   } = useQuery(
     ['accounts', selectedInstitution],
     () => getAccounts(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((account) => {
+      res?.data?.map(account => {
         return {
           id: account.id,
           name: account.name,
@@ -57,7 +59,7 @@ export const AccountPage = () => {
           register_date: account.register_date,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -110,12 +112,14 @@ export const AccountPage = () => {
         accessor: 'register_date',
       },
     ],
-    [],
+    []
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <BackButton
         to="/institution-management"
@@ -129,10 +133,11 @@ export const AccountPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>

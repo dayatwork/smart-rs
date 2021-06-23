@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -18,20 +18,22 @@ import { getInstitutions } from '../../../../../../../api/institution-services/i
 
 // import { ListServiceSchedule } from './ListServiceSchedule';
 // import { AddServiceSchedule } from './AddServiceSchedule';
+import { AuthContext } from '../../../../../../../contexts/authContext';
 import { getServiceSchedules } from '../../../../../../../api/institution-services/service';
 import PaginationTable from '../../../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
 
 export const ServiceSchedulePage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -42,13 +44,13 @@ export const ServiceSchedulePage = () => {
   } = useQuery(
     ['service-schedule', selectedInstitution],
     () => getServiceSchedules(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((servSchedule) => {
+      res?.data?.map(servSchedule => {
         return {
           id: servSchedule.id,
           service_id: servSchedule.service_id,
@@ -58,7 +60,7 @@ export const ServiceSchedulePage = () => {
           schedule: servSchedule.schedule,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -87,7 +89,8 @@ export const ServiceSchedulePage = () => {
               to={`/division/administration/service-schedule/${row.original.id}`}
               variant="link"
               size="sm"
-              colorScheme="blue">
+              colorScheme="blue"
+            >
               View Detail
             </Button>
             <Button variant="link" size="sm" colorScheme="green">
@@ -100,12 +103,14 @@ export const ServiceSchedulePage = () => {
         ),
       },
     ],
-    [],
+    []
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <BackButton to="/division/administration" text="Back to Administration" />
       <Heading mb="6" fontSize="3xl">
@@ -117,10 +122,11 @@ export const ServiceSchedulePage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -138,7 +144,8 @@ export const ServiceSchedulePage = () => {
             <Button
               as={Link}
               to="/division/administration/service-schedule/create"
-              colorScheme="purple">
+              colorScheme="purple"
+            >
               Create New Schedule
             </Button>
           }

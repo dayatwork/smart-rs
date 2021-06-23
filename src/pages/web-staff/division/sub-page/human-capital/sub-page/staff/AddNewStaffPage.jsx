@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
@@ -21,6 +21,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 
+import { AuthContext } from '../../../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../../../api/institution-services/institution';
 import { getFMS } from '../../../../../../../api/institution-services/fms';
 import { getInstitutionRoles } from '../../../../../../../api/institution-services/role';
@@ -37,6 +38,7 @@ import maritalStatus from '../../../../../../../data/maritalStatus.json';
 import nation from '../../../../../../../data/nation.json';
 
 export const AddNewStaffPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -44,7 +46,7 @@ export const AddNewStaffPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const {
     register,

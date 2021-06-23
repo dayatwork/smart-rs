@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Box,
   Button,
@@ -19,6 +19,7 @@ import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { HiPencilAlt } from 'react-icons/hi';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getDrugs } from '../../../../api/pharmacy-services/drug';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
@@ -29,12 +30,13 @@ import {
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const DrugInventoryPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
   const [selectedDrug, setSelectedDrug] = useState(null);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
 
   const {
@@ -51,7 +53,7 @@ export const DrugInventoryPage = () => {
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -62,22 +64,22 @@ export const DrugInventoryPage = () => {
   } = useQuery(
     ['drugs', selectedInstitution],
     () => getDrugs(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const handleEdit = useCallback(
-    (drugId) => {
-      const drug = dataDrugs?.data.find((drug) => drug.id === drugId);
+    drugId => {
+      const drug = dataDrugs?.data.find(drug => drug.id === drugId);
       setSelectedDrug(drug);
       onEditDrugDrawerOpen();
     },
-    [dataDrugs?.data, onEditDrugDrawerOpen],
+    [dataDrugs?.data, onEditDrugDrawerOpen]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessDrugs &&
-      dataDrugs?.data?.map((drug) => {
+      dataDrugs?.data?.map(drug => {
         return {
           id: drug.id,
           name: drug.name,
@@ -88,7 +90,7 @@ export const DrugInventoryPage = () => {
           description: drug.description,
         };
       }),
-    [dataDrugs?.data, isSuccessDrugs],
+    [dataDrugs?.data, isSuccessDrugs]
   );
 
   // console.log({ dataDrugs });
@@ -107,7 +109,8 @@ export const DrugInventoryPage = () => {
                   setClipboardValue(value);
                   onCopy();
                 }}
-                _hover={{ cursor: 'pointer' }}>
+                _hover={{ cursor: 'pointer' }}
+              >
                 {value?.substring(0, 5)}
               </Box>
               {hasCopied && clipboardValue === value && (
@@ -122,7 +125,8 @@ export const DrugInventoryPage = () => {
                   position="absolute"
                   right="-4"
                   px="1"
-                  rounded="md">
+                  rounded="md"
+                >
                   Copied!
                 </Box>
               )}
@@ -181,7 +185,7 @@ export const DrugInventoryPage = () => {
         ),
       },
     ],
-    [handleEdit, clipboardValue, hasCopied, onCopy],
+    [handleEdit, clipboardValue, hasCopied, onCopy]
   );
 
   return (
@@ -209,10 +213,11 @@ export const DrugInventoryPage = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>

@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import { HiTrash } from 'react-icons/hi';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
+import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getRadiologyCategories } from '../../../../api/institution-services/radiology-category';
 import PaginationTable from '../../../../components/shared/tables/PaginationTable';
@@ -25,9 +26,10 @@ import {
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const RadiologyCategoryPage = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const [selectedCategory, setSelectedCategory] = useState(null);
   const {
@@ -45,7 +47,7 @@ export const RadiologyCategoryPage = () => {
   const { data: dataInstitutions, isSuccess: isSuccessInstitutions } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -56,28 +58,28 @@ export const RadiologyCategoryPage = () => {
   } = useQuery(
     ['insitution-radiology-categories', selectedInstitution],
     () => getRadiologyCategories(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const onDeleteClick = useCallback(
-    (id) => {
+    id => {
       setSelectedCategory(id);
       onDeleteOpen();
     },
-    [onDeleteOpen],
+    [onDeleteOpen]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessRadiologyCategories &&
-      dataRadiologyCategories?.data?.map((category) => ({
+      dataRadiologyCategories?.data?.map(category => ({
         id: category?.id,
         category_id: category?.category_id,
         category_name: category?.category_name,
         subcategory_id: category?.subcategory_id,
         subcategory_name: category?.subcategory_name,
       })),
-    [dataRadiologyCategories?.data, isSuccessRadiologyCategories],
+    [dataRadiologyCategories?.data, isSuccessRadiologyCategories]
   );
 
   const columns = React.useMemo(
@@ -111,7 +113,7 @@ export const RadiologyCategoryPage = () => {
         ),
       },
     ],
-    [onDeleteClick],
+    [onDeleteClick]
   );
 
   return (
@@ -145,10 +147,11 @@ export const RadiologyCategoryPage = () => {
           <Select
             name="institution"
             value={selectedInstitution}
-            onChange={(e) => setSelectedInstitution(e.target.value)}>
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
             <option value="">Select Institution</option>
             {isSuccessInstitutions &&
-              dataInstitutions?.data?.map((institution) => (
+              dataInstitutions?.data?.map(institution => (
                 <option key={institution.id} value={institution.id}>
                   {institution.name}
                 </option>

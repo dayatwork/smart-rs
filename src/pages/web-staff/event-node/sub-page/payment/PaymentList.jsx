@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Badge,
@@ -13,15 +13,17 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { getInstitutionOrderList } from '../../../../../api/payment-services/order';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const PaymentList = ({ fromFinanceMenu }) => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
@@ -79,6 +81,7 @@ export const PaymentList = ({ fromFinanceMenu }) => {
       {
         Header: 'Total Price',
         accessor: 'total_price',
+        Cell: ({ value }) => formatter.format(value),
       },
       {
         Header: 'Due Date',
@@ -164,3 +167,9 @@ export const PaymentList = ({ fromFinanceMenu }) => {
     </Box>
   );
 };
+
+const formatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+  minimumFractionDigits: 0,
+});

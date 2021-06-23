@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Badge,
@@ -14,6 +14,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { getRadiologyList } from '../../../../../api/radiology-services/radiology';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
@@ -21,9 +22,10 @@ import { BackButton } from '../../../../../components/shared/BackButton';
 import { ImagingDetailsModal } from '../../../../../components/web-staff/event-node/imaging';
 
 export const ImagingList = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
   const [selectedRadiology, setSelectedRadiology] = useState(null);
 

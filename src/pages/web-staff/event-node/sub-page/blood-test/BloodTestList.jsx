@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Box,
   FormControl,
@@ -14,15 +14,17 @@ import {
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { LabPatientList } from './LabPatientList';
 import { LabResultList } from './LabResultList';
 
 export const BloodTestList = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
+    employeeDetail?.institution_id || ''
   );
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(

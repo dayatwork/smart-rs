@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Badge,
   Box,
@@ -16,6 +16,7 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getBookingList } from '../../../../../api/booking-services/booking';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
@@ -25,9 +26,10 @@ import { CheckInModal } from '../../../../../components/web-staff/event-node/che
 // import { Permissions } from 'constants/permissions';
 
 export const CheckinPatientList = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [checkedIn, setCheckedIn] = useState(false);
@@ -41,7 +43,7 @@ export const CheckinPatientList = () => {
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -52,28 +54,30 @@ export const CheckinPatientList = () => {
   } = useQuery(
     ['booking-list', selectedInstitution],
     () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const handleCheckIn = useCallback(
-    (bookingId) => {
-      const booking = dataBookingList?.data.find((booking) => booking.id === bookingId);
+    bookingId => {
+      const booking = dataBookingList?.data.find(
+        booking => booking.id === bookingId
+      );
       setSelectedBooking(booking);
       onCheckInOpen();
     },
-    [onCheckInOpen, dataBookingList?.data],
+    [onCheckInOpen, dataBookingList?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
-        ?.filter((booking) =>
+        ?.filter(booking =>
           checkedIn
             ? booking.booking_status === 'done'
-            : booking.booking_status === 'booked',
+            : booking.booking_status === 'booked'
         )
-        .map((booking) => {
+        .map(booking => {
           return {
             id: booking?.id,
             patient_name: booking?.patient_name,
@@ -89,7 +93,7 @@ export const CheckinPatientList = () => {
             transaction_number: booking?.transaction_number,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList, checkedIn],
+    [dataBookingList?.data, isSuccessBookingList, checkedIn]
   );
 
   const columns = React.useMemo(
@@ -155,7 +159,8 @@ export const CheckinPatientList = () => {
               size="sm"
               colorScheme="green"
               onClick={() => handleCheckIn(row.original.id)}
-              disabled={row.original.status !== 'booked'}>
+              disabled={row.original.status !== 'booked'}
+            >
               Check In
             </Button>
             // </PrivateComponent>
@@ -163,7 +168,7 @@ export const CheckinPatientList = () => {
         },
       },
     ],
-    [handleCheckIn],
+    [handleCheckIn]
   );
 
   return (
@@ -185,10 +190,11 @@ export const CheckinPatientList = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -214,7 +220,7 @@ export const CheckinPatientList = () => {
                   defaultChecked={checkedIn}
                   checked={checkedIn}
                   colorScheme="purple"
-                  onChange={(e) => setCheckedIn(e.target.checked)}
+                  onChange={e => setCheckedIn(e.target.checked)}
                 />
               </FormControl>
             </Box>

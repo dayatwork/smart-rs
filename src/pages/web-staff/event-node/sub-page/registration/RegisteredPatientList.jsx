@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -15,15 +15,17 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { getHospitalPatients } from '../../../../../api/patient-services/hospital-patient';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const RegisteredPatientList = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
@@ -31,7 +33,7 @@ export const RegisteredPatientList = () => {
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const {
@@ -42,13 +44,13 @@ export const RegisteredPatientList = () => {
   } = useQuery(
     ['hospital-patients', selectedInstitution],
     () => getHospitalPatients(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((patient) => {
+      res?.data?.map(patient => {
         return {
           id: patient.patient_id,
           name: patient.patient.name,
@@ -58,7 +60,7 @@ export const RegisteredPatientList = () => {
           // institution: patient.institution_id,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -74,7 +76,8 @@ export const RegisteredPatientList = () => {
                 onClick={() => {
                   setClipboardValue(value);
                   onCopy();
-                }}>
+                }}
+              >
                 {value?.substring(0, 5)}
               </Box>
               {hasCopied && clipboardValue === value && (
@@ -89,7 +92,8 @@ export const RegisteredPatientList = () => {
                   position="absolute"
                   right="-4"
                   px="1"
-                  rounded="md">
+                  rounded="md"
+                >
                   Copied!
                 </Box>
               )}
@@ -117,12 +121,14 @@ export const RegisteredPatientList = () => {
         accessor: 'patient_number',
       },
     ],
-    [hasCopied, onCopy, clipboardValue],
+    [hasCopied, onCopy, clipboardValue]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <BackButton to="/events" text="Back to Events List" />
       <Heading mb="6" fontSize="3xl">
         Registered Patient List
@@ -132,10 +138,11 @@ export const RegisteredPatientList = () => {
         <Select
           name="institution"
           value={selectedInstitution}
-          onChange={(e) => setSelectedInstitution(e.target.value)}>
+          onChange={e => setSelectedInstitution(e.target.value)}
+        >
           <option value="">Select Institution</option>
           {isSuccessInstitution &&
-            resInstitution?.data?.map((institution) => (
+            resInstitution?.data?.map(institution => (
               <option key={institution.id} value={institution.id}>
                 {institution.name}
               </option>
@@ -149,7 +156,11 @@ export const RegisteredPatientList = () => {
           isLoading={isLoading}
           skeletonCols={5}
           action={
-            <Button as={Link} to="/events/registration/create" colorScheme="purple">
+            <Button
+              as={Link}
+              to="/events/registration/create"
+              colorScheme="purple"
+            >
               Register New Patient
             </Button>
           }

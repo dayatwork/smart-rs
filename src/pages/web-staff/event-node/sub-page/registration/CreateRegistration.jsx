@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import {
   Box,
@@ -26,6 +26,7 @@ import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
+import { AuthContext } from '../../../../../contexts/authContext';
 import religionData from '../../../../../data/religion.json';
 import genderData from '../../../../../data/gender.json';
 import maritalStatusData from '../../../../../data/maritalStatus.json';
@@ -47,10 +48,11 @@ import { BackButton } from '../../../../../components/shared/BackButton';
 // import { Permissions } from 'constants/permissions';
 
 export const CreateRegistration = () => {
+  const { employeeDetail } = useContext(AuthContext);
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
-    '3f026d44-6b43-47ce-ba4b-4d0a8b174286',
+    employeeDetail?.institution_id || ''
   );
   const {
     register,
@@ -77,7 +79,7 @@ export const CreateRegistration = () => {
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { mutate } = useMutation(registerPatient(cookies), {
@@ -87,7 +89,10 @@ export const CreateRegistration = () => {
     onSettled: async (data, error) => {
       setIsLoading(false);
       if (data) {
-        await queryClient.invalidateQueries(['patients-registered', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'patients-registered',
+          selectedInstitution,
+        ]);
         setRegisteredUser(data);
         setErrMessage('');
         setFoundUser(null);
@@ -116,7 +121,7 @@ export const CreateRegistration = () => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const {
       name,
       address,
@@ -202,7 +207,8 @@ export const CreateRegistration = () => {
     setTimeout(() => {
       setValue(
         'birth_date',
-        foundUser?.usersId[0]?.birth_date && new Date(foundUser.usersId[0].birth_date),
+        foundUser?.usersId[0]?.birth_date &&
+          new Date(foundUser.usersId[0].birth_date)
       );
       setValue('gender', foundUser?.usersId[0]?.gender);
       setValue('province', foundUser?.usersId[0]?.province);
@@ -220,9 +226,13 @@ export const CreateRegistration = () => {
       <Grid
         templateColumns={{ base: 'repeat(2, 1fr)', '2xl': 'repeat(3, 1fr)' }}
         gap="6"
-        rounded="md">
+        rounded="md"
+      >
         <GridItem colSpan={2} px={{ base: 3, lg: 0 }}>
-          <BackButton to="/events/registration" text="Back to Registered Patient List" />
+          <BackButton
+            to="/events/registration"
+            text="Back to Registered Patient List"
+          />
           <Heading mb="6" fontSize="3xl">
             Register New Patient
           </Heading>
@@ -231,10 +241,11 @@ export const CreateRegistration = () => {
             <Select
               name="institution"
               value={selectedInstitution}
-              onChange={(e) => setSelectedInstitution(e.target.value)}>
+              onChange={e => setSelectedInstitution(e.target.value)}
+            >
               <option value="">Select Institution</option>
               {isSuccessInstitution &&
-                resInstitution?.data?.map((institution) => (
+                resInstitution?.data?.map(institution => (
                   <option key={institution.id} value={institution.id}>
                     {institution.name}
                   </option>
@@ -243,7 +254,15 @@ export const CreateRegistration = () => {
           </FormControl>
           {selectedInstitution && (
             <>
-              <Box mb="6" maxW="md" boxShadow="md" py="4" px="6" rounded="md" bg="white">
+              <Box
+                mb="6"
+                maxW="md"
+                boxShadow="md"
+                py="4"
+                px="6"
+                rounded="md"
+                bg="white"
+              >
                 <FormControl id="identity">
                   <FormLabel>Identity (Email, Phone Number)</FormLabel>
                   <InputGroup size="md">
@@ -251,7 +270,7 @@ export const CreateRegistration = () => {
                       pr="4.5rem"
                       placeholder="Identity"
                       value={identity}
-                      onChange={(e) => setIdentity(e.target.value)}
+                      onChange={e => setIdentity(e.target.value)}
                     />
                     <InputRightElement width="4.5rem">
                       <Button
@@ -259,7 +278,8 @@ export const CreateRegistration = () => {
                         h="1.75rem"
                         size="sm"
                         onClick={fetchUserByIdentity}
-                        isLoading={isLoadingIdentity}>
+                        isLoading={isLoadingIdentity}
+                      >
                         Search
                       </Button>
                     </InputRightElement>
@@ -278,13 +298,15 @@ export const CreateRegistration = () => {
                         bg="white"
                         shadow="md"
                         overflow="hidden"
-                        mb="8">
+                        mb="8"
+                      >
                         <Flex
                           align="center"
                           justify="space-between"
                           px="6"
                           py="4"
-                          bgColor="gray.200">
+                          bgColor="gray.200"
+                        >
                           <Text as="h3" fontWeight="bold" fontSize="lg">
                             Personal
                           </Text>
@@ -297,15 +319,19 @@ export const CreateRegistration = () => {
                             rowGap={6}
                             px="6"
                             pt="4"
-                            pb="8">
+                            pb="8"
+                          >
                             <FormControl
                               id="email"
-                              isInvalid={errors.email ? true : false}>
+                              isInvalid={errors.email ? true : false}
+                            >
                               <FormLabel>Email</FormLabel>
                               <Input
                                 type="text"
                                 defaultValue={foundUser?.email}
-                                {...register('email', { required: 'Email is required' })}
+                                {...register('email', {
+                                  required: 'Email is required',
+                                })}
                               />
                               <FormErrorMessage>
                                 {errors.email && errors.email.message}
@@ -313,7 +339,8 @@ export const CreateRegistration = () => {
                             </FormControl>
                             <FormControl
                               id="phone_number"
-                              isInvalid={errors.phone_number ? true : false}>
+                              isInvalid={errors.phone_number ? true : false}
+                            >
                               <FormLabel>Nomor HP</FormLabel>
                               <Input
                                 type="text"
@@ -323,16 +350,22 @@ export const CreateRegistration = () => {
                                 })}
                               />
                               <FormErrorMessage>
-                                {errors.phone_number && errors.phone_number.message}
+                                {errors.phone_number &&
+                                  errors.phone_number.message}
                               </FormErrorMessage>
                             </FormControl>
 
-                            <FormControl id="name" isInvalid={errors.name ? true : false}>
+                            <FormControl
+                              id="name"
+                              isInvalid={errors.name ? true : false}
+                            >
                               <FormLabel>Nama Lengkap</FormLabel>
                               <Input
                                 type="text"
                                 defaultValue={foundUser?.name}
-                                {...register('name', { required: 'Name is required' })}
+                                {...register('name', {
+                                  required: 'Name is required',
+                                })}
                               />
                               <FormErrorMessage>
                                 {errors.name && errors.name.message}
@@ -341,12 +374,15 @@ export const CreateRegistration = () => {
 
                             <FormControl
                               id="birth_date"
-                              isInvalid={errors.birth_date ? true : false}>
+                              isInvalid={errors.birth_date ? true : false}
+                            >
                               <FormLabel>Tanggal Lahir</FormLabel>
                               <InputDate
                                 name="birth_date"
                                 control={control}
-                                rules={{ required: 'Date of birth is required' }}
+                                rules={{
+                                  required: 'Date of birth is required',
+                                }}
                                 errors={errors}
                               />
                               <FormErrorMessage>
@@ -356,31 +392,40 @@ export const CreateRegistration = () => {
 
                             <FormControl
                               id="birth_place"
-                              isInvalid={errors.birth_place ? true : false}>
+                              isInvalid={errors.birth_place ? true : false}
+                            >
                               <FormLabel>Tempat Lahir</FormLabel>
                               <Input
                                 type="text"
-                                defaultValue={foundUser?.usersId[0]?.birth_place}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.birth_place
+                                }
                                 {...register('birth_place', {
                                   required: 'Place of birth is required',
                                 })}
                               />
                               <FormErrorMessage>
-                                {errors.birth_place && errors.birth_place.message}
+                                {errors.birth_place &&
+                                  errors.birth_place.message}
                               </FormErrorMessage>
                             </FormControl>
                             <FormControl
                               id="religion"
-                              isInvalid={errors.religion ? true : false}>
+                              isInvalid={errors.religion ? true : false}
+                            >
                               <FormLabel>Agama</FormLabel>
                               <Select
                                 placeholder="Pilih Agama"
                                 defaultValue={foundUser?.usersId[0]?.religion}
                                 {...register('religion', {
                                   required: 'Religion is required',
-                                })}>
-                                {religionData.map((religion) => (
-                                  <option value={religion.value} key={religion.value}>
+                                })}
+                              >
+                                {religionData.map(religion => (
+                                  <option
+                                    value={religion.value}
+                                    key={religion.value}
+                                  >
                                     {religion.text}
                                   </option>
                                 ))}
@@ -391,16 +436,21 @@ export const CreateRegistration = () => {
                             </FormControl>
                             <FormControl
                               id="gender"
-                              isInvalid={errors.gender ? true : false}>
+                              isInvalid={errors.gender ? true : false}
+                            >
                               <FormLabel>Jenis Kelamin</FormLabel>
                               <Select
                                 placeholder="Pilih jenis kelamin"
                                 defaultValue={foundUser?.usersId[0]?.gender}
                                 {...register('gender', {
                                   required: 'Gender is required',
-                                })}>
-                                {genderData.map((gender) => (
-                                  <option value={gender.value} key={gender.value}>
+                                })}
+                              >
+                                {genderData.map(gender => (
+                                  <option
+                                    value={gender.value}
+                                    key={gender.value}
+                                  >
                                     {gender.text}
                                   </option>
                                 ))}
@@ -411,7 +461,8 @@ export const CreateRegistration = () => {
                             </FormControl>
                             <FormControl
                               id="profession"
-                              isInvalid={errors.profession ? true : false}>
+                              isInvalid={errors.profession ? true : false}
+                            >
                               <FormLabel>Profesi/ Pekerjaan</FormLabel>
                               <Input
                                 type="text"
@@ -425,27 +476,36 @@ export const CreateRegistration = () => {
                             </FormControl>
                             <FormControl
                               id="marital_status"
-                              isInvalid={errors.profession ? true : false}>
+                              isInvalid={errors.profession ? true : false}
+                            >
                               <FormLabel>Status Perkawinan</FormLabel>
                               <Select
                                 placeholder="Pilih status perkawinan"
-                                defaultValue={foundUser?.usersId[0]?.marital_status}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.marital_status
+                                }
                                 {...register('marital_status', {
                                   required: 'Marital status is required',
-                                })}>
-                                {maritalStatusData.map((status) => (
-                                  <option value={status.value} key={status.value}>
+                                })}
+                              >
+                                {maritalStatusData.map(status => (
+                                  <option
+                                    value={status.value}
+                                    key={status.value}
+                                  >
                                     {status.text}
                                   </option>
                                 ))}
                               </Select>
                               <FormErrorMessage>
-                                {errors.marital_status && errors.marital_status.message}
+                                {errors.marital_status &&
+                                  errors.marital_status.message}
                               </FormErrorMessage>
                             </FormControl>
                             <FormControl
                               id="nationality"
-                              isInvalid={errors.nationality ? true : false}>
+                              isInvalid={errors.nationality ? true : false}
+                            >
                               <FormLabel>Kewarganegaraan</FormLabel>
                               <Select
                                 placeholder="Pilih kewarganegaraan"
@@ -454,39 +514,48 @@ export const CreateRegistration = () => {
                                 }
                                 {...register('nationality', {
                                   required: 'Nationality is required',
-                                })}>
-                                {nationData.map((nationality) => (
+                                })}
+                              >
+                                {nationData.map(nationality => (
                                   <option
                                     value={nationality.text}
-                                    key={nationality.value}>
+                                    key={nationality.value}
+                                  >
                                     {nationality.text}
                                   </option>
                                 ))}
                               </Select>
                               <FormErrorMessage>
-                                {errors.nationality && errors.nationality.message}
+                                {errors.nationality &&
+                                  errors.nationality.message}
                               </FormErrorMessage>
                             </FormControl>
                             <FormControl
                               id="identity_number"
-                              isInvalid={errors.identity_number ? true : false}>
+                              isInvalid={errors.identity_number ? true : false}
+                            >
                               <FormLabel>NIK</FormLabel>
                               <Input
                                 type="text"
-                                defaultValue={foundUser?.usersId[0]?.identity_number}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.identity_number
+                                }
                                 {...register('identity_number', {
                                   required: 'Identity number is required',
                                 })}
                               />
                               <FormErrorMessage>
-                                {errors.identity_number && errors.identity_number.message}
+                                {errors.identity_number &&
+                                  errors.identity_number.message}
                               </FormErrorMessage>
                             </FormControl>
                             <FormControl id="passport-no">
                               <FormLabel>Nomor Passport</FormLabel>
                               <Input
                                 type="text"
-                                defaultValue={foundUser?.usersId[0]?.passport_number}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.passport_number
+                                }
                                 {...register('passport_number')}
                               />
                             </FormControl>
@@ -496,7 +565,8 @@ export const CreateRegistration = () => {
                                 type="file"
                                 p="0"
                                 py="0.5"
-                                {...register('ktp')}></Input>
+                                {...register('ktp')}
+                              ></Input>
                             </FormControl>
                           </SimpleGrid>
                         </Box>
@@ -506,13 +576,15 @@ export const CreateRegistration = () => {
                         bg="white"
                         shadow="md"
                         overflow="hidden"
-                        mb="8">
+                        mb="8"
+                      >
                         <Flex
                           align="center"
                           justify="space-between"
                           px="6"
                           py="4"
-                          bgColor="gray.200">
+                          bgColor="gray.200"
+                        >
                           <Text as="h3" fontWeight="bold" fontSize="lg">
                             Address
                           </Text>
@@ -525,7 +597,8 @@ export const CreateRegistration = () => {
                             rowGap={6}
                             px="6"
                             pt="4"
-                            pb="8">
+                            pb="8"
+                          >
                             <FormControl id="province" mb="2">
                               <FormLabel>Provinsi</FormLabel>
                               <SelectProvince
@@ -559,7 +632,9 @@ export const CreateRegistration = () => {
                                 province={provinceWatch}
                                 city={cityWatch}
                                 district={districtWatch}
-                                defaultValue={foundUser?.usersId[0]?.sub_district}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.sub_district
+                                }
                                 setValue={setValue}
                                 {...register('sub_district')}
                               />
@@ -576,7 +651,9 @@ export const CreateRegistration = () => {
                               <FormLabel>Kode Pos</FormLabel>
                               <Input
                                 type="text"
-                                defaultValue={foundUser?.usersId[0]?.postal_code}
+                                defaultValue={
+                                  foundUser?.usersId[0]?.postal_code
+                                }
                                 {...register('postal_code')}
                               />
                             </FormControl>
@@ -589,7 +666,8 @@ export const CreateRegistration = () => {
                           isLoading={isLoading}
                           type="submit"
                           colorScheme="purple"
-                          onClick={handleSubmit(onSubmit)}>
+                          onClick={handleSubmit(onSubmit)}
+                        >
                           Create
                         </Button>
                         {/* </PrivateComponent> */}
@@ -615,8 +693,14 @@ export const CreateRegistration = () => {
               <Divider />
               <Grid templateColumns="repeat(3, 1fr)" py="4" px="2">
                 <GridItem colSpan={2}>
-                  <Description title="Reg ID" value={registeredUser?.data?.id} />
-                  <Description title="Name" value={registeredUser?.data?.name} />
+                  <Description
+                    title="Reg ID"
+                    value={registeredUser?.data?.id}
+                  />
+                  <Description
+                    title="Name"
+                    value={registeredUser?.data?.name}
+                  />
                 </GridItem>
                 <GridItem>
                   <QRCode value={registeredUser?.data?.qr} />
@@ -643,7 +727,8 @@ const Description = ({ title, value }) => {
       direction="column"
       // px="6"
       py="1"
-      _even={{ bgColor: 'gray.50' }}>
+      _even={{ bgColor: 'gray.50' }}
+    >
       <Box as="dt" flexBasis="25%" fontWeight="semibold" color="gray.500">
         {title}
       </Box>
