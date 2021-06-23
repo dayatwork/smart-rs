@@ -21,6 +21,10 @@ import { AddPrescriptionModal } from './plan/AddPrescriptionModal';
 import { EditPrescriptionDrawer } from './plan/EditPrescriptionDrawer';
 import { AppointmentModal } from './plan/AppointmentModal';
 import { getPatientPrescription } from '../../../../../../api/medical-record-services/soap';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const Plan = ({ patientDetail, dataSoap }) => {
   const {
@@ -67,36 +71,46 @@ export const Plan = ({ patientDetail, dataSoap }) => {
               Procedure
             </Heading>
             <Stack direction={{ base: 'column', md: 'row' }}>
-              <Button
-                size="sm"
-                onClick={onOpenRequestLabModal}
-                colorScheme="green"
+              <PrivateComponent
+                permission={Permissions.createBookingLaboratory}
               >
-                Request Lab Test
-              </Button>
-              <Button
-                size="sm"
-                onClick={onOpenRequestRadiologyModal}
-                colorScheme="green"
-              >
-                Request Radiology Test
-              </Button>
-              <Button
-                size="sm"
-                onClick={onOpenAppointmentModal}
-                colorScheme="green"
-              >
-                Follow up Appointment
-              </Button>
+                <Button
+                  size="sm"
+                  onClick={onOpenRequestLabModal}
+                  colorScheme="green"
+                >
+                  Request Lab Test
+                </Button>
+              </PrivateComponent>
+              <PrivateComponent permission={Permissions.createBookingRadiology}>
+                <Button
+                  size="sm"
+                  onClick={onOpenRequestRadiologyModal}
+                  colorScheme="green"
+                >
+                  Request Radiology Test
+                </Button>
+              </PrivateComponent>
+              <PrivateComponent permission={Permissions.createBookingDoctor}>
+                <Button
+                  size="sm"
+                  onClick={onOpenAppointmentModal}
+                  colorScheme="green"
+                >
+                  Follow up Appointment
+                </Button>
+              </PrivateComponent>
             </Stack>
           </Box>
           <Divider />
-          <Box w="full" px="4">
-            <TablePrescription
-              dataSoap={dataSoap}
-              patientDetail={patientDetail}
-            />
-          </Box>
+          <PrivateComponent permission={Permissions.indexPrescription}>
+            <Box w="full" px="4">
+              <TablePrescription
+                dataSoap={dataSoap}
+                patientDetail={patientDetail}
+              />
+            </Box>
+          </PrivateComponent>
         </VStack>
       </Box>
     </>
@@ -222,13 +236,15 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
         Header: 'Action',
         Cell: ({ row }) => {
           return (
-            <Button
-              colorScheme="purple"
-              variant="link"
-              onClick={() => handleEdit(row.original.id)}
-            >
-              Edit
-            </Button>
+            <PrivateComponent permission={Permissions.updatePrescription}>
+              <Button
+                colorScheme="purple"
+                variant="link"
+                onClick={() => handleEdit(row.original.id)}
+              >
+                Edit
+              </Button>
+            </PrivateComponent>
           );
         },
       },
@@ -258,13 +274,15 @@ const TablePrescription = ({ dataSoap, patientDetail }) => {
         skeletonCols={9}
         isLoading={isLoadingPrescription}
         action={
-          <Button
-            onClick={onOpenAddPrescriptionModal}
-            colorScheme="green"
-            size="sm"
-          >
-            Add Prescription
-          </Button>
+          <PrivateComponent permission={Permissions.createPrescription}>
+            <Button
+              onClick={onOpenAddPrescriptionModal}
+              colorScheme="green"
+              size="sm"
+            >
+              Add Prescription
+            </Button>
+          </PrivateComponent>
         }
       />
     </>

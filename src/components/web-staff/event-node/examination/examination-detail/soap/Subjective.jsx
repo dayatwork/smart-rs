@@ -48,6 +48,10 @@ import { Allergies } from './Allergies';
 import { MedicalHistory } from './MedicalHistory';
 import { FamilyHistory } from './FamilyHistory';
 import { SocialHistory } from './SocialHistory';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
   const toast = useToast();
@@ -160,16 +164,24 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
       <Box bg="white" p="4" boxShadow="md" overflow="auto">
         {/* <MedicalRoutine />
         <Divider my="6" /> */}
-        <Allergies patientDetail={patientDetail} />
+        <PrivateComponent permission={Permissions.indexPatientAllergy}>
+          <Allergies patientDetail={patientDetail} />
+        </PrivateComponent>
         <Divider my="6" />
-        <MedicalHistory patientDetail={patientDetail} />
+        <PrivateComponent permission={Permissions.indexPatientMedicalHistory}>
+          <MedicalHistory patientDetail={patientDetail} />
+        </PrivateComponent>
         <Divider my="6" />
-        <FamilyHistory patientDetail={patientDetail} />
+        <PrivateComponent permission={Permissions.indexPatientFamilyHistory}>
+          <FamilyHistory patientDetail={patientDetail} />
+        </PrivateComponent>
         <Divider my="6" />
-        <SocialHistory
-          patientDetail={patientDetail}
-          userDetails={userDetails}
-        />
+        <PrivateComponent permission={Permissions.indexPatientSocialHistory}>
+          <SocialHistory
+            patientDetail={patientDetail}
+            userDetails={userDetails}
+          />
+        </PrivateComponent>
         <Divider my="6" />
 
         <Box px="4" maxW="xl">
@@ -186,97 +198,114 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
           </FormControl>
         </Box>
         <Divider my="6" />
-        <Box mb="4" py="4">
-          <Flex
-            justify="space-between"
-            px="4"
-            mb="3"
-            align={{ base: 'stretch', md: 'center' }}
-            flexDir={{ base: 'column', md: 'row' }}
-          >
-            <Heading
-              as="h3"
-              fontSize="xl"
-              color="purple.500"
-              mb={{ base: '2', md: '0' }}
+        <PrivateComponent permission={Permissions.indexPatientSymptom}>
+          <Box mb="4" py="4">
+            <Flex
+              justify="space-between"
+              px="4"
+              mb="3"
+              align={{ base: 'stretch', md: 'center' }}
+              flexDir={{ base: 'column', md: 'row' }}
             >
-              Symptom
-            </Heading>
-            <Button
-              onClick={onOpenAddSymptomModal}
-              colorScheme="green"
-              leftIcon={<FaPlus />}
-              size="sm"
-            >
-              Add Symptom
-            </Button>
-          </Flex>
-          <Box px="4">
-            {isLoadingPatientSymptoms && (
-              <Center py="6">
-                <Spinner />
-              </Center>
-            )}
-            <Accordion
-              defaultIndex={[0]}
-              allowMultiple
-              border="1px"
-              borderColor="gray.200"
-            >
-              {dataPatientSymptoms?.data?.patient_symptom_details?.map(
-                symptom => (
-                  <AccordionItem key={symptom?.id}>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          {symptom?.symptom_name}
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
-                      <Description
-                        title="Symptom"
-                        value={symptom?.symptom_name}
-                      />
-                      <Description title="Onset" value={symptom?.onset} />
-                      <Description title="Location" value={symptom?.location} />
-                      <Description title="Duration" value={symptom?.duration} />
-                      <Description
-                        title="Characterization"
-                        value={symptom?.characterization}
-                      />
-                      <Description
-                        title="Alleviating & Aggravating Factors"
-                        value={symptom?.alleviating_and_aggravating_factors}
-                      />
-                      <Description
-                        title="Radiation"
-                        value={symptom?.radiation}
-                      />
-                      <Description
-                        title="Temporal Factor"
-                        value={symptom?.temporal_factor}
-                      />
-                      <Description title="Severity" value={symptom?.severity} />
-                      <Flex justify="flex-end" mt="2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          colorScheme="red"
-                          isLoading={isLoadingDelete}
-                          onClick={() => handleDelete(symptom.id)}
-                        >
-                          Delete
-                        </Button>
-                      </Flex>
-                    </AccordionPanel>
-                  </AccordionItem>
-                )
+              <Heading
+                as="h3"
+                fontSize="xl"
+                color="purple.500"
+                mb={{ base: '2', md: '0' }}
+              >
+                Symptom
+              </Heading>
+              <PrivateComponent permission={Permissions.createPatientSymptom}>
+                <Button
+                  onClick={onOpenAddSymptomModal}
+                  colorScheme="green"
+                  leftIcon={<FaPlus />}
+                  size="sm"
+                >
+                  Add Symptom
+                </Button>
+              </PrivateComponent>
+            </Flex>
+            <Box px="4">
+              {isLoadingPatientSymptoms && (
+                <Center py="6">
+                  <Spinner />
+                </Center>
               )}
-            </Accordion>
+              <Accordion
+                defaultIndex={[0]}
+                allowMultiple
+                border="1px"
+                borderColor="gray.200"
+              >
+                {dataPatientSymptoms?.data?.patient_symptom_details?.map(
+                  symptom => (
+                    <AccordionItem key={symptom?.id}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            {symptom?.symptom_name}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        <Description
+                          title="Symptom"
+                          value={symptom?.symptom_name}
+                        />
+                        <Description title="Onset" value={symptom?.onset} />
+                        <Description
+                          title="Location"
+                          value={symptom?.location}
+                        />
+                        <Description
+                          title="Duration"
+                          value={symptom?.duration}
+                        />
+                        <Description
+                          title="Characterization"
+                          value={symptom?.characterization}
+                        />
+                        <Description
+                          title="Alleviating & Aggravating Factors"
+                          value={symptom?.alleviating_and_aggravating_factors}
+                        />
+                        <Description
+                          title="Radiation"
+                          value={symptom?.radiation}
+                        />
+                        <Description
+                          title="Temporal Factor"
+                          value={symptom?.temporal_factor}
+                        />
+                        <Description
+                          title="Severity"
+                          value={symptom?.severity}
+                        />
+                        <PrivateComponent
+                          permission={Permissions.deletePatientSymptom}
+                        >
+                          <Flex justify="flex-end" mt="2">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              colorScheme="red"
+                              isLoading={isLoadingDelete}
+                              onClick={() => handleDelete(symptom.id)}
+                            >
+                              Delete
+                            </Button>
+                          </Flex>
+                        </PrivateComponent>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  )
+                )}
+              </Accordion>
+            </Box>
           </Box>
-        </Box>
+        </PrivateComponent>
       </Box>
     </>
   );
@@ -454,7 +483,7 @@ const AddSymptomModal = ({
           </FormControl>
           <FormControl mb="4" id="location">
             <FormLabel>Location</FormLabel>
-            <Input {...register('locatin')} />
+            <Input {...register('location')} />
           </FormControl>
           <FormControl mb="4" id="duration">
             <FormLabel>Duration</FormLabel>
@@ -495,13 +524,15 @@ const AddSymptomModal = ({
           <Button mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button
-            colorScheme="green"
-            onClick={handleSubmit(onSubmit)}
-            isLoading={isLoading}
-          >
-            Create
-          </Button>
+          <PrivateComponent permission={Permissions.createPatientSymptom}>
+            <Button
+              colorScheme="green"
+              onClick={handleSubmit(onSubmit)}
+              isLoading={isLoading}
+            >
+              Create
+            </Button>
+          </PrivateComponent>
         </ModalFooter>
       </ModalContent>
     </Modal>

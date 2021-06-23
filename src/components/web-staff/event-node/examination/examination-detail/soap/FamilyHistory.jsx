@@ -30,6 +30,10 @@ import {
   getPatientFamilyHistories,
   updatePatientFamilyHistories,
 } from '../../../../../../api/medical-record-services/family-history';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const FamilyHistory = ({ patientDetail }) => {
   const [cookies] = useCookies(['token']);
@@ -72,13 +76,15 @@ export const FamilyHistory = ({ patientDetail }) => {
           >
             Family History
           </Heading>
-          <Button
-            onClick={onOpenFamilyHistoryModal}
-            colorScheme="green"
-            size="sm"
-          >
-            Update Family History
-          </Button>
+          <PrivateComponent permission={Permissions.updatePatientFamilyHistory}>
+            <Button
+              onClick={onOpenFamilyHistoryModal}
+              colorScheme="green"
+              size="sm"
+            >
+              Update Family History
+            </Button>
+          </PrivateComponent>
         </Flex>
         {isLoadingFamHistories && (
           <Center py="6">

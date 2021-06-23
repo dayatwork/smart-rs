@@ -36,6 +36,10 @@ import {
   getPatientAllergies,
   updatePatientAllergies,
 } from '../../../../../../api/medical-record-services/allergies';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const Allergies = ({ patientDetail }) => {
   const [cookies] = useCookies(['token']);
@@ -78,9 +82,15 @@ export const Allergies = ({ patientDetail }) => {
           >
             Allergies
           </Heading>
-          <Button onClick={onOpenAllergiesModal} colorScheme="green" size="sm">
-            Update Allergies
-          </Button>
+          <PrivateComponent permission={Permissions.updatePatientAllergy}>
+            <Button
+              onClick={onOpenAllergiesModal}
+              colorScheme="green"
+              size="sm"
+            >
+              Update Allergies
+            </Button>
+          </PrivateComponent>
         </Flex>
         {isLoadingPatientAllergies && (
           <Center py="6">

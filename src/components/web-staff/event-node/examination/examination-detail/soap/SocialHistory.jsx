@@ -33,6 +33,10 @@ import {
   getPatientSocialHistories,
   updatePatientSocialHistories,
 } from '../../../../../../api/medical-record-services/social-history';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const SocialHistory = ({ patientDetail, userDetails }) => {
   const [cookies] = useCookies(['token']);
@@ -76,13 +80,15 @@ export const SocialHistory = ({ patientDetail, userDetails }) => {
           >
             Social History
           </Heading>
-          <Button
-            onClick={onOpenSocialHistoryModal}
-            colorScheme="green"
-            size="sm"
-          >
-            Update Social History
-          </Button>
+          <PrivateComponent permission={Permissions.updatePatientSocialHistory}>
+            <Button
+              onClick={onOpenSocialHistoryModal}
+              colorScheme="green"
+              size="sm"
+            >
+              Update Social History
+            </Button>
+          </PrivateComponent>
         </Flex>
         {isLoadingSocialHistories && (
           <Center py="6">

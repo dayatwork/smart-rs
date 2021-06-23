@@ -13,6 +13,7 @@ import {
 import { getHospitalPatientById } from '../../../../../api/patient-services/hospital-patient';
 import { createSoap } from '../../../../../api/medical-record-services/soap';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 // import { PrivateComponent } from 'components/common/PrivateComponent';
 // import { Permissions } from 'constants/permissions';
 
@@ -132,26 +133,24 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
       {
         Header: 'Details',
         Cell: ({ row }) => (
-          // <PrivateComponent permission={Permissions.createExamination}>
-          <Button
-            colorScheme="purple"
-            // as={Link}
-            // to="/events/examination/details"
-            size="sm"
-            onClick={() =>
-              handleCreateSoap(
-                row.original.patient_id,
-                row.original.booking_id,
-                row.original.transaction_number
-              )
-            }
-            isLoading={
-              isLoadingCreateSoap && patient === row.original.patient_id
-            }
-          >
-            Start Anamnesis
-          </Button>
-          // </PrivateComponent>
+          <PrivateComponent permission={Permissions.createExamination}>
+            <Button
+              colorScheme="purple"
+              size="sm"
+              onClick={() =>
+                handleCreateSoap(
+                  row.original.patient_id,
+                  row.original.booking_id,
+                  row.original.transaction_number
+                )
+              }
+              isLoading={
+                isLoadingCreateSoap && patient === row.original.patient_id
+              }
+            >
+              Start Anamnesis
+            </Button>
+          </PrivateComponent>
         ),
       },
     ],
@@ -168,7 +167,6 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
         columns={columns}
         data={data || []}
         skeletonCols={7}
-        // isLoading={isLoadingHospitalPatients}
         isLoading={isLoadingBookingList}
       />
     </Box>

@@ -1,12 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useState, useContext } from 'react';
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -25,6 +19,7 @@ import { BackButton } from '../../../../../components/shared/BackButton';
 import { WaitingPatient } from './WaitingPatient';
 import { ActivePatient } from './ActivePatient';
 import { HistoryPatient } from './HistoryPatient';
+import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 const subMenus = [
   {
@@ -99,15 +94,27 @@ export const ExaminationPage = () => {
         ))}
       </SimpleGrid>
       <Switch>
-        <Route exact path={path}>
+        <PrivateRoute
+          permission={Permissions.indexExamination}
+          exact
+          path={path}
+        >
           <WaitingPatient selectedInstitution={selectedInstitution} />
-        </Route>
-        <Route exact path={`${path}/active`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.indexExamination}
+          exact
+          path={`${path}/active`}
+        >
           <ActivePatient selectedInstitution={selectedInstitution} />
-        </Route>
-        <Route exact path={`${path}/history`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.indexExamination}
+          exact
+          path={`${path}/history`}
+        >
           <HistoryPatient selectedInstitution={selectedInstitution} />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Box>
   );

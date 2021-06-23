@@ -30,6 +30,10 @@ import {
   getPatientMedicalHistories,
   updatePatientMedicalHistories,
 } from '../../../../../../api/medical-record-services/medical-history';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const MedicalHistory = ({ patientDetail }) => {
   const [cookies] = useCookies(['token']);
@@ -72,13 +76,17 @@ export const MedicalHistory = ({ patientDetail }) => {
           >
             Medical History
           </Heading>
-          <Button
-            onClick={onOpenMedicalHistoryModal}
-            colorScheme="green"
-            size="sm"
+          <PrivateComponent
+            permission={Permissions.updatePatientMedicalHistory}
           >
-            Update Medical History
-          </Button>
+            <Button
+              onClick={onOpenMedicalHistoryModal}
+              colorScheme="green"
+              size="sm"
+            >
+              Update Medical History
+            </Button>
+          </PrivateComponent>
         </Flex>
         {isLoadingMedHistories && (
           <Center py="6">

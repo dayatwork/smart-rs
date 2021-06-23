@@ -25,6 +25,10 @@ import {
   getPatientVitalSign,
   createPatientVitalSign,
 } from '../../../../../../api/medical-record-services/vital-sign';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 import {
   calculateBMI,
@@ -540,17 +544,19 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
           </FormControl>
         </SimpleGrid>
       )}
-      <Flex justify="flex-end">
-        <Button
-          size="sm"
-          mt="2"
-          w="24"
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isLoading}
-        >
-          Save
-        </Button>
-      </Flex>
+      <PrivateComponent permission={Permissions.updatePatientVitalSign}>
+        <Flex justify="flex-end">
+          <Button
+            size="sm"
+            mt="2"
+            w="24"
+            onClick={handleSubmit(onSubmit)}
+            isLoading={isLoading}
+          >
+            Save
+          </Button>
+        </Flex>
+      </PrivateComponent>
     </Box>
   );
 };

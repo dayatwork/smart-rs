@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 
 import { getSoaps } from '../../../../../api/medical-record-services/soap';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
   const [cookies] = useCookies(['token']);
@@ -87,33 +88,37 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
         Header: 'Action',
 
         Cell: () => (
-          <Button
-            size="sm"
-            p="2"
-            rounded="md"
-            fontWeight="semibold"
-            colorScheme="green"
-          >
-            Call Now
-          </Button>
+          <PrivateComponent permission={Permissions['call-patientExamination']}>
+            <Button
+              size="sm"
+              p="2"
+              rounded="md"
+              fontWeight="semibold"
+              colorScheme="green"
+            >
+              Call Now
+            </Button>
+          </PrivateComponent>
         ),
       },
       {
         Header: 'Details',
         Cell: ({ row }) => (
-          <Button
-            size="sm"
-            colorScheme="purple"
-            variant="outline"
-            as={Link}
-            to={
-              fromPatientMenu
-                ? `/patient/soap/${row.original.id}`
-                : `/events/examination/details/${row.original.id}`
-            }
-          >
-            Details
-          </Button>
+          <PrivateComponent permission={Permissions['read-detailExamination']}>
+            <Button
+              size="sm"
+              colorScheme="purple"
+              variant="outline"
+              as={Link}
+              to={
+                fromPatientMenu
+                  ? `/patient/soap/${row.original.id}`
+                  : `/events/examination/details/${row.original.id}`
+              }
+            >
+              Details
+            </Button>
+          </PrivateComponent>
         ),
       },
     ],

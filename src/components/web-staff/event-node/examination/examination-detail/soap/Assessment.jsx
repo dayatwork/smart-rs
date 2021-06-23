@@ -22,6 +22,10 @@ import {
   getPatientAssessment,
   createPatientAssessment,
 } from '../../../../../../api/medical-record-services/soap';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const Assesment = ({ patientDetail, soapAssessments }) => {
   const toast = useToast();
@@ -30,12 +34,13 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
   const [searchBy, setSearchBy] = useState('code');
   const { register, handleSubmit, reset } = useForm();
   const [currentICD, setCurrentICD] = useState([]);
-  const [isLoadingCreateAssessment, setIsLoadingCreateAssessment] = useState(false);
+  const [isLoadingCreateAssessment, setIsLoadingCreateAssessment] =
+    useState(false);
 
   useEffect(() => {
     const getAssessment = async () => {
       const res = await getPatientAssessment(cookies, soapAssessments[0].id);
-      const icdId = res?.data?.soap_assessment_details?.map((icd) => icd.icd_id);
+      const icdId = res?.data?.soap_assessment_details?.map(icd => icd.icd_id);
       setCurrentICD(icdId);
       reset({ doctor_note: res?.data?.doctor_note });
     };
@@ -45,7 +50,7 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
   }, [cookies, soapAssessments, reset]);
 
   const fetchICDDetail = useCallback(
-    async (id) => {
+    async id => {
       const res = await getICD10ById(cookies, id);
       return {
         id: res?.data?.id,
@@ -54,13 +59,13 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
         name_id: res?.data?.name_id,
       };
     },
-    [cookies],
+    [cookies]
   );
 
   useEffect(() => {
-    currentICD.forEach(async (id) => {
+    currentICD.forEach(async id => {
       const icd = await fetchICDDetail(id);
-      setSelectedICD((prev) => {
+      setSelectedICD(prev => {
         const newIcd = {
           label: `${icd.code} - ${icd.name}`,
           value: JSON.stringify({
@@ -70,7 +75,7 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
             name_id: icd.name_id,
           }),
         };
-        const already = prev.find((i) => i.label === newIcd.label);
+        const already = prev.find(i => i.label === newIcd.label);
         if (already) {
           return prev;
         }
@@ -79,7 +84,7 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
     });
   }, [currentICD, fetchICDDetail]);
 
-  const handleChange = (selectedICD) => {
+  const handleChange = selectedICD => {
     setSelectedICD(selectedICD || []);
   };
 
@@ -87,8 +92,8 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
     if (inputText === '') {
       return callback(null, { options: [] });
     }
-    searchICD10(cookies, { searchBy, inputText }).then((json) => {
-      const icd10 = json?.data?.map((item) => ({
+    searchICD10(cookies, { searchBy, inputText }).then(json => {
+      const icd10 = json?.data?.map(item => ({
         label: `${item.code} - ${item.name}`,
         value: JSON.stringify({
           id: item.id,
@@ -106,12 +111,12 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
     debounceFetch(inputText, callback, searchBy);
   };
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { doctor_note } = value;
     const soap_assessment_id = soapAssessments[0].id;
     const user_id = patientDetail?.patient?.user_id;
     const patient_id = patientDetail?.patient_id;
-    const data = selectedICD.map((icd) => ({
+    const data = selectedICD.map(icd => ({
       icd_id: JSON.parse(icd.value).id,
       icd_name: JSON.parse(icd.value).name,
     }));
@@ -148,36 +153,49 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
   };
 
   return (
-    <Box bg="white" p="4" boxShadow="md">
-      <Box px="4" maxW="2xl">
-        <FormControl id="icd10" mb="4">
-          <Flex justify="space-between" align="center" mb="2">
-            <FormLabel m="0">ICD 10</FormLabel>
-            <Select value={searchBy} onChange={(e) => setSearchBy(e.target.value)} w="40">
-              <option value="">Search by</option>
-              <option value="code">Code</option>
-              <option value="name">Name</option>
-              <option value="name_id">Name (ID)</option>
-            </Select>
-          </Flex>
-          <AsyncSelect
-            isMulti
-            // cacheOptions
-            isClearable
-            value={selectedICD}
-            onChange={handleChange}
-            loadOptions={loadOptions}
-            // components={AnimatedComponent}
-          />
-        </FormControl>
-        <FormControl id="notes" mb="4">
-          <FormLabel>{`Doctor's notes`}</FormLabel>
-          <Textarea rows="8" {...register('doctor_note')} />
-        </FormControl>
-        <Button onClick={handleSubmit(onSubmit)} isLoading={isLoadingCreateAssessment}>
-          Save
-        </Button>
+    <PrivateComponent permission={Permissions.indexSoapAssessment}>
+      <Box bg="white" p="4" boxShadow="md">
+        <Box px="4" maxW="2xl">
+          <FormControl id="icd10" mb="4">
+            <Flex justify="space-between" align="center" mb="2">
+              <FormLabel m="0">ICD 10</FormLabel>
+              <Select
+                value={searchBy}
+                onChange={e => setSearchBy(e.target.value)}
+                w="40"
+              >
+                <option value="">Search by</option>
+                <option value="code">Code</option>
+                <option value="name">Name</option>
+                <option value="name_id">Name (ID)</option>
+              </Select>
+            </Flex>
+            <PrivateComponent permission={Permissions.updateSoapAssessment}>
+              <AsyncSelect
+                isMulti
+                // cacheOptions
+                isClearable
+                value={selectedICD}
+                onChange={handleChange}
+                loadOptions={loadOptions}
+                // components={AnimatedComponent}
+              />
+            </PrivateComponent>
+          </FormControl>
+          <FormControl id="notes" mb="4">
+            <FormLabel>{`Doctor's notes`}</FormLabel>
+            <Textarea rows="8" {...register('doctor_note')} />
+          </FormControl>
+          <PrivateComponent permission={Permissions.updateSoapAssessment}>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              isLoading={isLoadingCreateAssessment}
+            >
+              Save
+            </Button>
+          </PrivateComponent>
+        </Box>
       </Box>
-    </Box>
+    </PrivateComponent>
   );
 };

@@ -185,6 +185,14 @@ const App = () => {
   const [isLoadingPermissions, setIsLoadingPermissions] = useState(true);
   const [isLoadingEmployeeDetail, setIsLoadingEmployeeDetail] = useState(false);
 
+  const logout = async callback => {
+    removeCookie('token');
+    removeCookie('user');
+    removeCookie('employee');
+    setPermissions([]);
+    callback();
+  };
+
   useEffect(() => {
     if (!cookies.token || !cookies.user || !cookies.employee) {
       setIsLoadingPermissions(false);
@@ -252,17 +260,9 @@ const App = () => {
     setEmployeeDetail(cookies.employee);
   }, [cookies.token, cookies.user, cookies.employee]);
 
-  const logout = async callback => {
-    removeCookie('token');
-    removeCookie('user');
-    removeCookie('employee');
-    setPermissions([]);
-    callback();
-  };
-
-  console.log({ user });
-  console.log({ employeeDetail });
-  console.log({ permissions });
+  // console.log({ user });
+  // console.log({ employeeDetail });
+  // console.log({ permissions });
 
   return (
     <Router>

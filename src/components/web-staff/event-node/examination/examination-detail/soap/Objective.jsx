@@ -25,6 +25,10 @@ import {
   updatePatientObjective,
 } from '../../../../../../api/medical-record-services/soap';
 import { VitalSign } from './VitalSign';
+import {
+  PrivateComponent,
+  Permissions,
+} from '../../../../../../access-control';
 
 export const Objective = ({ soapId, patientDetail, userDetail }) => {
   const [cookies] = useCookies(['token']);
@@ -77,85 +81,99 @@ export const Objective = ({ soapId, patientDetail, userDetail }) => {
     <>
       <Box bg="white" p="4" boxShadow="md" overflow="auto">
         <Box px="4" mb="4">
-          <Heading as="h3" fontSize="xl" color="purple.500" mt="2">
-            Vital Sign
-          </Heading>
-          <VitalSign patientDetail={patientDetail} userDetail={userDetail} />
-          <Flex justify="space-between" align="center">
-            <Heading as="h3" fontSize="xl" color="purple.500">
-              Objective
-            </Heading>
-          </Flex>
-          <Box py="4">
-            <Accordion allowToggle>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      Results
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <SimpleGrid
-                    columns={objectiveGridColumns}
-                    columnGap="8"
-                    rowGap="4"
-                    py="4"
-                  >
-                    {dataPatientObjectives?.data?.soap_objective_details
-                      ?.sort(compare)
-                      ?.map((objective, index) => {
-                        return (
-                          <Flex
-                            align="flex-end"
-                            key={objective.id}
-                            // mb="2"
-                            // maxW="md"
+          <PrivateComponent permission={Permissions.indexPatientVitalSign}>
+            <>
+              <Heading as="h3" fontSize="xl" color="purple.500" mt="2">
+                Vital Sign
+              </Heading>
+              <VitalSign
+                patientDetail={patientDetail}
+                userDetail={userDetail}
+              />
+            </>
+          </PrivateComponent>
+          <PrivateComponent permission={Permissions.indexSoapObjective}>
+            <>
+              <Flex justify="space-between" align="center">
+                <Heading as="h3" fontSize="xl" color="purple.500">
+                  Objective
+                </Heading>
+              </Flex>
+              <Box py="4">
+                <Accordion allowToggle>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          Results
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <SimpleGrid
+                        columns={objectiveGridColumns}
+                        columnGap="8"
+                        rowGap="4"
+                        py="4"
+                      >
+                        {dataPatientObjectives?.data?.soap_objective_details
+                          ?.sort(compare)
+                          ?.map((objective, index) => {
+                            return (
+                              <Flex
+                                align="flex-end"
+                                key={objective.id}
+                                // mb="2"
+                                // maxW="md"
+                              >
+                                <FormControl id={objective.id} display="none">
+                                  <VisuallyHidden as="label">Id</VisuallyHidden>
+                                  <Input
+                                    defaultValue={objective.id}
+                                    // disabled
+                                    display="none"
+                                    {...register(
+                                      `objectives[${index}].soap_objective_detail_id`
+                                    )}
+                                  />
+                                </FormControl>
+                                <FormControl
+                                  id={objective.soap_objective_template_name}
+                                  mr="2"
+                                >
+                                  <FormLabel>
+                                    {objective.soap_objective_template_name}
+                                  </FormLabel>
+                                  <Input
+                                    defaultValue={objective.description}
+                                    {...register(
+                                      `objectives[${index}].description`
+                                    )}
+                                  />
+                                </FormControl>
+                              </Flex>
+                            );
+                          })}
+                      </SimpleGrid>
+                      <PrivateComponent
+                        permission={Permissions.updateSoapObjective}
+                      >
+                        <Flex justify="flex-end">
+                          <Button
+                            onClick={handleSubmit(onSubmit)}
+                            isLoading={isLoading}
                           >
-                            <FormControl id={objective.id} display="none">
-                              <VisuallyHidden as="label">Id</VisuallyHidden>
-                              <Input
-                                defaultValue={objective.id}
-                                // disabled
-                                display="none"
-                                {...register(
-                                  `objectives[${index}].soap_objective_detail_id`
-                                )}
-                              />
-                            </FormControl>
-                            <FormControl
-                              id={objective.soap_objective_template_name}
-                              mr="2"
-                            >
-                              <FormLabel>
-                                {objective.soap_objective_template_name}
-                              </FormLabel>
-                              <Input
-                                defaultValue={objective.description}
-                                {...register(
-                                  `objectives[${index}].description`
-                                )}
-                              />
-                            </FormControl>
-                          </Flex>
-                        );
-                      })}
-                  </SimpleGrid>
-
-                  <Flex justify="flex-end">
-                    <Button
-                      onClick={handleSubmit(onSubmit)}
-                      isLoading={isLoading}
-                    >
-                      Save
-                    </Button>
-                  </Flex>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Box>
+                            Save
+                          </Button>
+                        </Flex>
+                      </PrivateComponent>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              </Box>
+            </>
+          </PrivateComponent>
         </Box>
       </Box>
     </>

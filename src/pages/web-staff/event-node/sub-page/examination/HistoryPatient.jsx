@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 
 import { getSoaps } from '../../../../../api/medical-record-services/soap';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const HistoryPatient = ({ selectedInstitution, fromPatientMenu }) => {
   const [cookies] = useCookies(['token']);
@@ -73,19 +74,21 @@ export const HistoryPatient = ({ selectedInstitution, fromPatientMenu }) => {
       {
         Header: 'Result',
         Cell: ({ row }) => (
-          <Button
-            size="sm"
-            colorScheme="purple"
-            variant="outline"
-            as={Link}
-            to={
-              fromPatientMenu
-                ? `/patient/soap-result/${row.original.id}`
-                : `/events/examination/result/${row.original.id}`
-            }
-          >
-            Result
-          </Button>
+          <PrivateComponent permission={Permissions['read-detailExamination']}>
+            <Button
+              size="sm"
+              colorScheme="purple"
+              variant="outline"
+              as={Link}
+              to={
+                fromPatientMenu
+                  ? `/patient/soap-result/${row.original.id}`
+                  : `/events/examination/result/${row.original.id}`
+              }
+            >
+              Result
+            </Button>
+          </PrivateComponent>
         ),
       },
     ],
