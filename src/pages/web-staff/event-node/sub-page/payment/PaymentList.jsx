@@ -18,7 +18,7 @@ import { getInstitutionOrderList } from '../../../../../api/payment-services/ord
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 
-export const PaymentList = () => {
+export const PaymentList = ({ fromFinanceMenu }) => {
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
     '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
@@ -107,7 +107,11 @@ export const PaymentList = () => {
         Cell: ({ row }) => (
           <Button
             as={Link}
-            to={`/events/payment/${row.original.id}`}
+            to={
+              fromFinanceMenu
+                ? `/finance/patient-payment/${row.original.id}`
+                : `/events/payment/${row.original.id}`
+            }
             variant="link"
             colorScheme="purple"
           >
@@ -124,9 +128,13 @@ export const PaymentList = () => {
       {isFetchingInstitutionOrderList && (
         <Spinner top="8" right="12" position="absolute" color="purple" />
       )}
-      <BackButton to="/events" text="Back to Events List" />
+      {fromFinanceMenu ? (
+        <BackButton to="/finance" text="Back to Finance " />
+      ) : (
+        <BackButton to="/events" text="Back to Events List" />
+      )}
       <Heading mb="6" fontSize="3xl">
-        Payment
+        {fromFinanceMenu ? 'Patient Payment' : 'Payment'}
       </Heading>
       <FormControl id="name" mb="4" maxW="xs">
         <FormLabel>Institution</FormLabel>

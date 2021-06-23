@@ -35,6 +35,7 @@ import {
   EventNodePage,
   PharmacyPage,
   DivisionPage,
+  FinancePage,
   PatientPage,
   PatientSoapPage,
   PatientSoapResultPage,
@@ -118,6 +119,9 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/division">
         <DivisionPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/finance">
+        <FinancePage />
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/patient/soap/:soapId">
         <PatientSoapPage />

@@ -33,7 +33,7 @@ import {
 } from '../../../../../api/payment-services/manual-verification';
 import { ImFileEmpty } from 'react-icons/im';
 
-export const PaymentDetails = () => {
+export const PaymentDetails = ({ fromFinanceMenu }) => {
   const history = useHistory();
   const params = useParams();
   const toast = useToast();
@@ -108,7 +108,14 @@ export const PaymentDetails = () => {
         handleVerifyPayment={handleVerifyPayment}
         isLoading={isLoading}
       />
-      <BackButton to="/events/payment" text="Back to Payment List" />
+      {fromFinanceMenu ? (
+        <BackButton
+          to="/finance/patient-payment"
+          text="Back to Patient Payment List"
+        />
+      ) : (
+        <BackButton to="/events/payment" text="Back to Payment List" />
+      )}
       <Heading mb="6" fontSize="3xl">
         Payment Details
       </Heading>

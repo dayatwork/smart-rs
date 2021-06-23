@@ -24,7 +24,7 @@ import {
 } from '../../../../components/web-staff/institution-management/payment-method';
 import { BackButton } from '../../../../components/shared/BackButton';
 
-export const PaymentMethodPage = () => {
+export const PaymentMethodPage = ({ fromFinanceMenu }) => {
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
     '3f026d44-6b43-47ce-ba4b-4d0a8b174286'
@@ -149,10 +149,14 @@ export const PaymentMethodPage = () => {
         selectedPaymentMethod={selectedPaymentMethod}
       />
 
-      <BackButton
-        to="/institution-management"
-        text="Back to Institution Management List"
-      />
+      {fromFinanceMenu ? (
+        <BackButton to="/finance" text="Back to Finance" />
+      ) : (
+        <BackButton
+          to="/institution-management"
+          text="Back to Institution Management List"
+        />
+      )}
 
       <Heading mb="6" fontSize="3xl">
         Payment Method
