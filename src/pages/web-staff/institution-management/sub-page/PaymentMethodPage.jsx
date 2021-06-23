@@ -79,6 +79,7 @@ export const PaymentMethodPage = () => {
         name: paymentMethod?.name,
         alias: paymentMethod?.alias,
         account_number: paymentMethod?.account_number,
+        account_name: paymentMethod?.account_name,
         description: paymentMethod?.description,
       })),
     [dataPaymentMethods?.data, isSuccessPaymentMethods]
@@ -104,6 +105,11 @@ export const PaymentMethodPage = () => {
       {
         Header: 'Account Number',
         accessor: 'account_number',
+        Cell: ({ value }) => (value ? value : '-'),
+      },
+      {
+        Header: 'Account Name',
+        accessor: 'account_name',
         Cell: ({ value }) => (value ? value : '-'),
       },
       {
@@ -174,7 +180,7 @@ export const PaymentMethodPage = () => {
               columns={columns}
               data={data || []}
               isLoading={isLoadingPaymentMethods}
-              skeletonCols={6}
+              skeletonCols={7}
               action={
                 <Button colorScheme="purple" onClick={onModalOpen}>
                   Add New Payment Method

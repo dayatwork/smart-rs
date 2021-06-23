@@ -45,6 +45,7 @@ export const EditPaymentMethodDrawer = ({
       name: selectedPaymentMethod?.name,
       alias: selectedPaymentMethod?.alias,
       account_number: selectedPaymentMethod?.account_number,
+      account_name: selectedPaymentMethod?.account_name,
       description: selectedPaymentMethod?.description,
     });
   }, [selectedPaymentMethod, reset]);
@@ -91,6 +92,7 @@ export const EditPaymentMethodDrawer = ({
       name: values.name,
       alias: values.alias,
       account_number: values.account_number,
+      account_name: values.account_name,
       description: values.description,
     };
     await mutate(paymentMethod);
@@ -153,6 +155,21 @@ export const EditPaymentMethodDrawer = ({
                 />
                 <FormErrorMessage>
                   {errors.account_number && errors.account_number.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="account_name"
+                mb="8"
+                isInvalid={errors?.account_name ? true : false}
+              >
+                <FormLabel>Account Name</FormLabel>
+                <Input
+                  {...register('account_name', {
+                    required: 'Account number is required',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.account_name && errors.account_name.message}
                 </FormErrorMessage>
               </FormControl>
               <FormControl

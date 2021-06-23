@@ -88,13 +88,14 @@ export const AddPaymentMethodModal = ({
   });
 
   const onSubmit = async values => {
-    const { paymentMethods, accountNumbers } = values;
+    const { paymentMethods, accountNumbers, accountNames } = values;
     const formattedPaymentMethods = paymentMethods
       .map((type, index) => {
         if (type) {
           return {
             ...JSON.parse(type),
             account_number: accountNumbers[index],
+            account_name: accountNames[index],
           };
         }
         return type;
@@ -104,6 +105,7 @@ export const AddPaymentMethodModal = ({
       institution_id: selectedInstitution,
       data: formattedPaymentMethods,
     };
+    // console.log({ data });
     await mutate(data);
   };
 
@@ -116,7 +118,7 @@ export const AddPaymentMethodModal = ({
         <ModalBody>
           <FormControl id="types">
             <VisuallyHidden as="label">Payment Method</VisuallyHidden>
-            <SimpleGrid columns={3} gap="2">
+            <SimpleGrid columns={3} gap="4">
               {dataPaymentMethodsMaster?.data
                 ?.filter(paymentMethod => {
                   const alreadyPaymentMethods = dataPaymentMethods?.data?.map(
@@ -125,8 +127,16 @@ export const AddPaymentMethodModal = ({
                   return !alreadyPaymentMethods?.includes(paymentMethod.id);
                 })
                 .map((method, index) => (
-                  <Box key={method.id}>
+                  <Box
+                    key={method.id}
+                    border="1px"
+                    borderColor="gray.100"
+                    py="2"
+                    px="3"
+                    bgColor="gray.100"
+                  >
                     <Checkbox
+                      id={`account-${index}`}
                       value={JSON.stringify({
                         master_method_id: method.id,
                         name: method.name,
@@ -142,11 +152,26 @@ export const AddPaymentMethodModal = ({
                       </Text>
                     </Checkbox>
                     <Input
+                      id={`account-number-${index}`}
                       mt="2"
                       type="number"
                       placeholder="Account Number"
+                      bgColor="white"
+                      borderColor="gray.400"
                       size="sm"
                       {...register(`accountNumbers[${index}]`)}
+                      disabled={Boolean(
+                        paymentMethods && !paymentMethods[index]
+                      )}
+                    />
+                    <Input
+                      id={`account-name-${index}`}
+                      mt="2"
+                      placeholder="Account Name"
+                      bgColor="white"
+                      borderColor="gray.400"
+                      size="sm"
+                      {...register(`accountNames[${index}]`)}
                       disabled={Boolean(
                         paymentMethods && !paymentMethods[index]
                       )}
