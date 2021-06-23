@@ -47,8 +47,8 @@ import {
   PatientSoapPage,
   PatientSoapResultPage,
 } from './pages/web-staff';
-
 import { AccountSettingPage } from './pages/account-setting/AccountSettingPage';
+import { PrivateRoute, Permissions } from './access-control';
 
 const AuthenticatedRoute = ({ children, ...rest }) => {
   const { token, user } = useContext(AuthContext);
@@ -137,15 +137,21 @@ const AppRoutes = () => {
       <AuthenticatedRoute path="/finance">
         <FinancePage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/patient/soap/:soapId">
+      <PrivateRoute
+        permission={Permissions['read-detailExamination']}
+        path="/patient/soap/:soapId"
+      >
         <PatientSoapPage />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute path="/patient/soap-result/:soapId">
+      </PrivateRoute>
+      <PrivateRoute
+        permission={Permissions['read-detailExamination']}
+        path="/patient/soap-result/:soapId"
+      >
         <PatientSoapResultPage />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute path="/patient">
+      </PrivateRoute>
+      <PrivateRoute permission={Permissions.indexExamination} path="/patient">
         <PatientPage />
-      </AuthenticatedRoute>
+      </PrivateRoute>
     </Switch>
   );
 };

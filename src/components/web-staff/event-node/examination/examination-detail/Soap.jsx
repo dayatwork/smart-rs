@@ -36,6 +36,7 @@ import { Objective } from './soap/Objective';
 import { Assesment } from './soap/Assessment';
 import { Plan } from './soap/Plan';
 import { SoapHistory } from './soap/SoapHistory';
+import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const Soap = ({ dataSoap }) => {
   const [cookies] = useCookies(['token']);
@@ -600,11 +601,15 @@ export const Soap = ({ dataSoap }) => {
               </Box>
             </Box>
           </Flex>
-          <Box textAlign="right" px={{ base: '4', sm: '6', lg: '8' }}>
-            <Button colorScheme="purple" onClick={onOpenCompleteSOAP}>
-              Complete SOAP
-            </Button>
-          </Box>
+          <PrivateComponent
+            permission={Permissions['make-completeExamination']}
+          >
+            <Box textAlign="right" px={{ base: '4', sm: '6', lg: '8' }}>
+              <Button colorScheme="purple" onClick={onOpenCompleteSOAP}>
+                Complete SOAP
+              </Button>
+            </Box>
+          </PrivateComponent>
         </Box>
       )}
     </>

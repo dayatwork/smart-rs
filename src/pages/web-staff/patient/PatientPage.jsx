@@ -1,12 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useState, useContext } from 'react';
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -27,6 +21,7 @@ import { ActivePatient } from '../event-node/sub-page/examination/ActivePatient'
 import { HistoryPatient } from '../event-node/sub-page/examination/HistoryPatient';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
+import { PrivateRoute, Permissions } from '../../../access-control';
 
 const subMenus = [
   {
@@ -104,24 +99,36 @@ export const PatientPage = () => {
                 ))}
               </SimpleGrid>
               <Switch>
-                <Route exact path={path}>
+                <PrivateRoute
+                  permission={Permissions.indexExamination}
+                  exact
+                  path={path}
+                >
                   <WaitingPatient
                     selectedInstitution={selectedInstitution}
                     fromPatientMenu
                   />
-                </Route>
-                <Route exact path={`${path}/active`}>
+                </PrivateRoute>
+                <PrivateRoute
+                  permission={Permissions.indexExamination}
+                  exact
+                  path={`${path}/active`}
+                >
                   <ActivePatient
                     selectedInstitution={selectedInstitution}
                     fromPatientMenu
                   />
-                </Route>
-                <Route exact path={`${path}/history`}>
+                </PrivateRoute>
+                <PrivateRoute
+                  permission={Permissions.indexExamination}
+                  exact
+                  path={`${path}/history`}
+                >
                   <HistoryPatient
                     selectedInstitution={selectedInstitution}
                     fromPatientMenu
                   />
-                </Route>
+                </PrivateRoute>
               </Switch>
             </Box>
           </ContentWrapper>
