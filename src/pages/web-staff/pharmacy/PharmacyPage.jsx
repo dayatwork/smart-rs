@@ -16,6 +16,7 @@ import {
   DrugPackagePage,
   DrugPackageDetailPage,
 } from './sub-page';
+import { PrivateRoute, Permissions } from '../../../access-control';
 
 export const PharmacyPage = () => {
   const { path } = useRouteMatch();
@@ -24,27 +25,51 @@ export const PharmacyPage = () => {
     <AppShell>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
-          <SubMenuSideBar title="Pharmacy" titleLink="/pharmacy" subMenus={subMenus} />
+          <SubMenuSideBar
+            title="Pharmacy"
+            titleLink="/pharmacy"
+            subMenus={subMenus}
+          />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
+              <PrivateRoute
+                permission={Permissions.dashboardPharmacy}
+                exact
+                path={path}
+              >
                 <SubMenuGrid title="Pharmacy" subMenus={subMenus} />
-              </Route>
-              <Route exact path={`${path}/inventory`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexDrugInventory}
+                exact
+                path={`${path}/inventory`}
+              >
                 <DrugInventoryPage />
-              </Route>
-              <Route exact path={`${path}/receipt`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexReceipt}
+                exact
+                path={`${path}/receipt`}
+              >
                 <DrugReceiptPage />
-              </Route>
+              </PrivateRoute>
               <Route exact path={`${path}/receipt/:id`}>
                 <DrugReceiptDetailPage />
               </Route>
-              <Route exact path={`${path}/packaging`}>
+              <PrivateRoute
+                permission={Permissions.indexPackaging}
+                exact
+                path={`${path}/packaging`}
+              >
                 <DrugPackagePage />
-              </Route>
-              <Route exact path={`${path}/packaging/:id`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailPackaging']}
+                exact
+                path={`${path}/packaging/:id`}
+              >
                 <DrugPackageDetailPage />
-              </Route>
+              </PrivateRoute>
             </Switch>
           </ContentWrapper>
         </Flex>

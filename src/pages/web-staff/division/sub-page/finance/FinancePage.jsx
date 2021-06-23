@@ -9,6 +9,7 @@ import {
   CreateServicePricePage,
 } from './sub-page/service';
 import { DrugPriceListPage } from './sub-page/pharmacy';
+import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 export const FinancePage = () => {
   const { path } = useRouteMatch();
@@ -19,15 +20,27 @@ export const FinancePage = () => {
         <Route exact path={path}>
           <SubMenuGrid title="Keuangan" subMenus={subMenus} />
         </Route>
-        <Route exact path={`${path}/service`}>
+        <PrivateRoute
+          permission={Permissions.indexServicePrice}
+          exact
+          path={`${path}/service`}
+        >
           <ServicePriceListPage />
-        </Route>
-        <Route exact path={`${path}/service/create`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.createServicePrice}
+          exact
+          path={`${path}/service/create`}
+        >
           <CreateServicePricePage />
-        </Route>
-        <Route exact path={`${path}/pharmacy`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.indexDrugPrice}
+          exact
+          path={`${path}/pharmacy`}
+        >
           <DrugPriceListPage />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Box>
   );

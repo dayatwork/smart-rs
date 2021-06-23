@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -28,6 +28,7 @@ import {
   PaymentList,
   PaymentDetails,
 } from './sub-page';
+import { PrivateRoute, Permissions } from '../../../access-control';
 
 export const EventNodePage = () => {
   const { path } = useRouteMatch();
@@ -43,60 +44,130 @@ export const EventNodePage = () => {
           />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
+              <PrivateRoute
+                permission={Permissions.dashboardEventNode}
+                exact
+                path={path}
+              >
                 <SubMenuGrid title="Events" subMenus={subMenus} />
-              </Route>
-              <Route exact path={`${path}/registration`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexRegistration}
+                exact
+                path={`${path}/registration`}
+              >
                 <RegisteredPatientList />
-              </Route>
-              <Route exact path={`${path}/registration/create`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.createRegistration}
+                exact
+                path={`${path}/registration/create`}
+              >
                 <CreateRegistration />
-              </Route>
-              <Route exact path={`${path}/booking`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexBookingDoctor}
+                exact
+                path={`${path}/booking`}
+              >
                 <BookedPatientList />
-              </Route>
-              <Route exact path={`${path}/booking/create`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.createBookingDoctor}
+                exact
+                path={`${path}/booking/create`}
+              >
                 <CreateBooking />
-              </Route>
-              <Route exact path={`${path}/checkin`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexCheckIn}
+                exact
+                path={`${path}/checkin`}
+              >
                 <CheckinPatientList />
-              </Route>
-              <Route exact path={`${path}/examination/result/:soapId`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailExamination']}
+                exact
+                path={`${path}/examination/result/:soapId`}
+              >
                 <ExaminationResultPage />
-              </Route>
-              <Route path={`${path}/examination/details/:soapId`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailExamination']}
+                path={`${path}/examination/details/:soapId`}
+              >
                 <ExaminationDetailPage />
-              </Route>
-              <Route path={`${path}/examination`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexExamination}
+                path={`${path}/examination`}
+              >
                 <ExaminationPage />
-              </Route>
-              <Route exact path={`${path}/imaging`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexBookingRadiology}
+                exact
+                path={`${path}/imaging`}
+              >
                 <ImagingList />
-              </Route>
-              <Route exact path={`${path}/imaging/details/:id`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailBookingRadiology']}
+                exact
+                path={`${path}/imaging/details/:id`}
+              >
                 <ImagingDetails />
-              </Route>
-              <Route exact path={`${path}/blood-draw`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexBloodDraw}
+                exact
+                path={`${path}/blood-draw`}
+              >
                 <BloodDrawList />
-              </Route>
-              <Route exact path={`${path}/blood-test`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexBloodTest}
+                exact
+                path={`${path}/blood-test`}
+              >
                 <BloodTestList />
-              </Route>
-              <Route exact path={`${path}/blood-test-result/:id`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailBloodResult']}
+                exact
+                path={`${path}/blood-test-result/:id`}
+              >
                 <BloodTestResult />
-              </Route>
-              <Route exact path={`${path}/collect-medicine`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexReceipt}
+                exact
+                path={`${path}/collect-medicine`}
+              >
                 <CollectMedicineList />
-              </Route>
-              <Route exact path={`${path}/collect-medicine/:id`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.updateReceipt}
+                exact
+                path={`${path}/collect-medicine/:id`}
+              >
                 <CollectMedicineDetails />
-              </Route>
-              <Route exact path={`${path}/payment`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexPayment}
+                exact
+                path={`${path}/payment`}
+              >
                 <PaymentList />
-              </Route>
-              <Route exact path={`${path}/payment/:id`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailPayment']}
+                exact
+                path={`${path}/payment/:id`}
+              >
                 <PaymentDetails />
-              </Route>
+              </PrivateRoute>
             </Switch>
           </ContentWrapper>
         </Flex>

@@ -96,6 +96,7 @@ export const AddPaymentMethodModal = ({
             ...JSON.parse(type),
             account_number: accountNumbers[index],
             account_name: accountNames[index],
+            active: 1,
           };
         }
         return type;

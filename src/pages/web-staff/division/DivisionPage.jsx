@@ -15,6 +15,7 @@ import {
   FinancePage,
   InfrastructurePage,
 } from './sub-page';
+import { PrivateRoute, Permissions } from '../../../access-control';
 
 export const DivisionPage = () => {
   const { path } = useRouteMatch();
@@ -30,15 +31,27 @@ export const DivisionPage = () => {
           />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
+              <PrivateRoute
+                permission={Permissions.dashboardDivision}
+                exact
+                path={path}
+              >
                 <SubMenuGrid title="Division" subMenus={subMenus} />
-              </Route>
-              <Route path={`${path}/administration`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={
+                  Permissions['division-dashboardDivisionAdministration']
+                }
+                path={`${path}/administration`}
+              >
                 <AdministrationPage />
-              </Route>
-              <Route path={`${path}/human-capital`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexHumanCapital}
+                path={`${path}/human-capital`}
+              >
                 <HumanCapitalPage />
-              </Route>
+              </PrivateRoute>
               <Route path={`${path}/finance`}>
                 <FinancePage />
               </Route>

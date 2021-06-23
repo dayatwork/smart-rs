@@ -11,6 +11,7 @@ import {
 } from './sub-page/staff';
 import { ScheduleListPage } from './sub-page/schedule';
 import { StaffScheduleListPage } from './sub-page/staff-schedule';
+import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 export const HumanCapitalPage = () => {
   const { path } = useRouteMatch();
@@ -30,12 +31,20 @@ export const HumanCapitalPage = () => {
         <Route exact path={`${path}/staff/assign`}>
           <AssignNewStaffPage />
         </Route>
-        <Route exact path={`${path}/schedule`}>
+        <PrivateRoute
+          permission={Permissions.indexSchedule}
+          exact
+          path={`${path}/schedule`}
+        >
           <ScheduleListPage />
-        </Route>
-        <Route exact path={`${path}/staff-schedule`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.indexStaffSchedule}
+          exact
+          path={`${path}/staff-schedule`}
+        >
           <StaffScheduleListPage />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Box>
   );

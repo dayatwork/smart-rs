@@ -11,6 +11,7 @@ import {
 import { Center, Icon } from '@chakra-ui/react';
 import { FaHospitalSymbol } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+// import * as writeJsonFile from 'write-json-file';
 
 import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
@@ -194,10 +195,12 @@ const App = () => {
       try {
         setIsLoadingPermissions(true);
         const res = await getUserPermissions(cookies);
+        // console.log({ resaaa: res });
         const userPermissions = Object.entries(res.data).map(
           ([, value]) => value
         );
         setPermissions(userPermissions);
+        // setPermissions(res.data);
         setIsLoadingPermissions(false);
       } catch (error) {
         setPermissions([]);
@@ -206,6 +209,14 @@ const App = () => {
     };
     fetchUserPermissions();
   }, [cookies]);
+
+  // useEffect(() => {
+  //   const write = async () => {
+  //     // console.log({ hai: 'ah' });
+  //     await writeJsonFile('permission.json', permissions);
+  //   };
+  //   write();
+  // }, [permissions]);
 
   useEffect(() => {
     if (!user?.id || !user?.institution_id) {
@@ -228,7 +239,7 @@ const App = () => {
         setCookie('employee', JSON.stringify(employeeDetail), { path: '/' });
         setIsLoadingEmployeeDetail(false);
       } catch (error) {
-        console.log({ error });
+        // console.log({ error });
         setIsLoadingEmployeeDetail(false);
       }
     };

@@ -8,6 +8,7 @@ import {
   ServiceSchedulePage,
   AddServiceSchedule,
 } from './sub-page/service-schedule';
+import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 export const AdministrationPage = () => {
   const { path } = useRouteMatch();
@@ -18,12 +19,20 @@ export const AdministrationPage = () => {
         <Route exact path={path}>
           <SubMenuGrid title="Administrasi" subMenus={subMenus} />
         </Route>
-        <Route exact path={`${path}/service-schedule`}>
+        <PrivateRoute
+          permission={Permissions.indexServiceSchedule}
+          exact
+          path={`${path}/service-schedule`}
+        >
           <ServiceSchedulePage />
-        </Route>
-        <Route exact path={`${path}/service-schedule/create`}>
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.createServiceSchedule}
+          exact
+          path={`${path}/service-schedule/create`}
+        >
           <AddServiceSchedule />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Box>
   );

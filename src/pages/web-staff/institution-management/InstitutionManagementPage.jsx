@@ -22,6 +22,7 @@ import {
   RadiologyCategoryPage,
   PaymentMethodPage,
 } from './sub-page';
+import { PrivateRoute, Permissions } from '../../../access-control';
 
 export const InstitutionManagementPage = () => {
   const { path } = useRouteMatch();
@@ -37,42 +38,89 @@ export const InstitutionManagementPage = () => {
           />
           <ContentWrapper>
             <Switch>
-              <Route exact path={path}>
-                <SubMenuGrid title="Institution Management" subMenus={subMenus} />
-              </Route>
+              <PrivateRoute
+                permission={Permissions.dashboardInstitutionManagement}
+                exact
+                path={path}
+              >
+                <SubMenuGrid
+                  title="Institution Management"
+                  subMenus={subMenus}
+                />
+              </PrivateRoute>
               <Route exact path={`${path}/institution`}>
                 <InstitutionPage />
               </Route>
-              <Route exact path={`${path}/department`}>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionDepartment}
+                exact
+                path={`${path}/department`}
+              >
                 <DepartmentPage />
-              </Route>
-              <Route exact path={`${path}/division`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionDivision}
+                exact
+                path={`${path}/division`}
+              >
                 <DivisionPage />
-              </Route>
-              <Route exact path={`${path}/service`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionService}
+                exact
+                path={`${path}/service`}
+              >
                 <ServicePage />
-              </Route>
-              <Route exact path={`${path}/event`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionEventNode}
+                exact
+                path={`${path}/event`}
+              >
                 <EventNodePage />
-              </Route>
-              <Route exact path={`${path}/fms`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexMedicalStaffFunctional}
+                exact
+                path={`${path}/fms`}
+              >
                 <FMSPage />
-              </Route>
-              <Route exact path={`${path}/account`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionUser}
+                exact
+                path={`${path}/account`}
+              >
                 <AccountPage />
-              </Route>
-              <Route exact path={`${path}/role`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionRole}
+                exact
+                path={`${path}/role`}
+              >
                 <RolePage />
-              </Route>
-              <Route exact path={`${path}/lab-category`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionLaboratory}
+                exact
+                path={`${path}/lab-category`}
+              >
                 <LabCategoryPage />
-              </Route>
-              <Route exact path={`${path}/radiology-category`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionRadiology}
+                exact
+                path={`${path}/radiology-category`}
+              >
                 <RadiologyCategoryPage />
-              </Route>
-              <Route exact path={`${path}/payment-method`}>
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionPaymentMethod}
+                exact
+                path={`${path}/payment-method`}
+              >
                 <PaymentMethodPage />
-              </Route>
+              </PrivateRoute>
             </Switch>
           </ContentWrapper>
         </Flex>
