@@ -22,7 +22,7 @@ import { getInstitutions } from '../../../api/institution-services/institution';
 import { getBookingList } from '../../../api/booking-services/booking';
 
 export const DashboardPage = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
@@ -46,23 +46,25 @@ export const DashboardPage = () => {
         <Flex h="full">
           <ContentWrapper>
             <Heading mb="6">Dashboard</Heading>
-            <FormControl id="name" mb="6" maxW="xs">
-              <FormLabel>Institution</FormLabel>
-              <Select
-                bgColor="white"
-                name="institution"
-                value={selectedInstitution}
-                onChange={e => setSelectedInstitution(e.target.value)}
-              >
-                <option value="">Select Institution</option>
-                {isSuccessInstitution &&
-                  resInstitution?.data?.map(institution => (
-                    <option key={institution.id} value={institution.id}>
-                      {institution.name}
-                    </option>
-                  ))}
-              </Select>
-            </FormControl>
+            {user?.role?.alias === 'super-admin' && (
+              <FormControl id="name" mb="6" maxW="xs">
+                <FormLabel>Institution</FormLabel>
+                <Select
+                  bgColor="white"
+                  name="institution"
+                  value={selectedInstitution}
+                  onChange={e => setSelectedInstitution(e.target.value)}
+                >
+                  <option value="">Select Institution</option>
+                  {isSuccessInstitution &&
+                    resInstitution?.data?.map(institution => (
+                      <option key={institution.id} value={institution.id}>
+                        {institution.name}
+                      </option>
+                    ))}
+                </Select>
+              </FormControl>
+            )}
             {isLoadingBookingList ? (
               <Center py="10">
                 <Spinner

@@ -38,7 +38,7 @@ import { getBookingSchedulesInstitution } from '../../../../../api/institution-s
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const CreateBooking = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -217,23 +217,25 @@ export const CreateBooking = () => {
       <Heading mb="6" fontSize="3xl">
         Create New Booking
       </Heading>
-      <FormControl id="name" mb="4" maxW="xs">
-        <FormLabel>Institution</FormLabel>
-        <Select
-          bg="white"
-          name="institution"
-          value={selectedInstitution}
-          onChange={e => setSelectedInstitution(e.target.value)}
-        >
-          <option value="">Select Institution</option>
-          {isSuccessInstitution &&
-            resInstitution?.data?.map(institution => (
-              <option key={institution.id} value={institution.id}>
-                {institution.name}
-              </option>
-            ))}
-        </Select>
-      </FormControl>
+      {user?.role?.alias && (
+        <FormControl id="name" mb="4" maxW="xs">
+          <FormLabel>Institution</FormLabel>
+          <Select
+            bg="white"
+            name="institution"
+            value={selectedInstitution}
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
+            <option value="">Select Institution</option>
+            {isSuccessInstitution &&
+              resInstitution?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+      )}
       {selectedInstitution && (
         <Box as="form" onSubmit={handleSubmit} maxW="3xl">
           <VStack spacing="6">

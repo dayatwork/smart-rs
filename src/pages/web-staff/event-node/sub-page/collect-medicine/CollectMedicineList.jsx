@@ -38,7 +38,7 @@ import PaginationTable from '../../../../../components/shared/tables/PaginationT
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const CollectMedicineList = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [clipboardValue, setClipboardValue] = useState('');
   const { hasCopied, onCopy } = useClipboard(clipboardValue);
@@ -223,22 +223,24 @@ export const CollectMedicineList = () => {
       <Heading mb="6" fontSize="3xl">
         Collect Medicine
       </Heading>
-      <FormControl id="name" mb="4" maxW="xs">
-        <FormLabel>Institution</FormLabel>
-        <Select
-          name="institution"
-          value={selectedInstitution}
-          onChange={e => setSelectedInstitution(e.target.value)}
-        >
-          <option value="">Select Institution</option>
-          {isSuccessInstitution &&
-            resInstitution?.data?.map(institution => (
-              <option key={institution.id} value={institution.id}>
-                {institution.name}
-              </option>
-            ))}
-        </Select>
-      </FormControl>
+      {user?.role?.alias && (
+        <FormControl id="name" mb="4" maxW="xs">
+          <FormLabel>Institution</FormLabel>
+          <Select
+            name="institution"
+            value={selectedInstitution}
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
+            <option value="">Select Institution</option>
+            {isSuccessInstitution &&
+              resInstitution?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+      )}
 
       {selectedInstitution && (
         <PaginationTable

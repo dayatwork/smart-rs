@@ -22,7 +22,7 @@ import PaginationTable from '../../../../../components/shared/tables/PaginationT
 import { BackButton } from '../../../../../components/shared/BackButton';
 
 export const RegisteredPatientList = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
@@ -133,22 +133,24 @@ export const RegisteredPatientList = () => {
       <Heading mb="6" fontSize="3xl">
         Registered Patient List
       </Heading>
-      <FormControl id="name" mb="4" maxW="xs">
-        <FormLabel>Institution</FormLabel>
-        <Select
-          name="institution"
-          value={selectedInstitution}
-          onChange={e => setSelectedInstitution(e.target.value)}
-        >
-          <option value="">Select Institution</option>
-          {isSuccessInstitution &&
-            resInstitution?.data?.map(institution => (
-              <option key={institution.id} value={institution.id}>
-                {institution.name}
-              </option>
-            ))}
-        </Select>
-      </FormControl>
+      {user?.role?.alias && (
+        <FormControl id="name" mb="4" maxW="xs">
+          <FormLabel>Institution</FormLabel>
+          <Select
+            name="institution"
+            value={selectedInstitution}
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
+            <option value="">Select Institution</option>
+            {isSuccessInstitution &&
+              resInstitution?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+      )}
       {selectedInstitution && (
         <PaginationTable
           columns={columns}

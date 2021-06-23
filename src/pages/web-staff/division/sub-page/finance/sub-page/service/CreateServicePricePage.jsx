@@ -32,7 +32,7 @@ import { createServicePrice } from '../../../../../../../api/finance-services/se
 import { InputDate } from '../../../../../../../components/shared/input';
 
 export const CreateServicePricePage = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -135,22 +135,24 @@ export const CreateServicePricePage = () => {
         Create Service Price
       </Heading>
 
-      <FormControl id="name" mb="4" maxW="xs">
-        <FormLabel>Institution</FormLabel>
-        <Select
-          name="institution"
-          value={selectedInstitution}
-          onChange={e => setSelectedInstitution(e.target.value)}
-        >
-          <option value="">Select Institution</option>
-          {isSuccessInstitution &&
-            resInstitution?.data?.map(institution => (
-              <option key={institution.id} value={institution.id}>
-                {institution.name}
-              </option>
-            ))}
-        </Select>
-      </FormControl>
+      {user?.role?.alias && (
+        <FormControl id="name" mb="4" maxW="xs">
+          <FormLabel>Institution</FormLabel>
+          <Select
+            name="institution"
+            value={selectedInstitution}
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
+            <option value="">Select Institution</option>
+            {isSuccessInstitution &&
+              resInstitution?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+      )}
 
       {selectedInstitution && (
         <Box bg="white" shadow="base" py="4" px="6" maxW="4xl">

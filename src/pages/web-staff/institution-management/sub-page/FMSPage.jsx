@@ -20,7 +20,7 @@ import { AddFmsModal } from '../../../../components/web-staff/institution-manage
 import { BackButton } from '../../../../components/shared/BackButton';
 
 export const FMSPage = () => {
-  const { employeeDetail } = useContext(AuthContext);
+  const { employeeDetail, user } = useContext(AuthContext);
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
   );
@@ -105,22 +105,24 @@ export const FMSPage = () => {
       <Heading mb="6" fontSize="3xl">
         SMF
       </Heading>
-      <FormControl id="name" mb="4" maxW="xs">
-        <FormLabel>Institution</FormLabel>
-        <Select
-          name="institution"
-          value={selectedInstitution}
-          onChange={e => setSelectedInstitution(e.target.value)}
-        >
-          <option value="">Select Institution</option>
-          {isSuccessInstitution &&
-            resInstitution?.data?.map(institution => (
-              <option key={institution.id} value={institution.id}>
-                {institution.name}
-              </option>
-            ))}
-        </Select>
-      </FormControl>
+      {user?.role?.alias && (
+        <FormControl id="name" mb="4" maxW="xs">
+          <FormLabel>Institution</FormLabel>
+          <Select
+            name="institution"
+            value={selectedInstitution}
+            onChange={e => setSelectedInstitution(e.target.value)}
+          >
+            <option value="">Select Institution</option>
+            {isSuccessInstitution &&
+              resInstitution?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+      )}
       {selectedInstitution && (
         <PaginationTable
           columns={columns}
