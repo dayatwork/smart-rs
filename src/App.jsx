@@ -281,7 +281,7 @@ const App = () => {
           user?.institution_id,
           user?.id
         );
-        console.log({ resEmployee });
+        // console.log({ resEmployee });
         const employeeDetail = {
           employee_id: resEmployee?.data?.employee_data?.id,
           institution_id: resEmployee?.data?.employee_data?.institution_id,
@@ -304,8 +304,8 @@ const App = () => {
     setEmployeeDetail(cookies.employee);
   }, [cookies.token, cookies.user, cookies.employee]);
 
-  console.log({ user });
-  console.log({ employeeDetail });
+  // console.log({ user });
+  // console.log({ employeeDetail });
   // console.log({ permissions });
 
   return (

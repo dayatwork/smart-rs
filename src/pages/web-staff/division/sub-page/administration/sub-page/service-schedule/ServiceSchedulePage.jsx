@@ -51,6 +51,8 @@ export const ServiceSchedulePage = () => {
     { enabled: Boolean(selectedInstitution) }
   );
 
+  console.log({ res });
+
   const data = React.useMemo(
     () =>
       isSuccess &&
@@ -93,7 +95,7 @@ export const ServiceSchedulePage = () => {
             >
               <Button
                 as={Link}
-                to={`/division/administration/service-schedule/${row.original.id}`}
+                to={`/division/administration/service-schedule/detail/${row.original.id}`}
                 variant="link"
                 size="sm"
                 colorScheme="blue"

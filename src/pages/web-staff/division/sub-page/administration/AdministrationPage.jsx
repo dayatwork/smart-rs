@@ -8,6 +8,7 @@ import {
   ServiceSchedulePage,
   AddServiceSchedule,
 } from './sub-page/service-schedule';
+import { ServiceScheduleDetailPage } from './sub-page/service-schedule-detail';
 import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 export const AdministrationPage = () => {
@@ -33,6 +34,9 @@ export const AdministrationPage = () => {
         >
           <AddServiceSchedule />
         </PrivateRoute>
+        <Route exact path={`${path}/service-schedule/detail/:id`}>
+          <ServiceScheduleDetailPage />
+        </Route>
       </Switch>
     </Box>
   );
