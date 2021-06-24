@@ -49,7 +49,13 @@ export const AssignNewStaffPage = () => {
   const [identities, setIdentities] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const toast = useToast();
-  const { register, handleSubmit, reset, clearErrors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
   const queryClient = useQueryClient();
 
   // ==============================
@@ -175,11 +181,6 @@ export const AssignNewStaffPage = () => {
       status: 'active',
     }));
 
-    // console.log({
-    //   institution_id: selectedInstitution,
-    //   data: assignUser,
-    // });
-
     await mutate({
       institution_id: selectedInstitution,
       data: assignUser,
@@ -280,36 +281,64 @@ export const AssignNewStaffPage = () => {
                       <Td>{user.name || '-'}</Td>
                       <Td>{user.identity}</Td>
                       <Td>
-                        <Select
-                          disabled={!user.user_id}
-                          {...register(`data[${index}][profession]`)}
-                        >
-                          <option value="">Pilih Profesi</option>
-                          {resRole?.data.map(role => (
-                            <option
-                              value={JSON.stringify({
-                                id: role.id,
-                                name: role.name,
-                              })}
-                              key={role.id}
-                            >
-                              {role.name}
-                            </option>
-                          ))}
-                        </Select>
+                        <>
+                          <Select
+                            disabled={
+                              !user.user_id || user.status === 'Assigned'
+                            }
+                            {...register(`data[${index}][profession]`, {
+                              required:
+                                !user.user_id || user.status === 'Assigned'
+                                  ? false
+                                  : 'Profession is required',
+                            })}
+                            borderColor={
+                              errors?.data && errors?.data[index]?.profession
+                                ? 'red.500'
+                                : null
+                            }
+                          >
+                            <option value="">Pilih Profesi</option>
+                            {resRole?.data.map(role => (
+                              <option
+                                value={JSON.stringify({
+                                  id: role.id,
+                                  name: role.name,
+                                })}
+                                key={role.id}
+                              >
+                                {role.name}
+                              </option>
+                            ))}
+                          </Select>
+                        </>
                       </Td>
                       <Td>
-                        <Select
-                          disabled={!user.user_id}
-                          {...register(`data[${index}][fms]`)}
-                        >
-                          <option value="">Pilih SMF</option>
-                          {resFMS?.data.map(fms => (
-                            <option key={fms.id} value={fms.id}>
-                              {fms.name}
-                            </option>
-                          ))}
-                        </Select>
+                        <>
+                          <Select
+                            disabled={
+                              !user.user_id || user.status === 'Assigned'
+                            }
+                            {...register(`data[${index}][fms]`, {
+                              required:
+                                !user.user_id || user.status === 'Assigned'
+                                  ? false
+                                  : 'SMF is required',
+                            })}
+                            borderColor={
+                              errors?.data && errors?.data[index]?.profession
+                                ? 'red.500'
+                                : null
+                            }
+                          >
+                            <option value="">Pilih SMF</option>
+                            {resFMS?.data.map(fms => (
+                              <option key={fms.id} value={fms.id}>
+                                {fms.name}
+                              </option>
+                            ))}
+                          </Select>
+                        </>
                       </Td>
                       <Td>
                         <Input
