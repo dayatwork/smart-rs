@@ -120,6 +120,8 @@ export const SelectDoctor = ({
     setSelectedDayRange({ from: undefined, to: undefined });
   };
 
+  // console.log({ dataSchedules });
+
   return (
     <>
       <Grid gridTemplateColumns={selectDoctorGridTemplate} gap="10">

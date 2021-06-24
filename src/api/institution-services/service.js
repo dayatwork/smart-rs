@@ -184,7 +184,7 @@ export const getBookingSchedules = async (
       ? `&page=${page}&first_unix_created_at=${first}&last_unix_created_at=${last}`
       : '';
 
-  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?service_id=${serviceId}&sort_unix_created_at=asc&limit=${limit}&first_date=${startDate}&last_date=${endDate}${pagination}`;
+  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?service_id=${serviceId}&sort_unix_created_at=asc&sort_date=asc&limit=${limit}&first_date=${startDate}&last_date=${endDate}${pagination}`;
   const res = await fetch(URL, {
     method: 'GET',
     headers: {

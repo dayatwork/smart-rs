@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 import { AuthContext } from '../contexts/authContext';
+import { Permissions } from '../access-control';
 
 export const PrivateRoute = ({ children, permission, pageTitle, ...rest }) => {
   const { permissions, isLoadingPermissions, employeeDetail, user } =
@@ -19,7 +20,11 @@ export const PrivateRoute = ({ children, permission, pageTitle, ...rest }) => {
         <Route {...rest}>{children}</Route>
       </>
     );
-  } else if (employeeDetail?.employee_id) {
+  } else if (
+    employeeDetail?.employee_id &&
+    permissions.includes(Permissions.indexDashboard)
+  ) {
+    console.log('hit');
     return <Redirect to="/dashboard" />;
   } else {
     return <Redirect to="/" />;

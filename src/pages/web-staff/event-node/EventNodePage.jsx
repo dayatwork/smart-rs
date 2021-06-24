@@ -138,7 +138,7 @@ export const EventNodePage = () => {
                 <ExaminationPage />
               </PrivateRoute>
               <PrivateRoute
-                permission={Permissions.indexBookingRadiology}
+                permission={Permissions.indexImaging}
                 exact
                 path={`${path}/imaging`}
                 pageTitle="Imaging | SMART-RS"
@@ -146,7 +146,7 @@ export const EventNodePage = () => {
                 <ImagingList />
               </PrivateRoute>
               <PrivateRoute
-                permission={Permissions['read-detailBookingRadiology']}
+                permission={Permissions['read-detailImaging']}
                 exact
                 path={`${path}/imaging/details/:id`}
                 pageTitle="Detail Imaging | SMART-RS"
