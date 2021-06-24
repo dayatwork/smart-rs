@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Box, Center, Heading, useToast } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 import { signup } from '../../api/auth-services/auth';
 import { SignupForm } from '../../components/auth/SignupForm';
@@ -10,7 +11,7 @@ export const SignupPage = () => {
   const history = useHistory();
   const toast = useToast();
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { email } = value;
 
     try {
@@ -42,16 +43,27 @@ export const SignupPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Sign up | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
-        <Heading mt="6" mb="10" textAlign="center" size="xl" fontWeight="extrabold">
+        <Heading
+          mt="6"
+          mb="10"
+          textAlign="center"
+          size="xl"
+          fontWeight="extrabold"
+        >
           Registrasi Akun
         </Heading>
         <SignupForm onSubmit={onSubmit} />
@@ -64,7 +76,8 @@ export const SignupPage = () => {
               href="#"
               color="blue.600"
               _hover={{ color: 'blue.600' }}
-              display={{ base: 'block', sm: 'revert' }}>
+              display={{ base: 'block', sm: 'revert' }}
+            >
               Login
             </Box>
           </Link>

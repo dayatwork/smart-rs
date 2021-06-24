@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Redirect } from 'react-router-dom';
 import {
   Badge,
   Box,
@@ -112,8 +112,9 @@ export const OrderDetailPage = () => {
     }
   };
 
-  console.log({ paymentSlipWatch });
-  console.log({ length: paymentSlipWatch?.length });
+  if (!isLoadingOrderDetail && dataOrderDetail?.status !== 200) {
+    return <Redirect to="/doctor" />;
+  }
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">

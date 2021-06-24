@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 import { AuthContext } from '../../../contexts/authContext';
 import { getInstitutions } from '../../../api/institution-services/institution';
@@ -55,6 +56,9 @@ export const PatientPage = () => {
 
   return (
     <AppShell>
+      <Helmet>
+        <title>Patient | SMART-RS</title>
+      </Helmet>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
           <ContentWrapper>

@@ -46,6 +46,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.dashboardInstitutionManagement}
                 exact
                 path={path}
+                pageTitle="Institution Management | SMART-RS"
               >
                 <SubMenuGrid
                   title="Institution Management"
@@ -59,6 +60,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionDepartment}
                 exact
                 path={`${path}/department`}
+                pageTitle="Department | Institution Management | SMART-RS"
               >
                 <DepartmentPage />
               </PrivateRoute>
@@ -66,6 +68,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionDivision}
                 exact
                 path={`${path}/division`}
+                pageTitle="Division | Institution Management | SMART-RS"
               >
                 <DivisionPage />
               </PrivateRoute>
@@ -73,6 +76,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionService}
                 exact
                 path={`${path}/service`}
+                pageTitle="Service | Institution Management | SMART-RS"
               >
                 <ServicePage />
               </PrivateRoute>
@@ -80,6 +84,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionEventNode}
                 exact
                 path={`${path}/event`}
+                pageTitle="Event Node | Institution Management | SMART-RS"
               >
                 <EventNodePage />
               </PrivateRoute>
@@ -87,6 +92,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexMedicalStaffFunctional}
                 exact
                 path={`${path}/fms`}
+                pageTitle="FMS | Institution Management | SMART-RS"
               >
                 <FMSPage />
               </PrivateRoute>
@@ -94,6 +100,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionUser}
                 exact
                 path={`${path}/account`}
+                pageTitle="Account | Institution Management | SMART-RS"
               >
                 <AccountPage />
               </PrivateRoute>
@@ -101,6 +108,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionRole}
                 exact
                 path={`${path}/role`}
+                pageTitle="Role | Institution Management | SMART-RS"
               >
                 <RolePage />
               </PrivateRoute>
@@ -108,6 +116,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionLaboratory}
                 exact
                 path={`${path}/lab-category`}
+                pageTitle="Lab Category | Institution Management | SMART-RS"
               >
                 <LabCategoryPage />
               </PrivateRoute>
@@ -115,6 +124,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionRadiology}
                 exact
                 path={`${path}/radiology-category`}
+                pageTitle="Radiology Category | Institution Management | SMART-RS"
               >
                 <RadiologyCategoryPage />
               </PrivateRoute>
@@ -122,6 +132,7 @@ export const InstitutionManagementPage = () => {
                 permission={Permissions.indexInstitutionPaymentMethod}
                 exact
                 path={`${path}/payment-method`}
+                pageTitle="Payment Method | Institution Management | SMART-RS"
               >
                 <PaymentMethodPage />
               </PrivateRoute>

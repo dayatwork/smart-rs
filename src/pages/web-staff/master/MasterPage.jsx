@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import {
@@ -36,6 +37,9 @@ export const MasterPage = () => {
 
   return (
     <AppShell>
+      <Helmet>
+        <title>Master | SMART-RS</title>
+      </Helmet>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
           <SubMenuSideBar

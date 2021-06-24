@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { Box, Heading, Center, useToast } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 import { Logo } from '../../components/shared';
 import { ChangePasswordForm } from '../../components/auth/ChangePasswordForm';
@@ -13,7 +14,7 @@ export const ChangePasswordPage = () => {
   const { search } = useLocation();
   const token = new URLSearchParams(search).get('token');
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { password } = values;
     setIsLoading(true);
 
@@ -50,14 +51,19 @@ export const ChangePasswordPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Change Password | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
           Reset Password

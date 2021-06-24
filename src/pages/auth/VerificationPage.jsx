@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Box, Button, Center, Heading, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 import { Logo } from '../../components/shared';
 import { VerificationOTPForm } from '../../components/auth/VerificationOTPForm';
@@ -66,14 +67,19 @@ export const VerificationPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Verification | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
           Verifikasi
@@ -86,7 +92,8 @@ export const VerificationPage = () => {
             color="blue.600"
             onClick={handleResendOTP}
             variant="link"
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Kirim ulang OTP
           </Button>
         </Box>

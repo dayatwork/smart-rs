@@ -31,6 +31,7 @@ export const FinancePage = () => {
                 permission={Permissions.dashboardFinance}
                 exact
                 path={path}
+                pageTitle="Finance | SMART-RS"
               >
                 <SubMenuGrid title="Finance" subMenus={subMenus} />
               </PrivateRoute>
@@ -38,6 +39,7 @@ export const FinancePage = () => {
                 permission={Permissions.indexInstitutionPaymentMethod}
                 exact
                 path={`${path}/payment-method`}
+                pageTitle="Payment Method | SMART-RS"
               >
                 <PaymentMethodPage fromFinanceMenu />
               </PrivateRoute>
@@ -45,6 +47,7 @@ export const FinancePage = () => {
                 permission={Permissions.indexPayment}
                 exact
                 path={`${path}/patient-payment`}
+                pageTitle="Payment | SMART-RS"
               >
                 <PaymentList fromFinanceMenu />
               </PrivateRoute>
@@ -52,6 +55,7 @@ export const FinancePage = () => {
                 permission={Permissions['read-detailPayment']}
                 exact
                 path={`${path}/patient-payment/:id`}
+                pageTitle="Detail Payment | SMART-RS"
               >
                 <PaymentDetails fromFinanceMenu />
               </PrivateRoute>

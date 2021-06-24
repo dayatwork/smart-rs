@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Box, Button, Spinner } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 import { AuthContext } from '../../../../../contexts/authContext';
 import {
@@ -162,6 +163,9 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
       {isFetchingBookingList && (
         <Spinner top="8" right="12" position="absolute" color="purple" />
       )}
+      <Helmet>
+        <title>Examination | SMART-RS</title>
+      </Helmet>
 
       <PaginationTable
         columns={columns}

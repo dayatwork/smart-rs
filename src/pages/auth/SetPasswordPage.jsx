@@ -2,17 +2,21 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Box, Heading, Center, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 import { Logo } from '../../components/shared';
 import { SetPasswordForm } from '../../components/auth/SetPasswordForm';
-import { getUserProfile, updateUserInfo } from '../../api/user-services/user-management';
+import {
+  getUserProfile,
+  updateUserInfo,
+} from '../../api/user-services/user-management';
 
 export const SetPasswordPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [cookies, setCookie] = useCookies(['token']);
 
-  const fetchUserDetails = async (token) => {
+  const fetchUserDetails = async token => {
     const { data } = await getUserProfile(token);
 
     const details = {
@@ -28,7 +32,7 @@ export const SetPasswordPage = () => {
     setCookie('user', JSON.stringify(details), { path: '/' });
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { name, password } = values;
 
     try {
@@ -63,16 +67,27 @@ export const SetPasswordPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Set Password | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '4', md: '10' }}
         shadow="base"
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
-        <Heading mt="6" mb="10" textAlign="center" size="xl" fontWeight="extrabold">
+        <Heading
+          mt="6"
+          mb="10"
+          textAlign="center"
+          size="xl"
+          fontWeight="extrabold"
+        >
           Set Nama Lengkap dan Password
         </Heading>
         <SetPasswordForm onSubmit={onSubmit} />

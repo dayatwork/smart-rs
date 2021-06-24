@@ -11,7 +11,7 @@ import {
 import { Center, Icon } from '@chakra-ui/react';
 import { FaHospitalSymbol } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-// import * as writeJsonFile from 'write-json-file';
+import { Helmet } from 'react-helmet-async';
 
 import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
@@ -50,14 +50,19 @@ import {
 import { AccountSettingPage } from './pages/account-setting/AccountSettingPage';
 import { PrivateRoute, Permissions } from './access-control';
 
-const AuthenticatedRoute = ({ children, ...rest }) => {
+const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   const { token, user } = useContext(AuthContext);
 
   return (
-    <Route
-      {...rest}
-      render={() => (token && user ? children : <Redirect to="/login" />)}
-    />
+    <>
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+      <Route
+        {...rest}
+        render={() => (token && user ? children : <Redirect to="/login" />)}
+      />
+    </>
   );
 };
 
@@ -83,15 +88,25 @@ const AppRoutes = () => {
       <Route path="/login/change-password">
         <ChangePasswordPage />
       </Route>
-      <AuthenticatedRoute path="/add-profile-info">
+      <AuthenticatedRoute
+        path="/add-profile-info"
+        pageTitle="Add Profile Info | SMART-RS"
+      >
         <AddProfileInfoPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/add-health-info">
+      <AuthenticatedRoute
+        path="/add-health-info"
+        pageTitle="Add Health Info | SMART-RS"
+      >
         <AddHealthInfoPage />
       </AuthenticatedRoute>
 
       {/* Account Setting */}
-      <AuthenticatedRoute path="/account-setting" exact>
+      <AuthenticatedRoute
+        path="/account-setting"
+        pageTitle="Account Setting | SMART-RS"
+        exact
+      >
         <AccountSettingPage />
       </AuthenticatedRoute>
 
@@ -105,51 +120,69 @@ const AppRoutes = () => {
       <AuthenticatedRoute path="/doctor/detail/:id">
         <BookingDetailPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/doctor/booking">
+      <AuthenticatedRoute
+        path="/doctor/booking"
+        pageTitle="Booking Doctor | SMART-RS"
+      >
         <BookingDoctorPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/doctor/order/:id">
+      <AuthenticatedRoute
+        path="/doctor/order/:id"
+        pageTitle="Order Details | SMART-RS"
+      >
         <OrderDetailPage />
       </AuthenticatedRoute>
 
       {/* Web Staff Routes */}
-      <AuthenticatedRoute path="/dashboard">
+      <AuthenticatedRoute path="/dashboard" pageTitle="Dashboard | SMART-RS">
         <DashboardPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/master">
+      <AuthenticatedRoute path="/master" pageTitle="Master | SMART-RS">
         <MasterPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/institution-management">
+      <AuthenticatedRoute
+        path="/institution-management"
+        pageTitle="Institution Management | SMART-RS"
+      >
         <InstitutionManagementPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/user-management">
+      <AuthenticatedRoute
+        path="/user-management"
+        pageTitle="User Management | SMART-RS"
+      >
         <UserManagementPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/events">
+      <AuthenticatedRoute path="/events" pageTitle="Event Node | SMART-RS">
         <EventNodePage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/pharmacy">
+      <AuthenticatedRoute path="/pharmacy" pageTitle="Pharmacy | SMART-RS">
         <PharmacyPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/division">
+      <AuthenticatedRoute path="/division" pageTitle="Division | SMART-RS">
         <DivisionPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute path="/finance">
+      <AuthenticatedRoute path="/finance" pageTitle="Finance | SMART-RS">
         <FinancePage />
       </AuthenticatedRoute>
       <PrivateRoute
         permission={Permissions['read-detailExamination']}
         path="/patient/soap/:soapId"
+        pageTitle="SOAP | SMART-RS"
       >
         <PatientSoapPage />
       </PrivateRoute>
       <PrivateRoute
         permission={Permissions['read-detailExamination']}
         path="/patient/soap-result/:soapId"
+        pageTitle="Examination Result | SMART-RS"
       >
         <PatientSoapResultPage />
       </PrivateRoute>
-      <PrivateRoute permission={Permissions.indexExamination} path="/patient">
+      <PrivateRoute
+        permission={Permissions.indexExamination}
+        path="/patient"
+        pageTitle="Patient | SMART-RS"
+      >
         <PatientPage />
       </PrivateRoute>
     </Switch>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import {
@@ -23,6 +24,9 @@ export const PharmacyPage = () => {
 
   return (
     <AppShell>
+      <Helmet>
+        <title>Pharmacy | SMART-RS</title>
+      </Helmet>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
           <SubMenuSideBar

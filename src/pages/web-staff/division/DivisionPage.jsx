@@ -35,6 +35,7 @@ export const DivisionPage = () => {
                 permission={Permissions.dashboardDivision}
                 exact
                 path={path}
+                pageTitle="Division | SMART-RS"
               >
                 <SubMenuGrid title="Division" subMenus={subMenus} />
               </PrivateRoute>

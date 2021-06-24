@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
+import { Helmet } from 'react-helmet-async';
 
 import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -42,6 +43,9 @@ export const DashboardPage = () => {
 
   return (
     <AppShell>
+      <Helmet>
+        <title>Dashboard | SMART-RS</title>
+      </Helmet>
       <Box height="full" overflow="hidden" position="relative">
         <Flex h="full">
           <ContentWrapper>

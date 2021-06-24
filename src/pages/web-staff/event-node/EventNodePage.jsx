@@ -48,6 +48,7 @@ export const EventNodePage = () => {
                 permission={Permissions.dashboardEventNode}
                 exact
                 path={path}
+                pageTitle="Event Node | SMART-RS"
               >
                 <SubMenuGrid title="Events" subMenus={subMenus} />
               </PrivateRoute>
@@ -55,6 +56,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexRegistration}
                 exact
                 path={`${path}/registration`}
+                pageTitle="Registration | SMART-RS"
               >
                 <RegisteredPatientList />
               </PrivateRoute>
@@ -62,6 +64,7 @@ export const EventNodePage = () => {
                 permission={Permissions.createRegistration}
                 exact
                 path={`${path}/registration/create`}
+                pageTitle="Register New Patient | SMART-RS"
               >
                 <CreateRegistration />
               </PrivateRoute>
@@ -69,6 +72,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexBookingDoctor}
                 exact
                 path={`${path}/booking`}
+                pageTitle="Booking | SMART-RS"
               >
                 <BookedPatientList />
               </PrivateRoute>
@@ -76,6 +80,7 @@ export const EventNodePage = () => {
                 permission={Permissions.createBookingDoctor}
                 exact
                 path={`${path}/booking/create`}
+                pageTitle="Create New Booking | SMART-RS"
               >
                 <CreateBooking />
               </PrivateRoute>
@@ -83,6 +88,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexCheckIn}
                 exact
                 path={`${path}/checkin`}
+                pageTitle="Check-in | SMART-RS"
               >
                 <CheckinPatientList />
               </PrivateRoute>
@@ -90,18 +96,21 @@ export const EventNodePage = () => {
                 permission={Permissions['read-detailExamination']}
                 exact
                 path={`${path}/examination/result/:soapId`}
+                pageTitle="Examination Result | SMART-RS"
               >
                 <ExaminationResultPage />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions['read-detailExamination']}
                 path={`${path}/examination/details/:soapId`}
+                pageTitle="SOAP | SMART-RS"
               >
                 <ExaminationDetailPage />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions.indexExamination}
                 path={`${path}/examination`}
+                pageTitle="Examination | SMART-RS"
               >
                 <ExaminationPage />
               </PrivateRoute>
@@ -109,6 +118,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexBookingRadiology}
                 exact
                 path={`${path}/imaging`}
+                pageTitle="Imaging | SMART-RS"
               >
                 <ImagingList />
               </PrivateRoute>
@@ -116,6 +126,7 @@ export const EventNodePage = () => {
                 permission={Permissions['read-detailBookingRadiology']}
                 exact
                 path={`${path}/imaging/details/:id`}
+                pageTitle="Detail Imaging | SMART-RS"
               >
                 <ImagingDetails />
               </PrivateRoute>
@@ -123,6 +134,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexBloodDraw}
                 exact
                 path={`${path}/blood-draw`}
+                pageTitle="Blood Draw | SMART-RS"
               >
                 <BloodDrawList />
               </PrivateRoute>
@@ -130,6 +142,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexBloodTest}
                 exact
                 path={`${path}/blood-test`}
+                pageTitle="Blood Test | SMART-RS"
               >
                 <BloodTestList />
               </PrivateRoute>
@@ -137,6 +150,7 @@ export const EventNodePage = () => {
                 permission={Permissions['read-detailBloodResult']}
                 exact
                 path={`${path}/blood-test-result/:id`}
+                pageTitle="Blood Test Result | SMART-RS"
               >
                 <BloodTestResult />
               </PrivateRoute>
@@ -144,6 +158,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexReceipt}
                 exact
                 path={`${path}/collect-medicine`}
+                pageTitle="Collect Medicine | SMART-RS"
               >
                 <CollectMedicineList />
               </PrivateRoute>
@@ -151,6 +166,7 @@ export const EventNodePage = () => {
                 permission={Permissions.updateReceipt}
                 exact
                 path={`${path}/collect-medicine/:id`}
+                pageTitle="Collect Medicine | SMART-RS"
               >
                 <CollectMedicineDetails />
               </PrivateRoute>
@@ -158,6 +174,7 @@ export const EventNodePage = () => {
                 permission={Permissions.indexPayment}
                 exact
                 path={`${path}/payment`}
+                pageTitle="Payment | SMART-RS"
               >
                 <PaymentList />
               </PrivateRoute>
@@ -165,6 +182,7 @@ export const EventNodePage = () => {
                 permission={Permissions['read-detailPayment']}
                 exact
                 path={`${path}/payment/:id`}
+                pageTitle="Payment Detail | SMART-RS"
               >
                 <PaymentDetails />
               </PrivateRoute>

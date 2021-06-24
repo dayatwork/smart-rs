@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Badge, Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
+import { Helmet } from 'react-helmet-async';
 
 import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import {
@@ -164,6 +165,9 @@ export const BookingListPage = () => {
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
+      <Helmet>
+        <title>Doctor | SMART-RS</title>
+      </Helmet>
       <WebPatientNav active="doctor" />
       <Wrapper>
         <Heading fontSize="2xl" mb="4">

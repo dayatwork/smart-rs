@@ -59,7 +59,7 @@ export const Logo = ({ mini, ...rest }) => {
                 color="purple.200"
                 mt="-1.5"
               >
-                {!isLoadingInstitution && 'Dashboard'}
+                {!isLoadingInstitution && 'SMART RS'}
               </Text>
             </Box>
           )}

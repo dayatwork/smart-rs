@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Heading, Text, Center, useToast } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
 
 import { Logo } from '../../components/shared';
 import { ForgotPasswordForm } from '../../components/auth/ForgotPasswordForm';
@@ -38,14 +39,19 @@ export const ForgotPasswordPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Forgot Password | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
           Lupa password?
@@ -56,8 +62,10 @@ export const ForgotPasswordPage = () => {
           align="center"
           maxW="sm"
           fontWeight="medium"
-          color="gray.600">
-          Masukkan alamat email anda dan kami akan mengirimkan link untuk reset password
+          color="gray.600"
+        >
+          Masukkan alamat email anda dan kami akan mengirimkan link untuk reset
+          password
         </Text>
         <ForgotPasswordForm onSubmit={onSubmit} />
       </Box>

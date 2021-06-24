@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Box, Center, Heading, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 import { login } from '../../api/auth-services/auth';
 import { getUserProfile } from '../../api/user-services/user-management';
@@ -13,7 +14,7 @@ export const LoginPage = () => {
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
 
-  const fetchUserDetails = async (token) => {
+  const fetchUserDetails = async token => {
     const { data } = await getUserProfile(token);
 
     const details = {
@@ -29,7 +30,7 @@ export const LoginPage = () => {
     setCookie('user', JSON.stringify(details), { path: '/' });
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { email, password } = values;
 
     try {
@@ -71,14 +72,19 @@ export const LoginPage = () => {
       minW="100vw"
       p="3"
       backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}>
+      bgColor={{ base: 'gray.100', lg: 'white' }}
+    >
+      <Helmet>
+        <title>Login | SMART-RS</title>
+      </Helmet>
       <Box
         bg="white"
         py="8"
         px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        w="md">
+        w="md"
+      >
         <Logo />
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
           Selamat Datang
@@ -96,7 +102,8 @@ export const LoginPage = () => {
               href="#"
               color="blue.600"
               _hover={{ color: 'blue.600' }}
-              display={{ base: 'block', sm: 'revert' }}>
+              display={{ base: 'block', sm: 'revert' }}
+            >
               Signup
             </Box>
           </Link>
