@@ -10,6 +10,7 @@ import {
   useDisclosure,
   Spinner,
   IconButton,
+  Badge,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
@@ -84,6 +85,7 @@ export const PaymentMethodPage = ({ fromFinanceMenu }) => {
         account_number: paymentMethod?.account_number,
         account_name: paymentMethod?.account_name,
         description: paymentMethod?.description,
+        active: paymentMethod?.active,
       })),
     [dataPaymentMethods?.data, isSuccessPaymentMethods]
   );
@@ -119,6 +121,15 @@ export const PaymentMethodPage = ({ fromFinanceMenu }) => {
         Header: 'Description',
         accessor: 'description',
         Cell: ({ value }) => (value ? value : '-'),
+      },
+      {
+        Header: 'Status',
+        accessor: 'active',
+        Cell: ({ value }) => (
+          <Badge colorScheme={value ? 'green' : 'gray'}>
+            {value ? 'Active' : 'Not Active'}
+          </Badge>
+        ),
       },
       {
         Header: 'Action',

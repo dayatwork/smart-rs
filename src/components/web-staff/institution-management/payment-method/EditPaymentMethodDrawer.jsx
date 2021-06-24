@@ -14,6 +14,7 @@ import {
   FormLabel,
   useToast,
   FormErrorMessage,
+  Switch,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
@@ -39,6 +40,7 @@ export const EditPaymentMethodDrawer = ({
   const [isLoading, setIsLoading] = useState(false);
   const [cookies] = useCookies(['token']);
   const queryClient = useQueryClient();
+  const [active, setActive] = useState(selectedPaymentMethod?.active);
 
   useEffect(() => {
     reset({
@@ -48,6 +50,7 @@ export const EditPaymentMethodDrawer = ({
       account_name: selectedPaymentMethod?.account_name,
       description: selectedPaymentMethod?.description,
     });
+    setActive(selectedPaymentMethod?.active);
   }, [selectedPaymentMethod, reset]);
 
   const { mutate } = useMutation(updatePaymentMethod(cookies), {
@@ -94,7 +97,9 @@ export const EditPaymentMethodDrawer = ({
       account_number: values.account_number,
       account_name: values.account_name,
       description: values.description,
+      active: active ? 1 : 0,
     };
+    // console.log({ paymentMethod });
     await mutate(paymentMethod);
   };
 
@@ -188,6 +193,22 @@ export const EditPaymentMethodDrawer = ({
                 <FormErrorMessage>
                   {errors.description && errors.description.message}
                 </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <FormLabel htmlFor="active" mb="0">
+                  Active
+                </FormLabel>
+                <Switch
+                  id="active"
+                  colorScheme="purple"
+                  size="lg"
+                  isChecked={active}
+                  onChange={e => setActive(e.target.checked)}
+                />
               </FormControl>
             </Box>
           </DrawerBody>

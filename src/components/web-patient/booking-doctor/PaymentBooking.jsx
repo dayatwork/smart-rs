@@ -229,14 +229,16 @@ export const PaymentBooking = ({
                 onChange={e => setSelectedPaymentMethod(e.target.value)}
               >
                 <option value="">Pilih Metode Pembayaran</option>
-                {dataPaymentMethods?.data?.map(paymentMethod => (
-                  <option
-                    key={paymentMethod.id}
-                    value={JSON.stringify(paymentMethod)}
-                  >
-                    {paymentMethod.name}
-                  </option>
-                ))}
+                {dataPaymentMethods?.data
+                  ?.filter(paymentMethod => paymentMethod.active)
+                  .map(paymentMethod => (
+                    <option
+                      key={paymentMethod.id}
+                      value={JSON.stringify(paymentMethod)}
+                    >
+                      {paymentMethod.name}
+                    </option>
+                  ))}
               </Select>
             </FormControl>
             <Button
