@@ -162,6 +162,8 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                   control={control}
                   placeholder="Expired"
                   selectYearMode
+                  startYear={2021}
+                  endYear={new Date().getFullYear() + 30}
                   dayPickerProps={{
                     disabledDays: { before: new Date() },
                   }}

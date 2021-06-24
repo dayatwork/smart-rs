@@ -1,14 +1,11 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { useState } from 'react';
+import { Box, Select } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { DateUtils } from 'react-day-picker';
 import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
-
-const currentYear = new Date().getFullYear();
-const fromMonth = new Date(currentYear - 150, 0);
-const toMonth = new Date(currentYear + 10, 11);
 
 function parseDate(str, format, locale) {
   const parsed = dateFnsParse(str, format, new Date(), { locale });
@@ -22,13 +19,24 @@ function formatDate(date, format, locale) {
   return dateFnsFormat(date, format, { locale });
 }
 
-function YearMonthForm({ date, localeUtils, onChange }) {
-  const months = localeUtils.getMonths();
+function getYears(startYear = 1900, endYear = new Date().getFullYear()) {
+  if (startYear > endYear) return [];
 
   const years = [];
-  for (let i = fromMonth.getFullYear(); i <= toMonth.getFullYear(); i += 1) {
-    years.push(i);
+  while (startYear <= endYear) {
+    years.push(endYear--);
   }
+  return years;
+}
+
+function YearMonthForm({ date, localeUtils, onChange, startYear, endYear }) {
+  const months = localeUtils.getMonths();
+  const years = getYears(startYear, endYear);
+
+  // const years = [];
+  // for (let i = fromMonth.getFullYear(); i <= toMonth.getFullYear(); i += 1) {
+  //   years.push(i);
+  // }
 
   // function handleChange(e) {
   //   const { year, month } = e.target.form;
@@ -45,24 +53,36 @@ function YearMonthForm({ date, localeUtils, onChange }) {
   }
 
   return (
-    <div className="DayPicker-Caption">
-      <select name="month" onChange={handleChange} value={date.getMonth()}>
-        {months.map((month, i) => (
-          <option key={month} value={i}>
-            {month}
-          </option>
-        ))}
-      </select>
-      <select name="year" onChange={handleChange} value={date.getFullYear()}>
-        {years.map(year => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
-    </div>
+    <>
+      <Box className="DayPicker-Caption">
+        <Select
+          mt="8"
+          mb="2"
+          name="month"
+          onChange={handleChange}
+          value={date.getMonth()}
+        >
+          {months.map((month, i) => (
+            <option key={month} value={i}>
+              {month}
+            </option>
+          ))}
+        </Select>
+        <Select name="year" onChange={handleChange} value={date.getFullYear()}>
+          {years.map(year => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </Select>
+      </Box>
+    </>
   );
 }
+
+// const currentYear = new Date().getFullYear();
+// const fromMonth = new Date(currentYear - 150, 0);
+// const toMonth = new Date(currentYear + 10, 11);
 
 export const InputDate = ({
   name,
@@ -70,13 +90,23 @@ export const InputDate = ({
   defaultValue,
   dayPickerProps,
   selectYearMode,
+  startYear,
+  endYear,
   ...rest
 }) => {
+  const fromMonth = new Date(startYear, 0);
+  const toMonth = new Date(endYear, 11);
   const [month, setMonth] = useState(fromMonth);
   const FORMAT = 'dd/MM/yyyy';
 
   const captionElement = ({ date, localeUtils }) => (
-    <YearMonthForm date={date} localeUtils={localeUtils} onChange={setMonth} />
+    <YearMonthForm
+      date={date}
+      localeUtils={localeUtils}
+      onChange={setMonth}
+      startYear={startYear}
+      endYear={endYear}
+    />
   );
 
   return (

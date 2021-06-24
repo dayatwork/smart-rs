@@ -70,7 +70,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     // console.log(values);
     // console.log({ selectedInstitution });
     const drugs = {
@@ -121,6 +121,8 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         control={control}
                         placeholder="Expired"
                         selectYearMode
+                        startYear={new Date().getFullYear()}
+                        endYear={new Date().getFullYear() + 30}
                         dayPickerProps={{
                           disabledDays: { before: new Date() },
                         }}
@@ -188,7 +190,8 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>
