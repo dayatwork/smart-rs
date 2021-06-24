@@ -134,9 +134,13 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
 
       {/* Web Staff Routes */}
-      <AuthenticatedRoute path="/dashboard" pageTitle="Dashboard | SMART-RS">
+      <PrivateRoute
+        permission={Permissions.indexDashboard}
+        path="/dashboard"
+        pageTitle="Dashboard | SMART-RS"
+      >
         <DashboardPage />
-      </AuthenticatedRoute>
+      </PrivateRoute>
       <AuthenticatedRoute path="/master" pageTitle="Master | SMART-RS">
         <MasterPage />
       </AuthenticatedRoute>
@@ -277,6 +281,7 @@ const App = () => {
           user?.institution_id,
           user?.id
         );
+        console.log({ resEmployee });
         const employeeDetail = {
           employee_id: resEmployee?.data?.employee_data?.id,
           institution_id: resEmployee?.data?.employee_data?.institution_id,
@@ -300,7 +305,7 @@ const App = () => {
   }, [cookies.token, cookies.user, cookies.employee]);
 
   console.log({ user });
-  // console.log({ employeeDetail });
+  console.log({ employeeDetail });
   // console.log({ permissions });
 
   return (
