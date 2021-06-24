@@ -200,7 +200,7 @@ export const PaymentMethodPage = ({ fromFinanceMenu }) => {
               columns={columns}
               data={data || []}
               isLoading={isLoadingPaymentMethods}
-              skeletonCols={7}
+              skeletonCols={8}
               action={
                 <PrivateComponent
                   permission={Permissions.createInstitutionPaymentMethod}
