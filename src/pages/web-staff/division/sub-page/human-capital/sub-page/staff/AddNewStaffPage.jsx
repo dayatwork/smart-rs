@@ -150,6 +150,7 @@ export const AddNewStaffPage = () => {
       passport_number,
       phone_number,
       role_id: professionObj.id,
+      master_role_id: professionObj.master_role_id,
       profession: professionObj.name,
       status: 'active',
     };
@@ -297,6 +298,7 @@ export const AddNewStaffPage = () => {
                         value={JSON.stringify({
                           id: role.id,
                           name: role.name,
+                          master_role_id: role.master_role_id,
                         })}
                         key={role.id}
                       >
