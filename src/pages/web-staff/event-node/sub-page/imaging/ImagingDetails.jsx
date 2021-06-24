@@ -40,15 +40,8 @@ export const ImagingDetails = () => {
     );
 
   const onSubmit = async value => {
-    // const data = {
-    //   institution_id: dataRadiologyDetails?.data?.institution_id,
-    //   radiology_id: dataRadiologyDetails?.data?.id,
-    //   patient_id: dataRadiologyDetails?.data?.patient_id,
-    //   description: value.description,
-    //   image: value.image[0],
-    // };
     const data = new FormData();
-    // data.append("image", value.image[0]);
+    data.append('image', value.image[0]);
     data.append('institution_id', dataRadiologyDetails?.data?.institution_id);
     data.append('radiology_id', dataRadiologyDetails?.data?.id);
     data.append('patient_id', dataRadiologyDetails?.data?.patient_id);
@@ -56,7 +49,6 @@ export const ImagingDetails = () => {
 
     try {
       setIsLoading(true);
-      // await createRadiologyResult(cookies, data);
       await createRadiologyResult(cookies, data);
       setIsLoading(false);
       toast({

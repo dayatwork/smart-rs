@@ -4,10 +4,8 @@ export const createRadiologyResult = async (cookies, data) => {
     {
       method: 'POST',
       headers: {
-        // "Content-Type": "application/json",
         Authorization: `Bearer ${cookies?.token}`,
       },
-      // body: JSON.stringify(data),
       body: data,
     }
   );
