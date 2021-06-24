@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
@@ -16,9 +16,23 @@ import {
   InfrastructurePage,
 } from './sub-page';
 import { PrivateRoute, Permissions } from '../../../access-control';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const DivisionPage = () => {
   const { path } = useRouteMatch();
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedSubMenus = subMenus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
 
   return (
     <AppShell>
@@ -27,7 +41,9 @@ export const DivisionPage = () => {
           <SubMenuSideBar
             title="Division"
             titleLink="/division"
-            subMenus={subMenus}
+            subMenus={
+              user?.role?.alias === 'super-admin' ? subMenus : showedSubMenus
+            }
           />
           <ContentWrapper>
             <Switch>
@@ -37,7 +53,14 @@ export const DivisionPage = () => {
                 path={path}
                 pageTitle="Division | SMART-RS"
               >
-                <SubMenuGrid title="Division" subMenus={subMenus} />
+                <SubMenuGrid
+                  title="Division"
+                  subMenus={
+                    user?.role?.alias === 'super-admin'
+                      ? subMenus
+                      : showedSubMenus
+                  }
+                />
               </PrivateRoute>
               <PrivateRoute
                 permission={

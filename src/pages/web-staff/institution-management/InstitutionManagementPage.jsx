@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
@@ -27,9 +27,26 @@ import {
   Permissions,
   SuperAdminRoute,
 } from '../../../access-control';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const InstitutionManagementPage = () => {
   const { path } = useRouteMatch();
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedSubMenus = subMenus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        if (menu.permission === user?.role?.alias) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
 
   return (
     <AppShell>
@@ -38,7 +55,9 @@ export const InstitutionManagementPage = () => {
           <SubMenuSideBar
             title="Institution Management"
             titleLink="/institution-management"
-            subMenus={subMenus}
+            subMenus={
+              user?.role?.alias === 'super-admin' ? subMenus : showedSubMenus
+            }
           />
           <ContentWrapper>
             <Switch>
@@ -50,7 +69,11 @@ export const InstitutionManagementPage = () => {
               >
                 <SubMenuGrid
                   title="Institution Management"
-                  subMenus={subMenus}
+                  subMenus={
+                    user?.role?.alias === 'super-admin'
+                      ? subMenus
+                      : showedSubMenus
+                  }
                 />
               </PrivateRoute>
               <SuperAdminRoute exact path={`${path}/institution`}>

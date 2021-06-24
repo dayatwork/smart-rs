@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
@@ -12,9 +12,23 @@ import { subMenus } from './subMenus';
 import { PaymentMethodPage } from '../institution-management/sub-page/PaymentMethodPage';
 import { PaymentList, PaymentDetails } from '../event-node/sub-page/payment';
 import { PrivateRoute, Permissions } from '../../../access-control';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const FinancePage = () => {
   const { path } = useRouteMatch();
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedSubMenus = subMenus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
 
   return (
     <AppShell>
@@ -23,7 +37,9 @@ export const FinancePage = () => {
           <SubMenuSideBar
             title="Finance"
             titleLink="/finance"
-            subMenus={subMenus}
+            subMenus={
+              user?.role?.alias === 'super-admin' ? subMenus : showedSubMenus
+            }
           />
           <ContentWrapper>
             <Switch>
@@ -33,7 +49,14 @@ export const FinancePage = () => {
                 path={path}
                 pageTitle="Finance | SMART-RS"
               >
-                <SubMenuGrid title="Finance" subMenus={subMenus} />
+                <SubMenuGrid
+                  title="Finance"
+                  subMenus={
+                    user?.role?.alias === 'super-admin'
+                      ? subMenus
+                      : showedSubMenus
+                  }
+                />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions.indexInstitutionPaymentMethod}

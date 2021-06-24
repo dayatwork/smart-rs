@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
@@ -29,9 +29,23 @@ import {
   PaymentDetails,
 } from './sub-page';
 import { PrivateRoute, Permissions } from '../../../access-control';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const EventNodePage = () => {
   const { path } = useRouteMatch();
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedSubMenus = subMenus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
 
   return (
     <AppShell>
@@ -40,7 +54,9 @@ export const EventNodePage = () => {
           <SubMenuSideBar
             title="Events"
             titleLink="/events"
-            subMenus={subMenus}
+            subMenus={
+              user?.role?.alias === 'super-admin' ? subMenus : showedSubMenus
+            }
           />
           <ContentWrapper>
             <Switch>
@@ -50,7 +66,14 @@ export const EventNodePage = () => {
                 path={path}
                 pageTitle="Event Node | SMART-RS"
               >
-                <SubMenuGrid title="Events" subMenus={subMenus} />
+                <SubMenuGrid
+                  title="Events"
+                  subMenus={
+                    user?.role?.alias === 'super-admin'
+                      ? subMenus
+                      : showedSubMenus
+                  }
+                />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions.indexRegistration}

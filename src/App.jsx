@@ -299,7 +299,7 @@ const App = () => {
     setEmployeeDetail(cookies.employee);
   }, [cookies.token, cookies.user, cookies.employee]);
 
-  // console.log({ user });
+  console.log({ user });
   // console.log({ employeeDetail });
   // console.log({ permissions });
 

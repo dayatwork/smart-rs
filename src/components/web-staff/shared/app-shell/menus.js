@@ -10,17 +10,20 @@ import {
 import { BsListCheck } from 'react-icons/bs';
 import { RiDashboardFill } from 'react-icons/ri';
 
+import { Permissions } from '../../../../access-control';
+
 export const menus = [
   {
     to: '/dashboard',
     text: 'Dashboard',
-    // icon: HiOutlineHome,
     icon: RiDashboardFill,
+    permission: Permissions.indexDashboard,
   },
   {
     to: '/master',
     text: 'Master',
     icon: FaUserSecret,
+    permission: 'super-admin',
   },
   // {
   //   to: '/department',
@@ -31,6 +34,7 @@ export const menus = [
     to: '/division',
     text: 'Division',
     icon: GiOrganigram,
+    permission: Permissions.dashboardDivision,
   },
   // {
   //   to: '/services',
@@ -41,31 +45,37 @@ export const menus = [
     to: '/events',
     text: 'Events',
     icon: BsListCheck,
+    permission: Permissions.dashboardEventNode,
   },
   {
     to: '/patient',
     text: 'Patient',
     icon: GiStethoscope,
+    permission: Permissions.indexExamination,
   },
   {
     to: '/pharmacy',
     text: 'Pharmacy',
     icon: GiMedicines,
+    permission: Permissions.dashboardPharmacy,
   },
   {
     to: '/finance',
     text: 'Finance',
     icon: FaMoneyBillWave,
+    permission: Permissions.dashboardFinance,
   },
   {
     to: '/user-management',
     text: 'User Management',
     icon: FaUserCog,
+    permission: 'super-admin',
   },
   {
     to: '/institution-management',
     text: 'Institution Management',
     icon: FaUsersCog,
+    permission: Permissions.dashboardInstitutionManagement,
   },
 ];
 

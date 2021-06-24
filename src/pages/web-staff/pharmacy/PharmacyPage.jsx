@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
@@ -18,9 +18,23 @@ import {
   DrugPackageDetailPage,
 } from './sub-page';
 import { PrivateRoute, Permissions } from '../../../access-control';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const PharmacyPage = () => {
   const { path } = useRouteMatch();
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedSubMenus = subMenus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
 
   return (
     <AppShell>
@@ -32,7 +46,9 @@ export const PharmacyPage = () => {
           <SubMenuSideBar
             title="Pharmacy"
             titleLink="/pharmacy"
-            subMenus={subMenus}
+            subMenus={
+              user?.role?.alias === 'super-admin' ? subMenus : showedSubMenus
+            }
           />
           <ContentWrapper>
             <Switch>
@@ -41,7 +57,14 @@ export const PharmacyPage = () => {
                 exact
                 path={path}
               >
-                <SubMenuGrid title="Pharmacy" subMenus={subMenus} />
+                <SubMenuGrid
+                  title="Pharmacy"
+                  subMenus={
+                    user?.role?.alias === 'super-admin'
+                      ? subMenus
+                      : showedSubMenus
+                  }
+                />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions.indexDrugInventory}

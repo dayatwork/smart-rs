@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Drawer, Box, DrawerOverlay, DrawerContent } from '@chakra-ui/react';
 
 import { Logo } from './Logo';
 import { CloseButton } from './CloseButton';
 import { NavLink } from './NavLink';
 import { menus } from './menus';
+import { AuthContext } from '../../../../contexts/authContext';
 
 export const MobileSidebar = ({ isOpen, onClose }) => {
+  const { permissions, user } = useContext(AuthContext);
+
+  const showedMenus = menus
+    .map(menu => {
+      if (menu.permission) {
+        if (permissions.includes(menu.permission)) {
+          return menu;
+        }
+        return false;
+      }
+      return menu;
+    })
+    .filter(menu => !!menu);
+
   return (
     <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
       <DrawerOverlay>
@@ -18,7 +33,8 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
             right="0"
             bottom="0"
             left="0"
-            style={{ zIndex: 40 }}>
+            style={{ zIndex: 40 }}
+          >
             {/* <Overlay /> */}
             <Box
               position="relative"
@@ -28,7 +44,8 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
               w="full"
               pb="4"
               bgColor="gray.100"
-              style={{ flex: '1 1 0%' }}>
+              style={{ flex: '1 1 0%' }}
+            >
               {/* Close button */}
               <Box position="absolute" top="0" right="0" mr="-12" pt="2">
                 <CloseButton onClick={onClose} />
@@ -37,8 +54,16 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
               <Logo />
               <Box mt="5" h="0" overflowY="auto" style={{ flex: '1 1 0%' }}>
                 <Box as="nav" px="4">
-                  {menus.map((menu) => (
-                    <NavLink key={menu.to} isMobile icon={menu.icon} to={menu.to}>
+                  {(user?.role?.alias === 'super-admin'
+                    ? menus
+                    : showedMenus
+                  ).map(menu => (
+                    <NavLink
+                      key={menu.to}
+                      isMobile
+                      icon={menu.icon}
+                      to={menu.to}
+                    >
                       {menu.text}
                     </NavLink>
                   ))}
