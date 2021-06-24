@@ -39,13 +39,19 @@ export const Logo = ({ mini, mobile, ...rest }) => {
             w="10"
             h="10"
             fill="white"
-            mr={{ base: 0, md: mini ? '0' : '3' }}
-            ml={{ base: '10', md: mini ? '5' : '0' }}
+            mr={{ base: 3, md: mini ? '0' : '3' }}
+            ml={{ base: mobile ? 0 : '10', md: mini ? '5' : '0' }}
             // mr="3"
           />
           {mini && !mobile ? null : (
-            <Box display={{ base: 'none', md: 'block' }}>
-              <Text fontSize="lg" color="white" fontWeight="bold">
+            <Box display={{ base: mobile ? 'block' : 'none', md: 'block' }}>
+              <Text
+                fontSize="lg"
+                color="white"
+                fontWeight="bold"
+                lineHeight="5"
+                mb="1.5"
+              >
                 {/* HOSPITAL */}
                 {dataInstitutions?.data?.find(
                   institution =>

@@ -10,7 +10,6 @@ export const SubMenuSideBar = ({ subMenus, title, titleLink }) => {
 
   return (
     <Box
-      // w="80"
       minW="64"
       display={{ base: 'none', lg: display ? 'block' : 'none' }}
       h="full"
