@@ -40,7 +40,7 @@ export const AddRoleModal = ({ isOpen, onClose, selectedInstitution }) => {
   const { data: dataRolesInst } = useQuery(
     ['institution-roles', selectedInstitution],
     () => getInstitutionRoles(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createInstitutionRole(cookies), {
@@ -76,9 +76,11 @@ export const AddRoleModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { roles } = values;
-    const formattedRoles = roles.filter((role) => !!role).map((role) => JSON.parse(role));
+    const formattedRoles = roles
+      .filter(role => !!role)
+      .map(role => JSON.parse(role));
 
     const data = {
       institution_id: selectedInstitution,
@@ -100,27 +102,30 @@ export const AddRoleModal = ({ isOpen, onClose, selectedInstitution }) => {
             <SimpleGrid columns={4} gap="2">
               {dataRoles?.data
                 ?.filter(
-                  (role) =>
+                  role =>
                     role.name !== 'Super Admin' &&
                     role.name !== 'Hospital Admin' &&
-                    role.name !== 'Basic User',
+                    role.name !== 'Basic User'
                 )
-                .map((role, index) => (
-                  <Checkbox
-                    colorScheme="purple"
-                    key={role.id}
-                    value={JSON.stringify({
-                      id: role.id,
-                      name: role.name,
-                      alias: role.alias,
-                    })}
-                    defaultChecked={dataRolesInst?.data
-                      ?.map((role) => role.master_role_id)
-                      .includes(role.id)}
-                    {...register(`roles[${index}]`)}>
-                    {role.name}
-                  </Checkbox>
-                ))}
+                .map((role, index) => {
+                  return (
+                    <Checkbox
+                      colorScheme="purple"
+                      key={role.id}
+                      value={JSON.stringify({
+                        master_role_id: role.id,
+                        name: role.name,
+                        alias: role.alias,
+                      })}
+                      defaultChecked={dataRolesInst?.data
+                        ?.map(role => role.master_role_id)
+                        .includes(role.id)}
+                      {...register(`roles[${index}]`)}
+                    >
+                      {role.name}
+                    </Checkbox>
+                  );
+                })}
             </SimpleGrid>
           </FormControl>
         </ModalBody>
@@ -132,7 +137,8 @@ export const AddRoleModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>
