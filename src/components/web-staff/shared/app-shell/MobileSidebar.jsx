@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Drawer, Box, DrawerOverlay, DrawerContent } from '@chakra-ui/react';
+import { HiHome } from 'react-icons/hi';
 
 import { Logo } from './Logo';
 import { CloseButton } from './CloseButton';
@@ -67,6 +68,9 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
                       {menu.text}
                     </NavLink>
                   ))}
+                  <NavLink isMobile icon={HiHome} to="/">
+                    Web Patient
+                  </NavLink>
                 </Box>
               </Box>
             </Box>

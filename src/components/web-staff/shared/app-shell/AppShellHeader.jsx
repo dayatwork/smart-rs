@@ -1,5 +1,6 @@
 import React from 'react';
-import { Flex, Box, HStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Flex, Box, HStack, Button } from '@chakra-ui/react';
 
 import { MenuButton } from './MenuButton';
 import { Notification } from './NotificationButton';
@@ -29,6 +30,16 @@ export const AppShellHeader = ({ onOpenMobile }) => {
         />
         <Logo display={{ base: 'flex', lg: 'none' }} />
         <HStack spacing="3">
+          <Button
+            display={{ base: 'none', lg: 'inline-flex' }}
+            as={Link}
+            to="/"
+            bg="white"
+            color="purple.500"
+            size="sm"
+          >
+            Web Patient
+          </Button>
           <Notification />
           <ProfileDropdown />
         </HStack>

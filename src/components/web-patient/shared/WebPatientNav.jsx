@@ -54,7 +54,7 @@ export const WebPatientNav = ({ active }) => {
                 as={Link}
                 to="/dashboard"
                 bg="white"
-                color="purple.500"
+                color="blue.500"
                 size="sm"
               >
                 Dashboard Staff

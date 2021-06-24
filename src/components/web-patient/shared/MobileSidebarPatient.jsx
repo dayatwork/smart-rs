@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Drawer, Box, DrawerOverlay, DrawerContent } from '@chakra-ui/react';
 import { HiHome } from 'react-icons/hi';
-import { RiStethoscopeFill } from 'react-icons/ri';
+import { RiStethoscopeFill, RiDashboardFill } from 'react-icons/ri';
 
 import { Logo } from './Logo';
 import { CloseButton } from './CloseButton';
 import { NavLink } from './NavLink';
+import { AuthContext } from '../../../contexts/authContext';
 
 export const menus = [
   {
@@ -21,6 +22,8 @@ export const menus = [
 ];
 
 export const MobileSidebarPatient = ({ isOpen, onClose }) => {
+  const { employeeDetail, user } = useContext(AuthContext);
+
   return (
     <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
       <DrawerOverlay>
@@ -63,6 +66,12 @@ export const MobileSidebarPatient = ({ isOpen, onClose }) => {
                       {menu.text}
                     </NavLink>
                   ))}
+                  {(employeeDetail?.employee_id ||
+                    user?.role?.alias === 'super-admin') && (
+                    <NavLink isMobile icon={RiDashboardFill} to="/dashboard">
+                      Dashboard Staff
+                    </NavLink>
+                  )}
                 </Box>
               </Box>
             </Box>
