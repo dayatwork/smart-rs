@@ -6,25 +6,28 @@ export const SubMenuSideBar = ({ subMenus, title, titleLink }) => {
   const { pathname } = useLocation();
 
   // const display = subMenus.map((subMenu) => subMenu.to).includes(pathname);
-  const display = subMenus.find((subMenu) => pathname.startsWith(subMenu.to));
+  const display = subMenus.find(subMenu => pathname.startsWith(subMenu.to));
 
   return (
     <Box
-      // w="40"
+      // w="80"
+      minW="64"
       display={{ base: 'none', lg: display ? 'block' : 'none' }}
       h="full"
       overflow="auto"
-      pb="20">
+      pb="20"
+    >
       <Link to={titleLink}>
         <Heading
           fontSize="2xl"
           py={{ base: '2', '2xl': '3' }}
-          px={{ base: '3', '2xl': '6' }}>
+          px={{ base: '3', '2xl': '6' }}
+        >
           {title}
         </Heading>
       </Link>
       <VStack alignItems="stretch">
-        {subMenus.map((subMenu) => (
+        {subMenus.map(subMenu => (
           <Link to={subMenu.to} key={subMenu.to}>
             <Box
               _hover={{ bgColor: 'purple.800', color: 'purple.50' }}
@@ -34,7 +37,8 @@ export const SubMenuSideBar = ({ subMenus, title, titleLink }) => {
               alignItems="center"
               py={{ base: '2', '2xl': '3' }}
               px={{ base: '4', '2xl': '6' }}
-              fontSize="md">
+              fontSize="md"
+            >
               <Box as="span">{subMenu.text}</Box>
             </Box>
           </Link>

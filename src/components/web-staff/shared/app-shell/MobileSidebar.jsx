@@ -52,7 +52,7 @@ export const MobileSidebar = ({ isOpen, onClose }) => {
                 <CloseButton onClick={onClose} />
               </Box>
               {/* Closeable Sidebar */}
-              <Logo />
+              <Logo mobile />
               <Box mt="5" h="0" overflowY="auto" style={{ flex: '1 1 0%' }}>
                 <Box as="nav" px="4">
                   {(user?.role?.alias === 'super-admin'

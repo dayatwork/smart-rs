@@ -9,7 +9,7 @@ import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 // import { menus } from './menus';
 
-export const Logo = ({ mini, ...rest }) => {
+export const Logo = ({ mini, mobile, ...rest }) => {
   const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   // const { pathname } = useLocation();
@@ -43,7 +43,7 @@ export const Logo = ({ mini, ...rest }) => {
             ml={{ base: '10', md: mini ? '5' : '0' }}
             // mr="3"
           />
-          {mini ? null : (
+          {mini && !mobile ? null : (
             <Box display={{ base: 'none', md: 'block' }}>
               <Text fontSize="lg" color="white" fontWeight="bold">
                 {/* HOSPITAL */}
