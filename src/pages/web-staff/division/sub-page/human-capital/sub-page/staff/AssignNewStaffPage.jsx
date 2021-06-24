@@ -177,6 +177,7 @@ export const AssignNewStaffPage = () => {
       user_id: user.user_id,
       role_id: JSON.parse(user.profession).id,
       profession: JSON.parse(user.profession).name,
+      master_role_id: JSON.parse(user.profession).master_role_id,
       functional_medical_staff_id: user.fms,
       status: 'active',
     }));
@@ -304,6 +305,7 @@ export const AssignNewStaffPage = () => {
                                 value={JSON.stringify({
                                   id: role.id,
                                   name: role.name,
+                                  master_role_id: role.master_role_id,
                                 })}
                                 key={role.id}
                               >
