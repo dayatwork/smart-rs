@@ -34,9 +34,13 @@ export const AdministrationPage = () => {
         >
           <AddServiceSchedule />
         </PrivateRoute>
-        <Route exact path={`${path}/service-schedule/detail/:id`}>
+        <PrivateRoute
+          permission={Permissions['read-detailServiceSchedule']}
+          exact
+          path={`${path}/service-schedule/detail/:id`}
+        >
           <ServiceScheduleDetailPage />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Box>
   );
