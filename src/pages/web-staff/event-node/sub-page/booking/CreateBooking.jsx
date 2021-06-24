@@ -35,6 +35,7 @@ import {
   getHospitalPatientById,
 } from '../../../../../api/patient-services/hospital-patient';
 import { getBookingSchedulesInstitution } from '../../../../../api/institution-services/service';
+import { getServicePriceDetails } from '../../../../../api/finance-services/service-price';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
 
@@ -127,8 +128,7 @@ export const CreateBooking = () => {
     };
     try {
       setIsLoadingBooking(true);
-      const res = await createOnsiteBooking(cookies, data);
-      console.log({ res });
+      await createOnsiteBooking(cookies, data);
       await queryClient.invalidateQueries('booking-list');
       setIsLoadingBooking(false);
       setHasSearch(false);
@@ -191,6 +191,18 @@ export const CreateBooking = () => {
         JSON.parse(selectedSchedule || '{}')?.detailId
       ),
     { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
+  );
+
+  const {
+    data: dataServicePrice,
+    isLoading: isLoadingServicePrice,
+    isSuccess: isSuccessServicePrice,
+  } = useQuery(
+    ['service-price', selectedService, selectedInstitution],
+    () => getServicePriceDetails(cookies, selectedInstitution, selectedService),
+    {
+      enabled: Boolean(selectedService) && Boolean(selectedInstitution),
+    }
   );
 
   const handleDayClick = (day, modifiers = {}) => {
@@ -438,6 +450,22 @@ export const CreateBooking = () => {
                 </RadioGroup>
               </FormControl>
             )}
+
+            {isLoadingServicePrice && (
+              <Center py="4">
+                <Spinner />
+              </Center>
+            )}
+            {isSuccessServicePrice && (
+              <FormControl>
+                <FormLabel>Price</FormLabel>
+                <Box fontSize="3xl" fontWeight="extrabold" as="span">
+                  {formatter.format(
+                    Number(dataServicePrice?.data?.total_price)
+                  )}
+                </Box>
+              </FormControl>
+            )}
           </VStack>
 
           {selectedTime && (
@@ -506,6 +534,11 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
     </Box>
   );
 };
+
+const formatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+});
 
 const customStyle = `
   .Selectable
