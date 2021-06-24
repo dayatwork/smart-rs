@@ -57,7 +57,7 @@ export const AddNewStaffPage = () => {
     control,
     reset,
     clearErrors,
-  } = useForm();
+  } = useForm({ defaultValues: { birth_date: new Date() } });
   const watchID = watch('employee_number');
   const queryClient = useQueryClient();
 

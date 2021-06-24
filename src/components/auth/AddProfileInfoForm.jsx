@@ -181,7 +181,8 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
             fontSize="md"
             data-testid="submit-button"
             onClick={handleSubmit(onSubmit)}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Simpan dan Lanjutkan
           </Button>
         </Stack>
@@ -194,7 +195,8 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
             color="blue.600"
             _hover={{ color: 'blue.600' }}
             display={{ base: 'block', sm: 'revert' }}
-            data-testid="skip-link">
+            data-testid="skip-link"
+          >
             Skip
           </Box>
         </Link>

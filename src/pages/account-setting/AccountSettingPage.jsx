@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -12,35 +13,172 @@ import {
   Text,
   useColorModeValue,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
-import * as React from 'react';
 import { HiCloudUpload } from 'react-icons/hi';
+import { useCookies } from 'react-cookie';
+import { useQuery } from 'react-query';
+import { useForm } from 'react-hook-form';
 
 import { WebPatientNav } from '../../components/web-patient/shared/WebPatientNav';
 import { FieldGroup } from './FieldGroup';
 import { UpdateVitalSign } from './UpdateVitalSign';
-// import {
-//   getUserProfile,
-//   createUserVitalSign,
-//   updateUserDetails,
-// } from "query/user-management/users";
-// import { getPatientVitalSign } from "query/medical-record/vital-sign";
-// import { getPatientAllergies } from "query/medical-record/allergies";
-// import { getAllergiesByGroup } from "query/master/allergies";
+import {
+  getUserProfile,
+  updateUserDetail,
+} from '../../api/user-services/user-management';
+import {
+  SelectProvince,
+  SelectCity,
+  SelectDistrict,
+  SelectSubDistrict,
+  InputDate,
+} from '../../components/shared/input';
 
 export const AccountSettingPage = () => {
-  // const { register, handleSubmit, errors, setValue, reset } = useForm({
-  //   defaultValues,
-  // });
+  const toast = useToast();
+  const [cookies] = useCookies(['token']);
+  const [defaultValues, setDefaultValues] = useState({
+    address: '',
+    province: '',
+    city: '',
+    district: '',
+    subdistrict: '',
+  });
+  const { register, handleSubmit, reset, control } = useForm();
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    reset: reset2,
+    watch: watch2,
+    setValue: setValue2,
+  } = useForm({ defaultValues });
+  const [userDetails, setUserDetails] = useState(null);
+  const [isLoadingPersonalInfo, setIsLoadingPersonalInfo] = useState(false);
+  const [isLoadingAddressInfo, setIsLoadingAddressInfo] = useState(false);
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  // };
+  const { data: res } = useQuery(
+    ['user-profile', cookies.token],
+    () => getUserProfile(cookies.token),
+    { enabled: Boolean(cookies.token) }
+  );
+
+  useEffect(() => {
+    reset({
+      name: res?.data?.name,
+      email: res?.data?.email,
+      phone_number: res?.data?.phone_number,
+      identity_number: res?.data?.usersId[0]?.identity_number,
+      birth_date: new Date(res?.data?.usersId[0]?.birth_date),
+    });
+  }, [reset, res?.data]);
+
+  useEffect(() => {
+    setUserDetails({
+      province: res?.data?.usersId[0]?.province,
+      regency: res?.data?.usersId[0]?.regency,
+      district: res?.data?.usersId[0]?.district,
+      address: res?.data?.usersId[0]?.address,
+    });
+  }, [res?.data?.usersId]);
+
+  useEffect(() => {
+    if (userDetails) {
+      setDefaultValues({
+        address: userDetails.address,
+        province: userDetails.province,
+        city: userDetails.regency,
+        district: userDetails.district,
+      });
+      reset2({
+        address: userDetails.address,
+        province: userDetails.province,
+        city: userDetails.regency,
+        district: userDetails.district,
+      });
+    }
+  }, [reset2, userDetails]);
+
+  const provinceWatch = watch2('province', userDetails?.province);
+  const cityWatch = watch2('city', userDetails?.regency);
+  const districtWatch = watch2('district', userDetails?.district);
+
+  const onSubmit = async values => {
+    const { name, phone_number, identity_number, birth_date } = values;
+
+    const data = {
+      name,
+      phone_number,
+      identity_number,
+      birth_date,
+    };
+
+    try {
+      setIsLoadingPersonalInfo(true);
+      await updateUserDetail(cookies)(data);
+      // await queryClient.invalidateQueries(['user-profile', cookies.token]);
+      setIsLoadingPersonalInfo(false);
+      toast({
+        title: 'Success',
+        description: 'Personal berhasil di update',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      setIsLoadingPersonalInfo(false);
+      toast({
+        title: 'Error',
+        description: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const onSubmit2 = async values => {
+    const { address, province, city, district, subdistrict } = values;
+
+    const data = {
+      address,
+      province,
+      regency: city,
+      district,
+      subdistrict,
+    };
+
+    try {
+      setIsLoadingAddressInfo(true);
+      await updateUserDetail(cookies)(data);
+      // await queryClient.invalidateQueries(['user-profile', cookies.token]);
+      setIsLoadingAddressInfo(false);
+      toast({
+        title: 'Success',
+        description: 'Alamat berhasil di update',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      setIsLoadingAddressInfo(false);
+      toast({
+        title: 'Error',
+        description: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  console.log({ res });
+
   return (
     <>
       <WebPatientNav />
       <Box px={{ base: '4', md: '10' }} py="10" maxWidth="3xl" mx="auto">
-        <form id="settings-form">
+        <Box id="settings-form">
           <Stack spacing="4" divider={<StackDivider />}>
             <Heading size="lg" as="h1" paddingBottom="4">
               Account Settings
@@ -49,33 +187,36 @@ export const AccountSettingPage = () => {
               <VStack width="full" spacing="6">
                 <FormControl id="name">
                   <FormLabel>Name</FormLabel>
-                  <Input type="text" maxLength={255} />
+                  <Input {...register('name')} />
                 </FormControl>
 
                 <FormControl id="email">
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" isReadOnly value="joe@chakra-ui.com" />
+                  <Input type="email" readOnly {...register('email')} />
                 </FormControl>
 
                 <FormControl id="identity_number">
                   <FormLabel>NIK</FormLabel>
-                  <Input />
+                  <Input type="number" {...register('identity_number')} />
+                </FormControl>
+
+                <FormControl id="birth_date">
+                  <FormLabel>Tanggal Lahir</FormLabel>
+                  <InputDate name="birth_date" control={control} />
                 </FormControl>
 
                 <FormControl id="phone_number">
                   <FormLabel>Phone</FormLabel>
-                  <Input />
+                  <Input type="number" {...register('phone_number')} />
                 </FormControl>
 
-                {/* <FormControl id="bio">
-                  <FormLabel>Bio</FormLabel>
-                  <Textarea rows={5} />
-                  <FormHelperText>
-                    Brief description for your profile. URLs are hyperlinked.
-                  </FormHelperText>
-                </FormControl> */}
-
-                <Button alignSelf="end">Save Changes</Button>
+                <Button
+                  alignSelf="end"
+                  onClick={handleSubmit(onSubmit)}
+                  isLoading={isLoadingPersonalInfo}
+                >
+                  Save Changes
+                </Button>
               </VStack>
             </FieldGroup>
             <FieldGroup title="Profile Photo">
@@ -102,6 +243,67 @@ export const AccountSettingPage = () => {
                 </Box>
               </Stack>
             </FieldGroup>
+
+            <FieldGroup title="Address">
+              <VStack width="full" spacing="6">
+                <FormControl id="address">
+                  <FormLabel>Street</FormLabel>
+                  <Input {...register2('address')} />
+                </FormControl>
+
+                <FormControl id="province">
+                  <FormLabel>Provinsi</FormLabel>
+                  <SelectProvince
+                    defaultValue={userDetails?.province}
+                    {...register2('province')}
+                  />
+                </FormControl>
+
+                <FormControl id="city">
+                  <FormLabel>Kabupaten/ Kota</FormLabel>
+                  <SelectCity
+                    province={provinceWatch}
+                    defaultValue={userDetails?.regency}
+                    setValue={setValue2}
+                    // ref={register}
+                    {...register2('city')}
+                  />
+                </FormControl>
+
+                <FormControl id="district">
+                  <FormLabel>Kecamatan</FormLabel>
+                  <SelectDistrict
+                    province={provinceWatch}
+                    city={cityWatch}
+                    defaultValue={userDetails?.district}
+                    setValue={setValue2}
+                    // ref={register}
+                    {...register2('district')}
+                  />
+                </FormControl>
+
+                <FormControl id="subdistrict">
+                  <FormLabel>Kelurahan/ Desa</FormLabel>
+                  <SelectSubDistrict
+                    province={provinceWatch}
+                    city={cityWatch}
+                    district={districtWatch}
+                    defaultValue={userDetails?.sub_district}
+                    setValue={setValue2}
+                    {...register2('sub_district')}
+                  />
+                </FormControl>
+
+                <Button
+                  alignSelf="end"
+                  onClick={handleSubmit2(onSubmit2)}
+                  isLoading={isLoadingAddressInfo}
+                >
+                  Save Changes
+                </Button>
+              </VStack>
+            </FieldGroup>
+
             <FieldGroup title="Password">
               <VStack width="full" spacing="6">
                 <FormControl id="current_password">
@@ -117,50 +319,12 @@ export const AccountSettingPage = () => {
                 <Button alignSelf="end">Change Password</Button>
               </VStack>
             </FieldGroup>
-            <FieldGroup title="Alamat">
-              <VStack width="full" spacing="6">
-                <FormControl id="street">
-                  <FormLabel>Jalan</FormLabel>
-                  <Input />
-                </FormControl>
-
-                <FormControl id="province">
-                  <FormLabel>Provinsi</FormLabel>
-                  <Input />
-                </FormControl>
-
-                <FormControl id="city">
-                  <FormLabel>Kabupaten/ Kota</FormLabel>
-                  <Input />
-                </FormControl>
-
-                <FormControl id="district">
-                  <FormLabel>Kecamatan</FormLabel>
-                  <Input />
-                </FormControl>
-
-                <FormControl id="subdistrict">
-                  <FormLabel>Kelurahan/ Desa</FormLabel>
-                  <Input />
-                </FormControl>
-
-                <Button alignSelf="end">Save Changes</Button>
-              </VStack>
-            </FieldGroup>
 
             <FieldGroup title="Health Info">
               <UpdateVitalSign />
             </FieldGroup>
           </Stack>
-          {/* <FieldGroup mt="8">
-            <HStack width="full">
-              <Button type="submit" colorScheme="blue">
-                Save Changes
-              </Button>
-              <Button variant="outline">Cancel</Button>
-            </HStack>
-          </FieldGroup> */}
-        </form>
+        </Box>
       </Box>
     </>
   );

@@ -61,7 +61,7 @@ export const CreateRegistration = () => {
     reset,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: { birth_date: new Date() } });
   const [identity, setIdentity] = useState('');
   const [foundUser, setFoundUser] = useState(null);
   const [isLoadingIdentity, setIsLoadingIdentity] = useState(false);
@@ -205,8 +205,9 @@ export const CreateRegistration = () => {
     setTimeout(() => {
       setValue(
         'birth_date',
-        foundUser?.usersId[0]?.birth_date &&
-          new Date(foundUser.usersId[0].birth_date)
+        foundUser?.usersId[0]?.birth_date
+          ? new Date(foundUser.usersId[0].birth_date)
+          : new Date()
       );
       setValue('gender', foundUser?.usersId[0]?.gender);
       setValue('province', foundUser?.usersId[0]?.province);
