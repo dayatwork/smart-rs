@@ -36,6 +36,8 @@ import {
 } from '../../../../../api/patient-services/hospital-patient';
 import { getBookingSchedulesInstitution } from '../../../../../api/institution-services/service';
 import { getServicePriceDetails } from '../../../../../api/finance-services/service-price';
+import { getPaymentMethods } from '../../../../../api/institution-services/payment-method';
+import { createOrder } from '../../../../../api/payment-services/order';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
 
@@ -54,6 +56,7 @@ export const CreateBooking = () => {
     from: undefined,
     to: undefined,
   });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [isLoadingBooking, setIsLoadingBooking] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
@@ -77,10 +80,19 @@ export const CreateBooking = () => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  const { data: dataHospitalPatients } = useQuery(
-    ['hospital-patients', selectedInstitution],
-    () => getHospitalPatients(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) }
+  const { data: dataHospitalPatients, isLoading: isLoadingHospitalPatients } =
+    useQuery(
+      ['hospital-patients', selectedInstitution],
+      () => getHospitalPatients(cookies, selectedInstitution),
+      { enabled: Boolean(selectedInstitution) }
+    );
+
+  const { data: dataPaymentMethods } = useQuery(
+    ['institution-payment-methods', selectedInstitution],
+    () => getPaymentMethods(cookies, selectedInstitution),
+    {
+      enabled: Boolean(selectedInstitution),
+    }
   );
 
   const searchPatient = async patientId => {
@@ -114,6 +126,7 @@ export const CreateBooking = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!selectedPaymentMethod) return;
     const patient_id = foundPatient.patient_id;
     const service_id = selectedService;
     const schedule_id = JSON.parse(selectedSchedule).id;
@@ -126,10 +139,41 @@ export const CreateBooking = () => {
       schedule_detail_id,
       estimate_time_id,
     };
+    const paymentMethod = JSON.parse(selectedPaymentMethod);
+
     try {
       setIsLoadingBooking(true);
-      await createOnsiteBooking(cookies, data);
+      const res = await createOnsiteBooking(cookies, data);
+      console.log({ res });
+      const orderData = {
+        booking_order_id: res?.data?.booking_order?.id,
+        type: '02',
+        address_id: null,
+        event_node: 'Booking',
+        estimate_time_id: selectedTime,
+        method_id: paymentMethod?.id,
+        institution_id: selectedInstitution,
+        method_name: paymentMethod?.name,
+        transaction_number: res?.data?.transaction_number,
+        transfer_to: paymentMethod?.account_number,
+        tax: dataServicePrice?.data?.tax,
+        discount: null,
+        items: [
+          {
+            product_id: dataServicePrice?.data?.service_id,
+            price: dataServicePrice?.data?.total_price,
+            quantity: 1,
+            description: null,
+          },
+        ],
+      };
+      console.log({ orderData });
+      await createOrder(cookies)(orderData);
       await queryClient.invalidateQueries('booking-list');
+      await queryClient.invalidateQueries([
+        'institution-order-list',
+        selectedInstitution,
+      ]);
       setIsLoadingBooking(false);
       setHasSearch(false);
       setFoundPatient(null);
@@ -222,7 +266,7 @@ export const CreateBooking = () => {
   };
 
   return (
-    <Box>
+    <Box pb="10">
       <Helmet>
         <style>{customStyle}</style>
       </Helmet>
@@ -260,6 +304,7 @@ export const CreateBooking = () => {
                   searchPatient(e.target.value);
                 }}
                 mb="4"
+                disabled={isLoadingHospitalPatients}
               >
                 <option value="">Select Patient</option>
                 {dataHospitalPatients?.data?.map(patient => (
@@ -456,7 +501,7 @@ export const CreateBooking = () => {
                 <Spinner />
               </Center>
             )}
-            {isSuccessServicePrice && (
+            {isSuccessServicePrice && selectedTime && (
               <FormControl>
                 <FormLabel>Price</FormLabel>
                 <Box fontSize="3xl" fontWeight="extrabold" as="span">
@@ -466,9 +511,31 @@ export const CreateBooking = () => {
                 </Box>
               </FormControl>
             )}
+
+            {selectedTime && (
+              <FormControl id="payment_method" my="4">
+                <FormLabel>Payment Method</FormLabel>
+                <Select
+                  value={selectedPaymentMethod}
+                  onChange={e => setSelectedPaymentMethod(e.target.value)}
+                >
+                  <option value="">Pilih Metode Pembayaran</option>
+                  {dataPaymentMethods?.data
+                    ?.filter(paymentMethod => paymentMethod.active)
+                    .map(paymentMethod => (
+                      <option
+                        key={paymentMethod.id}
+                        value={JSON.stringify(paymentMethod)}
+                      >
+                        {paymentMethod.name}
+                      </option>
+                    ))}
+                </Select>
+              </FormControl>
+            )}
           </VStack>
 
-          {selectedTime && (
+          {selectedTime && selectedPaymentMethod && (
             <PrivateComponent permission={Permissions.createBookingDoctor}>
               <Button
                 w="full"

@@ -205,7 +205,7 @@ export const getBookingSchedulesInstitution = async (
 ) => {
   // const URL = `${process.env.REACT_APP_BOOKING_API}/schedule/list?startDate=${startDate}&endDate=${endDate}&service_id=${serviceId}`;
 
-  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?institution_id=${institutionId}&service_id=${serviceId}&sort_unix_created_at=asc&first_date=${startDate}&last_date=${endDate}`;
+  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?institution_id=${institutionId}&service_id=${serviceId}&sort_date=asc&first_date=${startDate}&last_date=${endDate}`;
   const res = await fetch(URL, {
     method: 'GET',
     headers: {

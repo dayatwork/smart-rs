@@ -105,8 +105,6 @@ export const BookingDetailPage = () => {
     }
   };
 
-  console.log({ dataBookingDetail });
-
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="doctor" />
@@ -234,6 +232,18 @@ export const BookingDetailPage = () => {
                   </Card>
                 </GridItem>
               )}
+            {dataBookingDetail?.data?.booking_orders[0]?.status ===
+              'pending payment' && (
+              <GridItem colSpan={{ base: 2, md: 1 }}>
+                <Card>
+                  <CardHeader title="Info" />
+                  <Text px="6" py="4">
+                    Lakukan pembayaran dan konfirmasi pembayaran untuk
+                    mendapatkan QR Code untuk check in
+                  </Text>
+                </Card>
+              </GridItem>
+            )}
           </Grid>
         )}
 

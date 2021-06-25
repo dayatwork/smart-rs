@@ -57,6 +57,8 @@ export const BookedPatientList = () => {
     { enabled: Boolean(selectedInstitution) }
   );
 
+  console.log({ dataBookingList });
+
   const {
     isOpen: isCancelOpen,
     onOpen: onCancelOpen,
