@@ -51,7 +51,7 @@ export const ServiceSchedulePage = () => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  console.log({ res });
+  // console.log({ res });
 
   const data = React.useMemo(
     () =>

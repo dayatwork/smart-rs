@@ -172,7 +172,7 @@ export const AccountSettingPage = () => {
     }
   };
 
-  console.log({ res });
+  // console.log({ res });
 
   return (
     <>
