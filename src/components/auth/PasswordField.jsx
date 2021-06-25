@@ -35,12 +35,19 @@ const PasswordField = (props, ref) => {
   };
 
   return (
-    <FormControl id="password" isInvalid={props?.errors?.password ? true : false}>
+    <FormControl
+      id="password"
+      isInvalid={props?.errors?.password ? true : false}
+    >
       <Flex justify="space-between">
         <FormLabel>Password</FormLabel>
         {props.forgot === 'true' && (
           <Link to="/forgot-password">
-            <Box color={mode('blue.600', 'blue.200')} fontWeight="semibold" fontSize="sm">
+            <Box
+              color={mode('blue.600', 'blue.200')}
+              fontWeight="semibold"
+              fontSize="sm"
+            >
               Lupa password?
             </Box>
           </Link>
@@ -52,7 +59,7 @@ const PasswordField = (props, ref) => {
             bg="transparent !important"
             variant="ghost"
             aria-label={isOpen ? 'Mask password' : 'Reveal password'}
-            icon={isOpen ? <HiEyeOff /> : <HiEye />}
+            icon={isOpen ? <HiEye /> : <HiEyeOff />}
             onClick={onClickReveal}
           />
         </InputRightElement>

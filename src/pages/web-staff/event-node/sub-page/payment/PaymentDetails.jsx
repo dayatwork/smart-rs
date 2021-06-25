@@ -55,6 +55,8 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
     { enabled: Boolean(dataOrder?.data?.id) }
   );
 
+  console.log({ dataPaymentSlip });
+
   const handleVerifyPayment = async () => {
     const data = {
       id: dataPaymentSlip?.data?.id,
@@ -193,9 +195,20 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
           permission={Permissions['manual-verificationPayment']}
         >
           <Flex justify="flex-end">
-            <Button colorScheme="purple" onClick={onOpen}>
-              Confirm Payment
-            </Button>
+            <Box>
+              <Button
+                colorScheme="purple"
+                onClick={onOpen}
+                disabled={dataPaymentSlip?.code === 404}
+              >
+                Confirm Payment
+              </Button>
+              {dataPaymentSlip?.code === 404 && (
+                <Text fontSize="sm" color="gray.600">
+                  Payment slip is required
+                </Text>
+              )}
+            </Box>
           </Flex>
         </PrivateComponent>
       )}
