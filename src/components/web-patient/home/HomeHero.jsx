@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import BookingIcon from '../../../assets/icons/Booking.svg';
 
 export const HomeHero = ({ user }) => {
+  console.log({ user });
   return (
     <Box
       bg="white"
