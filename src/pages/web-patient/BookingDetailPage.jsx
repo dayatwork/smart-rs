@@ -21,6 +21,7 @@ import {
   useDisclosure,
   useToast,
   useBreakpointValue,
+  Divider,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -33,6 +34,7 @@ import {
   cancelBooking,
   getBookingDetail,
 } from '../../api/booking-services/booking';
+import { OrderDetail } from './OrderDetail';
 
 export const BookingDetailPage = () => {
   const history = useHistory();
@@ -102,6 +104,8 @@ export const BookingDetailPage = () => {
       });
     }
   };
+
+  console.log({ dataBookingDetail });
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
@@ -212,20 +216,34 @@ export const BookingDetailPage = () => {
                     label="Time"
                     value={dataBookingDetail?.data?.schedule?.available_time}
                   />
+                  <Property
+                    label="Transaction"
+                    value={dataBookingDetail?.data?.transaction_number}
+                  />
                 </CardContent>
               </Card>
             </GridItem>
-            {dataQR && (
-              <GridItem colSpan={{ base: 2, md: 1 }}>
-                <Card>
-                  <CardHeader title="QR Code Booking" />
-                  <Center py="10">
-                    <QRCode value={dataQR?.data?.qrcode} />
-                  </Center>
-                </Card>
-              </GridItem>
-            )}
+            {dataQR &&
+              dataBookingDetail?.data?.booking_orders[0]?.status === 'paid' && (
+                <GridItem colSpan={{ base: 2, md: 1 }}>
+                  <Card>
+                    <CardHeader title="QR Code Booking" />
+                    <Center py="10">
+                      <QRCode value={dataQR?.data?.qrcode} />
+                    </Center>
+                  </Card>
+                </GridItem>
+              )}
           </Grid>
+        )}
+
+        <Divider my="6" />
+
+        {/* ORDER DETAIL */}
+        {dataBookingDetail?.data?.booking_orders[0]?.order_id && (
+          <OrderDetail
+            orderId={dataBookingDetail?.data?.booking_orders[0]?.order_id}
+          />
         )}
       </Wrapper>
     </Flex>

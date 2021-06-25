@@ -56,7 +56,7 @@ export const PaymentBooking = ({
   });
 
   const { data: dataPaymentMethods } = useQuery(
-    ['payment-methods', selectedSchedule?.institution?.id],
+    ['institution-payment-methods', selectedSchedule?.institution?.id],
     () => getPaymentMethods(cookies, selectedSchedule?.institution?.id),
     {
       enabled: Boolean(selectedSchedule?.institution?.id),
@@ -127,6 +127,7 @@ export const PaymentBooking = ({
         setIsLoading(true);
         const res = await createBooking(cookies, data);
         const orderData = {
+          booking_order_id: res?.data?.booking_order?.id,
           type: '02',
           address_id: null,
           event_node: 'Booking',
@@ -147,6 +148,7 @@ export const PaymentBooking = ({
             },
           ],
         };
+        console.log({ orderData });
         await createOrder(cookies)(orderData);
         await queryClient.invalidateQueries('user-booking-list');
         setBookingData(res?.data);

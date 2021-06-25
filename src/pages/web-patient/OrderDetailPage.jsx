@@ -112,7 +112,7 @@ export const OrderDetailPage = () => {
     }
   };
 
-  if (!isLoadingOrderDetail && dataOrderDetail?.status !== 200) {
+  if (!isLoadingOrderDetail && dataOrderDetail?.code !== 200) {
     return <Redirect to="/doctor" />;
   }
 
