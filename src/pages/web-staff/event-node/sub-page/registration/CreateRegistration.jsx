@@ -344,7 +344,7 @@ export const CreateRegistration = () => {
                             >
                               <FormLabel>Nomor HP</FormLabel>
                               <Input
-                                type="text"
+                                type="number"
                                 defaultValue={foundUser?.phone_number}
                                 {...register('phone_number', {
                                   required: 'Phone number is required',
@@ -537,7 +537,7 @@ export const CreateRegistration = () => {
                             >
                               <FormLabel>NIK</FormLabel>
                               <Input
-                                type="text"
+                                type="number"
                                 defaultValue={
                                   foundUser?.usersId[0]?.identity_number
                                 }
@@ -651,7 +651,7 @@ export const CreateRegistration = () => {
                             <FormControl id="postal_code" w="full">
                               <FormLabel>Kode Pos</FormLabel>
                               <Input
-                                type="text"
+                                type="number"
                                 defaultValue={
                                   foundUser?.usersId[0]?.postal_code
                                 }
