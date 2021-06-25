@@ -113,7 +113,7 @@ export const BookingListPage = () => {
           data={data1 || []}
           columns={columns1}
           isLoading={isLoadingBooking}
-          skeletonCols={4}
+          skeletonCols={5}
         />
       </Wrapper>
     </Flex>

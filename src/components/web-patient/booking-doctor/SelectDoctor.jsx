@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { Calendar, utils } from '@hassanmojab/react-modern-calendar-datepicker';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import {
@@ -12,6 +12,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  HStack,
   Select,
   SimpleGrid,
   Spinner,
@@ -58,6 +59,8 @@ export const SelectDoctor = ({
     base: 2,
     xl: 3,
   });
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
   const startDate =
     selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
@@ -78,23 +81,27 @@ export const SelectDoctor = ({
       'patient-booking-schedule',
       {
         selectedService,
-        startDate,
-        endDate,
-        selectedPagination,
+        first_date: startDate,
+        last_date: endDate,
+        limit,
+        page,
       },
     ],
     () =>
       getBookingSchedules(cookies, {
-        startDate,
-        endDate,
+        first_date: startDate,
+        last_date: endDate,
         serviceId: selectedService,
-        page: selectedPagination?.page,
-        first: selectedPagination?.first,
-        last: selectedPagination?.last,
+        limit,
+        page,
       }),
     {
       enabled:
-        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedService) &&
+        Boolean(startDate) &&
+        Boolean(endDate) &&
+        Boolean(limit) &&
+        Boolean(page),
     }
   );
 
@@ -177,10 +184,54 @@ export const SelectDoctor = ({
           )}
           {dataSchedules?.data?.length ? (
             <>
-              <Heading fontWeight="semibold" fontSize="lg" mb="2">
-                Jadwal dokter yang tersedia
-              </Heading>
-
+              <Flex justify="space-between" align="center" mt="-1" mb="2">
+                <Heading fontWeight="semibold" fontSize="md" mb="2">
+                  Jadwal dokter yang tersedia
+                </Heading>
+                <HStack spacing="5">
+                  <FormControl display="flex">
+                    <FormLabel>Limit</FormLabel>
+                    <Select
+                      bg="white"
+                      size="sm"
+                      rounded="sm"
+                      mt="-1"
+                      w="20"
+                      value={limit}
+                      onChange={e => setLimit(e.target.value)}
+                    >
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={50}>50</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl display="flex">
+                    <FormLabel>Page</FormLabel>
+                    <Select
+                      bg="white"
+                      size="sm"
+                      rounded="sm"
+                      mt="-1"
+                      w="20"
+                      value={page}
+                      onChange={e => setPage(e.target.value)}
+                    >
+                      {[
+                        ...Array(
+                          Math.ceil(dataSchedules?.total_data / limit)
+                        ).keys(),
+                      ]
+                        ?.filter(v => v !== 0)
+                        ?.map(v => (
+                          <option key={v} value={v}>
+                            {v}
+                          </option>
+                        ))}
+                    </Select>
+                  </FormControl>
+                </HStack>
+              </Flex>
               <SimpleGrid columns={doctorScheduleGridColumns} gap="4">
                 {dataSchedules?.data?.map(schedule => {
                   return (
@@ -237,7 +288,7 @@ export const SelectDoctor = ({
                     {dataSchedules?.pageLength} pages
                   </Text>
                   <ButtonGroup variant="outline" size="sm">
-                    {dataSchedules?.pagination?.map(pag => (
+                    {/* {dataSchedules?.pagination?.map(pag => (
                       <Button
                         key={pag.page}
                         borderColor={
@@ -253,7 +304,7 @@ export const SelectDoctor = ({
                       >
                         {pag.page}
                       </Button>
-                    ))}
+                    ))} */}
                   </ButtonGroup>
                 </Flex>
               )}

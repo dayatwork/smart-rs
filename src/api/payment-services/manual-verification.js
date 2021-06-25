@@ -59,7 +59,7 @@ export const getPaymentSlipDetail = async (cookies, id) => {
 };
 
 export const verifyPayment = async (cookies, data) => {
-  console.log({ data });
+  // console.log({ data });
   const res = await fetch(
     `${process.env.REACT_APP_PAYMENT_API}/order/manual/verify`,
     {

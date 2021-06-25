@@ -174,17 +174,44 @@ export const getScheduleEstimatedTimes = async (cookies, scheduleDetailId) => {
   return await res.json();
 };
 
+// export const getBookingSchedules = async (
+//   cookies,
+//   { startDate, endDate, serviceId, limit = 10, page, first, last }
+// ) => {
+//   // const URL = `${process.env.REACT_APP_BOOKING_API}/schedule/list?startDate=${startDate}&endDate=${endDate}&service_id=${serviceId}`;
+//   const pagination =
+//     page && first && last
+//       ? `&page=${page}&first_unix_created_at=${first}&last_unix_created_at=${last}`
+//       : '';
+
+//   const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?service_id=${serviceId}&sort_unix_created_at=asc&sort_date=asc&limit=${limit}&first_date=${startDate}&last_date=${endDate}${pagination}`;
+//   const res = await fetch(URL, {
+//     method: 'GET',
+//     headers: {
+//       Authorization: `Bearer ${cookies?.token}`,
+//     },
+//   });
+
+//   if (!res.ok) {
+//     throw new Error('Error Get Schedules List');
+//   }
+
+//   return await res.json();
+// };
+
 export const getBookingSchedules = async (
   cookies,
-  { startDate, endDate, serviceId, limit = 10, page, first, last }
+  { serviceId, limit = 10, page = 1, first_date, last_date }
 ) => {
-  // const URL = `${process.env.REACT_APP_BOOKING_API}/schedule/list?startDate=${startDate}&endDate=${endDate}&service_id=${serviceId}`;
-  const pagination =
-    page && first && last
-      ? `&page=${page}&first_unix_created_at=${first}&last_unix_created_at=${last}`
+  const dateFilter =
+    first_date && last_date
+      ? `&first_date=${first_date}&last_date=${last_date}`
       : '';
 
-  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?service_id=${serviceId}&sort_unix_created_at=asc&sort_date=asc&limit=${limit}&first_date=${startDate}&last_date=${endDate}${pagination}`;
+  const pagination = limit && page ? `&limit=${limit}&page=${page}` : '';
+
+  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list/doctor?service_id=${serviceId}${dateFilter}${pagination}&sort_date=asc&sort_start_time=asc`;
+
   const res = await fetch(URL, {
     method: 'GET',
     headers: {

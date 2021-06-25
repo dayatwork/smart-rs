@@ -90,6 +90,7 @@ export const CheckinPatientList = () => {
             days: booking?.days,
             time: booking?.time,
             transaction_number: booking?.transaction_number,
+            payment_status: booking?.booking_orders[0].status,
           };
         }),
     [dataBookingList?.data, isSuccessBookingList, checkedIn]
@@ -149,6 +150,16 @@ export const CheckinPatientList = () => {
         },
       },
       {
+        Header: 'Payment Status',
+        accessor: 'payment_status',
+        Cell: ({ value }) => {
+          if (value === 'paid') {
+            return <Badge colorScheme="green">{value}</Badge>;
+          }
+          return <Badge>{value}</Badge>;
+        },
+      },
+      {
         Header: 'Action',
         Cell: ({ row }) => {
           if (row.original.status === 'done') return null;
@@ -158,7 +169,10 @@ export const CheckinPatientList = () => {
                 size="sm"
                 colorScheme="green"
                 onClick={() => handleCheckIn(row.original.id)}
-                disabled={row.original.status !== 'booked'}
+                disabled={
+                  row.original.status !== 'booked' ||
+                  row.original.payment_status !== 'paid'
+                }
               >
                 Check In
               </Button>
@@ -206,7 +220,7 @@ export const CheckinPatientList = () => {
         <PaginationTable
           columns={columns}
           data={data || []}
-          skeletonCols={8}
+          skeletonCols={9}
           isLoading={isLoadingBookingList}
           size="sm"
           action={

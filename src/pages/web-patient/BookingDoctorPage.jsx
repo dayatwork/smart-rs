@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Badge, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 
-import { WebPatientNav, Wrapper, Step } from '../../components/web-patient/shared';
+import {
+  WebPatientNav,
+  Wrapper,
+  Step,
+} from '../../components/web-patient/shared';
 import {
   ChoosePatient,
   PatientData,
@@ -58,8 +62,11 @@ export const BookingDoctorPage = () => {
         <Box py="4" maxW="2xl" mx="auto">
           <nav aria-label="Progress steps">
             <HStack as="ol" listStyleType="none" spacing="0">
-              {bookingStep.map((step) => (
-                <Step key={step.value} isCurrent={step.value === currentStep.value}>
+              {bookingStep.map(step => (
+                <Step
+                  key={step.value}
+                  isCurrent={step.value === currentStep.value}
+                >
                   {step.text}
                 </Step>
               ))}
@@ -69,7 +76,11 @@ export const BookingDoctorPage = () => {
 
         {/* Content */}
         <Box as="section" pt="4">
-          <Box maxW={{ base: 'xl', md: '7xl' }} mx="auto" px={{ base: '6', md: '0' }}>
+          <Box
+            maxW={{ base: 'xl', md: '7xl' }}
+            mx="auto"
+            px={{ base: '6', md: '0' }}
+          >
             {/* Header */}
             <Box textAlign="center" mb="10">
               <Badge px="3" py="1" variant="solid" colorScheme="blue">

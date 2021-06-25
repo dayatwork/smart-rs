@@ -148,7 +148,7 @@ export const PaymentBooking = ({
             },
           ],
         };
-        console.log({ orderData });
+        // console.log({ orderData });
         await createOrder(cookies)(orderData);
         await queryClient.invalidateQueries('user-booking-list');
         setBookingData(res?.data);

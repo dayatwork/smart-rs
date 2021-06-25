@@ -144,7 +144,7 @@ export const CreateBooking = () => {
     try {
       setIsLoadingBooking(true);
       const res = await createOnsiteBooking(cookies, data);
-      console.log({ res });
+      // console.log({ res });
       const orderData = {
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
@@ -167,7 +167,7 @@ export const CreateBooking = () => {
           },
         ],
       };
-      console.log({ orderData });
+      // console.log({ orderData });
       await createOrder(cookies)(orderData);
       await queryClient.invalidateQueries('booking-list');
       await queryClient.invalidateQueries([
