@@ -13,11 +13,13 @@ export const BackButton = ({ to, text }) => {
       color="purple.600"
       fontSize="sm"
       fontWeight="semibold"
-      mb="4"
+      mb={{ base: '3', '2xl': '4' }}
       rounded="lg"
-      px="2"
+      pl={{ base: '1', '2xl': '2' }}
+      pr="2"
       py="1"
-      _hover={{ bg: 'purple.100' }}>
+      _hover={{ bg: 'purple.100' }}
+    >
       <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
       {text}
     </ChakraLink>

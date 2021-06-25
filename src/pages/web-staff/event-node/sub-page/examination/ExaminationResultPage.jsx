@@ -35,11 +35,15 @@ export const ExaminationResultPage = () => {
   const { data: dataSoap, isLoading: isLoadingSoap } = useQuery(
     ['patient-soap', params.soapId],
     () => getSoapById(cookies, params.soapId),
-    { enabled: Boolean(params.soapId) },
+    { enabled: Boolean(params.soapId) }
   );
 
   const { data: dataPatient, isLoading: isLoadingPatient } = useQuery(
-    ['hospital-patients', dataSoap?.data?.institution_id, dataSoap?.data?.patient_id],
+    [
+      'hospital-patients',
+      dataSoap?.data?.institution_id,
+      dataSoap?.data?.patient_id,
+    ],
     () =>
       getHospitalPatientById(cookies, {
         institution_id: dataSoap?.data?.institution_id,
@@ -50,60 +54,72 @@ export const ExaminationResultPage = () => {
         Boolean(cookies) &&
         Boolean(dataSoap?.data?.institution_id) &&
         Boolean(dataSoap?.data?.patient_id),
-    },
+    }
   );
 
-  const { data: dataPatientSymptoms, isLoading: isLoadingPatientSymptoms } = useQuery(
-    [
-      'patient-symptoms',
-      dataSoap?.data?.patient_id,
-      dataSoap?.data?.soap_subjectives[0]?.id,
-    ],
-    () =>
-      getPatientSymptoms(
-        cookies,
+  const { data: dataPatientSymptoms, isLoading: isLoadingPatientSymptoms } =
+    useQuery(
+      [
+        'patient-symptoms',
         dataSoap?.data?.patient_id,
         dataSoap?.data?.soap_subjectives[0]?.id,
-      ),
-    {
-      enabled:
-        Boolean(cookies) &&
-        Boolean(dataSoap?.data?.patient_id) &&
-        Boolean(dataSoap?.data?.soap_subjectives[0]?.id),
-    },
-  );
-
-  const { data: dataPatientObjectives, isLoading: isLoadingPatientObjectives } = useQuery(
-    ['patient-objective', dataSoap?.data?.id],
-    () => getPatientObjective(cookies, dataSoap?.data?.id),
-    { enabled: Boolean(cookies) && Boolean(dataSoap?.data?.id) },
-  );
-
-  const { data: dataPatientAssessments, isLoading: isLoadingPatientAssessments } =
-    useQuery(
-      ['patient-assessment'],
-      () => getPatientAssessment(cookies, dataSoap?.data?.soap_assessments[0]?.id),
-      {
-        enabled: Boolean(cookies) && Boolean(dataSoap?.data?.soap_assessments[0]?.id),
-      },
-    );
-
-  const { data: dataPatientPrescriptions, isLoading: isLoadingPatientPrescriptions } =
-    useQuery(
-      ['prescription', dataSoap?.data?.institution_id, dataSoap?.data?.soap_plans[0]?.id],
+      ],
       () =>
-        getPatientPrescription(
+        getPatientSymptoms(
           cookies,
-          dataSoap?.data?.institution_id,
-          dataSoap?.data?.soap_plans[0]?.id,
+          dataSoap?.data?.patient_id,
+          dataSoap?.data?.soap_subjectives[0]?.id
         ),
       {
         enabled:
           Boolean(cookies) &&
-          Boolean(dataSoap?.data?.institution_id) &&
-          Boolean(dataSoap?.data?.soap_plans[0]?.id),
-      },
+          Boolean(dataSoap?.data?.patient_id) &&
+          Boolean(dataSoap?.data?.soap_subjectives[0]?.id),
+      }
     );
+
+  const { data: dataPatientObjectives, isLoading: isLoadingPatientObjectives } =
+    useQuery(
+      ['patient-objective', dataSoap?.data?.id],
+      () => getPatientObjective(cookies, dataSoap?.data?.id),
+      { enabled: Boolean(cookies) && Boolean(dataSoap?.data?.id) }
+    );
+
+  const {
+    data: dataPatientAssessments,
+    isLoading: isLoadingPatientAssessments,
+  } = useQuery(
+    ['patient-assessment'],
+    () =>
+      getPatientAssessment(cookies, dataSoap?.data?.soap_assessments[0]?.id),
+    {
+      enabled:
+        Boolean(cookies) && Boolean(dataSoap?.data?.soap_assessments[0]?.id),
+    }
+  );
+
+  const {
+    data: dataPatientPrescriptions,
+    isLoading: isLoadingPatientPrescriptions,
+  } = useQuery(
+    [
+      'prescription',
+      dataSoap?.data?.institution_id,
+      dataSoap?.data?.soap_plans[0]?.id,
+    ],
+    () =>
+      getPatientPrescription(
+        cookies,
+        dataSoap?.data?.institution_id,
+        dataSoap?.data?.soap_plans[0]?.id
+      ),
+    {
+      enabled:
+        Boolean(cookies) &&
+        Boolean(dataSoap?.data?.institution_id) &&
+        Boolean(dataSoap?.data?.soap_plans[0]?.id),
+    }
+  );
 
   if (
     isLoadingSoap ||
@@ -115,15 +131,26 @@ export const ExaminationResultPage = () => {
   ) {
     return (
       <Center h="60">
-        <Spinner thickness="4px" emptyColor="gray.200" color="purple.500" size="xl" />
+        <Spinner
+          thickness="4px"
+          emptyColor="gray.200"
+          color="purple.500"
+          size="xl"
+        />
       </Center>
     );
   }
 
   return (
     <Box>
-      <BackButton to="/events/examination/history" text="Back to History List" />
-      <Heading mb="6" fontSize="3xl">
+      <BackButton
+        to="/events/examination/history"
+        text="Back to History List"
+      />
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         SOAP Result
       </Heading>
       <Box mb="8">
@@ -175,31 +202,48 @@ export const ExaminationResultPage = () => {
               <Text>Empty</Text>
             </Center>
           )}
-          {dataPatientSymptoms?.data?.patient_symptom_details?.map((symptom, index) => (
-            <Box key={symptom.id} pl="4">
-              <Text mb="2" fontWeight="semibold">
-                Symptom {index + 1}
-              </Text>
-              <Description title="Symptom Name" value={symptom?.symptom_name || '-'} />
-              <Description title="Onset" value={symptom?.onset || '-'} />
-              <Description title="Location" value={symptom?.location || '-'} />
-              <Description title="Duration" value={symptom?.duration || '-'} />
-              <Description
-                title="Characterization"
-                value={symptom?.characterization || '-'}
-              />
-              <Description
-                title="Alleviating and Aggravating Factors"
-                value={symptom?.alleviating_and_aggravating_factors || '-'}
-              />
-              <Description title="Radiation" value={symptom?.radiation || '-'} />
-              <Description
-                title="Temporal Factor"
-                value={symptom?.temporal_factor || '-'}
-              />
-              <Description title="Severity" value={symptom?.severity || '-'} />
-            </Box>
-          ))}
+          {dataPatientSymptoms?.data?.patient_symptom_details?.map(
+            (symptom, index) => (
+              <Box key={symptom.id} pl="4">
+                <Text mb="2" fontWeight="semibold">
+                  Symptom {index + 1}
+                </Text>
+                <Description
+                  title="Symptom Name"
+                  value={symptom?.symptom_name || '-'}
+                />
+                <Description title="Onset" value={symptom?.onset || '-'} />
+                <Description
+                  title="Location"
+                  value={symptom?.location || '-'}
+                />
+                <Description
+                  title="Duration"
+                  value={symptom?.duration || '-'}
+                />
+                <Description
+                  title="Characterization"
+                  value={symptom?.characterization || '-'}
+                />
+                <Description
+                  title="Alleviating and Aggravating Factors"
+                  value={symptom?.alleviating_and_aggravating_factors || '-'}
+                />
+                <Description
+                  title="Radiation"
+                  value={symptom?.radiation || '-'}
+                />
+                <Description
+                  title="Temporal Factor"
+                  value={symptom?.temporal_factor || '-'}
+                />
+                <Description
+                  title="Severity"
+                  value={symptom?.severity || '-'}
+                />
+              </Box>
+            )
+          )}
         </Box>
       </Box>
       <Box mb="8">
@@ -211,20 +255,23 @@ export const ExaminationResultPage = () => {
             Objective Result
           </Heading>
           <SimpleGrid columns={2} pl="4">
-            {dataPatientObjectives?.data?.soap_objective_details?.map((objective) => (
-              <Flex
-                key={objective.id}
-                as="dl"
-                direction={{ base: 'column', sm: 'row' }}
-                mb="2">
-                <Box as="dt" flexBasis="35%">
-                  {objective?.soap_objective_template_name}
-                </Box>
-                <Box as="dd" flex="1" fontWeight="semibold">
-                  {objective?.description}
-                </Box>
-              </Flex>
-            ))}
+            {dataPatientObjectives?.data?.soap_objective_details?.map(
+              objective => (
+                <Flex
+                  key={objective.id}
+                  as="dl"
+                  direction={{ base: 'column', sm: 'row' }}
+                  mb="2"
+                >
+                  <Box as="dt" flexBasis="35%">
+                    {objective?.soap_objective_template_name}
+                  </Box>
+                  <Box as="dd" flex="1" fontWeight="semibold">
+                    {objective?.description}
+                  </Box>
+                </Flex>
+              )
+            )}
           </SimpleGrid>
         </Box>
       </Box>
@@ -245,12 +292,14 @@ export const ExaminationResultPage = () => {
                 Description
               </Text>
             </SimpleGrid>
-            {dataPatientAssessments?.data?.soap_assessment_details?.map((assessment) => (
-              <SimpleGrid key={assessment.id} columns={2}>
-                <Text>{assessment?.icd_code || '-'}</Text>
-                <Text>{assessment?.icd_name}</Text>
-              </SimpleGrid>
-            ))}
+            {dataPatientAssessments?.data?.soap_assessment_details?.map(
+              assessment => (
+                <SimpleGrid key={assessment.id} columns={2}>
+                  <Text>{assessment?.icd_code || '-'}</Text>
+                  <Text>{assessment?.icd_name}</Text>
+                </SimpleGrid>
+              )
+            )}
           </Box>
           <Heading mb="4" fontSize="md" fontWeight="bold">
             {`Doctor's Note`}
@@ -279,12 +328,13 @@ export const ExaminationResultPage = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {dataPatientPrescriptions?.data?.map((prescription) => (
+                {dataPatientPrescriptions?.data?.map(prescription => (
                   <Tr key={prescription.id}>
                     <Td>{prescription.drug_name}</Td>
                     <Td>{prescription.quantity}</Td>
                     <Td>
-                      {prescription.frequency} {prescription.frequency && 'per day'}
+                      {prescription.frequency}{' '}
+                      {prescription.frequency && 'per day'}
                     </Td>
                     <Td>
                       {prescription?.eat?.toLowerCase() === 'after'

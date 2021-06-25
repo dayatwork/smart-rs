@@ -131,7 +131,10 @@ export const RegisteredPatientList = () => {
         <Spinner top="8" right="12" position="absolute" color="purple" />
       )}
       <BackButton to="/events" text="Back to Events List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Registered Patient List
       </Heading>
       {user?.role?.alias === 'super-admin' && (

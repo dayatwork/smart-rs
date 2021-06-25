@@ -75,8 +75,14 @@ export const CollectMedicineDetails = () => {
         to="/events/collect-medicine"
         text="Back to Collect Medicine List"
       />
-      <Flex justify="space-between" align="center" mb="6">
-        <Heading fontSize="3xl">Medicine Details</Heading>
+      <Flex
+        justify="space-between"
+        align="center"
+        mb={{ base: '3', '2xl': '6' }}
+      >
+        <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
+          Medicine Details
+        </Heading>
         {isSuccessDrugOrderQRCode &&
           !isFetchingDrugOrderQRCode &&
           dataDrugOrderQRCode?.data?.status !== 'delivered' && (

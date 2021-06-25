@@ -41,30 +41,36 @@ export const SoapObjectivePage = () => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useQuery('soap-objective-templates', () => getSoapObjectiveTemplates(cookies), {
-    staleTime: Infinity,
-  });
+  } = useQuery(
+    'soap-objective-templates',
+    () => getSoapObjectiveTemplates(cookies),
+    {
+      staleTime: Infinity,
+    }
+  );
 
   const handleEdit = useCallback(
-    (objectiveId) => {
-      const objective = res?.data.find((objective) => objective.id === objectiveId);
+    objectiveId => {
+      const objective = res?.data.find(
+        objective => objective.id === objectiveId
+      );
       setSelectedSoapObjectiveTemplate(objective);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((objective) => {
+      res?.data?.map(objective => {
         return {
           id: objective.id,
           name: objective.name,
           default_value: objective.default_value,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -96,12 +102,14 @@ export const SoapObjectivePage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddSoapObjectiveModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditSoapObjectiveDrawer
@@ -111,7 +119,10 @@ export const SoapObjectivePage = () => {
           setSelectedSoapObjectiveTemplate={setSelectedSoapObjectiveTemplate}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           SOAP Objective
         </Heading>
         <PaginationTable

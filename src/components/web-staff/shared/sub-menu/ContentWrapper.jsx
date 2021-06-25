@@ -6,11 +6,12 @@ export const ContentWrapper = ({ children }) => {
     <Box
       bgColor="gray.50"
       flexGrow="1"
-      px={{ base: '4', lg: '10' }}
-      pt="4"
-      pb="24"
+      px={{ base: '4', lg: '6', '2xl': '10' }}
+      pt={{ base: '2', '2xl': '4' }}
+      pb={{ base: '14', '2xl': '24' }}
       h="full"
-      overflow="auto">
+      overflow="auto"
+    >
       {children}
     </Box>
   );

@@ -46,10 +46,15 @@ export const DashboardPage = () => {
       <Helmet>
         <title>Dashboard | SMART-RS</title>
       </Helmet>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <ContentWrapper>
-            <Heading mb="6">Dashboard</Heading>
+            <Heading
+              mb={{ base: '3', '2xl': '6' }}
+              fontSize={{ base: '3xl', '2xl': '4xl' }}
+            >
+              Dashboard
+            </Heading>
             {user?.role?.alias === 'super-admin' && (
               <FormControl id="name" mb="6" maxW="xs">
                 <FormLabel>Institution</FormLabel>
@@ -80,15 +85,23 @@ export const DashboardPage = () => {
               </Center>
             ) : (
               <>
-                <Heading fontSize="xl" mb="4">
+                <Heading
+                  fontSize={{ base: 'lg', '2xl': 'xl' }}
+                  mb={{ base: '2', '2xl': '4' }}
+                >
                   Booking Statistics
                 </Heading>
-                <BookingStatus
-                  selectedInstitution={selectedInstitution}
-                  dataBookingList={dataBookingList}
-                />
-                <Divider my="4" />
-                <Heading fontSize="xl" mb="4">
+                <>
+                  <BookingStatus
+                    selectedInstitution={selectedInstitution}
+                    dataBookingList={dataBookingList}
+                  />
+                </>
+                <Divider my={{ base: '2', '2xl': '4' }} />
+                <Heading
+                  fontSize={{ base: 'lg', '2xl': 'xl' }}
+                  mb={{ base: '2', '2xl': '4' }}
+                >
                   Booking Chart
                 </Heading>
                 <BookingChart

@@ -50,7 +50,7 @@ export const InstitutionManagementPage = () => {
 
   return (
     <AppShell>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <SubMenuSideBar
             title="Institution Management"

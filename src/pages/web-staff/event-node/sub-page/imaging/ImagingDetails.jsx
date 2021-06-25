@@ -87,7 +87,10 @@ export const ImagingDetails = () => {
   return (
     <Box>
       <BackButton to="/events/imaging" text="Back to Imaging List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Imaging Details
       </Heading>
       <Text mb="4">Booking ID: {dataRadiologyDetails?.data?.id}</Text>

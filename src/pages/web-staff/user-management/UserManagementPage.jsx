@@ -21,7 +21,7 @@ export const UserManagementPage = () => {
       <Helmet>
         <title>User Management | SMART-RS</title>
       </Helmet>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <SubMenuSideBar
             title="User Management"

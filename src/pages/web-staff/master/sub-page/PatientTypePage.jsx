@@ -47,26 +47,26 @@ export const PatientTypePage = () => {
   });
 
   const handleEdit = useCallback(
-    (patientTypeId) => {
+    patientTypeId => {
       const patientType = res?.data.find(
-        (patientType) => patientType.id === patientTypeId,
+        patientType => patientType.id === patientTypeId
       );
       setSelectedPatientType(patientType);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((patientType) => {
+      res?.data?.map(patientType => {
         return {
           id: patientType.id,
           name: patientType.name,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -95,12 +95,14 @@ export const PatientTypePage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddPatientTypeModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditPatientTypeDrawer
@@ -111,7 +113,10 @@ export const PatientTypePage = () => {
       />
 
       <BackButton to="/master" text="Back to Master List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Patient Type
       </Heading>
       <PaginationTable

@@ -36,6 +36,7 @@ export const AppShell = ({ children }) => {
       bgColor="gray.100"
       height="100vh"
       w="100vw"
+      // overflow="auto"
       overflow="hidden"
       position="relative"
     >
@@ -43,11 +44,13 @@ export const AppShell = ({ children }) => {
       <AppShellHeader onOpenMobile={onOpenMobile} />
       <Flex h="full">
         <DesktopSidebar />
-        <Box flexGrow="1" bg="white" h="full" w="full">
+        {children}
+
+        {/* <Box bg="white" h="full" w="full">
           <Box overflow="auto" h="full" w="full">
             {children}
           </Box>
-        </Box>
+        </Box> */}
       </Flex>
     </Box>
   );

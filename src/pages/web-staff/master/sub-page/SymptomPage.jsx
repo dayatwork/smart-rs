@@ -40,27 +40,29 @@ export const SymptomPage = () => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useQuery('master-symptoms', () => getSymptoms(cookies), { staleTime: Infinity });
+  } = useQuery('master-symptoms', () => getSymptoms(cookies), {
+    staleTime: Infinity,
+  });
 
   const handleEdit = useCallback(
-    (symptomId) => {
-      const symptom = res?.data.find((symptom) => symptom.id === symptomId);
+    symptomId => {
+      const symptom = res?.data.find(symptom => symptom.id === symptomId);
       setSelectedSymptom(symptom);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((symptom) => {
+      res?.data?.map(symptom => {
         return {
           id: symptom.id,
           name: symptom.name,
         };
       }),
-    [isSuccess, res?.data],
+    [isSuccess, res?.data]
   );
 
   const columns = React.useMemo(
@@ -87,12 +89,14 @@ export const SymptomPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddSymptomModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditSymptomDrawer
@@ -102,7 +106,10 @@ export const SymptomPage = () => {
           setSelectedSymptom={setSelectedSymptom}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           Symptom
         </Heading>
         <PaginationTable

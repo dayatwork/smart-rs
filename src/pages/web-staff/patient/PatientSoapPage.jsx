@@ -58,7 +58,7 @@ export const PatientSoapPage = () => {
 
   return (
     <AppShell>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <ContentWrapper>
             {isCritical ? (

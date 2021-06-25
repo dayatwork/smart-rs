@@ -45,18 +45,18 @@ export const ICD10Page = () => {
   } = useQuery('icd-10', () => getICD10(cookies));
 
   const handleEdit = useCallback(
-    (icd10Id) => {
-      const icd10 = res?.data.find((icd10) => icd10.id === icd10Id);
+    icd10Id => {
+      const icd10 = res?.data.find(icd10 => icd10.id === icd10Id);
       setSelectedICD10(icd10);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((icd10) => {
+      res?.data?.map(icd10 => {
         return {
           id: icd10.id,
           code: icd10.code,
@@ -64,7 +64,7 @@ export const ICD10Page = () => {
           name_id: icd10.name_id,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -103,12 +103,14 @@ export const ICD10Page = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddICD10Modal isOpen={isModalOpen} onClose={onModalClose} />
       <EditICD10Drawer
@@ -119,7 +121,10 @@ export const ICD10Page = () => {
       />
 
       <BackButton to="/master" text="Back to Master List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         ICD 10
       </Heading>
       <PaginationTable

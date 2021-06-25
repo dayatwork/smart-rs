@@ -10,17 +10,21 @@ export const SubMenuSideBar = ({ subMenus, title, titleLink }) => {
 
   return (
     <Box
-      minW="64"
+      minW={{ base: '48', '2xl': '64' }}
       display={{ base: 'none', lg: display ? 'block' : 'none' }}
       h="full"
       overflow="auto"
-      pb="20"
+      pt={{ base: '2', '2xl': 0 }}
+      pb={{ base: '14', '2xl': '20' }}
+      px={{ base: '1', '2xl': 0 }}
+      bg="white"
     >
       <Link to={titleLink}>
         <Heading
-          fontSize="2xl"
+          fontSize={{ base: 'lg', '2xl': '2xl' }}
           py={{ base: '2', '2xl': '3' }}
           px={{ base: '3', '2xl': '6' }}
+          maxW="48"
         >
           {title}
         </Heading>

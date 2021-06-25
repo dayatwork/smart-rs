@@ -119,7 +119,10 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
       ) : (
         <BackButton to="/events/payment" text="Back to Payment List" />
       )}
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Payment Details
       </Heading>
       <Box px="8" py="6" bg="white" boxShadow="md" mb="4">

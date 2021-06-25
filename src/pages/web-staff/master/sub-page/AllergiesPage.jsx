@@ -40,28 +40,30 @@ export const AllergiesPage = () => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useQuery('master-allergies', () => getAllergies(cookies), { staleTime: Infinity });
+  } = useQuery('master-allergies', () => getAllergies(cookies), {
+    staleTime: Infinity,
+  });
 
   const handleEdit = useCallback(
-    (allergyId) => {
-      const allergy = res?.data.find((allergy) => allergy.id === allergyId);
+    allergyId => {
+      const allergy = res?.data.find(allergy => allergy.id === allergyId);
       setSelectedAllergy(allergy);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((allergy) => {
+      res?.data?.map(allergy => {
         return {
           id: allergy.id,
           type: allergy.type,
           name: allergy.name,
         };
       }),
-    [isSuccess, res?.data],
+    [isSuccess, res?.data]
   );
 
   const columns = React.useMemo(
@@ -93,12 +95,14 @@ export const AllergiesPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddAllergyModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditAllergyDrawer
@@ -108,7 +112,10 @@ export const AllergiesPage = () => {
           setSelectedAllergy={setSelectedAllergy}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           Allergies
         </Heading>
         <PaginationTable

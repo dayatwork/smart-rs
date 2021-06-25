@@ -7,6 +7,7 @@ import {
   HStack,
   Stack,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 
 export const StatCard = props => {
@@ -16,19 +17,29 @@ export const StatCard = props => {
     value,
     // , change
   } = data;
-  // const isNegative = change < 0;
+
+  const headingSize = useBreakpointValue({ base: 'lg', '2xl': 'xl' });
+
   return (
-    <Stack mx="auto" spacing="3">
-      <Box color="gray.600" fontWeight="medium" fontSize="xl">
+    <Stack mx="auto" spacing={{ base: '1', '2xl': '3' }}>
+      <Box
+        color="gray.600"
+        fontWeight="medium"
+        fontSize={{ base: 'lg', '2xl': 'xl' }}
+      >
         {label}
       </Box>
-      <HStack spacing="3">
+      <HStack spacing={{ base: '2', '2xl': '3' }}>
         <Circle flexShrink={0} size="6" bg={accentColor} color="white">
           {icon}
         </Circle>
-        <Heading as="h1" size="xl" fontWeight="bold">
+        <Heading as="h1" size={headingSize} fontWeight="bold">
           {value}{' '}
-          <Text as="span" fontSize="lg" fontWeight="medium">
+          <Text
+            as="span"
+            fontSize={{ base: 'md', '2xl': 'lg' }}
+            fontWeight="medium"
+          >
             Pasien
           </Text>
         </Heading>

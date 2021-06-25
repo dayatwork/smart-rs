@@ -59,11 +59,16 @@ export const PatientPage = () => {
       <Helmet>
         <title>Patient | SMART-RS</title>
       </Helmet>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <ContentWrapper>
             <Box>
-              <Heading mb="6">Patient</Heading>
+              <Heading
+                mb={{ base: '3', '2xl': '6' }}
+                fontSize={{ base: '3xl', '2xl': '4xl' }}
+              >
+                Patient
+              </Heading>
               {user?.role?.alias === 'super-admin' && (
                 <FormControl id="name" mb="4" maxW="xs">
                   <FormLabel>Institution</FormLabel>

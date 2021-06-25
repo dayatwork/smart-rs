@@ -123,7 +123,10 @@ export const ServiceSchedulePage = () => {
       )}
 
       <BackButton to="/division/administration" text="Back to Administration" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Jadwal Layanan
       </Heading>
 

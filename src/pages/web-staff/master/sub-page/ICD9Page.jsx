@@ -45,18 +45,18 @@ export const ICD9Page = () => {
   } = useQuery('icd-9', () => getICD9(cookies));
 
   const handleEdit = useCallback(
-    (icd9Id) => {
-      const icd9 = res?.data.find((icd9) => icd9.id === icd9Id);
+    icd9Id => {
+      const icd9 = res?.data.find(icd9 => icd9.id === icd9Id);
       setSelectedICD9(icd9);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((icd9) => {
+      res?.data?.map(icd9 => {
         return {
           id: icd9.id,
           code: icd9.code,
@@ -64,7 +64,7 @@ export const ICD9Page = () => {
           name_id: icd9.name_id,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -103,12 +103,14 @@ export const ICD9Page = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddICD9Modal isOpen={isModalOpen} onClose={onModalClose} />
       <EditICD9Drawer
@@ -120,7 +122,10 @@ export const ICD9Page = () => {
 
       <BackButton to="/master" text="Back to Master List" />
 
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         ICD 9
       </Heading>
       <PaginationTable

@@ -178,7 +178,10 @@ export const DrugReceiptPage = () => {
         <Spinner top="8" right="12" position="absolute" color="purple" />
       )}
       <BackButton to="/pharmacy" text="Back to Pharmacy" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Receipt
       </Heading>
       {user?.role?.alias === 'super-admin' && (

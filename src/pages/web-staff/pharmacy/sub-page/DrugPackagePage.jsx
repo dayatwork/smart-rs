@@ -234,7 +234,10 @@ export const DrugPackagePage = () => {
         selectedInstitution={selectedInstitution}
       />
       <BackButton to="/pharmacy" text="Back to Pharmacy" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Packaging
       </Heading>
       {user?.role?.alias === 'super-admin' && (

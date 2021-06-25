@@ -231,7 +231,10 @@ export const BookedPatientList = () => {
       />
 
       <BackButton to="/events" text="Back to Events List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Booking List
       </Heading>
       {user?.role?.alias === 'super-admin' && (

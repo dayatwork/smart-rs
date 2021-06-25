@@ -41,7 +41,7 @@ export const PharmacyPage = () => {
       <Helmet>
         <title>Pharmacy | SMART-RS</title>
       </Helmet>
-      <Box height="full" overflow="hidden" position="relative">
+      <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <SubMenuSideBar
             title="Pharmacy"

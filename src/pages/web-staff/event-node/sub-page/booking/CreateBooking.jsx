@@ -66,7 +66,7 @@ export const CreateBooking = () => {
   const queryClient = useQueryClient();
   const bookingColumns = useBreakpointValue({
     base: 1,
-    xl: 2,
+    '2xl': 2,
   });
 
   const startDate =
@@ -282,7 +282,7 @@ export const CreateBooking = () => {
   };
 
   return (
-    <Box pb="10">
+    <Box pb={{ base: '16', '2xl': '10' }}>
       <Helmet>
         <style>{customStyle}</style>
       </Helmet>
@@ -311,7 +311,11 @@ export const CreateBooking = () => {
       )}
       {selectedInstitution && (
         <Box as="form" onSubmit={handleSubmit}>
-          <SimpleGrid columns={bookingColumns} gap="8">
+          <SimpleGrid
+            columns={bookingColumns}
+            gap="8"
+            maxW={{ base: '2xl', '2xl': 'full' }}
+          >
             <VStack spacing="6">
               <FormControl id="patient_id">
                 <FormLabel>Select Patient</FormLabel>
@@ -320,7 +324,7 @@ export const CreateBooking = () => {
                   onChange={e => {
                     searchPatient(e.target.value);
                   }}
-                  mb="4"
+                  mb="6"
                   disabled={isLoadingHospitalPatients}
                 >
                   <option value="">Select Patient</option>
@@ -398,7 +402,7 @@ export const CreateBooking = () => {
                 </FormControl>
               )}
               {selectedService && (
-                <FormControl mb="4" maxW="xl" alignSelf="baseline">
+                <FormControl mb="6" maxW="xl" alignSelf="baseline">
                   <FormLabel>Schedule Day Range</FormLabel>
                   <Box
                     border="1px"
@@ -483,12 +487,16 @@ export const CreateBooking = () => {
                       </FormControl>
                     </HStack>
                   </Flex>
-                  <SimpleGrid columns={2} gap="4" w="full" mb="4">
+                  <SimpleGrid columns={2} gap="4" w="full" mb="6">
                     {dataSchedules?.data?.map(schedule => {
                       return (
                         <Box
                           cursor="pointer"
-                          onClick={() => setSelectedSchedule(schedule)}
+                          onClick={() => {
+                            setSelectedSchedule(schedule);
+                            setSelectedTime('');
+                            setSelectedPaymentMethod('');
+                          }}
                           key={schedule.id}
                           bg={
                             selectedSchedule?.id === schedule.id
@@ -552,7 +560,7 @@ export const CreateBooking = () => {
               )}
 
               {dataEstimatedTimes?.data?.length ? (
-                <Box mb="4">
+                <Box mb="6">
                   <Heading fontWeight="semibold" fontSize="md" mb="3">
                     Waktu yang tersedia
                   </Heading>
@@ -603,7 +611,7 @@ export const CreateBooking = () => {
               )}
 
               {isSuccessServicePrice && selectedTime && (
-                <FormControl mb="4">
+                <FormControl mb="6">
                   <FormLabel mb="-1">Price</FormLabel>
                   <Box fontSize="2xl" fontWeight="extrabold" as="span">
                     {formatter.format(
@@ -614,7 +622,7 @@ export const CreateBooking = () => {
               )}
 
               {selectedTime && (
-                <FormControl id="payment_method" my="4">
+                <FormControl id="payment_method" my="6">
                   <FormLabel>Payment Method</FormLabel>
                   <Select
                     value={selectedPaymentMethod}
@@ -634,13 +642,17 @@ export const CreateBooking = () => {
                   </Select>
                 </FormControl>
               )}
-              {selectedTime && selectedPaymentMethod && (
+              {selectedTime && (
                 <PrivateComponent permission={Permissions.createBookingDoctor}>
                   <Button
                     w="full"
                     colorScheme="purple"
                     type="submit"
-                    disabled={!selectedSchedule || !selectedTime}
+                    disabled={
+                      !selectedSchedule ||
+                      !selectedTime ||
+                      !selectedPaymentMethod
+                    }
                     isLoading={isLoadingBooking}
                   >
                     Book

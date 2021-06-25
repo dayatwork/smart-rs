@@ -45,27 +45,27 @@ export const FamilyHistoryPage = () => {
   });
 
   const handleEdit = useCallback(
-    (familyHistoryId) => {
+    familyHistoryId => {
       const familyHistory = res?.data.find(
-        (familyHistory) => familyHistory.id === familyHistoryId,
+        familyHistory => familyHistory.id === familyHistoryId
       );
       setSelectedFamilyHistory(familyHistory);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((allergy) => {
+      res?.data?.map(allergy => {
         return {
           id: allergy.id,
           type: allergy.type,
           name: allergy.name,
         };
       }),
-    [isSuccess, res?.data],
+    [isSuccess, res?.data]
   );
 
   const columns = React.useMemo(
@@ -92,12 +92,14 @@ export const FamilyHistoryPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddFamilyHistoryModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditFamilyHistoryDrawer
@@ -107,7 +109,10 @@ export const FamilyHistoryPage = () => {
           setSelectedFamilyHistory={setSelectedFamilyHistory}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           Family History
         </Heading>
         <PaginationTable

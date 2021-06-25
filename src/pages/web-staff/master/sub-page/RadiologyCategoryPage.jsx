@@ -37,7 +37,10 @@ export const RadiologyCategoryPage = () => {
   return (
     <Box>
       <BackButton to="/master" text="Back to Master List" />
-      <Heading mb="4" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Radiology
       </Heading>
       <Tabs size="lg" colorScheme="purple">
@@ -87,29 +90,33 @@ const RadiologyCategory = () => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useQuery('master-radiology-categories', () => getRadiologyCategories(cookies), {
-    staleTime: Infinity,
-  });
+  } = useQuery(
+    'master-radiology-categories',
+    () => getRadiologyCategories(cookies),
+    {
+      staleTime: Infinity,
+    }
+  );
 
   const handleEdit = useCallback(
-    (categoryId) => {
-      const category = res?.data.find((category) => category.id === categoryId);
+    categoryId => {
+      const category = res?.data.find(category => category.id === categoryId);
       setSelectedCategory(category);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((category) => {
+      res?.data?.map(category => {
         return {
           id: category.id,
           name: category.name,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -138,12 +145,14 @@ const RadiologyCategory = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddRadiologyCategoryModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditRadiologyCategoryDrawer
@@ -195,24 +204,24 @@ const RadiologySubCategory = () => {
   } = useQuery(
     'master-radiology-subcategories',
     () => getRadiologySubCategories(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const handleEdit = useCallback(
-    (subCategoryId) => {
+    subCategoryId => {
       const subCategory = res?.data.find(
-        (subCategory) => subCategory.id === subCategoryId,
+        subCategory => subCategory.id === subCategoryId
       );
       setSelectedSubCategory(subCategory);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((subCategory) => {
+      res?.data?.map(subCategory => {
         return {
           id: subCategory?.id,
           name: subCategory?.name,
@@ -221,7 +230,7 @@ const RadiologySubCategory = () => {
           parent_id: subCategory.parent_id,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -249,7 +258,7 @@ const RadiologySubCategory = () => {
           const { data: res, isLoading } = useQuery(
             ['radiology-subcategories', value],
             () => getRadiologySubCategoryById(cookies, value),
-            { enabled: Boolean(value), staleTime: 300000 },
+            { enabled: Boolean(value), staleTime: 300000 }
           );
           if (isLoading) return <Skeleton height="40px" />;
           return res?.data?.name || '-';
@@ -269,14 +278,19 @@ const RadiologySubCategory = () => {
         ),
       },
     ],
-    [handleEdit, cookies],
+    [handleEdit, cookies]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
-      <AddRadiologySubCategoryModal isOpen={isModalOpen} onClose={onModalClose} />
+      <AddRadiologySubCategoryModal
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      />
       <EditRadiologySubCategoryDrawer
         isOpen={isDrawerOpen}
         onClose={onDrawerClose}

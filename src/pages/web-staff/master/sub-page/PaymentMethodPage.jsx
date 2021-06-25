@@ -47,20 +47,20 @@ export const PaymentMethodPage = () => {
   });
 
   const handleEdit = useCallback(
-    (paymentMethodId) => {
+    paymentMethodId => {
       const paymentMethod = res?.data.find(
-        (paymentMethod) => paymentMethod.id === paymentMethodId,
+        paymentMethod => paymentMethod.id === paymentMethodId
       );
       setSelectedPaymentMethod(paymentMethod);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((paymentMethod) => {
+      res?.data?.map(paymentMethod => {
         return {
           id: paymentMethod.id,
           name: paymentMethod.name,
@@ -68,7 +68,7 @@ export const PaymentMethodPage = () => {
           description: paymentMethod.description,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -107,12 +107,14 @@ export const PaymentMethodPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddPaymentMethodModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditPaymentMethodDrawer
@@ -123,7 +125,10 @@ export const PaymentMethodPage = () => {
       />
 
       <BackButton to="/master" text="Back to Master List" />
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Payment Method
       </Heading>
       <PaginationTable

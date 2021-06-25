@@ -102,8 +102,14 @@ export const DrugPackageDetailPage = () => {
       />
 
       <BackButton to="/pharmacy" text="Back to Packaging List" />
-      <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="3xl">Package Details</Heading>
+      <Flex
+        justify="space-between"
+        align="center"
+        mb={{ base: '3', '2xl': '4' }}
+      >
+        <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
+          Package Details
+        </Heading>
         <HStack>
           {dataDrugPackageDetail?.data?.status === 'process' && (
             <PrivateComponent

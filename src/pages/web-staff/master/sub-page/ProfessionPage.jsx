@@ -47,24 +47,26 @@ export const ProfessionPage = () => {
   });
 
   const handleEdit = useCallback(
-    (professionId) => {
-      const profession = res?.data.find((profession) => profession.id === professionId);
+    professionId => {
+      const profession = res?.data.find(
+        profession => profession.id === professionId
+      );
       setSelectedProfession(profession);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((icd10) => {
+      res?.data?.map(icd10 => {
         return {
           id: icd10.id,
           name: icd10.name,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -93,12 +95,14 @@ export const ProfessionPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
 
       <AddProfessionModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditProfessionDrawer
@@ -110,7 +114,10 @@ export const ProfessionPage = () => {
 
       <BackButton to="/master" text="Back to Master List" />
 
-      <Heading mb="6" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Profession
       </Heading>
       <PaginationTable

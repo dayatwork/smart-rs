@@ -42,7 +42,12 @@ export const DesktopSidebar = () => {
   return (
     <Box as="nav" h="full" display={{ base: 'none', lg: 'block' }}>
       {/* <Logo /> */}
-      <Box h="full" overflowY="auto" py="4" px="3">
+      <Box
+        h="full"
+        overflowY="auto"
+        py={{ base: '3', '2xl': '4' }}
+        px={{ base: '2', '2xl': '3' }}
+      >
         {(user?.role?.alias === 'super-admin' ? menus : showedMenus).map(
           menu => (
             <NavLink

@@ -45,27 +45,27 @@ export const SocialHistoryPage = () => {
   });
 
   const handleEdit = useCallback(
-    (socialHistoryId) => {
+    socialHistoryId => {
       const socialHistory = res?.data.find(
-        (socialHistory) => socialHistory.id === socialHistoryId,
+        socialHistory => socialHistory.id === socialHistoryId
       );
       setSelectedSocialHistory(socialHistory);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((allergy) => {
+      res?.data?.map(allergy => {
         return {
           id: allergy.id,
           name: allergy.name,
           default_value: allergy.default_value,
         };
       }),
-    [isSuccess, res?.data],
+    [isSuccess, res?.data]
   );
 
   const columns = React.useMemo(
@@ -101,12 +101,14 @@ export const SocialHistoryPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddSocialHistoryModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditSocialHistoryDrawer
@@ -116,7 +118,10 @@ export const SocialHistoryPage = () => {
           setSelectedSocialHistory={setSelectedSocialHistory}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           Social History
         </Heading>
         <PaginationTable

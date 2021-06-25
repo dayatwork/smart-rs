@@ -21,7 +21,12 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
       //   md: '8',
       // }}
       >
-        <Box bg="white" p="10" rounded="xl" shadow="base">
+        <Box
+          bg="white"
+          p={{ base: '6', '2xl': '10' }}
+          rounded="xl"
+          shadow="base"
+        >
           <Stack
             spacing="8"
             justify="space-between"

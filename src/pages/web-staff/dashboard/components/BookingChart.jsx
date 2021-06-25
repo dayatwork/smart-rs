@@ -50,14 +50,14 @@ export const BookingChart = ({ selectedInstitution, dataBookingList }) => {
     <Box
       mb="12"
       bgColor="white"
-      px="10"
-      pt="12"
-      pb="8"
+      px={{ base: '2', '2xl': '10' }}
+      pt={{ base: '5', '2xl': '12' }}
+      pb={{ base: '2', '2xl': '8' }}
       rounded="xl"
       shadow="base"
       overflow="auto"
     >
-      <Box h="72" minW="md">
+      <Box h={{ base: '60', '2xl': '72' }} minW="md">
         <ChartBar data={chartBarData} />
       </Box>
     </Box>

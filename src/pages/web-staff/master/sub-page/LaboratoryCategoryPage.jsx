@@ -35,7 +35,10 @@ export const LaboratoryCategoryPage = () => {
   return (
     <Box>
       <BackButton to="/master" text="Back to Master List" />
-      <Heading mb="4" fontSize="3xl">
+      <Heading
+        mb={{ base: '3', '2xl': '6' }}
+        fontSize={{ base: '2xl', '2xl': '3xl' }}
+      >
         Laboratory
       </Heading>
       <Tabs size="lg" colorScheme="purple">
@@ -85,29 +88,33 @@ const LaboratoryCategory = () => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useQuery('master-laboratory-categories', () => getLaboratoryCategories(cookies), {
-    staleTime: Infinity,
-  });
+  } = useQuery(
+    'master-laboratory-categories',
+    () => getLaboratoryCategories(cookies),
+    {
+      staleTime: Infinity,
+    }
+  );
 
   const handleEdit = useCallback(
-    (categoryId) => {
-      const category = res?.data.find((category) => category.id === categoryId);
+    categoryId => {
+      const category = res?.data.find(category => category.id === categoryId);
       setSelectedCategory(category);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((category) => {
+      res?.data?.map(category => {
         return {
           id: category.id,
           name: category.name,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -136,12 +143,14 @@ const LaboratoryCategory = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <AddLaboratoryCategoryModal isOpen={isModalOpen} onClose={onModalClose} />
       <EditLaboratoryCategoryDrawer
         isOpen={isDrawerOpen}
@@ -191,24 +200,24 @@ const LaboratorySubCategory = () => {
   } = useQuery(
     'master-laboratory-subcategories',
     () => getLaboratorySubCategories(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const handleEdit = useCallback(
-    (subCategoryId) => {
+    subCategoryId => {
       const subCategory = res?.data.find(
-        (subCategory) => subCategory.id === subCategoryId,
+        subCategory => subCategory.id === subCategoryId
       );
       setSelectedSubCategory(subCategory);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((subCategory) => {
+      res?.data?.map(subCategory => {
         return {
           id: subCategory?.id,
           name: subCategory?.name,
@@ -218,7 +227,7 @@ const LaboratorySubCategory = () => {
           laboratory_category_name: subCategory?.laboratory_category?.name,
         };
       }),
-    [res?.data, isSuccess],
+    [res?.data, isSuccess]
   );
 
   const columns = React.useMemo(
@@ -262,13 +271,18 @@ const LaboratorySubCategory = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <Box>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
-      <AddLaboratorySubCategoryModal isOpen={isModalOpen} onClose={onModalClose} />
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
+      <AddLaboratorySubCategoryModal
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      />
       <EditLaboratorySubCategoryDrawer
         isOpen={isDrawerOpen}
         onClose={onDrawerClose}

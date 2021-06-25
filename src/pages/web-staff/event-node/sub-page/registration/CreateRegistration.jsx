@@ -232,7 +232,10 @@ export const CreateRegistration = () => {
             to="/events/registration"
             text="Back to Registered Patient List"
           />
-          <Heading mb="6" fontSize="3xl">
+          <Heading
+            mb={{ base: '3', '2xl': '6' }}
+            fontSize={{ base: '2xl', '2xl': '3xl' }}
+          >
             Register New Patient
           </Heading>
           {user?.role?.alias === 'super-admin' && (

@@ -104,8 +104,14 @@ export const DrugReceiptDetailPage = () => {
       />
 
       <BackButton to="/pharmacy/receipt" text="Back to Receipt List" />
-      <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="3xl">Receipt Details</Heading>
+      <Flex
+        justify="space-between"
+        align="center"
+        mb={{ base: '3', '2xl': '4' }}
+      >
+        <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
+          Receipt Details
+        </Heading>
         <PrivateComponent permission={Permissions.createPackaging}>
           <Button colorScheme="purple" onClick={onOpen}>
             Process to Packaging

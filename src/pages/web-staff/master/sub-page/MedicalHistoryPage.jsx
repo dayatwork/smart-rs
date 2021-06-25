@@ -45,26 +45,26 @@ export const MedicalHistoryPage = () => {
   });
 
   const handleEdit = useCallback(
-    (medicalHistoryId) => {
+    medicalHistoryId => {
       const medicalHistory = res?.data.find(
-        (medicalHistory) => medicalHistory.id === medicalHistoryId,
+        medicalHistory => medicalHistory.id === medicalHistoryId
       );
       setSelectedMedicalHistory(medicalHistory);
       onDrawerOpen();
     },
-    [onDrawerOpen, res?.data],
+    [onDrawerOpen, res?.data]
   );
 
   const data = React.useMemo(
     () =>
       isSuccess &&
-      res?.data?.map((medicalHistory) => {
+      res?.data?.map(medicalHistory => {
         return {
           id: medicalHistory.id,
           name: medicalHistory.name,
         };
       }),
-    [isSuccess, res?.data],
+    [isSuccess, res?.data]
   );
 
   const columns = React.useMemo(
@@ -91,12 +91,14 @@ export const MedicalHistoryPage = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit]
   );
 
   return (
     <>
-      {isFetching && <Spinner top="8" right="12" position="absolute" color="purple" />}
+      {isFetching && (
+        <Spinner top="8" right="12" position="absolute" color="purple" />
+      )}
       <Box>
         <AddMedicalHistoryModal isOpen={isModalOpen} onClose={onModalClose} />
         <EditMedicalHistoryDrawer
@@ -106,7 +108,10 @@ export const MedicalHistoryPage = () => {
           setSelectedMedicalHistory={setSelectedMedicalHistory}
         />
         <BackButton to="/master" text="Back to Master List" />
-        <Heading mb="6" fontSize="3xl">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
           Medical History
         </Heading>
         <PaginationTable

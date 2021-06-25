@@ -68,8 +68,15 @@ export const BloodTestResult = () => {
     <Box>
       <BackButton to="/events/blood-test" text="Back to Blood Test List" />
 
-      <Flex justify="space-between" align="center" mb="6" maxW="3xl">
-        <Heading fontSize="3xl">Lab Test Result</Heading>
+      <Flex
+        justify="space-between"
+        align="center"
+        mb={{ base: '3', '2xl': '6' }}
+        maxW="3xl"
+      >
+        <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
+          Lab Test Result
+        </Heading>
 
         <Button onClick={handlePrint} leftIcon={<FaPrint />}>
           Cetak
