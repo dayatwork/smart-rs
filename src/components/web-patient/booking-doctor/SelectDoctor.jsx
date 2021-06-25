@@ -59,6 +59,7 @@ export const SelectDoctor = ({
     base: 2,
     xl: 3,
   });
+
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
 
@@ -128,6 +129,7 @@ export const SelectDoctor = ({
   };
 
   // console.log({ dataSchedules });
+  console.log({ selectedSchedule });
 
   return (
     <>
@@ -221,13 +223,11 @@ export const SelectDoctor = ({
                         ...Array(
                           Math.ceil(dataSchedules?.total_data / limit)
                         ).keys(),
-                      ]
-                        ?.filter(v => v !== 0)
-                        ?.map(v => (
-                          <option key={v} value={v}>
-                            {v}
-                          </option>
-                        ))}
+                      ]?.map(v => (
+                        <option key={v + 1} value={v + 1}>
+                          {v + 1}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                 </HStack>

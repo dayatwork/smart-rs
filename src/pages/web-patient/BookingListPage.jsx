@@ -22,6 +22,8 @@ export const BookingListPage = () => {
     isSuccess: isSuccessBooking,
   } = useQuery('user-booking-list', () => getUserBookingList(cookies.token));
 
+  console.log({ dataBooking });
+
   const data1 = React.useMemo(
     () =>
       isSuccessBooking &&

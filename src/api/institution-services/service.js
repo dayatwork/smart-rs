@@ -226,13 +226,40 @@ export const getBookingSchedules = async (
   return await res.json();
 };
 
+// export const getBookingSchedulesInstitution = async (
+//   cookies,
+//   { startDate, endDate, serviceId, institutionId }
+// ) => {
+//   // const URL = `${process.env.REACT_APP_BOOKING_API}/schedule/list?startDate=${startDate}&endDate=${endDate}&service_id=${serviceId}`;
+
+//   const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?institution_id=${institutionId}&service_id=${serviceId}&sort_date=asc&first_date=${startDate}&last_date=${endDate}`;
+//   const res = await fetch(URL, {
+//     method: 'GET',
+//     headers: {
+//       Authorization: `Bearer ${cookies?.token}`,
+//     },
+//   });
+
+//   if (!res.ok) {
+//     throw new Error('Error Get Schedules List');
+//   }
+
+//   return await res.json();
+// };
+
 export const getBookingSchedulesInstitution = async (
   cookies,
-  { startDate, endDate, serviceId, institutionId }
+  { serviceId, limit = 10, page = 1, first_date, last_date, institutionId }
 ) => {
-  // const URL = `${process.env.REACT_APP_BOOKING_API}/schedule/list?startDate=${startDate}&endDate=${endDate}&service_id=${serviceId}`;
+  const dateFilter =
+    first_date && last_date
+      ? `&first_date=${first_date}&last_date=${last_date}`
+      : '';
 
-  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list-doctor?institution_id=${institutionId}&service_id=${serviceId}&sort_date=asc&first_date=${startDate}&last_date=${endDate}`;
+  const pagination = limit && page ? `&limit=${limit}&page=${page}` : '';
+
+  const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list/doctor?institution_id=${institutionId}&service_id=${serviceId}${dateFilter}${pagination}&sort_date=asc&sort_start_time=asc`;
+
   const res = await fetch(URL, {
     method: 'GET',
     headers: {

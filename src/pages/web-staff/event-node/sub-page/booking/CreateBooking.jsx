@@ -13,10 +13,10 @@ import {
   Spinner,
   useToast,
   SimpleGrid,
-  RadioGroup,
-  Radio,
   Text,
   Heading,
+  HStack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -61,7 +61,13 @@ export const CreateBooking = () => {
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
   );
+  const [limit, setLimit] = useState(6);
+  const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
+  const bookingColumns = useBreakpointValue({
+    base: 1,
+    xl: 2,
+  });
 
   const startDate =
     selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
@@ -129,9 +135,9 @@ export const CreateBooking = () => {
     if (!selectedPaymentMethod) return;
     const patient_id = foundPatient.patient_id;
     const service_id = selectedService;
-    const schedule_id = JSON.parse(selectedSchedule).id;
-    const schedule_detail_id = JSON.parse(selectedSchedule).detailId;
-    const estimate_time_id = selectedTime;
+    const schedule_id = selectedSchedule?.schedule_id;
+    const schedule_detail_id = selectedSchedule?.id;
+    const estimate_time_id = selectedTime?.id;
     const data = {
       patient_id,
       service_id,
@@ -144,13 +150,13 @@ export const CreateBooking = () => {
     try {
       setIsLoadingBooking(true);
       const res = await createOnsiteBooking(cookies, data);
-      // console.log({ res });
+      console.log({ res });
       const orderData = {
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
         address_id: null,
         event_node: 'Booking',
-        estimate_time_id: selectedTime,
+        estimate_time_id: selectedTime?.id,
         method_id: paymentMethod?.id,
         institution_id: selectedInstitution,
         method_name: paymentMethod?.name,
@@ -167,8 +173,9 @@ export const CreateBooking = () => {
           },
         ],
       };
-      // console.log({ orderData });
-      await createOrder(cookies)(orderData);
+      console.log({ orderData });
+      const resOrder = await createOrder(cookies)(orderData);
+      console.log({ resOrder });
       await queryClient.invalidateQueries('booking-list');
       await queryClient.invalidateQueries([
         'institution-order-list',
@@ -209,17 +216,34 @@ export const CreateBooking = () => {
     isLoading: isLoadingSchedules,
     isSuccess: isSuccessSchedule,
   } = useQuery(
-    ['booking-schedule', { selectedService, startDate, endDate }],
-    () =>
-      getBookingSchedulesInstitution(cookies, {
-        startDate,
-        endDate,
+    [
+      'booking-schedule',
+      {
+        first_date: startDate,
+        last_date: endDate,
         serviceId: selectedService,
         institutionId: selectedInstitution,
+        limit,
+        page,
+      },
+    ],
+    () =>
+      getBookingSchedulesInstitution(cookies, {
+        first_date: startDate,
+        last_date: endDate,
+        serviceId: selectedService,
+        institutionId: selectedInstitution,
+        limit,
+        page,
       }),
     {
       enabled:
-        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedService) &&
+        Boolean(startDate) &&
+        Boolean(endDate) &&
+        Boolean(selectedInstitution) &&
+        Boolean(limit) &&
+        Boolean(page),
     }
   );
 
@@ -228,20 +252,12 @@ export const CreateBooking = () => {
     isLoading: isLoadingEstimatedTime,
     isSuccess: isSuccessEstimatedTime,
   } = useQuery(
-    ['estimated-times', JSON.parse(selectedSchedule || '{}')?.detailId],
-    () =>
-      getScheduleEstimatedTimes(
-        cookies,
-        JSON.parse(selectedSchedule || '{}')?.detailId
-      ),
-    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
+    ['estimated-times', selectedSchedule?.id],
+    () => getScheduleEstimatedTimes(cookies, selectedSchedule?.id),
+    { enabled: Boolean(selectedSchedule?.id) }
   );
 
-  const {
-    data: dataServicePrice,
-    isLoading: isLoadingServicePrice,
-    isSuccess: isSuccessServicePrice,
-  } = useQuery(
+  const { data: dataServicePrice, isSuccess: isSuccessServicePrice } = useQuery(
     ['service-price', selectedService, selectedInstitution],
     () => getServicePriceDetails(cookies, selectedInstitution, selectedService),
     {
@@ -294,261 +310,345 @@ export const CreateBooking = () => {
         </FormControl>
       )}
       {selectedInstitution && (
-        <Box as="form" onSubmit={handleSubmit} maxW="3xl">
-          <VStack spacing="6">
-            <FormControl id="patient_id">
-              <FormLabel>Select Patient</FormLabel>
-              <Select
-                bg="white"
-                onChange={e => {
-                  searchPatient(e.target.value);
-                }}
-                mb="4"
-                disabled={isLoadingHospitalPatients}
-              >
-                <option value="">Select Patient</option>
-                {dataHospitalPatients?.data?.map(patient => (
-                  <option key={patient.id} value={patient?.patient_id}>
-                    {patient?.patient?.name} - {patient?.patient_number}
-                  </option>
-                ))}
-              </Select>
-              <Box>
-                {isLoadingSearchPatient && (
-                  <Center py="6">
-                    <Spinner
-                      thickness="4px"
-                      emptyColor="gray.200"
-                      color="purple.500"
-                      size="lg"
-                    />
-                  </Center>
-                )}
-                {foundPatient ? (
-                  <Box
-                    bg="white"
-                    p="4"
-                    border="1px"
-                    borderColor="gray.200"
-                    rounded="md"
-                  >
-                    <Description
-                      title="Patient ID"
-                      value={foundPatient.patient_id}
-                    />
-                    <Description
-                      title="Patient Number"
-                      value={foundPatient.patient_number}
-                    />
-                    <Description
-                      title="Name"
-                      value={foundPatient.patient.name}
-                    />
-                    <Description
-                      title="Email"
-                      value={foundPatient.patient.email}
-                    />
-                    <Description
-                      title="Phone Number"
-                      value={foundPatient.patient.phone_number}
-                    />
-                  </Box>
-                ) : hasSearch && !foundPatient ? (
-                  <Center py="6">
-                    <Box>Patient not found</Box>
-                  </Center>
-                ) : null}
-              </Box>
-            </FormControl>
-
-            {foundPatient && (
-              <FormControl id="services">
-                <FormLabel>Select Service</FormLabel>
+        <Box as="form" onSubmit={handleSubmit}>
+          <SimpleGrid columns={bookingColumns} gap="8">
+            <VStack spacing="6">
+              <FormControl id="patient_id">
+                <FormLabel>Select Patient</FormLabel>
                 <Select
                   bg="white"
-                  value={selectedService}
                   onChange={e => {
-                    setSelectedSchedule('');
-                    setSelectedService(e.target.value);
+                    searchPatient(e.target.value);
                   }}
+                  mb="4"
+                  disabled={isLoadingHospitalPatients}
                 >
-                  <option value="">Pilih Layanan</option>
-                  {dataServices?.data?.map(service => (
-                    <option key={service.id} value={service.id}>
-                      {service.name}
+                  <option value="">Select Patient</option>
+                  {dataHospitalPatients?.data?.map(patient => (
+                    <option key={patient.id} value={patient?.patient_id}>
+                      {patient?.patient?.name} - {patient?.patient_number}
                     </option>
                   ))}
                 </Select>
-              </FormControl>
-            )}
-
-            {selectedService && (
-              <FormControl mb="4" maxW="xl" alignSelf="baseline">
-                <FormLabel>Schedule Day Range</FormLabel>
-                <Box
-                  border="1px"
-                  borderColor="gray.200"
-                  px="4"
-                  py="2"
-                  rounded="md"
-                  bgColor="white"
-                >
-                  <ScheduleDate
-                    range={selectedDayRange}
-                    handleDayClick={handleDayClick}
-                    handleResetClick={handleResetClick}
-                  />
-                </Box>
-              </FormControl>
-            )}
-
-            {isLoadingSchedules && (
-              <Center py="6">
-                <Spinner
-                  thickness="4px"
-                  emptyColor="gray.200"
-                  color="purple.500"
-                  size="lg"
-                />
-              </Center>
-            )}
-
-            {isSuccessSchedule && dataSchedules.code === 404 && (
-              <Center py="6">
-                <Box>Schedule not found</Box>
-              </Center>
-            )}
-
-            {dataSchedules && dataSchedules.code !== 404 && (
-              <FormControl>
-                <FormLabel>Select Doctor</FormLabel>
-                <Select
-                  bg="white"
-                  value={selectedSchedule}
-                  onChange={e => {
-                    setSelectedSchedule(e.target.value);
-                    setSelectedTime('');
-                  }}
-                >
-                  <option value="">Select Schedule</option>
-                  {dataSchedules?.data?.map(schedule => {
-                    return (
-                      <option
-                        key={schedule.id}
-                        value={JSON.stringify({
-                          id: schedule?.schedule_id,
-                          detailId: schedule.id,
-                        })}
-                      >
-                        Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
-                        {schedule.date} --- Pukul: {schedule.start_time}-
-                        {schedule.end_time}
-                      </option>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            )}
-
-            {isLoadingEstimatedTime && (
-              <Center py="6">
-                <Spinner
-                  thickness="4px"
-                  emptyColor="gray.200"
-                  color="purple.500"
-                  size="lg"
-                />
-              </Center>
-            )}
-
-            {isSuccessEstimatedTime && selectedSchedule && (
-              <FormControl>
-                <FormLabel>Select Time</FormLabel>
-                <RadioGroup
-                  onChange={setSelectedTime}
-                  value={selectedTime}
-                  bg="white"
-                  p="4"
-                  border="1px"
-                  borderColor="gray.200"
-                  rounded="md"
-                >
-                  <SimpleGrid columns={4} gap="6">
-                    {dataEstimatedTimes &&
-                      dataEstimatedTimes?.data?.map(time => (
-                        <Radio
-                          id={time.id}
-                          disabled={time.status}
-                          value={time.id}
-                          key={time.id}
-                          colorScheme="purple"
-                        >
-                          <Text color={time.status ? 'red' : 'green'}>
-                            {time.available_time}
-                          </Text>
-                          {/* {time.status && (
-                              <Text fontSize="sm">Not Available</Text>
-                            )} */}
-                        </Radio>
-                      ))}
-                  </SimpleGrid>
-                </RadioGroup>
-              </FormControl>
-            )}
-
-            {isLoadingServicePrice && (
-              <Center py="4">
-                <Spinner />
-              </Center>
-            )}
-            {isSuccessServicePrice && selectedTime && (
-              <FormControl>
-                <FormLabel>Price</FormLabel>
-                <Box fontSize="3xl" fontWeight="extrabold" as="span">
-                  {formatter.format(
-                    Number(dataServicePrice?.data?.total_price)
+                <Box>
+                  {isLoadingSearchPatient && (
+                    <Center py="6">
+                      <Spinner
+                        thickness="4px"
+                        emptyColor="gray.200"
+                        color="purple.500"
+                        size="lg"
+                      />
+                    </Center>
                   )}
+                  {foundPatient ? (
+                    <Box
+                      bg="white"
+                      p="4"
+                      border="1px"
+                      borderColor="gray.200"
+                      rounded="md"
+                    >
+                      <Description
+                        title="Patient ID"
+                        value={foundPatient.patient_id}
+                      />
+                      <Description
+                        title="Patient Number"
+                        value={foundPatient.patient_number}
+                      />
+                      <Description
+                        title="Name"
+                        value={foundPatient.patient.name}
+                      />
+                      <Description
+                        title="Email"
+                        value={foundPatient.patient.email}
+                      />
+                      <Description
+                        title="Phone Number"
+                        value={foundPatient.patient.phone_number}
+                      />
+                    </Box>
+                  ) : hasSearch && !foundPatient ? (
+                    <Center py="6">
+                      <Box>Patient not found</Box>
+                    </Center>
+                  ) : null}
                 </Box>
               </FormControl>
-            )}
-
-            {selectedTime && (
-              <FormControl id="payment_method" my="4">
-                <FormLabel>Payment Method</FormLabel>
-                <Select
-                  value={selectedPaymentMethod}
-                  onChange={e => setSelectedPaymentMethod(e.target.value)}
-                >
-                  <option value="">Pilih Metode Pembayaran</option>
-                  {dataPaymentMethods?.data
-                    ?.filter(paymentMethod => paymentMethod.active)
-                    .map(paymentMethod => (
-                      <option
-                        key={paymentMethod.id}
-                        value={JSON.stringify(paymentMethod)}
-                      >
-                        {paymentMethod.name}
+              {foundPatient && (
+                <FormControl id="services">
+                  <FormLabel>Select Service</FormLabel>
+                  <Select
+                    bg="white"
+                    value={selectedService}
+                    onChange={e => {
+                      setSelectedSchedule('');
+                      setSelectedService(e.target.value);
+                    }}
+                  >
+                    <option value="">Pilih Layanan</option>
+                    {dataServices?.data?.map(service => (
+                      <option key={service.id} value={service.id}>
+                        {service.name}
                       </option>
                     ))}
-                </Select>
-              </FormControl>
-            )}
-          </VStack>
+                  </Select>
+                </FormControl>
+              )}
+              {selectedService && (
+                <FormControl mb="4" maxW="xl" alignSelf="baseline">
+                  <FormLabel>Schedule Day Range</FormLabel>
+                  <Box
+                    border="1px"
+                    borderColor="gray.200"
+                    px="4"
+                    py="2"
+                    rounded="md"
+                    bgColor="white"
+                  >
+                    <ScheduleDate
+                      range={selectedDayRange}
+                      handleDayClick={handleDayClick}
+                      handleResetClick={handleResetClick}
+                    />
+                  </Box>
+                </FormControl>
+              )}{' '}
+            </VStack>
+            <Box>
+              {isLoadingSchedules && (
+                <Center py="6">
+                  <Spinner
+                    thickness="4px"
+                    emptyColor="gray.200"
+                    color="purple.500"
+                    size="lg"
+                  />
+                </Center>
+              )}
 
-          {selectedTime && selectedPaymentMethod && (
-            <PrivateComponent permission={Permissions.createBookingDoctor}>
-              <Button
-                w="full"
-                mt="6"
-                colorScheme="purple"
-                type="submit"
-                disabled={!selectedSchedule || !selectedTime}
-                isLoading={isLoadingBooking}
-              >
-                Book
-              </Button>
-            </PrivateComponent>
-          )}
+              {isSuccessSchedule && dataSchedules.code === 404 && (
+                <Center py="6">
+                  <Box>Schedule not found</Box>
+                </Center>
+              )}
+
+              {dataSchedules && dataSchedules.code !== 404 && (
+                <>
+                  <Flex justify="space-between" align="center" mt="-1" mb="1">
+                    <Heading fontWeight="semibold" fontSize="md" mb="2">
+                      Jadwal dokter yang tersedia
+                    </Heading>
+                    <HStack spacing="5">
+                      <FormControl display="flex">
+                        <FormLabel>Limit</FormLabel>
+                        <Select
+                          bg="white"
+                          size="sm"
+                          rounded="sm"
+                          mt="-1"
+                          w="20"
+                          value={limit}
+                          onChange={e => setLimit(e.target.value)}
+                        >
+                          <option value={6}>5</option>
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={50}>50</option>
+                        </Select>
+                      </FormControl>
+                      <FormControl display="flex">
+                        <FormLabel>Page</FormLabel>
+                        <Select
+                          bg="white"
+                          size="sm"
+                          rounded="sm"
+                          mt="-1"
+                          w="20"
+                          value={page}
+                          onChange={e => setPage(e.target.value)}
+                        >
+                          {[
+                            ...Array(
+                              Math.ceil(dataSchedules?.total_data / limit)
+                            ).keys(),
+                          ]?.map(v => (
+                            <option key={v + 1} value={v + 1}>
+                              {v + 1}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </HStack>
+                  </Flex>
+                  <SimpleGrid columns={2} gap="4" w="full" mb="4">
+                    {dataSchedules?.data?.map(schedule => {
+                      return (
+                        <Box
+                          cursor="pointer"
+                          onClick={() => setSelectedSchedule(schedule)}
+                          key={schedule.id}
+                          bg={
+                            selectedSchedule?.id === schedule.id
+                              ? 'purple.100'
+                              : 'white'
+                          }
+                          boxShadow="md"
+                          px="6"
+                          py="4"
+                          rounded="md"
+                          border="2px"
+                          borderColor={
+                            selectedSchedule?.id === schedule.id
+                              ? 'purple.500'
+                              : 'transparent'
+                          }
+                        >
+                          <Box>
+                            <Text
+                              fontSize="md"
+                              color="purple.500"
+                              fontWeight="bold"
+                            >
+                              {schedule?.institution?.name}
+                            </Text>
+                            <Text fontSize="xl" fontWeight="bold">
+                              {schedule?.employee?.name}
+                            </Text>
+                            <Text
+                              mt="-1"
+                              mb="1"
+                              fontSize="sm"
+                              fontWeight="semibold"
+                              color="gray.500"
+                            >
+                              {schedule?.employee?.profession}
+                            </Text>
+                            <Text fontWeight="semibold" color="gray.700">
+                              {schedule?.days}, {schedule?.date_name}
+                            </Text>
+                            <Text fontWeight="semibold" color="gray.700">
+                              {schedule?.start_time} - {schedule?.end_time}
+                            </Text>
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </SimpleGrid>
+                </>
+              )}
+
+              {isLoadingEstimatedTime && (
+                <Center py="6">
+                  <Spinner
+                    thickness="4px"
+                    emptyColor="gray.200"
+                    color="purple.500"
+                    size="lg"
+                  />
+                </Center>
+              )}
+
+              {dataEstimatedTimes?.data?.length ? (
+                <Box mb="4">
+                  <Heading fontWeight="semibold" fontSize="md" mb="3">
+                    Waktu yang tersedia
+                  </Heading>
+                  <SimpleGrid columns={4} gap="4">
+                    {dataEstimatedTimes?.data?.map(time => {
+                      return (
+                        <Center
+                          as="button"
+                          disabled={time.status}
+                          cursor={time.status ? 'not-allowed' : 'pointer'}
+                          onClick={() => setSelectedTime(time)}
+                          key={time.id}
+                          bg={
+                            time.status
+                              ? 'red.100'
+                              : selectedTime?.id === time.id
+                              ? 'purple.100'
+                              : 'green.100'
+                          }
+                          boxShadow="md"
+                          rounded="md"
+                          border="2px"
+                          borderColor={
+                            selectedTime?.id === time.id
+                              ? 'purple.500'
+                              : 'transparent'
+                          }
+                        >
+                          {time.available_time}
+                        </Center>
+                      );
+                    })}
+                  </SimpleGrid>
+                </Box>
+              ) : (
+                isSuccessEstimatedTime && (
+                  <>
+                    <Heading fontWeight="semibold" fontSize="lg" mb="3">
+                      Waktu yang tersedia
+                    </Heading>
+                    <Box h="60">
+                      <Text fontSize="lg" fontWeight="bold">
+                        Not Available
+                      </Text>
+                    </Box>
+                  </>
+                )
+              )}
+
+              {isSuccessServicePrice && selectedTime && (
+                <FormControl mb="4">
+                  <FormLabel mb="-1">Price</FormLabel>
+                  <Box fontSize="2xl" fontWeight="extrabold" as="span">
+                    {formatter.format(
+                      Number(dataServicePrice?.data?.total_price)
+                    )}
+                  </Box>
+                </FormControl>
+              )}
+
+              {selectedTime && (
+                <FormControl id="payment_method" my="4">
+                  <FormLabel>Payment Method</FormLabel>
+                  <Select
+                    value={selectedPaymentMethod}
+                    onChange={e => setSelectedPaymentMethod(e.target.value)}
+                  >
+                    <option value="">Pilih Metode Pembayaran</option>
+                    {dataPaymentMethods?.data
+                      ?.filter(paymentMethod => paymentMethod.active)
+                      .map(paymentMethod => (
+                        <option
+                          key={paymentMethod.id}
+                          value={JSON.stringify(paymentMethod)}
+                        >
+                          {paymentMethod.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+              )}
+              {selectedTime && selectedPaymentMethod && (
+                <PrivateComponent permission={Permissions.createBookingDoctor}>
+                  <Button
+                    w="full"
+                    colorScheme="purple"
+                    type="submit"
+                    disabled={!selectedSchedule || !selectedTime}
+                    isLoading={isLoadingBooking}
+                  >
+                    Book
+                  </Button>
+                </PrivateComponent>
+              )}
+            </Box>
+          </SimpleGrid>
         </Box>
       )}
     </Box>
