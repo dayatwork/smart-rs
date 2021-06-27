@@ -59,7 +59,10 @@ export const PatientData = ({
   const [isLoadingFetchProfile, setIsLoadingFetchProfile] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const queryClient = useQueryClient();
-  const patientDataGridColumns = useBreakpointValue({ base: 1, lg: 2 });
+  const patientDataGridColumns = useBreakpointValue({
+    base: 1,
+    lg: patient === 'me' ? 2 : 1,
+  });
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
@@ -213,9 +216,11 @@ export const PatientData = ({
     } else {
       setDefaultValues({
         ...patientData,
+        birth_date: new Date(),
       });
       reset({
         ...patientData,
+        birth_date: new Date(),
       });
     }
   }, [
