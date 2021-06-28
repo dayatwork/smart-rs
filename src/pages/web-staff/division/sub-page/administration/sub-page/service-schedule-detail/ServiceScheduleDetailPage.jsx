@@ -30,7 +30,6 @@ import {
 } from '../../../../../../../api/institution-services/service';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
 import { Calendar } from '../../../../../../../components/web-staff/shared/calendar';
-// import { CalendarToolbar } from './CalendarToolbar';
 
 export const ServiceScheduleDetailPage = () => {
   const params = useParams();
@@ -74,7 +73,7 @@ export const ServiceScheduleDetailPage = () => {
     );
   }
 
-  console.log({ dataServiceDetail });
+  // console.log({ dataServiceDetail });
 
   return (
     <Box>
