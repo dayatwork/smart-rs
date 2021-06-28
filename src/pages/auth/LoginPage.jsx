@@ -100,8 +100,8 @@ export const LoginPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="blue.600"
-              _hover={{ color: 'blue.600' }}
+              color="brand.400"
+              _hover={{ color: 'brand.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
               Signup

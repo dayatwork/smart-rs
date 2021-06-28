@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+import { theme } from './theme';
 import App from './App';
 
 const queryClient = new QueryClient();
@@ -16,7 +17,7 @@ ReactDOM.render(
     <HelmetProvider>
       <CookiesProvider>
         <QueryClientProvider client={queryClient}>
-          <ChakraProvider>
+          <ChakraProvider theme={theme}>
             <App />
           </ChakraProvider>
           <ReactQueryDevtools />
@@ -24,5 +25,5 @@ ReactDOM.render(
       </CookiesProvider>
     </HelmetProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

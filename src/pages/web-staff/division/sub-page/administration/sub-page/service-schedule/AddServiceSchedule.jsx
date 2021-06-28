@@ -260,7 +260,7 @@ export const AddServiceSchedule = () => {
                 Staff belum mengatur jadwal kerja
               </Text>
 
-              <Link to="/division/human-capital/schedule">
+              <Link to="/division/human-capital/staff-schedule">
                 <Text
                   display="block"
                   color="purple.500"

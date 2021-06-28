@@ -5,3 +5,5 @@ export * from './SelectDistrict';
 export * from './SelectGender';
 export * from './SelectProvince';
 export * from './SelectSubDistrict';
+export * from './InputText';
+export * from './InputPassword';
