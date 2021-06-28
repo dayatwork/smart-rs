@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  Image,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
 
-// import { Logo } from '../../components/shared';
+import { Logo } from '../../components/shared';
 import { VerificationOTPForm } from '../../components/auth/VerificationOTPForm';
 import { verification, resendOTP } from '../../api/auth-services/auth';
 
@@ -76,9 +66,8 @@ export const VerificationPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-      sx={{ backgroundColor: '#e0f7ff' }}
+      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Verification | SMART-RS</title>
@@ -91,34 +80,21 @@ export const VerificationPage = () => {
         rounded={{ sm: 'lg' }}
         w="md"
       >
-        {/* <Logo /> */}
-        <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
-            SMART-RS
-          </Text>
-        </VStack>
-        <Heading
-          mt="6"
-          textAlign="center"
-          size="xl"
-          fontWeight="extrabold"
-          mb="3"
-        >
-          Verification
+        <Logo />
+        <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
+          Verifikasi
         </Heading>
         <VerificationOTPForm onSubmit={onSubmit} isLoading={isLoadingSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
           <Button
             p="2"
             marginStart="1"
-            _hover={{ color: 'brand.600' }}
-            display={{ base: 'block', sm: 'revert' }}
+            color="blue.600"
             onClick={handleResendOTP}
             variant="link"
             isLoading={isLoading}
           >
-            Resend OTP Code
+            Kirim ulang OTP
           </Button>
         </Box>
       </Box>

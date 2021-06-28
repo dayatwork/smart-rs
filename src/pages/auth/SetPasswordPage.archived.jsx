@@ -1,19 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  Box,
-  Heading,
-  Center,
-  useToast,
-  VStack,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Heading, Center, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
 
-// import { Logo } from '../../components/shared';
+import { Logo } from '../../components/shared';
 import { SetPasswordForm } from '../../components/auth/SetPasswordForm';
 import {
   getUserProfile,
@@ -75,9 +66,8 @@ export const SetPasswordPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-      sx={{ backgroundColor: '#e0f7ff' }}
+      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Set Password | SMART-RS</title>
@@ -90,33 +80,16 @@ export const SetPasswordPage = () => {
         rounded={{ sm: 'lg' }}
         w="md"
       >
-        <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
-            SMART-RS
-          </Text>
-        </VStack>
+        <Logo />
         <Heading
           mt="6"
-          // mb="10"
+          mb="10"
           textAlign="center"
           size="xl"
           fontWeight="extrabold"
         >
-          Create Account
+          Set Nama Lengkap dan Password
         </Heading>
-        <Box
-          mt="2"
-          mb="10"
-          align="center"
-          // maxW="md"
-          fontWeight="medium"
-          color="brand.500"
-        >
-          <Box as="span" fontSize="lg">
-            Set your name and password
-          </Box>
-        </Box>
         <SetPasswordForm onSubmit={onSubmit} />
       </Box>
     </Center>

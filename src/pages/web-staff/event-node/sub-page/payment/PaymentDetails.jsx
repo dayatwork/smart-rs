@@ -181,8 +181,14 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
           Payment Slip
         </Heading>
         {dataPaymentSlip?.data?.document ? (
-          <Button variant="link" colorScheme="purple">
-            {dataPaymentSlip?.data?.document}
+          <Button
+            variant="link"
+            colorScheme="purple"
+            as="a"
+            href={`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
+            target="_blank"
+          >
+            {`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
           </Button>
         ) : (
           <VStack py="2">

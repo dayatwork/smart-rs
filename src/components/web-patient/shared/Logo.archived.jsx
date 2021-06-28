@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Text, Image } from '@chakra-ui/react';
-// import { FaHospitalSymbol } from 'react-icons/fa';
-import LogoSvg from './Logo.svg';
+import { Icon, Box, Flex, Text } from '@chakra-ui/react';
+import { FaHospitalSymbol } from 'react-icons/fa';
 
 // export const Logo = (props) => {
 //   const { iconColor = 'currentColor', ...rest } = props;
@@ -22,22 +21,14 @@ export const Logo = ({ mini, light, ...rest }) => {
     //   {...rest}
     // >
     <Link to="/">
-      <Flex
-        bg="white"
-        h="16"
-        px="4"
-        align="center"
-        mr={mini ? null : '10'}
-        {...rest}
-      >
-        {/* <Icon
+      <Flex mr={mini ? null : '10'} {...rest}>
+        <Icon
           as={FaHospitalSymbol}
           w="10"
           h="10"
           fill={light ? 'blue.600' : 'white'}
           mr={mini ? null : '3'}
-        /> */}
-        <Image src={LogoSvg} alt="logo" w="12" mr={mini ? null : '3'} />
+        />
         {mini ? null : (
           <Box>
             <Text

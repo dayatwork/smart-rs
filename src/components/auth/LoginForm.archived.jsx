@@ -1,19 +1,20 @@
-import React from 'react';
 import {
   Box,
   Button,
-  // FormControl,
-  // FormErrorMessage,
-  // FormLabel,
-  // Input,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
   Stack,
 } from '@chakra-ui/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
-// import PasswordField from './PasswordField';
-import { InputText, InputPassword } from '../shared/input';
+// import { PasswordField } from './PasswordField';
+import PasswordField from './PasswordField';
+// import { InputText, InputPassword } from '../shared/input';
 
-export const SetPasswordForm = ({ onSubmit }) => {
+export const LoginForm = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -22,26 +23,34 @@ export const SetPasswordForm = ({ onSubmit }) => {
     mode: 'onBlur',
   });
 
+  console.log({ errors });
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing="6">
-        {/* <FormControl id="name" isInvalid={errors.name ? true : false}>
-          <FormLabel>Nama Lengkap</FormLabel>
-          <Input {...register('name', { required: 'Name is required' })} />
-          <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
-        </FormControl>
+        <FormControl id="email" isInvalid={errors.email ? true : false}>
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="email"
+            {...register('email', { required: 'Email is required' })}
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>{' '}
         <PasswordField
+          forgot="true"
           errors={errors}
           {...register('password', {
             required: 'Password is required',
             minLength: { value: 6, message: 'Password min 6 characters' },
           })}
-        /> */}
-        <InputText
-          label="Name"
-          type="text"
-          error={errors.name}
-          {...register('name', { required: 'Name is required' })}
+        />
+        {/* <InputText
+          label="Email"
+          type="email"
+          error={errors.email}
+          {...register('email', { required: 'Email is required' })}
         />
         <InputPassword
           label="Password"
@@ -50,18 +59,16 @@ export const SetPasswordForm = ({ onSubmit }) => {
             required: 'Password is required',
             minLength: { value: 6, message: 'Password min 6 characters' },
           })}
-        />
-
+        /> */}
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="brand"
+          colorScheme="blue"
           size="lg"
           fontSize="md"
-          data-testid="set-password-button"
-          rounded="full"
+          data-testid="login-button"
         >
-          Set Password
+          Login
         </Button>
       </Stack>
     </Box>

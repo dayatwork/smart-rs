@@ -3,51 +3,6 @@ import { css } from '@emotion/css';
 
 import { colors } from '../../../theme';
 
-// export const InputText = () => {
-//   return (
-//     <label
-//       className={css`
-//         position: relative;
-//         font-size: 14px;
-//         border-top: 20px solid transparent;
-//         margin-bottom: 5px;
-//         --field-padding: 12px;
-
-//         input {
-//           border: none;
-//           -webkit-appearance: none;
-//           -ms-appearance: none;
-//           -moz-appearance: none;
-//           appearance: none;
-//           background: #f2f2f2;
-//           padding: var(--field-padding);
-//           border-radius: 3px;
-//           width: 250px;
-//           outline: none;
-//           font-size: 14px;
-//         }
-
-//         .placeholder {
-//           position: absolute;
-//           left: var(--field-padding);
-//           width: calc(100% - (var(--field-padding) * 2));
-//           overflow: hidden;
-//           white-space: nowrap;
-//           text-overflow: ellipsis;
-//           top: 22px;
-//           line-height: 100%;
-//           transform: translateY(-50%);
-//           color: #aaa;
-//           transition: top 0.3s ease, color 0.3s ease, font-size 0.3s ease;
-//         }
-//       `}
-//     >
-//       <input type="text" placeholder=" " />
-//       <span className="placeholder">Enter Text</span>
-//     </label>
-//   );
-// };
-
 export const InputText = React.forwardRef(
   ({ id, label, type = 'text', error, ...rest }, ref) => {
     console.log({ error });

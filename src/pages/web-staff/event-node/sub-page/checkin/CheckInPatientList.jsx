@@ -96,6 +96,8 @@ export const CheckinPatientList = () => {
     [dataBookingList?.data, isSuccessBookingList, checkedIn]
   );
 
+  // console.log({ dataBookingList });
+
   const columns = React.useMemo(
     () => [
       {
@@ -136,7 +138,7 @@ export const CheckinPatientList = () => {
         accessor: 'status',
         Cell: ({ value }) => {
           if (value === 'done') {
-            return <Badge colorScheme="red">Checked in</Badge>;
+            return <Badge colorScheme="green">Checked in</Badge>;
           }
           if (value === 'booked') {
             return <Badge colorScheme="yellow">{value}</Badge>;

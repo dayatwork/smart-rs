@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   // FormControl,
   // FormErrorMessage,
   // FormLabel,
@@ -8,6 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 // import { PasswordField } from './PasswordField';
@@ -27,7 +29,7 @@ export const LoginForm = ({ onSubmit }) => {
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing="6">
+      <Stack spacing="4">
         {/* <FormControl id="email" isInvalid={errors.email ? true : false}>
           <FormLabel>Email</FormLabel>
           <Input
@@ -37,8 +39,8 @@ export const LoginForm = ({ onSubmit }) => {
           <FormErrorMessage>
             {errors.email && errors.email.message}
           </FormErrorMessage>
-        </FormControl> */}
-        {/* <PasswordField
+        </FormControl>{' '}
+        <PasswordField
           forgot="true"
           errors={errors}
           {...register('password', {
@@ -52,14 +54,27 @@ export const LoginForm = ({ onSubmit }) => {
           error={errors.email}
           {...register('email', { required: 'Email is required' })}
         />
-        <InputPassword
-          label="Password"
-          error={errors.password}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: { value: 6, message: 'Password min 6 characters' },
-          })}
-        />
+        <Box>
+          <InputPassword
+            label="Password"
+            error={errors.password}
+            {...register('password', {
+              required: 'Password is required',
+              minLength: { value: 6, message: 'Password min 6 characters' },
+            })}
+          />
+          <Flex justifyContent="flex-end" mt="1.5">
+            <Button
+              variant="link"
+              as={Link}
+              to="/forgot-password"
+              colorScheme="brand"
+              size="sm"
+            >
+              Forgot Password?
+            </Button>
+          </Flex>
+        </Box>
         <Button
           isLoading={isSubmitting}
           type="submit"
@@ -67,6 +82,7 @@ export const LoginForm = ({ onSubmit }) => {
           size="lg"
           fontSize="md"
           data-testid="login-button"
+          rounded="full"
         >
           Login
         </Button>

@@ -27,8 +27,10 @@ export const WebPatientNav = ({ active }) => {
               onClick={onOpenMobile}
               display={{ base: 'flex', lg: 'none' }}
             />
-            <Logo display={{ base: 'none', lg: 'flex' }} />
+            {/* <Logo display={{ base: 'none', lg: 'flex' }} /> */}
+            <Logo light display={{ base: 'none', lg: 'flex' }} />
           </HStack>
+          {/* <Logo display={{ base: 'flex', lg: 'none' }} /> */}
           <Logo display={{ base: 'flex', lg: 'none' }} />
 
           <HStack spacing="3" flex="1" display={{ base: 'none', lg: 'flex' }}>
