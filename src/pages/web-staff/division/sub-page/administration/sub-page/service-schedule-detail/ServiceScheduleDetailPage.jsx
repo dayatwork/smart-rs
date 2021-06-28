@@ -18,22 +18,19 @@ import {
   Spinner,
   Text,
   useDisclosure,
-  useBreakpointValue,
+  // useBreakpointValue,
   Flex,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
-import timeGridPlugin from '@fullcalendar/timegrid';
 
 import {
   getServiceScheduleDetail,
   getScheduleEstimatedTimes,
 } from '../../../../../../../api/institution-services/service';
 import { BackButton } from '../../../../../../../components/shared/BackButton';
+import { Calendar } from '../../../../../../../components/web-staff/shared/calendar';
+// import { CalendarToolbar } from './CalendarToolbar';
 
 export const ServiceScheduleDetailPage = () => {
   const params = useParams();
@@ -63,8 +60,6 @@ export const ServiceScheduleDetailPage = () => {
     onOpen();
   };
 
-  console.log({ dataServiceDetail });
-
   if (isLoadingServiceDetail) {
     return (
       <Center h="60">
@@ -78,6 +73,8 @@ export const ServiceScheduleDetailPage = () => {
       </Center>
     );
   }
+
+  console.log({ dataServiceDetail });
 
   return (
     <Box>
@@ -135,14 +132,16 @@ export const ServiceScheduleDetailPage = () => {
             )
           )}
       </SimpleGrid> */}
-      <FullCalendar
-        plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
+
+      <Calendar
         events={Object.entries(
           dataServiceDetail?.data?.service_schedule_details
         ).map(([key, value]) => ({
+          allDay: false,
           title: dataServiceDetail?.data?.employee_name,
           date: value[0].date,
+          start: new Date(`${value[0].date}T${value[0].start_time}`),
+          end: new Date(`${value[0].date}T${value[0].end_time}`),
           color: '#6B46C1',
           id: value[0].id,
           classNames: ['calendar-test'],
@@ -159,32 +158,53 @@ export const ServiceScheduleDetailPage = () => {
   );
 };
 
-const renderEventContent = eventInfo => {
+const renderEventContent = view => eventInfo => {
   return (
-    <Box>
-      <Description title="Doctor" value={eventInfo.event.title} />
+    <Flex direction="column" justify="center" h="full">
       <Description
+        // display={{ base: 'none', lg: 'block' }}
+        title="Doctor"
+        value={eventInfo.event.title}
+        view={view}
+        direction={view === 'timeGridWeek' ? 'row' : 'column'}
+      />
+      <Description
+        // display={{ base: 'none', lg: 'block' }}
         title="Service"
         value={eventInfo.event.extendedProps.service_name}
+        view={view}
+        direction={view === 'timeGridWeek' ? 'row' : 'column'}
       />
-      <Description
-        title="Start"
-        value={eventInfo.event.extendedProps.start_time}
-      />
-      <Description title="End" value={eventInfo.event.extendedProps.end_time} />
-    </Box>
+      {(view === 'dayGridMonth' || view === 'listWeek') && (
+        <>
+          <Description
+            // display={{ base: 'none', lg: 'block' }}
+            title="Start"
+            value={eventInfo.event.extendedProps.start_time}
+            view={view}
+          />
+          <Description
+            // display={{ base: 'none', lg: 'block' }}
+            title="End"
+            value={eventInfo.event.extendedProps.end_time}
+            view={view}
+          />
+        </>
+      )}
+    </Flex>
   );
 };
 
-const Description = ({ title, value, ...rest }) => (
+const Description = ({ title, value, view, direction = 'column', ...rest }) => (
   <Flex
     as="dl"
-    direction={{ base: 'column', sm: 'row' }}
-    // px="6"
-    // py={{ base: '2', md: '4' }}
+    // direction={{ base: 'column', lg: 'row' }}
+    direction={direction}
+    px="2"
+    py="0.5"
     {...rest}
   >
-    <Box as="dt" flexBasis={{ base: '40%', md: '25%' }}>
+    <Box as="dt" flexBasis="30%">
       {title}:
     </Box>
     <Box as="dd" flex="1" fontWeight="semibold">

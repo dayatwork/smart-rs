@@ -85,3 +85,6 @@
 .fc-event {
   cursor: pointer;
 }
+.fc-button-primary {
+  background-color: #6b46c1 !important;
+}

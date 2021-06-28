@@ -24,7 +24,7 @@ export const SubMenuSideBar = ({ subMenus, title, titleLink }) => {
           fontSize={{ base: 'lg', '2xl': '2xl' }}
           py={{ base: '2', '2xl': '3' }}
           px={{ base: '3', '2xl': '6' }}
-          maxW="48"
+          maxW="52"
         >
           {title}
         </Heading>
