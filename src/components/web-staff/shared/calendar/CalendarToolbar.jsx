@@ -11,15 +11,15 @@ import { ToggleButton } from './ToggleButton';
 
 export const CalendarToolbar = ({ view, onChangeView }) => {
   return (
-    <Flex justify="center" py="12">
+    <Flex justify="center" py="4">
       <ToggleButtonGroup
         size="lg"
         value={view}
         onChange={onChangeView}
-        defaultValue="left"
+        defaultValue="dayGridMonth"
         isAttached
         variant="outline"
-        aria-label="Align text"
+        aria-label="View"
       >
         <ToggleButton
           value="dayGridMonth"

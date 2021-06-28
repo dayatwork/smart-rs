@@ -98,17 +98,17 @@ export const ServiceSchedulePage = () => {
                 to={`/division/administration/service-schedule/detail/${row.original.id}`}
                 variant="link"
                 size="sm"
-                colorScheme="blue"
+                colorScheme="purple"
               >
                 View Detail
               </Button>
             </PrivateComponent>
-            <Button variant="link" size="sm" colorScheme="green">
+            {/* <Button variant="link" size="sm" colorScheme="green">
               Edit Data
             </Button>
             <Button variant="link" size="sm" colorScheme="orange">
               Change Status
-            </Button>
+            </Button> */}
           </VStack>
         ),
       },
