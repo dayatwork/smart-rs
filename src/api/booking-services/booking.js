@@ -98,6 +98,28 @@ export const createOnsiteBooking = async (cookies, data) => {
   return json;
 };
 // booking-patient/updatestatus
+// export const updateBookingStatus = async (cookies, data) => {
+//   const res = await fetch(
+//     `${process.env.REACT_APP_BOOKING_API}/booking-patient/updatestatus`,
+//     {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${cookies?.token}`,
+//       },
+//       body: JSON.stringify(data),
+//     }
+//   );
+
+//   if (!res.ok) {
+//     throw new Error('Error Update Booking Status');
+//   }
+
+//   const json = await res.json();
+
+//   return json;
+// };
+
 export const updateBookingStatus = async (cookies, data) => {
   const res = await fetch(
     `${process.env.REACT_APP_BOOKING_API}/booking-patient/updatestatus`,

@@ -25,7 +25,7 @@ export const LoginForm = ({ onSubmit }) => {
     mode: 'onBlur',
   });
 
-  console.log({ errors });
+  // console.log({ errors });
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>

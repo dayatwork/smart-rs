@@ -24,7 +24,7 @@ export const PrivateRoute = ({ children, permission, pageTitle, ...rest }) => {
     employeeDetail?.employee_id &&
     permissions.includes(Permissions.indexDashboard)
   ) {
-    console.log('hit');
+    // console.log('hit');
     return <Redirect to="/dashboard" />;
   } else {
     return <Redirect to="/" />;

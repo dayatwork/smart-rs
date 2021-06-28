@@ -40,6 +40,8 @@ import {
 } from '../../../../../../../api/institution-services/radiology-category';
 import { createRadiology } from '../../../../../../../api/radiology-services/radiology';
 
+const MASTER_RADIOLOGY = '0dcb09ce-cfee-4d6c-bf9c-23048be9c526';
+
 export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -217,9 +219,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               <option>Pilih Layanan</option>
               {dataServices?.data
                 ?.filter(
-                  service =>
-                    service.master_service_id ===
-                    '0dcb09ce-cfee-4d6c-bf9c-23048be9c526'
+                  service => service.master_service_id === MASTER_RADIOLOGY
                 )
                 ?.map(service => (
                   <option key={service.id} value={service.id}>

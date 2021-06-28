@@ -39,6 +39,8 @@ import {
 import { getLabCategories } from '../../../../../../../api/institution-services/lab-category';
 import { createLaboratoryRegistration } from '../../../../../../../api/laboratory-services/register';
 
+const MASTER_LAB = '9fde6ede-38b8-47f7-b080-baa50a1b587c';
+
 export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -199,11 +201,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
               >
                 <option>Pilih Layanan</option>
                 {dataServices?.data
-                  ?.filter(
-                    service =>
-                      service.master_service_id ===
-                      '9fde6ede-38b8-47f7-b080-baa50a1b587c'
-                  )
+                  ?.filter(service => service.master_service_id === MASTER_LAB)
                   ?.map(service => (
                     <option key={service.id} value={service.id}>
                       {service.name}

@@ -5,7 +5,7 @@ import { colors } from '../../../theme';
 
 export const InputText = React.forwardRef(
   ({ id, label, type = 'text', error, ...rest }, ref) => {
-    console.log({ error });
+    // console.log({ error });
     return (
       <div>
         <div

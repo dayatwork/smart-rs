@@ -55,7 +55,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
     { enabled: Boolean(dataOrder?.data?.id) }
   );
 
-  console.log({ dataPaymentSlip });
+  // console.log({ dataPaymentSlip });
 
   const handleVerifyPayment = async () => {
     const data = {
@@ -188,6 +188,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
             href={`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
             target="_blank"
           >
+            {/* Payment Slip */}
             {`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
           </Button>
         ) : (

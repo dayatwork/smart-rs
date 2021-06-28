@@ -129,7 +129,7 @@ export const SelectDoctor = ({
   };
 
   // console.log({ dataSchedules });
-  console.log({ selectedSchedule });
+  // console.log({ selectedSchedule });
 
   return (
     <>

@@ -8,10 +8,12 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { Center, Icon } from '@chakra-ui/react';
-import { FaHospitalSymbol } from 'react-icons/fa';
+// import { Center, Icon, Image } from '@chakra-ui/react';
+import { Center, Image } from '@chakra-ui/react';
+// import { FaHospitalSymbol } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import LogoSvg from './Logo.svg';
 
 import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
@@ -326,10 +328,16 @@ const App = () => {
         {isLoadingPermissions && isLoadingEmployeeDetail ? (
           <Center style={{ height: '100vh' }}>
             <motion.div
-              animate={{ rotate: 180 }}
-              transition={{ duration: 0.3, repeat: Infinity }}
+              animate={{
+                scale: [1, 2, 2, 1, 1],
+                rotate: [0, 0, 270, 270, 0],
+                borderRadius: ['20%', '20%', '50%', '50%', '20%'],
+              }}
+              // animate={{ rotate: 360 }}
+              // transition={{ duration: 0.3, repeat: Infinity }}
             >
-              <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" />
+              {/* <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" /> */}
+              <Image src={LogoSvg} w="16" />
             </motion.div>
           </Center>
         ) : (

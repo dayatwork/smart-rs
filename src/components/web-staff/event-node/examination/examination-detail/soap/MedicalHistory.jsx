@@ -132,6 +132,7 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
 
   const onSubmit = async value => {
     const { medical_history } = value;
+    console.log({ medical_history });
     const formatted = medical_history
       .filter(med_history => med_history !== false)
       .map(med_history => JSON.parse(med_history));
@@ -141,6 +142,8 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
       patient_id: patientDetail?.patient_id,
       data: formatted,
     };
+
+    console.log({ data });
 
     try {
       setIsLoadingSubmit(true);
@@ -195,7 +198,9 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
                       name: medicalHistory.name,
                     })}
                     defaultChecked={!!isCheck}
-                    isDisabled={Boolean(isCheck)}
+                    // disabled={Boolean(isCheck)}
+                    // readOnly={Boolean(isCheck)}
+                    // isDisabled={Boolean(isCheck)}
                     {...register(`medical_history[${index}]`)}
                   >
                     {medicalHistory.name}

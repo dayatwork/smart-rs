@@ -196,7 +196,7 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
                       family_history_name: familyHistory.name,
                     })}
                     defaultChecked={!!isCheck}
-                    isDisabled={Boolean(isCheck)}
+                    // isDisabled={Boolean(isCheck)}
                     {...register(`family_history[${index}]`)}
                   >
                     {familyHistory.name}
