@@ -19,9 +19,15 @@ import {
   Text,
   useDisclosure,
   useBreakpointValue,
+  Flex,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 import {
   getServiceScheduleDetail,
@@ -34,18 +40,18 @@ export const ServiceScheduleDetailPage = () => {
   const [cookies] = useCookies(['token']);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedDateId, setSelectedDateId] = useState('');
-  const scheduleGridColumns = useBreakpointValue({
-    base: 2,
-    md: 3,
-    lg: 4,
-    xl: 6,
-    '2xl': 7,
-  });
+  // const scheduleGridColumns = useBreakpointValue({
+  //   base: 2,
+  //   md: 3,
+  //   lg: 4,
+  //   xl: 6,
+  //   '2xl': 7,
+  // });
 
   const {
     data: dataServiceDetail,
     isLoading: isLoadingServiceDetail,
-    isSuccess: isSuccessServiceDetail,
+    // isSuccess: isSuccessServiceDetail,
   } = useQuery(
     ['service-schedule', params.id],
     () => getServiceScheduleDetail(cookies, params.id),
@@ -56,6 +62,8 @@ export const ServiceScheduleDetailPage = () => {
     setSelectedDateId(id);
     onOpen();
   };
+
+  console.log({ dataServiceDetail });
 
   if (isLoadingServiceDetail) {
     return (
@@ -103,7 +111,7 @@ export const ServiceScheduleDetailPage = () => {
       <Heading as="h3" size="md" mb="2">
         Schedule
       </Heading>
-      <SimpleGrid columns={scheduleGridColumns} gap="6">
+      {/* <SimpleGrid columns={scheduleGridColumns} gap="6">
         {isSuccessServiceDetail &&
           Object.entries(dataServiceDetail?.data?.service_schedule_details).map(
             ([key, value]) => (
@@ -126,10 +134,64 @@ export const ServiceScheduleDetailPage = () => {
               </Box>
             )
           )}
-      </SimpleGrid>
+      </SimpleGrid> */}
+      <FullCalendar
+        plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={Object.entries(
+          dataServiceDetail?.data?.service_schedule_details
+        ).map(([key, value]) => ({
+          title: dataServiceDetail?.data?.employee_name,
+          date: value[0].date,
+          color: '#6B46C1',
+          id: value[0].id,
+          classNames: ['calendar-test'],
+          start_time: value[0].start_time,
+          end_time: value[0].end_time,
+          service_name: dataServiceDetail?.data?.service?.name,
+        }))}
+        eventClick={({ event }) => {
+          handleDetailTime(event.id);
+        }}
+        eventContent={renderEventContent}
+      />
     </Box>
   );
 };
+
+const renderEventContent = eventInfo => {
+  return (
+    <Box>
+      <Description title="Doctor" value={eventInfo.event.title} />
+      <Description
+        title="Service"
+        value={eventInfo.event.extendedProps.service_name}
+      />
+      <Description
+        title="Start"
+        value={eventInfo.event.extendedProps.start_time}
+      />
+      <Description title="End" value={eventInfo.event.extendedProps.end_time} />
+    </Box>
+  );
+};
+
+const Description = ({ title, value, ...rest }) => (
+  <Flex
+    as="dl"
+    direction={{ base: 'column', sm: 'row' }}
+    // px="6"
+    // py={{ base: '2', md: '4' }}
+    {...rest}
+  >
+    <Box as="dt" flexBasis={{ base: '40%', md: '25%' }}>
+      {title}:
+    </Box>
+    <Box as="dd" flex="1" fontWeight="semibold">
+      {value}
+    </Box>
+  </Flex>
+);
 
 const TimeDetails = ({ isOpen, onClose, dateId }) => {
   const [cookies] = useCookies(['token']);

@@ -135,18 +135,17 @@ export const CheckinPatientList = () => {
         Header: 'Status',
         accessor: 'status',
         Cell: ({ value }) => {
-          let color = 'gray';
-          if (value === 'booked') {
-            color = 'yellow';
-          }
           if (value === 'done') {
-            color = 'green';
+            return <Badge colorScheme="red">Checked in</Badge>;
+          }
+          if (value === 'booked') {
+            return <Badge colorScheme="yellow">{value}</Badge>;
           }
           if (value === 'cancel') {
-            color = 'red';
+            return <Badge colorScheme="red">{value}</Badge>;
           }
 
-          return <Badge colorScheme={color}>{value}</Badge>;
+          return <Badge>{value}</Badge>;
         },
       },
       {
