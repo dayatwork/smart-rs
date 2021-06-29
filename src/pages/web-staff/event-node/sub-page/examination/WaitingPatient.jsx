@@ -37,6 +37,8 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
     { enabled: Boolean(selectedInstitution) }
   );
 
+  console.log({ dataBookingList });
+
   const handleCreateSoap = useCallback(
     async (patient_id, booking_id, transaction_number) => {
       setPatient(patient_id);
@@ -56,7 +58,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
         };
 
         const dataUpdateBookingStatus = {
-          booking_id,
+          id: booking_id,
           status: 'examination',
         };
         const res = await createSoap(cookies, dataCreateSoap);

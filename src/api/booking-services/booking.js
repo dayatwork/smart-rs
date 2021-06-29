@@ -122,7 +122,7 @@ export const createOnsiteBooking = async (cookies, data) => {
 
 export const updateBookingStatus = async (cookies, data) => {
   const res = await fetch(
-    `${process.env.REACT_APP_BOOKING_API}/booking-patient/updatestatus`,
+    `${process.env.REACT_APP_BOOKING_API}/booking-patient/update`,
     {
       method: 'PUT',
       headers: {
