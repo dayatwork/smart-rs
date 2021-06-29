@@ -21,6 +21,7 @@ import {
   Icon,
   Center,
   Spinner,
+  Image,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -181,16 +182,24 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
           Payment Slip
         </Heading>
         {dataPaymentSlip?.data?.document ? (
-          <Button
-            variant="link"
-            colorScheme="purple"
-            as="a"
-            href={`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
-            target="_blank"
-          >
-            {/* Payment Slip */}
-            {`https://local-dev.ejemplo.me/smartrs${dataPaymentSlip?.data?.document}`}
-          </Button>
+          <>
+            <Image
+              src={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+              alt="payment slip"
+              maxH="40"
+            />
+            <Button
+              variant="link"
+              colorScheme="purple"
+              as="a"
+              href={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+              target="_blank"
+              download={true}
+            >
+              {/* Payment Slip */}
+              {`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+            </Button>
+          </>
         ) : (
           <VStack py="2">
             <Icon as={ImFileEmpty} h={6} w={6} color="purple.600" />
