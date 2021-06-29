@@ -176,14 +176,15 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
           </SimpleGrid>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="brand"
+            rounded="full"
             size="lg"
             fontSize="md"
             data-testid="submit-button"
             onClick={handleSubmit(onSubmit)}
             isLoading={isLoading}
           >
-            Simpan dan Lanjutkan
+            Save and continue
           </Button>
         </Stack>
       </Box>
@@ -192,8 +193,8 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
           <Box
             as="span"
             marginStart="1"
-            color="blue.600"
-            _hover={{ color: 'blue.600' }}
+            color="brand.400"
+            _hover={{ color: 'brand.600' }}
             display={{ base: 'block', sm: 'revert' }}
             data-testid="skip-link"
           >

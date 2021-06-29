@@ -1,14 +1,16 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
+  // FormControl,
+  // FormErrorMessage,
+  // FormLabel,
+  // Input,
   Stack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+
+import { InputText } from '../shared/input';
 
 export const SignupForm = ({ onSubmit }) => {
   const {
@@ -20,23 +22,25 @@ export const SignupForm = ({ onSubmit }) => {
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing="6">
-        <FormControl id="email" isInvalid={errors.email ? true : false}>
+        {/* <FormControl id="email" isInvalid={errors.email ? true : false}>
           <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            {...register('email', { required: 'Email is required' })}
-          />
-          <FormErrorMessage>
-            {errors.email && errors.email.message}
-          </FormErrorMessage>
-        </FormControl>
+          <Input type="email" {...register('email', { required: 'Email is required' })} />
+          <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+        </FormControl> */}
+        <InputText
+          label="Email"
+          type="email"
+          error={errors.email}
+          {...register('email', { required: 'Email is required' })}
+        />
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="blue"
+          colorScheme="brand"
           size="lg"
           fontSize="md"
           data-testid="signup-button"
+          rounded="full"
         >
           Sign up
         </Button>

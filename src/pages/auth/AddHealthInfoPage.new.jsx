@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Center, Heading, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQueryClient } from 'react-query';
+import Logo from './Logo.svg';
 
-import { Logo } from '../../components/shared';
+// import { Logo } from '../../components/shared';
 import { AddHealthInfoForm } from '../../components/auth/AddHealthInfoForm';
 import { createUserVitalSign } from '../../api/user-services/user-management';
 
@@ -66,15 +75,21 @@ export const AddHealthInfoPage = () => {
         rounded={{ sm: 'lg' }}
         w="md"
       >
-        <Logo />
+        {/* <Logo /> */}
+        <VStack>
+          <Image src={Logo} alt="Logo" w="20" />
+          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+            SMART-RS
+          </Text>
+        </VStack>
         <Heading
-          mt="6"
-          mb="10"
+          mt="4"
+          mb="6"
           textAlign="center"
           size="xl"
           fontWeight="extrabold"
         >
-          Additional Info
+          Health Info
         </Heading>
         <AddHealthInfoForm onSubmit={onSubmit} isLoading={isLoading} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -84,8 +99,8 @@ export const AddHealthInfoPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="blue.600"
-              _hover={{ color: 'blue.600' }}
+              color="brand.400"
+              _hover={{ color: 'brand.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
               Skip

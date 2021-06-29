@@ -84,7 +84,7 @@ export const AddHealthInfoPage = () => {
         </VStack>
         <Heading
           mt="4"
-          mb="6"
+          mb="8"
           textAlign="center"
           size="xl"
           fontWeight="extrabold"
@@ -99,8 +99,8 @@ export const AddHealthInfoPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="brand.400"
-              _hover={{ color: 'brand.600' }}
+              color="blue.600"
+              _hover={{ color: 'blue.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
               Skip

@@ -4,17 +4,16 @@ import {
   Box,
   Center,
   Heading,
-  useToast,
   Image,
   Text,
+  useToast,
   VStack,
-  Grid,
-  GridItem,
-  useBreakpointValue,
+  // Image,
+  // Text,
+  // VStack,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import MapSvg from './Map.svg';
 import Logo from './Logo.svg';
 
 import { login } from '../../api/auth-services/auth';
@@ -26,7 +25,6 @@ export const LoginPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
-  const formColumns = useBreakpointValue({ base: 5, md: 2 });
 
   const fetchUserDetails = async token => {
     const { data } = await getUserProfile(token);
@@ -85,82 +83,50 @@ export const LoginPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-      sx={{ backgroundColor: '#e0f7ff' }}
+      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Login | SMART-RS</title>
       </Helmet>
-
-      <Grid
+      <Box
         bg="white"
+        py="8"
+        px={{ base: '8', md: '10' }}
         shadow={{ base: 'xl', lg: 'base' }}
         rounded={{ sm: 'lg' }}
-        templateColumns="repeat(5, 1fr)"
-        overflow="hidden"
-        w="6xl"
+        w="md"
       >
         {/* <Logo /> */}
-        <GridItem
-          as={Center}
-          colSpan={3}
-          sx={{ backgroundColor: '#83CDE6' }}
-          py="8"
-          px={{ base: '8', md: '10' }}
-          display={{ base: 'none', md: 'flex' }}
-        >
-          <Image src={MapSvg} w={{ base: 'md', lg: 'lg' }} />
-        </GridItem>
-        <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
-          <VStack>
-            <Image src={Logo} alt="Logo" w="20" />
-            <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
-              SMART-RS
-            </Text>
-          </VStack>
-          <Heading
-            mt="6"
-            textAlign="center"
-            size="lg"
-            fontWeight="extrabold"
-            color="brand.500"
-            textTransform="uppercase"
-          >
-            Welcome back
-          </Heading>
-          <Box
-            mt="2"
-            mb="10"
-            align="center"
-            // maxW="md"
-            fontWeight="medium"
-            color="brand.500"
-          >
-            <Box as="span" fontSize="lg">
-              Sign in to your account
+        <VStack>
+          <Image src={Logo} alt="Logo" w="20" />
+          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+            SMART-RS
+          </Text>
+        </VStack>
+        <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
+          Selamat Datang
+        </Heading>
+        <Box mt="2" mb="10" align="center" maxW="md" fontWeight="medium">
+          <span>Silahkan login menggunakan akun anda</span>
+        </Box>
+        <LoginForm onSubmit={onSubmit} />
+        <Box mt="4" align="center" maxW="md" fontWeight="medium">
+          <span>Belum punya akun?</span>
+          <Link to="/signup">
+            <Box
+              as="span"
+              marginStart="1"
+              href="#"
+              color="brand.400"
+              _hover={{ color: 'brand.600' }}
+              display={{ base: 'block', sm: 'revert' }}
+            >
+              Signup
             </Box>
-          </Box>
-          <LoginForm onSubmit={onSubmit} />
-          <Box mt="4" align="center" maxW="md" fontWeight="medium">
-            <Box as="span" color="brand.500">
-              Don't have an account?
-            </Box>
-            <Link to="/signup">
-              <Box
-                as="span"
-                marginStart="1"
-                href="#"
-                color="brand.400"
-                _hover={{ color: 'brand.600' }}
-                display={{ base: 'block', sm: 'revert' }}
-              >
-                Sign up
-              </Box>
-            </Link>
-          </Box>
-        </GridItem>
-      </Grid>
+          </Link>
+        </Box>
+      </Box>
     </Center>
   );
 };

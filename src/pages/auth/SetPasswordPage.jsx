@@ -75,9 +75,8 @@ export const SetPasswordPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-      sx={{ backgroundColor: '#e0f7ff' }}
+      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Set Password | SMART-RS</title>
@@ -96,27 +95,16 @@ export const SetPasswordPage = () => {
             SMART-RS
           </Text>
         </VStack>
+        {/* <Logo /> */}
         <Heading
           mt="6"
-          // mb="10"
+          mb="10"
           textAlign="center"
           size="xl"
           fontWeight="extrabold"
         >
-          Create Account
+          Set Nama Lengkap dan Password
         </Heading>
-        <Box
-          mt="2"
-          mb="10"
-          align="center"
-          // maxW="md"
-          fontWeight="medium"
-          color="brand.500"
-        >
-          <Box as="span" fontSize="lg">
-            Set your name and password
-          </Box>
-        </Box>
         <SetPasswordForm onSubmit={onSubmit} />
       </Box>
     </Center>

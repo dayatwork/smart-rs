@@ -29,7 +29,7 @@ export const LoginForm = ({ onSubmit }) => {
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing="4">
+      <Stack spacing="6">
         {/* <FormControl id="email" isInvalid={errors.email ? true : false}>
           <FormLabel>Email</FormLabel>
           <Input
@@ -68,7 +68,7 @@ export const LoginForm = ({ onSubmit }) => {
               variant="link"
               as={Link}
               to="/forgot-password"
-              colorScheme="brand"
+              colorScheme="blue"
               size="sm"
             >
               Forgot Password?
@@ -78,11 +78,10 @@ export const LoginForm = ({ onSubmit }) => {
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="brand"
+          colorScheme="blue"
           size="lg"
           fontSize="md"
           data-testid="login-button"
-          rounded="full"
         >
           Login
         </Button>

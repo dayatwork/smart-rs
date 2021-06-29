@@ -94,12 +94,13 @@ export const AddHealthInfoForm = ({ onSubmit, isLoading }) => {
         </FormControl>
         <Button
           type="submit"
-          colorScheme="blue"
+          colorScheme="brand"
+          rounded="full"
           size="lg"
           fontSize="md"
           isLoading={isLoading}
         >
-          Save and Continue
+          Save and continue
         </Button>
       </Stack>
     </Box>

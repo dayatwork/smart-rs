@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Center, Heading, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
+import Logo from './Logo.svg';
 
-import { Logo } from '../../components/shared';
+// import { Logo } from '../../components/shared';
 import { AddProfileInfoForm } from '../../components/auth/AddProfileInfoForm';
 import { updateUserDetail } from '../../api/user-services/user-management';
 
@@ -80,10 +89,16 @@ export const AddProfileInfoPage = () => {
           rounded={{ sm: 'lg' }}
           w="lg"
         >
-          <Logo />
+          {/* <Logo /> */}
+          <VStack>
+            <Image src={Logo} alt="Logo" w="20" />
+            <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+              SMART-RS
+            </Text>
+          </VStack>
           <Heading
-            mt="6"
-            mb="10"
+            mt="4"
+            mb="6"
             textAlign="center"
             size="xl"
             fontWeight="extrabold"

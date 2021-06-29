@@ -1,18 +1,20 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
+  Flex,
+  // FormControl,
+  // FormErrorMessage,
+  // FormLabel,
+  // Input,
   Stack,
 } from '@chakra-ui/react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 // import { PasswordField } from './PasswordField';
-import PasswordField from './PasswordField';
-// import { InputText, InputPassword } from '../shared/input';
+// import PasswordField from './PasswordField';
+import { InputText, InputPassword } from '../shared/input';
 
 export const LoginForm = ({ onSubmit }) => {
   const {
@@ -23,12 +25,12 @@ export const LoginForm = ({ onSubmit }) => {
     mode: 'onBlur',
   });
 
-  console.log({ errors });
+  // console.log({ errors });
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing="6">
-        <FormControl id="email" isInvalid={errors.email ? true : false}>
+      <Stack spacing="4">
+        {/* <FormControl id="email" isInvalid={errors.email ? true : false}>
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
@@ -45,28 +47,42 @@ export const LoginForm = ({ onSubmit }) => {
             required: 'Password is required',
             minLength: { value: 6, message: 'Password min 6 characters' },
           })}
-        />
-        {/* <InputText
+        /> */}
+        <InputText
           label="Email"
           type="email"
           error={errors.email}
           {...register('email', { required: 'Email is required' })}
         />
-        <InputPassword
-          label="Password"
-          error={errors.password}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: { value: 6, message: 'Password min 6 characters' },
-          })}
-        /> */}
+        <Box>
+          <InputPassword
+            label="Password"
+            error={errors.password}
+            {...register('password', {
+              required: 'Password is required',
+              minLength: { value: 6, message: 'Password min 6 characters' },
+            })}
+          />
+          <Flex justifyContent="flex-end" mt="1.5">
+            <Button
+              variant="link"
+              as={Link}
+              to="/forgot-password"
+              colorScheme="brand"
+              size="sm"
+            >
+              Forgot Password?
+            </Button>
+          </Flex>
+        </Box>
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="blue"
+          colorScheme="brand"
           size="lg"
           fontSize="md"
           data-testid="login-button"
+          rounded="full"
         >
           Login
         </Button>

@@ -38,7 +38,7 @@ export const VerificationOTPForm = ({ onSubmit, isLoading }) => {
       <Stack spacing="6">
         <FormControl id="otp">
           <FormLabel textAlign="center" color="gray.600">
-            Masukkan OTP
+            Enter OTP Code
           </FormLabel>
           <HStack spacing={2} justify="center" mt="6">
             <PinInput
@@ -60,12 +60,13 @@ export const VerificationOTPForm = ({ onSubmit, isLoading }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          colorScheme="blue"
+          colorScheme="brand"
           size="lg"
           fontSize="md"
+          rounded="full"
           data-testid="verification-button"
         >
-          Verifikasi
+          Submit
         </Button>
       </Stack>
     </Box>

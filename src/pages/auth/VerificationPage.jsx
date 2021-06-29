@@ -76,9 +76,8 @@ export const VerificationPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-      sx={{ backgroundColor: '#e0f7ff' }}
+      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Verification | SMART-RS</title>
@@ -98,27 +97,20 @@ export const VerificationPage = () => {
             SMART-RS
           </Text>
         </VStack>
-        <Heading
-          mt="6"
-          textAlign="center"
-          size="xl"
-          fontWeight="extrabold"
-          mb="3"
-        >
-          Verification
+        <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
+          Verifikasi
         </Heading>
         <VerificationOTPForm onSubmit={onSubmit} isLoading={isLoadingSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
           <Button
             p="2"
             marginStart="1"
-            _hover={{ color: 'brand.600' }}
-            display={{ base: 'block', sm: 'revert' }}
+            color="blue.600"
             onClick={handleResendOTP}
             variant="link"
             isLoading={isLoading}
           >
-            Resend OTP Code
+            Kirim ulang OTP
           </Button>
         </Box>
       </Box>

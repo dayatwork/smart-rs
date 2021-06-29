@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
-import { Box, Heading, Center, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Center,
+  useToast,
+  VStack,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
+import Logo from './Logo.svg';
 
-import { Logo } from '../../components/shared';
+// import { Logo } from '../../components/shared';
 import { ChangePasswordForm } from '../../components/auth/ChangePasswordForm';
 import { resetPassword } from '../../api/auth-services/auth';
 
@@ -64,7 +73,13 @@ export const ChangePasswordPage = () => {
         rounded={{ sm: 'lg' }}
         w="md"
       >
-        <Logo />
+        {/* <Logo /> */}
+        <VStack>
+          <Image src={Logo} alt="Logo" w="20" />
+          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+            SMART-RS
+          </Text>
+        </VStack>
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
           Reset Password
         </Heading>

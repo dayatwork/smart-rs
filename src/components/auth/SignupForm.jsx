@@ -24,8 +24,13 @@ export const SignupForm = ({ onSubmit }) => {
       <Stack spacing="6">
         {/* <FormControl id="email" isInvalid={errors.email ? true : false}>
           <FormLabel>Email</FormLabel>
-          <Input type="email" {...register('email', { required: 'Email is required' })} />
-          <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+          <Input
+            type="email"
+            {...register('email', { required: 'Email is required' })}
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
         </FormControl> */}
         <InputText
           label="Email"
@@ -36,11 +41,10 @@ export const SignupForm = ({ onSubmit }) => {
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="brand"
+          colorScheme="blue"
           size="lg"
           fontSize="md"
           data-testid="signup-button"
-          rounded="full"
         >
           Sign up
         </Button>
