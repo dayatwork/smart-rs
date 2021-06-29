@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Text, Image } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 // import { FaHospitalSymbol } from 'react-icons/fa';
-import LogoSvg from './Logo.svg';
+// import LogoSvg from './Logo.svg';
 
 // export const Logo = (props) => {
 //   const { iconColor = 'currentColor', ...rest } = props;
