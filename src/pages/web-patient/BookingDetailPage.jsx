@@ -105,6 +105,8 @@ export const BookingDetailPage = () => {
     }
   };
 
+  console.log({ dataBookingDetail });
+
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="doctor" />
@@ -138,16 +140,17 @@ export const BookingDetailPage = () => {
             Detail Booking
           </Heading>
           {dataBookingDetail?.data?.booking_status?.toLowerCase() ===
-            'booked' && (
-            <Button
-              onClick={onCancelOpen}
-              colorScheme="red"
-              variant="ghost"
-              isDisabled={isLoadingBookingDetail || isLoadingQR}
-            >
-              Cancel Booking
-            </Button>
-          )}
+            'booked' &&
+            dataBookingDetail?.data?.booking_orders[0]?.status !== 'paid' && (
+              <Button
+                onClick={onCancelOpen}
+                colorScheme="red"
+                variant="ghost"
+                isDisabled={isLoadingBookingDetail || isLoadingQR}
+              >
+                Cancel Booking
+              </Button>
+            )}
         </Flex>
 
         {isLoadingBookingDetail || isLoadingQR ? (
