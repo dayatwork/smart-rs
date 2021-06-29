@@ -1,16 +1,9 @@
 import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Heading,
-  Image,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Center, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
+// import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 import { signup } from '../../api/auth-services/auth';
 import { SignupForm } from '../../components/auth/SignupForm';
@@ -67,7 +60,7 @@ export const SignupPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>

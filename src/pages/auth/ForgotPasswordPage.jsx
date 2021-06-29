@@ -1,16 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Heading,
-  Text,
-  Center,
-  useToast,
-  VStack,
-  Image,
-} from '@chakra-ui/react';
+import { Box, Heading, Text, Center, useToast, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 // import { Logo } from '../../components/shared';
 import { ForgotPasswordForm } from '../../components/auth/ForgotPasswordForm';
@@ -64,7 +56,7 @@ export const ForgotPasswordPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>

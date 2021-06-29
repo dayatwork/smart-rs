@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Heading,
-  Image,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Center, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 // import { Logo } from '../../components/shared';
 import { AddProfileInfoForm } from '../../components/auth/AddProfileInfoForm';
@@ -91,7 +83,7 @@ export const AddProfileInfoPage = () => {
         >
           {/* <Logo /> */}
           <VStack>
-            <Image src={Logo} alt="Logo" w="20" />
+            <Logo />
             <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
               SMART-RS
             </Text>

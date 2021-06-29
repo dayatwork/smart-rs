@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Heading,
-  Image,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Center, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQueryClient } from 'react-query';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 // import { Logo } from '../../components/shared';
 import { AddHealthInfoForm } from '../../components/auth/AddHealthInfoForm';
@@ -77,7 +69,7 @@ export const AddHealthInfoPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>

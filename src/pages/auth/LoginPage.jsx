@@ -4,17 +4,17 @@ import {
   Box,
   Center,
   Heading,
-  Image,
   Text,
   useToast,
   VStack,
   // Image,
   // Text,
   // VStack,
+  // Icon,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 import { login } from '../../api/auth-services/auth';
 import { getUserProfile } from '../../api/user-services/user-management';
@@ -99,7 +99,8 @@ export const LoginPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          {/* <Image src={Logo} alt="Logo" w="20" /> */}
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>

@@ -15,7 +15,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
 import MapSvg from './Map.svg';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 import { login } from '../../api/auth-services/auth';
 import { getUserProfile } from '../../api/user-services/user-management';
@@ -114,7 +114,8 @@ export const HomePage = () => {
         </GridItem>
         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
-            <Image src={Logo} alt="Logo" w="20" />
+            {/* <Image src={Logo} alt="Logo" w="20" /> */}
+            <Logo />
             <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
               SMART-RS
             </Text>

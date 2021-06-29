@@ -1,17 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  Box,
-  Heading,
-  Center,
-  useToast,
-  VStack,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Heading, Center, useToast, VStack, Text } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 // import { Logo } from '../../components/shared';
 import { SetPasswordForm } from '../../components/auth/SetPasswordForm';
@@ -90,7 +82,7 @@ export const SetPasswordPage = () => {
         w="md"
       >
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>

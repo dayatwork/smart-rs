@@ -5,14 +5,13 @@ import {
   Button,
   Center,
   Heading,
-  Image,
   Text,
   useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import Logo from './Logo.svg';
+import { Logo } from './Logo';
 
 // import { Logo } from '../../components/shared';
 import { VerificationOTPForm } from '../../components/auth/VerificationOTPForm';
@@ -92,7 +91,7 @@ export const VerificationPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Image src={Logo} alt="Logo" w="20" />
+          <Logo />
           <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
             SMART-RS
           </Text>
