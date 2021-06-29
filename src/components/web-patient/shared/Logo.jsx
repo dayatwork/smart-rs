@@ -40,10 +40,10 @@ export const Logo = ({ mini, mobile, light, ...rest }) => {
         {/* <Image src={LogoSvg} alt="logo" w="12" mr={mini ? null : '3'} /> */}
         <LogoRS
           w={mini ? '14' : '16'}
-          bg={mini ? 'white' : null}
-          border={mini ? '1px' : null}
-          borderColor={mini ? 'white' : null}
-          rounded={mini ? 'full' : null}
+          // bg={mini ? 'white' : null}
+          // border={mini ? '1px' : null}
+          // borderColor={mini ? 'white' : null}
+          // rounded={mini ? 'full' : null}
           mr={mini ? null : '1'}
         />
         {mini ? null : (
