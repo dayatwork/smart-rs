@@ -237,7 +237,10 @@ export const SelectDoctor = ({
                   return (
                     <Box
                       cursor="pointer"
-                      onClick={() => setSelectedSchedule(schedule)}
+                      onClick={() => {
+                        setSelectedSchedule(schedule);
+                        setSelectedTime('');
+                      }}
                       key={schedule.id}
                       bg={
                         selectedSchedule?.id === schedule.id

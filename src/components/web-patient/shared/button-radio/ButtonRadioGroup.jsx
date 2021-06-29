@@ -3,13 +3,14 @@ import * as React from 'react';
 
 import { ButtonRadio } from './ButtonRadio';
 
-export const ButtonRadioGroup = (props) => {
+export const ButtonRadioGroup = props => {
   const {
     options,
     setPatient,
     setPatientData,
     setSelectedService,
     setSelectedDayRange,
+    setSelectedSchedule,
     ...rest
   } = props;
   const { getRadioProps, getRootProps } = useRadioGroup(rest);
@@ -19,8 +20,9 @@ export const ButtonRadioGroup = (props) => {
       justify="center"
       direction={{ base: 'column', md: 'row' }}
       spacing="3"
-      {...getRootProps()}>
-      {options.map((option) => (
+      {...getRootProps()}
+    >
+      {options.map(option => (
         <ButtonRadio
           onClick={() => {
             setPatient(option.value);
@@ -30,6 +32,7 @@ export const ButtonRadioGroup = (props) => {
               from: undefined,
               to: undefined,
             });
+            setSelectedSchedule({});
           }}
           key={option.value}
           icon={option.icon}

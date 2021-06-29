@@ -105,6 +105,7 @@ export const BookingDoctorPage = () => {
                 setCurrentStepIndex={setCurrentStepIndex}
                 setSelectedService={setSelectedService}
                 setSelectedDayRange={setSelectedDayRange}
+                setSelectedSchedule={setSelectedSchedule}
               />
             )}
             {currentStep.value === 'Step 2' && (

@@ -140,6 +140,35 @@ export const PatientData = ({
   ]);
 
   const onSubmit = async values => {
+    // console.log({ values });
+    if (patient !== 'me') {
+      const {
+        fullname,
+        email,
+        phone_number,
+        birth_date,
+        identity_number,
+        gender,
+        marital_status,
+        responsible_status,
+        address,
+      } = values;
+      const data = {
+        fullname,
+        email,
+        phone_number,
+        birth_date: format(birth_date, 'dd-MM-yyyy'),
+        identity_number,
+        gender,
+        marital_status,
+        responsible_status,
+        address,
+      };
+      setPatientData(data);
+      setCurrentStepIndex(currentStepIndex + 1);
+      return;
+    }
+    // console.log({ values });
     const { height, weight, blood_type } = values;
     const data = {
       height,

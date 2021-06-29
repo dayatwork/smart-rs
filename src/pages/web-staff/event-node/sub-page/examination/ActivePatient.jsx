@@ -23,6 +23,8 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
     { enabled: Boolean(selectedInstitution) }
   );
 
+  console.log({ dataSoapList });
+
   const data = React.useMemo(
     () =>
       isSuccessSoapList &&

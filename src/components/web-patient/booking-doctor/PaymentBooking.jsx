@@ -42,6 +42,7 @@ export const PaymentBooking = ({
   selectedSchedule,
   selectedTime,
 }) => {
+  console.log({ patientData });
   const history = useHistory();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -370,6 +371,13 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
         py="3"
       />
       <Description title="Alamat" value={patientData?.address} py="3" />
+      {patient !== 'me' && (
+        <Description
+          title="Status Penanggung Jawab"
+          value={patientData?.responsible_status}
+          py="3"
+        />
+      )}
       <Divider my="2" />
 
       {patient === 'me' && (

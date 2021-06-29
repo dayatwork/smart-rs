@@ -13,6 +13,7 @@ export const ChoosePatient = ({
   setCurrentStepIndex,
   setSelectedService,
   setSelectedDayRange,
+  setSelectedSchedule,
 }) => {
   return (
     <>
@@ -23,6 +24,7 @@ export const ChoosePatient = ({
           setPatientData={setPatientData}
           setSelectedService={setSelectedService}
           setSelectedDayRange={setSelectedDayRange}
+          setSelectedSchedule={setSelectedSchedule}
           options={[
             {
               label: 'Saya',
@@ -43,7 +45,8 @@ export const ChoosePatient = ({
         <Button
           leftIcon={<FaArrowLeft />}
           disabled
-          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+        >
           Back
         </Button>
         <Button
@@ -51,7 +54,8 @@ export const ChoosePatient = ({
           colorScheme="blue"
           ml="2"
           disabled={!patient}
-          onClick={() => setCurrentStepIndex(currentStepIndex + 1)}>
+          onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
+        >
           Next
         </Button>
       </Box>
