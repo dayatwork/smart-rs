@@ -130,6 +130,7 @@ export const SelectDoctor = ({
 
   // console.log({ dataSchedules });
   // console.log({ selectedSchedule });
+  // console.log({ dataSchedules });
 
   return (
     <>
@@ -280,6 +281,27 @@ export const SelectDoctor = ({
                         <Text fontWeight="semibold" color="gray.700">
                           {schedule?.start_time} - {schedule?.end_time}
                         </Text>
+                        {schedule?.total_available && (
+                          <Text>
+                            Tersedia{' '}
+                            <Box
+                              as="span"
+                              fontWeight="semibold"
+                              color={
+                                schedule?.total_available?.status_available !==
+                                0
+                                  ? 'green.500'
+                                  : 'red.500'
+                              }
+                            >
+                              {schedule?.total_available?.status_available}
+                            </Box>{' '}
+                            jadwal dari{' '}
+                            <Box as="span" fontWeight="semibold">
+                              {schedule?.total_available?.total_data}
+                            </Box>
+                          </Text>
+                        )}
                       </Box>
                     </Box>
                   );
