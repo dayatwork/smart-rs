@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import {
   Box,
@@ -25,6 +25,8 @@ import {
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
+import { FaPrint } from 'react-icons/fa';
+import { useReactToPrint } from 'react-to-print';
 
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { getOrderDetail } from '../../../../../api/payment-services/order';
@@ -43,6 +45,11 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+
+  const printRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+  });
 
   const { data: dataOrder, isLoading: isLoadingOrder } = useQuery(
     ['payment-order-detail', params?.id],
@@ -120,13 +127,18 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
       ) : (
         <BackButton to="/events/payment" text="Back to Payment List" />
       )}
-      <Heading
-        mb={{ base: '3', '2xl': '6' }}
-        fontSize={{ base: '2xl', '2xl': '3xl' }}
-      >
-        Payment Details
-      </Heading>
-      <Box px="8" py="6" bg="white" boxShadow="md" mb="4">
+      <Flex justify="space-between" align="center">
+        <Heading
+          mb={{ base: '3', '2xl': '6' }}
+          fontSize={{ base: '2xl', '2xl': '3xl' }}
+        >
+          Payment Details
+        </Heading>
+        <Button size="sm" onClick={handlePrint} leftIcon={<FaPrint />}>
+          Cetak
+        </Button>
+      </Flex>
+      <Box px="8" py="6" bg="white" boxShadow="md" mb="4" ref={printRef}>
         <Heading as="h3" size="sm" mb="2">
           Detail Order
         </Heading>
@@ -177,7 +189,9 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
             </Box>
           </Box>
         ))}
-        <Divider py="3" />
+        {/* <Divider py="3" /> */}
+      </Box>
+      <Box px="8" py="6" bg="white" boxShadow="md">
         <Heading as="h3" size="sm" mt="2" mb="2">
           Payment Slip
         </Heading>
