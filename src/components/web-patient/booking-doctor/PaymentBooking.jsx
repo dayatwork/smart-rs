@@ -42,7 +42,7 @@ export const PaymentBooking = ({
   selectedSchedule,
   selectedTime,
 }) => {
-  console.log({ patientData });
+  // console.log({ patientData });
   const history = useHistory();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
