@@ -175,3 +175,21 @@ export const getUserBookingList = async token => {
 
   return await res.json();
 };
+
+export const getUserResponsibleBookingList = async token => {
+  const res = await fetch(
+    `${process.env.REACT_APP_BOOKING_API}/booking/user/responsible`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get User Booking List');
+  }
+
+  return await res.json();
+};
