@@ -53,7 +53,7 @@ export const MobileSidebarPatient = ({ isOpen, onClose }) => {
                 <CloseButton onClick={onClose} />
               </Box>
               {/* Closeable Sidebar */}
-              <Logo px="4" py="4" light />
+              <Logo px="4" py="4" mobile />
               <Box mt="2" h="0" overflowY="auto" style={{ flex: '1 1 0%' }}>
                 <Box as="nav" px="4">
                   {menus.map(menu => (

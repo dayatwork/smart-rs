@@ -10,7 +10,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 //   return <Icon as={FaHospitalSymbol} fill={color} {...rest} />;
 // };
 
-export const Logo = ({ mini, light, ...rest }) => {
+export const Logo = ({ mini, mobile, light, ...rest }) => {
   return (
     // <Box
     //   px="4"
@@ -23,11 +23,11 @@ export const Logo = ({ mini, light, ...rest }) => {
     // >
     <Link to="/">
       <Flex
-        bg="white"
+        bg={light ? 'white' : 'blue.600'}
         h="16"
         px="4"
         align="center"
-        mr={mini ? null : '10'}
+        mr={mini || mobile ? null : '10'}
         {...rest}
       >
         {/* <Icon
@@ -38,7 +38,14 @@ export const Logo = ({ mini, light, ...rest }) => {
           mr={mini ? null : '3'}
         /> */}
         {/* <Image src={LogoSvg} alt="logo" w="12" mr={mini ? null : '3'} /> */}
-        <LogoRS w="16" mr={mini ? null : '1'} />
+        <LogoRS
+          w={mini ? '14' : '16'}
+          bg={mini ? 'white' : null}
+          border={mini ? '1px' : null}
+          borderColor={mini ? 'white' : null}
+          rounded={mini ? 'full' : null}
+          mr={mini ? null : '1'}
+        />
         {mini ? null : (
           <Box>
             <Text

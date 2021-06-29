@@ -31,7 +31,7 @@ export const WebPatientNav = ({ active }) => {
             <Logo light display={{ base: 'none', lg: 'flex' }} />
           </HStack>
           {/* <Logo display={{ base: 'flex', lg: 'none' }} /> */}
-          <Logo display={{ base: 'flex', lg: 'none' }} />
+          <Logo mini display={{ base: 'flex', lg: 'none' }} />
 
           <HStack spacing="3" flex="1" display={{ base: 'none', lg: 'flex' }}>
             <NavItem.Desktop
