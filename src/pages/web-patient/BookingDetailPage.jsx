@@ -403,6 +403,7 @@ export const BookingDetailPage = () => {
         {/* ORDER DETAIL */}
         {dataBookingDetail?.data?.booking_orders[0]?.order_id && (
           <OrderDetail
+            bookingStatus={status}
             orderId={dataBookingDetail?.data?.booking_orders[0]?.order_id}
           />
         )}

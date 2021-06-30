@@ -34,7 +34,7 @@ import {
   getPaymentSlipDetail,
 } from '../../api/payment-services/manual-verification';
 
-export const OrderDetail = ({ orderId }) => {
+export const OrderDetail = ({ orderId, bookingStatus }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,6 +109,9 @@ export const OrderDetail = ({ orderId }) => {
   //   console.log({ isLoadingOrderDetail, dataOrderDetail });
   //   return <Redirect to="/doctor" />;
   // }
+  if (bookingStatus === 'cancel') {
+    return null;
+  }
 
   return (
     <>
