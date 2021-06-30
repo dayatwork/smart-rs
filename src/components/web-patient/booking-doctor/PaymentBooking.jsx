@@ -142,10 +142,10 @@ export const PaymentBooking = ({
             responsible_status: patientData?.responsible_status,
           };
         }
-        // console.log({ data });
+        console.log({ data });
         setIsLoading(true);
         const res = await createBooking(cookies, data);
-        // console.log({ resBooking: res });
+        console.log({ resBooking: res });
         const orderData = {
           booking_order_id: res?.data?.booking_order?.id,
           type: '02',
@@ -536,42 +536,46 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
           />
         </Box>
         <Divider my="2" />
-        <Box>
-          <HStack
-            mt="2"
-            mb="1"
-            color="gray.600"
-            fontSize="sm"
-            fontWeight="semibold"
-          >
-            <Icon as={GiHeartBeats} w="5" h="5" />
-            <Text>Health Information</Text>
-          </HStack>
-          <Description
-            title="Golongan Darah"
-            value={patientData?.blood_type}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Tinggi Badan"
-            value={`${patientData?.height} cm`}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Berat Badan"
-            value={`${patientData?.weight} kg`}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Alergi"
-            value={patientData.allergies.map(alergy => alergy.label).join(', ')}
-            py="1"
-            px="0"
-          />
-        </Box>
+        {patient === 'me' && (
+          <Box>
+            <HStack
+              mt="2"
+              mb="1"
+              color="gray.600"
+              fontSize="sm"
+              fontWeight="semibold"
+            >
+              <Icon as={GiHeartBeats} w="5" h="5" />
+              <Text>Health Information</Text>
+            </HStack>
+            <Description
+              title="Golongan Darah"
+              value={patientData?.blood_type}
+              py="1"
+              px="0"
+            />
+            <Description
+              title="Tinggi Badan"
+              value={`${patientData?.height} cm`}
+              py="1"
+              px="0"
+            />
+            <Description
+              title="Berat Badan"
+              value={`${patientData?.weight} kg`}
+              py="1"
+              px="0"
+            />
+            <Description
+              title="Alergi"
+              value={patientData.allergies
+                .map(alergy => alergy.label)
+                .join(', ')}
+              py="1"
+              px="0"
+            />
+          </Box>
+        )}
       </Box>
     </Flex>
   </Box>
