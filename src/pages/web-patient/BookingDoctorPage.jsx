@@ -54,7 +54,14 @@ export const BookingDoctorPage = () => {
   const [selectedPagination, setSelectedPagination] = useState({});
 
   return (
-    <Flex direction="column" bg="gray.100" minH="100vh" position="relative">
+    <Flex
+      direction="column"
+      bg="gray.100"
+      minH="100vh"
+      position="relative"
+      maxW="100vw"
+      overflow="hidden"
+    >
       <WebPatientNav active="dokter" />
       <Box bg="white" boxShadow="sm">
         <Box pt="6" pb="3" maxW="7xl" mx="auto">

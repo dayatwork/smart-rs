@@ -234,9 +234,13 @@ export const PaymentBooking = ({
               borderBottom="2px"
               borderColor="gray.200"
             >
-              <HStack spacing="4">
+              <HStack spacing={{ base: '2', md: '4' }}>
                 <Icon as={FaMoneyBillAlt} w="5" h="5" />
-                <Text as="h3" fontWeight="bold" fontSize="lg">
+                <Text
+                  as="h3"
+                  fontWeight="bold"
+                  fontSize={{ base: 'md', md: 'lg' }}
+                >
                   Deposit Pendaftaran
                 </Text>
               </HStack>
@@ -367,14 +371,16 @@ const DoctorDetails = ({
       borderBottom="2px"
       borderColor="gray.200"
     >
-      <HStack spacing="4">
+      <HStack spacing={{ base: '2', md: '4' }}>
         <Icon as={FaUserMd} w="5" h="5" />
-        <Text as="h3" fontWeight="bold" fontSize="lg">
+        <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
           Detail Dokter
         </Text>
       </HStack>
       <HStack spacing="4">
-        <Box fontWeight="semibold">{selectedSchedule?.service?.name}</Box>
+        <Box fontWeight="semibold" display={{ base: 'none', md: 'block' }}>
+          {selectedSchedule?.service?.name}
+        </Box>
         <Button
           onClick={() => setCurrentStepIndex(prev => prev - 1)}
           variant="outline"
@@ -385,22 +391,46 @@ const DoctorDetails = ({
         </Button>
       </HStack>
     </Flex>
-    <Flex boxShadow="md" px="6" py="4" alignItems="center">
-      <Box w="28" h="28">
+    <Flex
+      boxShadow="md"
+      px="6"
+      py="4"
+      alignItems="center"
+      direction={{ base: 'column', md: 'row' }}
+    >
+      <Box
+        w={{ base: '24', md: '28' }}
+        h={{ base: '24', md: '28' }}
+        mb={{ base: '4', md: '0' }}
+      >
         <Image rounded="full" src={doctorImg} alt="foto dokter" />
       </Box>
-      <Box flexGrow="1" pl="6" pr="6" mr="6" mt="-3">
-        <Flex justify="space-between" mb="3">
-          <Box>
-            <Text fontSize="2xl" fontWeight="bold">
+      <Box flexGrow="1" pl={{ base: '0', md: '6' }} mt="-3">
+        <Flex justify="space-between" mb={{ base: '1.5', md: '3' }}>
+          <Box w="full">
+            <Text
+              fontSize={{ base: 'xl', md: '2xl' }}
+              fontWeight="bold"
+              textAlign={{ base: 'center', md: 'left' }}
+            >
               {selectedSchedule?.employee?.name}
             </Text>
-            <Text mt="-1.5" color="blue.600" fontWeight="semibold">
+            <Text
+              mt="-1.5"
+              color="blue.600"
+              fontWeight="semibold"
+              textAlign={{ base: 'center', md: 'left' }}
+            >
               {selectedSchedule?.employee?.profession}
             </Text>
           </Box>
         </Flex>
-        <Flex color="gray.600" fontSize="sm" fontWeight="medium">
+        <Flex
+          color="gray.600"
+          fontSize="sm"
+          fontWeight="medium"
+          direction={{ base: 'column', md: 'row' }}
+        >
           <HStack mr="6" spacing="1">
             <Icon as={RiHospitalFill} w="5" h="5" />
             <span>{selectedSchedule?.institution?.name}</span>
@@ -440,9 +470,9 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
       borderBottom="2px"
       borderColor="gray.200"
     >
-      <HStack spacing="4">
+      <HStack spacing={{ base: '2', md: '4' }}>
         <Icon as={FaUserAlt} w="5" h="5" />
-        <Text as="h3" fontWeight="bold" fontSize="lg">
+        <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
           Detail Patient
         </Text>
       </HStack>
@@ -456,16 +486,26 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
         Edit Info
       </Button>
     </Flex>
-    <Flex px="6" py="4">
-      <Box w="28" h="28">
+    <Flex px="6" py="4" direction={{ base: 'column', md: 'row' }}>
+      <Flex
+        w={{ base: '24', md: '28' }}
+        h={{ base: '24', md: '28' }}
+        alignSelf={{ base: 'center', md: 'start' }}
+        mb={{ base: '4', md: '0' }}
+      >
         <Image
           rounded="full"
           src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
           alt="foto dokter"
         />
-      </Box>
+      </Flex>
 
-      <Box flexGrow="1" pl="6" pr="6" mr="6" py="2" mt="-3">
+      <Box
+        flexGrow="1"
+        pl={{ base: '0', md: '6' }}
+        py={{ base: '0', md: '2' }}
+        mt="-3"
+      >
         <Box mb="4">
           <HStack
             mt="2"

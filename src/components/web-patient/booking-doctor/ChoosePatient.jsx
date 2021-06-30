@@ -17,7 +17,7 @@ export const ChoosePatient = ({
 }) => {
   return (
     <>
-      <Box maxW="xl" mx="auto">
+      <Box maxW="xl" mx="auto" pb={{ base: '20', md: '28' }}>
         <ButtonRadioGroup
           defaultValue={patient}
           setPatient={setPatient}

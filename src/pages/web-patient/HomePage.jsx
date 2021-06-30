@@ -9,7 +9,13 @@ export const HomePage = () => {
   const { user } = React.useContext(AuthContext);
 
   return (
-    <Flex direction="column" bg="gray.100" height="100vh">
+    <Flex
+      direction="column"
+      bg="gray.100"
+      height="100vh"
+      maxW="100vw"
+      overflow="hidden"
+    >
       <WebPatientNav active="home" />
       <Wrapper>
         <HomeHero user={user} />

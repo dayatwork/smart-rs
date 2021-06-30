@@ -209,7 +209,13 @@ export const SelectDoctor = ({
           )}
           {dataSchedules?.data?.length ? (
             <Box w="full">
-              <Flex justify="space-between" align="center" mt="-1" mb="2">
+              <Flex
+                justify="space-between"
+                align="center"
+                mt="-1"
+                mb="2"
+                direction={{ base: 'column', md: 'row' }}
+              >
                 <Heading fontWeight="semibold" fontSize="md" mb="2">
                   Jadwal dokter yang tersedia
                 </Heading>
@@ -287,8 +293,8 @@ export const SelectDoctor = ({
                           : 'white'
                       }
                       boxShadow="md"
-                      px="6"
-                      py="4"
+                      px={{ base: '3', md: '6' }}
+                      py={{ base: '2', md: '4' }}
                       rounded="md"
                       border="2px"
                       borderColor={
@@ -297,9 +303,13 @@ export const SelectDoctor = ({
                           : 'transparent'
                       }
                       mb="4"
-                      alignItems="center"
+                      alignItems={{ base: 'start', md: 'center' }}
                     >
-                      <Box w="28" h="28">
+                      <Box
+                        py={{ base: '2', md: '0' }}
+                        w={{ base: '20', md: '28' }}
+                        h={{ base: '20', md: '28' }}
+                      >
                         <Image
                           rounded="full"
                           src={doctorImg}
@@ -309,14 +319,21 @@ export const SelectDoctor = ({
                       <Box
                         flexGrow="1"
                         pl="6"
-                        pr="6"
-                        borderRight="2px"
+                        pr={{ base: '2', md: '6' }}
+                        borderRight={{ base: '0', md: '2px' }}
                         mr="6"
                         borderColor="gray.300"
                       >
-                        <Flex justify="space-between" mb="3">
+                        <Flex
+                          justify="space-between"
+                          mb={{ base: '1', lg: '3' }}
+                          direction={{ base: 'column', md: 'row' }}
+                        >
                           <Box>
-                            <Text fontSize="2xl" fontWeight="bold">
+                            <Text
+                              fontSize={{ base: 'xl', lg: '2xl' }}
+                              fontWeight="bold"
+                            >
                               {schedule?.employee?.name}
                             </Text>
                             <Text
@@ -328,7 +345,7 @@ export const SelectDoctor = ({
                             </Text>
                           </Box>
                           <Text
-                            fontSize="2xl"
+                            fontSize={{ base: 'lg', lg: '2xl' }}
                             fontWeight="bold"
                             color="green.600"
                           >
@@ -360,6 +377,8 @@ export const SelectDoctor = ({
                           color="gray.600"
                           fontSize="sm"
                           fontWeight="medium"
+                          direction={{ base: 'column', lg: 'row' }}
+                          mb="1"
                         >
                           <HStack mr="6" spacing="1">
                             <Icon as={RiHospitalFill} w="5" h="5" />
@@ -380,8 +399,9 @@ export const SelectDoctor = ({
                         </Flex>
                       </Box>
                       <Center
-                        w="24"
-                        h="24"
+                        display={{ base: 'none', md: 'flex' }}
+                        w={{ base: '16', lg: '24' }}
+                        h={{ base: '16', lg: '24' }}
                         p="4"
                         border="2px"
                         borderColor="blue.600"
@@ -398,8 +418,16 @@ export const SelectDoctor = ({
                         rounded="lg"
                       >
                         <Box>
-                          <Icon as={GiTicket} w="14" h="14" />
-                          <Text fontSize="sm" fontWeight="semibold">
+                          <Icon
+                            as={GiTicket}
+                            w={{ base: '12', lg: '14' }}
+                            h={{ base: '12', lg: '14' }}
+                          />
+                          <Text
+                            fontSize="sm"
+                            fontWeight="semibold"
+                            display={{ base: 'none', lg: 'block' }}
+                          >
                             Booking
                           </Text>
                         </Box>
@@ -474,7 +502,7 @@ export const SelectDoctor = ({
               />
             </Center>
           )}
-          <Box maxH={{ base: '40', md: '60' }} overflow="auto" px="4">
+          <Box maxH={{ base: '40', md: '60' }} overflowY="auto" px="4">
             {dataEstimatedTimes?.data?.length ? (
               <Box>
                 <Text fontWeight="semibold" fontSize="md" mb="2" color="white">
