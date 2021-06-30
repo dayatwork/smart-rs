@@ -11,12 +11,16 @@ export const Step = ({ children, isCurrent }) => {
       <Box outline={0} className="group" width="full">
         <Flex
           align="center"
-          height="12"
+          height="10"
           justify="center"
           position="relative"
-          css={{ '--arrow-skew': '20deg' }}>
+          // css={{ '--arrow-skew': '20deg' }}
+          css={{ '--arrow-skew': '35deg' }}
+        >
           <SkewBox isCurrent={isCurrent} placement="top" />
-          <StepContent color={isCurrent ? color : 'inherit'}>{children}</StepContent>
+          <StepContent color={isCurrent ? color : 'inherit'}>
+            {children}
+          </StepContent>
           <SkewBox isCurrent={isCurrent} placement="bottom" />
         </Flex>
       </Box>

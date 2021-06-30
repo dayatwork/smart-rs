@@ -8,6 +8,7 @@ import {
   FormControl,
   Grid,
   GridItem,
+  Heading,
   Select,
   Text,
   VisuallyHidden,
@@ -15,30 +16,12 @@ import {
   Center,
   Spinner,
   useBreakpointValue,
-  Image,
-  HStack,
-  Icon,
 } from '@chakra-ui/react';
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaUserMd,
-  FaUserAlt,
-  FaMoneyBillAlt,
-} from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { HiPencilAlt } from 'react-icons/hi';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 import QRCode from 'qrcode.react';
-import { GiHeartBeats } from 'react-icons/gi';
-import {
-  RiCalendarEventFill,
-  RiHospitalFill,
-  RiTimerLine,
-  RiContactsBook2Line,
-  RiUser3Fill,
-} from 'react-icons/ri';
-import doctorImg from './doctor.jpg';
 
 import { createBooking } from '../../../api/booking-services/booking';
 import { getServicePriceDetails } from '../../../api/finance-services/service-price';
@@ -198,11 +181,7 @@ export const PaymentBooking = ({
 
   return (
     <>
-      <Grid
-        templateColumns={paymentBookingGridTemplate}
-        gap="10"
-        pb={{ base: '20', md: '32' }}
-      >
+      <Grid templateColumns={paymentBookingGridTemplate} gap="10">
         <GridItem colSpan={2}>
           <DoctorDetails
             setCurrentStepIndex={setCurrentStepIndex}
@@ -223,72 +202,60 @@ export const PaymentBooking = ({
             bg="white"
             shadow="base"
             overflow="hidden"
+            px="6"
+            py="4"
             mb="6"
           >
-            <Flex
-              align="center"
-              justify="space-between"
-              px="6"
-              py="4"
-              bg="white"
-              borderBottom="2px"
-              borderColor="gray.200"
+            <Box
+              fontSize="sm"
+              textTransform="uppercase"
+              fontWeight="bold"
+              color="gray.500"
             >
-              <HStack spacing="4">
-                <Icon as={FaMoneyBillAlt} w="5" h="5" />
-                <Text as="h3" fontWeight="bold" fontSize="lg">
-                  Deposit Pendaftaran
-                </Text>
-              </HStack>
-            </Flex>
+              Deposit Pendaftaran
+            </Box>
             {isLoadingServicePrice && (
               <Center py="4">
                 <Spinner />
               </Center>
             )}
             {isSuccessServicePrice && (
-              <Box px="6" py="3">
-                <Box fontSize="4xl" fontWeight="extrabold" as="span">
-                  {formatter.format(
-                    Number(dataServicePrice?.data?.total_price)
-                  )}
-                </Box>
+              <Box fontSize="4xl" fontWeight="extrabold" as="span">
+                {formatter.format(Number(dataServicePrice?.data?.total_price))}
               </Box>
             )}
-            <Box px="6" pb="4">
-              <Text mt="0" color="gray.500">
-                Biaya ini akan hangus jika anda tidak melakukan check in
-              </Text>
-              <FormControl id="payment_method" my="4">
-                <VisuallyHidden as="label">Metode Pembayaran</VisuallyHidden>
-                <Select
-                  value={selectedPaymentMethod}
-                  onChange={e => setSelectedPaymentMethod(e.target.value)}
-                >
-                  <option value="">Pilih Metode Pembayaran</option>
-                  {dataPaymentMethods?.data
-                    ?.filter(paymentMethod => paymentMethod.active)
-                    .map(paymentMethod => (
-                      <option
-                        key={paymentMethod.id}
-                        value={JSON.stringify(paymentMethod)}
-                      >
-                        {paymentMethod.name}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-              <Button
-                isLoading={isLoading}
-                w="full"
-                colorScheme="blue"
-                my="2"
-                onClick={handleBooking}
-                disabled={isLoadingServicePrice || !selectedPaymentMethod}
+            <Text mt="3" color="gray.500">
+              Biaya ini akan hangus jika anda tidak melakukan check in
+            </Text>
+            <FormControl id="payment_method" my="4">
+              <VisuallyHidden as="label">Metode Pembayaran</VisuallyHidden>
+              <Select
+                value={selectedPaymentMethod}
+                onChange={e => setSelectedPaymentMethod(e.target.value)}
               >
-                Booking
-              </Button>
-            </Box>
+                <option value="">Pilih Metode Pembayaran</option>
+                {dataPaymentMethods?.data
+                  ?.filter(paymentMethod => paymentMethod.active)
+                  .map(paymentMethod => (
+                    <option
+                      key={paymentMethod.id}
+                      value={JSON.stringify(paymentMethod)}
+                    >
+                      {paymentMethod.name}
+                    </option>
+                  ))}
+              </Select>
+            </FormControl>
+            <Button
+              isLoading={isLoading}
+              w="full"
+              colorScheme="blue"
+              my="2"
+              onClick={handleBooking}
+              disabled={isLoadingServicePrice || !selectedPaymentMethod}
+            >
+              Booking
+            </Button>
           </Box>
           {bookingData && (
             <Center bg="white" boxShadow="md" rounded="md" py="10">
@@ -297,38 +264,8 @@ export const PaymentBooking = ({
           )}
         </GridItem>
       </Grid>
-      <Box
-        h={{ base: '20', md: '28' }}
-        bg="gray.900"
-        position="fixed"
-        bottom="0"
-        left="0"
-        w="full"
-        zIndex="5"
-      >
-        <Flex
-          h="full"
-          maxW="7xl"
-          mx="auto"
-          justify={{ base: 'center', md: 'flex-end' }}
-          align="center"
-          px="4"
-        >
-          <Button
-            leftIcon={<FaArrowLeft />}
-            disabled={currentStep.value === 'Step 1'}
-            onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-            mr="2"
-          >
-            Back
-          </Button>
-          <Button leftIcon={<FaArrowRight />} disabled>
-            Next
-          </Button>
-        </Flex>
-      </Box>
 
-      {/* <Box mt="14" textAlign="right">
+      <Box mt="14" textAlign="right">
         <Button
           leftIcon={<FaArrowLeft />}
           disabled={currentStep.value === 'Step 1'}
@@ -339,7 +276,7 @@ export const PaymentBooking = ({
         <Button leftIcon={<FaArrowRight />} disabled>
           Next
         </Button>
-      </Box> */}
+      </Box>
     </>
   );
 };
@@ -358,66 +295,33 @@ const DoctorDetails = ({
     overflow="hidden"
     mb="6"
   >
-    <Flex
-      align="center"
-      justify="space-between"
-      px="6"
-      py="3"
-      bg="white"
-      borderBottom="2px"
-      borderColor="gray.200"
-    >
-      <HStack spacing="4">
-        <Icon as={FaUserMd} w="5" h="5" />
-        <Text as="h3" fontWeight="bold" fontSize="lg">
-          Detail Dokter
-        </Text>
-      </HStack>
-      <HStack spacing="4">
-        <Box fontWeight="semibold">{selectedSchedule?.service?.name}</Box>
-        <Button
-          onClick={() => setCurrentStepIndex(prev => prev - 1)}
-          variant="outline"
-          minW="20"
-          leftIcon={<RiCalendarEventFill />}
-        >
-          Ubah Jadwal
-        </Button>
-      </HStack>
+    <Flex align="center" justify="space-between" px="6" py="4" bg="gray.50">
+      <Text as="h3" fontWeight="bold" fontSize="lg">
+        Detail Dokter
+      </Text>
+      <Button
+        onClick={() => setCurrentStepIndex(prev => prev - 1)}
+        variant="outline"
+        minW="20"
+        leftIcon={<HiPencilAlt />}
+      >
+        Ubah Jadwal
+      </Button>
     </Flex>
-    <Flex boxShadow="md" px="6" py="4" alignItems="center">
-      <Box w="28" h="28">
-        <Image rounded="full" src={doctorImg} alt="foto dokter" />
-      </Box>
-      <Box flexGrow="1" pl="6" pr="6" mr="6" mt="-3">
-        <Flex justify="space-between" mb="3">
-          <Box>
-            <Text fontSize="2xl" fontWeight="bold">
-              {selectedSchedule?.employee?.name}
-            </Text>
-            <Text mt="-1.5" color="blue.600" fontWeight="semibold">
-              {selectedSchedule?.employee?.profession}
-            </Text>
-          </Box>
-        </Flex>
-        <Flex color="gray.600" fontSize="sm" fontWeight="medium">
-          <HStack mr="6" spacing="1">
-            <Icon as={RiHospitalFill} w="5" h="5" />
-            <span>{selectedSchedule?.institution?.name}</span>
-          </HStack>
-          <HStack mr="6" spacing="1">
-            <Icon as={RiCalendarEventFill} w="5" h="5" />
-            <span>
-              {selectedSchedule?.days}, {selectedSchedule?.date_name}
-            </span>
-          </HStack>
-          <HStack mr="6" spacing="1">
-            <Icon as={RiTimerLine} w="5" h="5" />
-            <span>{selectedTime?.available_time}</span>
-          </HStack>
-        </Flex>
-      </Box>
-    </Flex>
+    <Divider />
+    <Box>
+      <Description
+        title="Nama Dokter"
+        value={selectedSchedule?.employee?.name}
+      />
+      <Description title="SMF" value={selectedSchedule?.employee?.profession} />
+      <Description title="Layanan" value={selectedSchedule?.service?.name} />
+      <Description
+        title="Jadwal"
+        value={`${selectedSchedule?.days}, ${selectedSchedule?.date_name}`}
+      />
+      <Description title="Jam" value={selectedTime?.available_time} />
+    </Box>
   </Box>
 );
 
@@ -429,151 +333,83 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
     bg="white"
     shadow="base"
     overflow="hidden"
-    mb="6"
   >
-    <Flex
-      align="center"
-      justify="space-between"
-      px="6"
-      py="3"
-      bg="white"
-      borderBottom="2px"
-      borderColor="gray.200"
-    >
-      <HStack spacing="4">
-        <Icon as={FaUserAlt} w="5" h="5" />
-        <Text as="h3" fontWeight="bold" fontSize="lg">
-          Detail Patient
-        </Text>
-      </HStack>
-
+    <Flex align="center" justify="space-between" px="6" py="4" bg="gray.50">
+      <Text as="h3" fontWeight="bold" fontSize="lg">
+        Detail Pasien
+      </Text>
       <Button
         onClick={() => setCurrentStepIndex(prev => prev - 2)}
         variant="outline"
         minW="20"
         leftIcon={<HiPencilAlt />}
       >
-        Edit Info
+        Edit
       </Button>
     </Flex>
-    <Flex px="6" py="4">
-      <Box w="28" h="28">
-        <Image
-          rounded="full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt="foto dokter"
+    <Divider />
+    <Box py="2">
+      <Heading px="6" fontSize="lg" fontWeight="semibold" py="2">
+        Profile Info
+      </Heading>
+      <Description title="Nama Pasien" value={patientData?.fullname} py="3" />
+      <Description title="Email" value={patientData?.email} py="3" />
+      <Description title="No. Hp" value={patientData?.phone_number} py="3" />
+      <Description title="NIK" value={patientData?.identity_number} py="3" />
+      <Description
+        title="Jenis Kelamin"
+        value={
+          patientData?.gender === 'male'
+            ? 'Laki-laki'
+            : patientData?.gender === 'female'
+            ? 'Perempuan'
+            : '-'
+        }
+        py="3"
+      />
+      <Description
+        title="Tanggal Lahir"
+        value={patientData?.birth_date}
+        py="3"
+      />
+      <Description title="Alamat" value={patientData?.address} py="3" />
+      {patient !== 'me' && (
+        <Description
+          title="Status Penanggung Jawab"
+          value={patientData?.responsible_status}
+          py="3"
         />
-      </Box>
+      )}
+      <Divider my="2" />
 
-      <Box flexGrow="1" pl="6" pr="6" mr="6" py="2" mt="-3">
-        <Box mb="4">
-          <HStack
-            mt="2"
-            mb="1"
-            color="gray.600"
-            fontSize="sm"
-            fontWeight="semibold"
-          >
-            <Icon as={RiUser3Fill} w="5" h="5" />
-            <Text>Profile Information</Text>
-          </HStack>
-          <Description
-            title="Nama Pasien"
-            value={patientData?.fullname}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="NIK"
-            value={patientData?.identity_number}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Jenis Kelamin"
-            value={
-              patientData?.gender === 'male'
-                ? 'Laki-laki'
-                : patientData?.gender === 'female'
-                ? 'Perempuan'
-                : '-'
-            }
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Tanggal Lahir"
-            value={patientData?.birth_date}
-            py="1"
-            px="0"
-          />
-        </Box>
-        <Divider my="2" />
-        <Box mb="4">
-          <HStack
-            mt="2"
-            mb="1"
-            color="gray.600"
-            fontSize="sm"
-            fontWeight="semibold"
-          >
-            <Icon as={RiContactsBook2Line} w="5" h="5" />
-            <Text>Contact Information</Text>
-          </HStack>
-
-          <Description title="Email" value={patientData?.email} py="1" px="0" />
-          <Description
-            title="No. Hp"
-            value={patientData?.phone_number}
-            py="1"
-            px="0"
-          />
-          <Description
-            title="Alamat"
-            value={patientData?.address}
-            py="1"
-            px="0"
-          />
-        </Box>
-        <Divider my="2" />
-        <Box>
-          <HStack
-            mt="2"
-            mb="1"
-            color="gray.600"
-            fontSize="sm"
-            fontWeight="semibold"
-          >
-            <Icon as={GiHeartBeats} w="5" h="5" />
-            <Text>Health Information</Text>
-          </HStack>
+      {patient === 'me' && (
+        <>
+          <Heading px="6" fontSize="lg" fontWeight="semibold" py="2">
+            Health Info
+          </Heading>
           <Description
             title="Golongan Darah"
             value={patientData?.blood_type}
-            py="1"
-            px="0"
+            py="3"
           />
           <Description
             title="Tinggi Badan"
             value={`${patientData?.height} cm`}
-            py="1"
-            px="0"
+            py="3"
           />
           <Description
             title="Berat Badan"
             value={`${patientData?.weight} kg`}
-            py="1"
-            px="0"
+            py="3"
           />
           <Description
             title="Alergi"
             value={patientData.allergies.map(alergy => alergy.label).join(', ')}
-            py="1"
-            px="0"
+            py="3"
           />
-        </Box>
-      </Box>
-    </Flex>
+        </>
+      )}
+    </Box>
   </Box>
 );
 
@@ -585,7 +421,7 @@ const Description = ({ title, value, ...rest }) => (
     py={{ base: '2', md: '4' }}
     {...rest}
   >
-    <Box as="dt" flexBasis={{ base: '40%', md: '30%' }}>
+    <Box as="dt" flexBasis={{ base: '40%', md: '25%' }}>
       {title}:
     </Box>
     <Box as="dd" flex="1" fontWeight="semibold">

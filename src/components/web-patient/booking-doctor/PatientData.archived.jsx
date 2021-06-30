@@ -14,7 +14,6 @@ import {
   Spinner,
   useToast,
   useBreakpointValue,
-  Flex,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
@@ -312,7 +311,6 @@ export const PatientData = ({
         gap="8"
         maxW="4xl"
         mx="auto"
-        pb={{ base: '20', md: '28' }}
       >
         <VStack
           spacing="3"
@@ -534,39 +532,23 @@ export const PatientData = ({
           </VStack>
         )}
       </SimpleGrid>
-      <Box
-        h={{ base: '20', md: '28' }}
-        bg="gray.900"
-        position="fixed"
-        bottom="0"
-        left="0"
-        w="full"
-        zIndex="5"
-      >
-        <Flex
-          h="full"
-          maxW="7xl"
-          mx="auto"
-          justify={{ base: 'center', md: 'flex-end' }}
-          align="center"
-          px="4"
+
+      <Box mt="14" textAlign="right">
+        <Button
+          leftIcon={<FaArrowLeft />}
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
         >
-          <Button
-            leftIcon={<FaArrowLeft />}
-            onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-          >
-            Back
-          </Button>
-          <Button
-            rightIcon={<FaArrowRight />}
-            colorScheme="blue"
-            ml="2"
-            onClick={handleSubmit(onSubmit)}
-            isLoading={isLoadingSubmit}
-          >
-            Next
-          </Button>
-        </Flex>
+          Back
+        </Button>
+        <Button
+          rightIcon={<FaArrowRight />}
+          colorScheme="blue"
+          ml="2"
+          onClick={handleSubmit(onSubmit)}
+          isLoading={isLoadingSubmit}
+        >
+          Next
+        </Button>
       </Box>
     </>
   );

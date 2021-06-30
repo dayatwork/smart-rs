@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { FaArrowLeft, FaArrowRight, FaUser, FaUsers } from 'react-icons/fa';
 
 import { ButtonRadioGroup } from '../shared';
@@ -41,40 +41,23 @@ export const ChoosePatient = ({
           ]}
         />
       </Box>
-      <Box
-        h={{ base: '20', md: '28' }}
-        bg="gray.900"
-        position="absolute"
-        bottom="0"
-        left="0"
-        w="full"
-        zIndex="5"
-      >
-        <Flex
-          h="full"
-          maxW="7xl"
-          mx="auto"
-          justify={{ base: 'center', md: 'flex-end' }}
-          align="center"
-          px="4"
+      <Box mt="14" textAlign="right">
+        <Button
+          leftIcon={<FaArrowLeft />}
+          disabled
+          onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
         >
-          <Button
-            leftIcon={<FaArrowLeft />}
-            disabled
-            onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-          >
-            Back
-          </Button>
-          <Button
-            rightIcon={<FaArrowRight />}
-            colorScheme="blue"
-            ml="2"
-            disabled={!patient}
-            onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
-          >
-            Next
-          </Button>
-        </Flex>
+          Back
+        </Button>
+        <Button
+          rightIcon={<FaArrowRight />}
+          colorScheme="blue"
+          ml="2"
+          disabled={!patient}
+          onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
+        >
+          Next
+        </Button>
       </Box>
     </>
   );

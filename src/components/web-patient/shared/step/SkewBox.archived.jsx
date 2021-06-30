@@ -13,7 +13,7 @@ const properties = {
 };
 
 export const SkewBox = ({ placement, isCurrent, ...rest }) => {
-  const defaultColor = 'gray.100';
+  const defaultColor = 'white';
   const accentColor = 'blue.500';
 
   const { borderToOmit, transform } = properties[placement];
@@ -21,7 +21,7 @@ export const SkewBox = ({ placement, isCurrent, ...rest }) => {
     [placement]: 0,
     transform,
     [borderToOmit]: '0',
-    borderColor: isCurrent ? accentColor : 'gray.300',
+    borderColor: isCurrent ? accentColor : undefined,
   };
 
   return (

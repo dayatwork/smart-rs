@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
+import { Badge, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 
 import {
   WebPatientNav,
@@ -54,66 +54,45 @@ export const BookingDoctorPage = () => {
   const [selectedPagination, setSelectedPagination] = useState({});
 
   return (
-    <Flex direction="column" bg="gray.100" minH="100vh" position="relative">
+    <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="dokter" />
-      <Box bg="white" boxShadow="sm">
-        <Box pt="6" pb="3" maxW="7xl" mx="auto">
-          <Flex
-            direction={{ base: 'column', md: 'row' }}
-            justify="space-between"
-            align="center"
-            px="4"
-          >
-            <Heading fontSize="2xl" mb={{ base: '4', md: '0' }}>
-              Booking Dokter
-            </Heading>
-            {/* Booking Step */}
-            <Box w="lg">
-              <nav aria-label="Progress steps">
-                <HStack as="ol" listStyleType="none" spacing="2">
-                  {bookingStep.map(step => (
-                    <Step
-                      key={step.value}
-                      isCurrent={step.value === currentStep.value}
-                    >
-                      {step.text}
-                    </Step>
-                  ))}
-                </HStack>
-              </nav>
-            </Box>
-          </Flex>
-          <Text
-            color="red.500"
-            fontWeight="semibold"
-            textAlign="right"
-            mt="2"
-            mr="4"
-          >
-            {currentStep.description}
-          </Text>
-        </Box>
-      </Box>
       <Wrapper>
+        <Heading fontSize="2xl">Booking Dokter</Heading>
+        {/* Booking Step */}
+        <Box py="4" maxW="2xl" mx="auto">
+          <nav aria-label="Progress steps">
+            <HStack as="ol" listStyleType="none" spacing="0">
+              {bookingStep.map(step => (
+                <Step
+                  key={step.value}
+                  isCurrent={step.value === currentStep.value}
+                >
+                  {step.text}
+                </Step>
+              ))}
+            </HStack>
+          </nav>
+        </Box>
+
         {/* Content */}
-        <Box as="section" pt="0">
+        <Box as="section" pt="4">
           <Box
             maxW={{ base: 'xl', md: '7xl' }}
             mx="auto"
             px={{ base: '6', md: '0' }}
           >
             {/* Header */}
-            {/* <Box textAlign="center" mb="10">
+            <Box textAlign="center" mb="10">
               <Badge px="3" py="1" variant="solid" colorScheme="blue">
                 {currentStep.value}
               </Badge>
-              <Heading size="lg" fontWeight="extrabold" mt="3" mb="2">
+              <Heading size="lg" fontWeight="extrabold" mt="6" mb="2">
                 {currentStep.text}
               </Heading>
               <Text maxW="md" mx="auto">
                 {currentStep.description}
               </Text>
-            </Box> */}
+            </Box>
 
             {/* Body */}
             {currentStep.value === 'Step 1' && (

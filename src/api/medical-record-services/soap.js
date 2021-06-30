@@ -17,6 +17,25 @@ export const getSoaps = async (cookies, institutionId, status = 'process') => {
   return await res.json();
 };
 
+// soap/user?sort_unix_created_at=asc
+export const getUserSoaps = async cookies => {
+  const res = await fetch(
+    `${process.env.REACT_APP_ANAMNESIS_API}/soap/user?sort_unix_created_at=asc`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get User SOAP List');
+  }
+
+  return await res.json();
+};
+
 export const createSoap = async (cookies, data) => {
   const res = await fetch(
     `${process.env.REACT_APP_ANAMNESIS_API}/soap/create`,
