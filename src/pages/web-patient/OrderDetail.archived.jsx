@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // import { Redirect } from 'react-router-dom';
 import {
+  Badge,
   Box,
   Center,
   Flex,
@@ -15,16 +16,11 @@ import {
   Icon,
   useToast,
   useBreakpointValue,
-  HStack,
-  Text,
-  SimpleGrid,
-  Divider,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import { AiOutlineFileSearch } from 'react-icons/ai';
-import { RiFileList2Line, RiBillLine } from 'react-icons/ri';
 
 import { getPaymentMethodById } from '../../api/institution-services/payment-method';
 import { getUserOrderDetail } from '../../api/payment-services/user-order';
@@ -112,6 +108,12 @@ export const OrderDetail = ({ orderId }) => {
 
   return (
     <>
+      <Flex justify="space-between" align="center">
+        <Heading fontSize="2xl" mb="8">
+          Detail Order
+        </Heading>
+      </Flex>
+
       {isLoadingUserOrderDetail ||
       isLoadingOrderDetail ||
       isLoadingPaymentMethod ? (
@@ -128,190 +130,9 @@ export const OrderDetail = ({ orderId }) => {
         <Grid templateColumns={orderDetailGridTemplate} gap="10">
           <GridItem colSpan={2}>
             <Card>
-              <CardHeader
-                title={
-                  <HStack>
-                    <Icon as={RiFileList2Line} w="5" h="5" />
-                    <Text>Order Info</Text>
-                  </HStack>
-                }
-                action={
-                  <HStack spacing="4">
-                    <Text fontSize="sm" fontWeight="semibold">
-                      Payment Status
-                    </Text>
-                    {dataUserOrderDetail?.data?.status === 'paid' ? (
-                      <Box
-                        bgColor="green.200"
-                        px="3"
-                        py="1"
-                        fontWeight="bold"
-                        rounded="full"
-                        color="green.800"
-                        textTransform="uppercase"
-                        fontSize="sm"
-                      >
-                        {dataUserOrderDetail?.data?.status}
-                      </Box>
-                    ) : (
-                      <Box
-                        bgColor="gray.200"
-                        px="3"
-                        py="1"
-                        fontWeight="bold"
-                        rounded="full"
-                        color="gray.800"
-                        textTransform="uppercase"
-                        fontSize="sm"
-                      >
-                        {dataUserOrderDetail?.data?.status}
-                      </Box>
-                    )}
-                  </HStack>
-                }
-              />
+              <CardHeader title="Order Info" />
               <CardContent>
-                <SimpleGrid columns={2} px="6" py="4" gap="6">
-                  <Box>
-                    <Text fontSize="sm" color="gray.600" fontWeight="semibold">
-                      Order Number
-                    </Text>
-                    <Text fontWeight="semibold">
-                      {dataOrderDetail?.data?.order_number}
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="sm" color="gray.600" fontWeight="semibold">
-                      Service Name
-                    </Text>
-                    <Text fontWeight="semibold">
-                      {dataOrderDetail?.data?.items[0].service_name}
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="sm" color="gray.600" fontWeight="semibold">
-                      Invoice Date
-                    </Text>
-                    <Text fontWeight="semibold">
-                      {dataOrderDetail?.data?.invoice_date}
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="sm" color="gray.600" fontWeight="semibold">
-                      Transaction Number
-                    </Text>
-                    <Text fontWeight="semibold">
-                      {dataUserOrderDetail?.data?.transaction_number}
-                    </Text>
-                  </Box>
-                </SimpleGrid>
-                <Divider py="4" />
-                <SimpleGrid
-                  columns={dataUserOrderDetail?.data?.status === 'paid' ? 2 : 3}
-                  px="6"
-                  py="4"
-                  gap="6"
-                >
-                  <Box>
-                    <Box mb="6">
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Account Name
-                      </Text>
-
-                      <Text fontWeight="semibold">
-                        {dataPaymentMethod?.data?.account_name}
-                      </Text>
-                    </Box>
-                    <Box mb="6">
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Account Number
-                      </Text>
-                      <Text fontWeight="semibold">
-                        {dataPaymentMethod?.data?.account_number}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Payment Method
-                      </Text>
-                      <Text fontWeight="semibold">
-                        {dataPaymentMethod?.data?.name}
-                      </Text>
-                    </Box>
-                  </Box>
-
-                  <Box>
-                    <Box mb="6">
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Total Amount
-                      </Text>
-                      <Text fontWeight="semibold">
-                        {formatter.format(
-                          dataUserOrderDetail?.data?.total_price
-                        )}
-                      </Text>
-                    </Box>
-                    <Box mb="6">
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Total Paid
-                      </Text>
-                      <Text fontWeight="semibold">
-                        {dataUserOrderDetail?.data?.status === 'paid'
-                          ? formatter.format(
-                              dataUserOrderDetail?.data?.total_price
-                            )
-                          : formatter.format(0)}
-                      </Text>
-                    </Box>
-                  </Box>
-                  {dataUserOrderDetail?.data?.status !== 'paid' && (
-                    <Box>
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Balance Due
-                      </Text>
-                      <Text fontWeight="semibold" fontSize="3xl" mb="1">
-                        {formatter.format(
-                          dataUserOrderDetail?.data?.total_price
-                        )}
-                      </Text>
-                      <Text
-                        fontSize="sm"
-                        fontWeight="medium"
-                        bgColor="gray.100"
-                        as="span"
-                        px="2"
-                        color="gray.700"
-                      >
-                        Due date: {dataOrderDetail?.data?.due_date}
-                      </Text>
-                    </Box>
-                  )}
-                </SimpleGrid>
-                {/* <Property
+                <Property
                   label="Order Number"
                   value={dataOrderDetail?.data?.order_number}
                 />
@@ -360,21 +181,38 @@ export const OrderDetail = ({ orderId }) => {
                 <Property
                   label="Service"
                   value={dataOrderDetail?.data?.items[0].service_name}
-                /> */}
+                />
               </CardContent>
             </Card>
           </GridItem>
           {dataUserOrderDetail?.data?.status !== 'paid' && (
             <GridItem colSpan={{ base: 2, xl: 1 }}>
               <Card>
-                <CardHeader
-                  title={
-                    <HStack>
-                      <Icon as={RiBillLine} w="5" h="5" />
-                      <Text>Upload Payment Slip</Text>
-                    </HStack>
-                  }
-                />
+                <CardHeader title="Payment Info" />
+                <CardContent>
+                  <Property
+                    label="Payment Method"
+                    value={dataPaymentMethod?.data?.name}
+                  />
+                  <Property
+                    label="Account Number"
+                    value={dataPaymentMethod?.data?.account_number}
+                  />
+                  <Property
+                    label="Account Name"
+                    value={dataPaymentMethod?.data?.account_name}
+                  />
+                  <Property
+                    label="Total Price"
+                    value={formatter.format(
+                      dataUserOrderDetail?.data?.total_price
+                    )}
+                  />
+                </CardContent>
+              </Card>
+
+              <Card mt="4">
+                <CardHeader title="Upload Payment Slip" />
                 <CardContent>
                   {!isLoadingPaymentSlip && dataPaymentSlip?.data?.id ? (
                     <Box py="6">

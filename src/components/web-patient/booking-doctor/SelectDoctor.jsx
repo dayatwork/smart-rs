@@ -13,6 +13,7 @@ import {
   Heading,
   HStack,
   Icon,
+  IconButton,
   Image,
   Select,
   SimpleGrid,
@@ -25,6 +26,7 @@ import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import format from 'date-fns/format';
 import { GiTicket } from 'react-icons/gi';
+import { BiRightArrowAlt, BiLeftArrowAlt } from 'react-icons/bi';
 import {
   RiHospitalFill,
   RiCalendarEventFill,
@@ -118,7 +120,7 @@ export const SelectDoctor = ({
     }
   );
 
-  console.log({ dataSchedules });
+  // console.log({ dataSchedules });
 
   const {
     data: dataEstimatedTimes,
@@ -143,6 +145,7 @@ export const SelectDoctor = ({
   };
 
   // console.log({ dataSchedules });
+  // console.log({ page });
   // console.log({ selectedSchedule });
   // console.log({ dataSchedules });
   // <Icon as={GiTicket} color="white" w="20" h="20" />
@@ -212,12 +215,12 @@ export const SelectDoctor = ({
                 </Heading>
                 <HStack spacing="5">
                   <FormControl display="flex">
-                    <FormLabel>Limit</FormLabel>
+                    <FormLabel mt="1">Limit</FormLabel>
                     <Select
                       bg="white"
                       size="sm"
                       rounded="sm"
-                      mt="-1"
+                      // mt="-1"
                       w="20"
                       value={limit}
                       onChange={e => setLimit(e.target.value)}
@@ -229,12 +232,12 @@ export const SelectDoctor = ({
                     </Select>
                   </FormControl>
                   <FormControl display="flex">
-                    <FormLabel>Page</FormLabel>
+                    <FormLabel mt="1">Page</FormLabel>
                     <Select
                       bg="white"
                       size="sm"
                       rounded="sm"
-                      mt="-1"
+                      // mt="-1"
                       w="20"
                       value={page}
                       onChange={e => setPage(e.target.value)}
@@ -250,11 +253,26 @@ export const SelectDoctor = ({
                       ))}
                     </Select>
                   </FormControl>
+                  <HStack>
+                    <IconButton
+                      bgColor="white"
+                      size="sm"
+                      icon={<BiLeftArrowAlt />}
+                      onClick={() => setPage(prev => prev - 1)}
+                      disabled={dataSchedules?.page === 1}
+                    />
+                    <IconButton
+                      bgColor="white"
+                      size="sm"
+                      icon={<BiRightArrowAlt />}
+                      onClick={() => setPage(prev => prev + 1)}
+                      disabled={dataSchedules?.total_page === page}
+                    />
+                  </HStack>
                 </HStack>
               </Flex>
               <Box>
                 {dataSchedules?.data?.map(schedule => {
-                  console.log({ schedule });
                   return (
                     <Flex
                       cursor="pointer"

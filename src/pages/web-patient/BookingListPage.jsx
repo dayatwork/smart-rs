@@ -42,7 +42,7 @@ export const BookingListPage = () => {
   );
 
   console.log({ dataBooking });
-  console.log({ dataBookingResponsible });
+  // console.log({ dataBookingResponsible });
 
   const data1 = React.useMemo(
     () =>

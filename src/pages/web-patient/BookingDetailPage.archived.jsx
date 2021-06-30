@@ -7,6 +7,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Badge,
   Box,
   Button,
   Center,
@@ -21,15 +22,11 @@ import {
   useToast,
   useBreakpointValue,
   Divider,
-  Avatar,
-  Icon,
-  SimpleGrid,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 import QRCode from 'qrcode.react';
 import { BsCaretLeftFill } from 'react-icons/bs';
-import { GiTicket } from 'react-icons/gi';
 
 import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import {
@@ -38,12 +35,6 @@ import {
   getBookingDetail,
 } from '../../api/booking-services/booking';
 import { OrderDetail } from './OrderDetail';
-import {
-  RiCalendarEventFill,
-  RiInformationLine,
-  // RiHospitalFill,
-  RiTimerLine,
-} from 'react-icons/ri';
 
 export const BookingDetailPage = () => {
   const history = useHistory();
@@ -114,6 +105,8 @@ export const BookingDetailPage = () => {
     }
   };
 
+  console.log({ dataBookingDetail });
+
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="doctor" />
@@ -175,193 +168,59 @@ export const BookingDetailPage = () => {
             <GridItem colSpan={2}>
               <Card>
                 <CardHeader
-                  title={
-                    <HStack>
-                      <Icon as={GiTicket} w="5" h="5" />
-                      <Text>Booking Info</Text>
-                    </HStack>
-                  }
+                  title="Booking Info"
                   action={
-                    <HStack spacing="4">
-                      <Text fontWeight="semibold" fontSize="sm">
-                        Booking Status{' '}
-                      </Text>
+                    <HStack>
+                      <Text fontWeight="semibold">Status: </Text>
                       {status === 'booked' ? (
-                        <Box
-                          bgColor="orange.200"
-                          px="3"
-                          py="1"
-                          fontWeight="bold"
-                          rounded="full"
-                          color="orange.800"
-                          textTransform="uppercase"
-                          fontSize="sm"
-                        >
-                          {status}
-                        </Box>
+                        <Badge colorScheme="orange">{status}</Badge>
                       ) : status === 'done' ? (
-                        <Box
-                          bgColor="blue.200"
-                          px="3"
-                          py="1"
-                          fontWeight="bold"
-                          rounded="full"
-                          color="blue.800"
-                          textTransform="uppercase"
-                          fontSize="sm"
-                        >
-                          Checked In
-                        </Box>
+                        <Badge colorScheme="blue">Checked In</Badge>
                       ) : status === 'cancel' ? (
-                        <Box
-                          bgColor="red.200"
-                          px="3"
-                          py="1"
-                          fontWeight="bold"
-                          rounded="full"
-                          color="red.800"
-                          textTransform="uppercase"
-                          fontSize="sm"
-                        >
-                          {status}
-                        </Box>
+                        <Badge colorScheme="red">{status}</Badge>
                       ) : (
-                        <Box
-                          bgColor="gray.200"
-                          px="3"
-                          py="1"
-                          fontWeight="bold"
-                          rounded="full"
-                          color="gray.800"
-                          textTransform="uppercase"
-                          fontSize="sm"
-                        >
-                          {status}
-                        </Box>
+                        <Badge>{status}</Badge>
                       )}
                     </HStack>
                   }
                 />
                 <CardContent>
-                  <SimpleGrid columns={3} py="4" gap="6">
-                    <Flex px="6" py="4" alignItems="center">
-                      <Avatar
-                        rounded="full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="foto pasien"
-                        size="lg"
-                      />
-
-                      <Box flexGrow="1" ml="4">
-                        <Flex justify="space-between">
-                          <Box>
-                            <Text
-                              fontSize="sm"
-                              fontWeight="semibold"
-                              color="gray.600"
-                            >
-                              Patient Name
-                            </Text>
-                            <Text fontWeight="semibold">
-                              {dataBookingDetail?.data?.patient?.name}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </Box>
-                    </Flex>
-                    <Flex px="6" py="4" alignItems="center">
-                      <Avatar
-                        rounded="full"
-                        src="/images/doctor.jpg"
-                        alt="foto dokter"
-                        size="lg"
-                      />
-
-                      <Box flexGrow="1" ml="4">
-                        <Flex justify="space-between">
-                          <Box>
-                            <Text
-                              fontSize="sm"
-                              fontWeight="semibold"
-                              color="gray.600"
-                            >
-                              Doctor Name
-                            </Text>
-                            <Text fontWeight="semibold">
-                              {
-                                dataBookingDetail?.data?.schedule?.employee_data
-                                  ?.name
-                              }
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </Box>
-                    </Flex>
-                    <Box>
-                      <Box mb="4">
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                          fontWeight="semibold"
-                        >
-                          Service Name
-                        </Text>
-                        <Text fontWeight="semibold">
-                          {
-                            dataBookingDetail?.data?.schedule?.service_data
-                              ?.name
-                          }
-                        </Text>
-                      </Box>
-                      <Box>
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                          fontWeight="semibold"
-                        >
-                          Transaction Number
-                        </Text>
-                        <Text fontWeight="semibold">
-                          {dataBookingDetail?.data?.transaction_number}
-                        </Text>
-                      </Box>
-                    </Box>
-                  </SimpleGrid>
-                  <Divider />
-                  <Flex
-                    px="6"
-                    py="4"
-                    alignItems="center"
-                    color="gray.600"
-                    fontSize="sm"
-                    fontWeight="medium"
-                  >
-                    <Text mr="8" color="gray.900" fontWeight="bold">
-                      Schedule
-                    </Text>
-                    {/* <HStack mr="6" spacing="1">
-                      <Icon as={RiHospitalFill} w="5" h="5" />
-                      <span>RS KIC</span>
-                    </HStack> */}
-                    <HStack mr="6" spacing="1">
-                      <Icon as={RiCalendarEventFill} w="5" h="5" />
-                      <span>{`${
-                        dataBookingDetail?.data?.schedule?.days
-                      }, ${new Date(
-                        dataBookingDetail?.data?.schedule?.date
-                      ).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}`}</span>
-                    </HStack>
-                    <HStack mr="6" spacing="1">
-                      <Icon as={RiTimerLine} w="5" h="5" />
-                      <span>
-                        {dataBookingDetail?.data?.schedule?.available_time}
-                      </span>
-                    </HStack>
-                  </Flex>
+                  <Property
+                    label="Patient Name"
+                    value={dataBookingDetail?.data?.patient?.name}
+                  />
+                  <Property
+                    label="Service Name"
+                    value={
+                      dataBookingDetail?.data?.schedule?.service_data?.name
+                    }
+                  />
+                  <Property
+                    label="Doctor Name"
+                    value={
+                      dataBookingDetail?.data?.schedule?.employee_data?.name
+                    }
+                  />
+                  <Property
+                    label="Date"
+                    value={`${
+                      dataBookingDetail?.data?.schedule?.days
+                    }, ${new Date(
+                      dataBookingDetail?.data?.schedule?.date
+                    ).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}`}
+                  />
+                  <Property
+                    label="Time"
+                    value={dataBookingDetail?.data?.schedule?.available_time}
+                  />
+                  <Property
+                    label="Transaction"
+                    value={dataBookingDetail?.data?.transaction_number}
+                  />
                 </CardContent>
               </Card>
             </GridItem>
@@ -380,14 +239,7 @@ export const BookingDetailPage = () => {
               'pending payment' && (
               <GridItem colSpan={{ base: 2, md: 1 }}>
                 <Card>
-                  <CardHeader
-                    title={
-                      <HStack>
-                        <Icon as={RiInformationLine} w="5" h="5" />
-                        <Text>Info</Text>
-                      </HStack>
-                    }
-                  />
+                  <CardHeader title="Info" />
                   <Text px="6" py="4">
                     Lakukan pembayaran dan konfirmasi pembayaran untuk
                     mendapatkan QR Code untuk check in
