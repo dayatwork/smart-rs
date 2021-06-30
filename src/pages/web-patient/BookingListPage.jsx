@@ -15,7 +15,6 @@ import {
   getUserBookingList,
   getUserResponsibleBookingList,
 } from '../../api/booking-services/booking';
-// import { getUserSoaps } from '../../api/medical-record-services/soap';
 
 export const BookingListPage = () => {
   const [cookies] = useCookies(['token']);
@@ -25,13 +24,6 @@ export const BookingListPage = () => {
     isLoading: isLoadingBooking,
     isSuccess: isSuccessBooking,
   } = useQuery('user-booking-list', () => getUserBookingList(cookies.token));
-
-  // const {
-  //   data: dataSoap,
-  //   isLoading: isLoadingSoap,
-  //   isSuccess: isSuccessSoap,
-  // } = useQuery('user-Soap-list', () => getUserSoaps(cookies.token));
-  // console.log({ dataSoap });
 
   const {
     data: dataBookingResponsible,

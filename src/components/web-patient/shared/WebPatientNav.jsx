@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { HiHome } from 'react-icons/hi';
-import { RiStethoscopeFill } from 'react-icons/ri';
+import { RiStethoscopeFill, RiHistoryFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
 import { Logo, NavItem, Notification, ProfileDropdown } from '../shared';
@@ -42,9 +42,15 @@ export const WebPatientNav = ({ active }) => {
             />
             <NavItem.Desktop
               active={active === 'doctor'}
-              icon={<RiStethoscopeFill />}
-              label="Doctor"
+              icon={<RiHistoryFill />}
+              label="Order History"
               href="/doctor"
+            />
+            <NavItem.Desktop
+              active={active === 'examination'}
+              icon={<RiStethoscopeFill />}
+              label="Examination"
+              href="/examination"
             />
           </HStack>
 

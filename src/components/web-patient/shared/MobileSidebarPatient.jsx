@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import { Drawer, Box, DrawerOverlay, DrawerContent } from '@chakra-ui/react';
 import { HiHome } from 'react-icons/hi';
-import { RiStethoscopeFill, RiDashboardFill } from 'react-icons/ri';
+import {
+  RiStethoscopeFill,
+  RiDashboardFill,
+  RiHistoryFill,
+} from 'react-icons/ri';
 
 import { Logo } from './Logo';
 import { CloseButton } from './CloseButton';
@@ -16,7 +20,12 @@ export const menus = [
   },
   {
     to: '/doctor',
-    text: 'Doctor',
+    text: 'Order History',
+    icon: RiHistoryFill,
+  },
+  {
+    to: '/examination',
+    text: 'Examination',
     icon: RiStethoscopeFill,
   },
 ];

@@ -35,6 +35,8 @@ import {
   BookingListPage,
   BookingDetailPage,
   OrderDetailPage,
+  PatientExaminationResultsPage,
+  PatientExaminationResultsDetailPage,
 } from './pages/web-patient';
 import {
   DashboardPage,
@@ -133,6 +135,19 @@ const AppRoutes = () => {
         pageTitle="Order Details | SMART-RS"
       >
         <OrderDetailPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute
+        exact
+        path="/examination"
+        pageTitle="Examination | SMART-RS"
+      >
+        <PatientExaminationResultsPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute
+        path="/examination/:id"
+        pageTitle="Examination | SMART-RS"
+      >
+        <PatientExaminationResultsDetailPage />
       </AuthenticatedRoute>
 
       {/* Web Staff Routes */}

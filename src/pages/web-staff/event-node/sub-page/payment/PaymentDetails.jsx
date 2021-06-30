@@ -227,7 +227,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
         <PrivateComponent
           permission={Permissions['manual-verificationPayment']}
         >
-          <Flex justify="flex-end">
+          <Flex justify="flex-end" mt="4">
             <Box>
               <Button
                 colorScheme="purple"

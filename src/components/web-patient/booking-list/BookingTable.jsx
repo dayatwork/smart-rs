@@ -32,6 +32,7 @@ export const BookingTable = ({
   isLoading,
   skeletonCols,
   skeletonRows,
+  noFilter,
 }) => {
   const {
     getTableProps,
@@ -60,29 +61,31 @@ export const BookingTable = ({
 
   return (
     <>
-      <Stack
-        spacing="4"
-        direction={{ base: 'column', md: 'row' }}
-        justify="space-between"
-      >
-        <HStack>
-          <FormControl minW={{ md: '320px' }} id="search">
-            <InputGroup size="sm" bg="white">
-              <FormLabel srOnly>Filter by name or email</FormLabel>
-              <InputLeftElement pointerEvents="none" color="gray.400">
-                <BsSearch />
-              </InputLeftElement>
-              <Input
-                rounded="base"
-                type="search"
-                placeholder="Filter by doctor name..."
-                value={globalFilter || ''}
-                onChange={e => setGlobalFilter(e.target.value)}
-              />
-            </InputGroup>
-          </FormControl>
-        </HStack>
-      </Stack>
+      {!noFilter && (
+        <Stack
+          spacing="4"
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+        >
+          <HStack>
+            <FormControl minW={{ md: '320px' }} id="search">
+              <InputGroup size="sm" bg="white">
+                <FormLabel srOnly>Filter by name or email</FormLabel>
+                <InputLeftElement pointerEvents="none" color="gray.400">
+                  <BsSearch />
+                </InputLeftElement>
+                <Input
+                  rounded="base"
+                  type="search"
+                  placeholder="Filter by doctor name..."
+                  value={globalFilter || ''}
+                  onChange={e => setGlobalFilter(e.target.value)}
+                />
+              </InputGroup>
+            </FormControl>
+          </HStack>
+        </Stack>
+      )}
 
       <Box overflowX="auto">
         <Table
