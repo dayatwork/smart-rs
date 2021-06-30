@@ -1,10 +1,19 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Box, Button, Flex, Heading } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+} from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import { Helmet } from 'react-helmet-async';
+import { FaUser, FaUsers } from 'react-icons/fa';
 
 import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import {
@@ -33,7 +42,7 @@ export const BookingListPage = () => {
     getUserResponsibleBookingList(cookies.token)
   );
 
-  console.log({ dataBooking });
+  // console.log({ dataBooking });
   // console.log({ dataBookingResponsible });
 
   const data1 = React.useMemo(
@@ -183,20 +192,23 @@ export const BookingListPage = () => {
       </Helmet>
       <WebPatientNav active="doctor" />
       <Wrapper>
-        <Heading fontSize="2xl" mb="4">
+        {/* <Heading fontSize="2xl" mb="4">
           Pemeriksaan Dokter
-        </Heading>
+        </Heading> */}
         {/* Booking Step */}
         <CreateNewBooking />
 
-        <Heading fontSize="2xl" mb="6">
+        <Heading fontSize="2xl" mb="6" mt="-4">
           Order History
         </Heading>
 
         <Box mb="4">
-          <Heading fontSize="lg" mb="2" fontWeight="medium">
-            Order Saya
-          </Heading>
+          <HStack mb="2">
+            <Icon as={FaUser} />
+            <Heading fontSize="lg" fontWeight="medium">
+              Order Saya
+            </Heading>
+          </HStack>
           <BookingTable
             data={data1 || []}
             columns={columns1}
@@ -205,9 +217,12 @@ export const BookingListPage = () => {
           />
         </Box>
 
-        <Heading fontSize="lg" mb="2" fontWeight="medium">
-          Tanggungan
-        </Heading>
+        <HStack mb="2">
+          <Icon as={FaUsers} />
+          <Heading fontSize="lg" fontWeight="medium">
+            Tanggungan
+          </Heading>
+        </HStack>
         <BookingTable
           data={data2 || []}
           columns={columns2}

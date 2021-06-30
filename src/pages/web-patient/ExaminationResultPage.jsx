@@ -80,6 +80,8 @@ export const PatientExaminationResultsPage = () => {
     []
   );
 
+  // console.log({ dataSoap });
+
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <Helmet>

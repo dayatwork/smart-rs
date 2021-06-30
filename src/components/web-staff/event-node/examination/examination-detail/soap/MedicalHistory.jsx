@@ -132,7 +132,7 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
 
   const onSubmit = async value => {
     const { medical_history } = value;
-    console.log({ medical_history });
+    // console.log({ medical_history });
     const formatted = medical_history
       .filter(med_history => med_history !== false)
       .map(med_history => JSON.parse(med_history));
@@ -143,7 +143,7 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
       data: formatted,
     };
 
-    console.log({ data });
+    // console.log({ data });
 
     try {
       setIsLoadingSubmit(true);

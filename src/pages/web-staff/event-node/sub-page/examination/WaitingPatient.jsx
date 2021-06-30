@@ -37,7 +37,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  console.log({ dataBookingList });
+  // console.log({ dataBookingList });
 
   const handleCreateSoap = useCallback(
     async (patient_id, booking_id, transaction_number) => {

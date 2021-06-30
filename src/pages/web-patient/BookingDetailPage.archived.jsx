@@ -105,7 +105,7 @@ export const BookingDetailPage = () => {
     }
   };
 
-  console.log({ dataBookingDetail });
+  // console.log({ dataBookingDetail });
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
