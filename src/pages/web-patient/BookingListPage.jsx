@@ -9,6 +9,7 @@ import {
   Heading,
   HStack,
   Icon,
+  Text,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
@@ -42,8 +43,11 @@ export const BookingListPage = () => {
     getUserResponsibleBookingList(cookies.token)
   );
 
-  console.log({ dataBooking });
-  console.log({ dataBookingResponsible });
+  const currentBooking = dataBooking?.data?.find(booking => {
+    const bookingDate = new Date(booking.schedule.date).toISOString();
+    const currentDate = new Date('2021-06-30').toISOString();
+    return bookingDate === currentDate;
+  });
 
   const data1 = React.useMemo(
     () =>
@@ -52,6 +56,10 @@ export const BookingListPage = () => {
         return {
           id: booking.id,
           doctor_name: booking.doctor_name,
+          date: booking.schedule?.date,
+          time: booking.schedule?.available_time,
+          days: booking.schedule?.days,
+          institution_name: booking.institution?.name,
           service_name: booking.service_name,
           status: booking.booking_status,
           payment_status: booking.booking_orders[0].status,
@@ -67,8 +75,22 @@ export const BookingListPage = () => {
         accessor: 'doctor_name',
       },
       {
+        Header: 'Rumah Sakit',
+        accessor: 'institution_name',
+      },
+      {
         Header: 'Layanan',
         accessor: 'service_name',
+      },
+      {
+        Header: 'Jadwal',
+        Cell: ({ row }) => (
+          <Box>
+            {/* <Text>{row.original.days}</Text> */}
+            <Text>{row.original.date}</Text>
+            <Text>{row.original.time}</Text>
+          </Box>
+        ),
       },
       {
         Header: 'Status',
@@ -90,7 +112,7 @@ export const BookingListPage = () => {
         },
       },
       {
-        Header: 'Payment Status',
+        Header: 'Status Pembayaran',
         accessor: 'payment_status',
         Cell: ({ value }) => {
           if (value?.toLowerCase() === 'paid') {
@@ -131,6 +153,10 @@ export const BookingListPage = () => {
         return {
           id: booking.id,
           doctor_name: booking.doctor_name,
+          date: booking.schedule?.date,
+          time: booking.schedule?.available_time,
+          days: booking.schedule?.days,
+          institution_name: booking.institution?.name,
           service_name: booking.service_name,
           status: booking.booking_status,
           payment_status: booking.booking_orders[0].status,
@@ -146,8 +172,22 @@ export const BookingListPage = () => {
         accessor: 'doctor_name',
       },
       {
+        Header: 'Rumah Sakit',
+        accessor: 'institution_name',
+      },
+      {
         Header: 'Layanan',
         accessor: 'service_name',
+      },
+      {
+        Header: 'Jadwal',
+        Cell: ({ row }) => (
+          <Box>
+            {/* <Text>{row.original.days}</Text> */}
+            <Text>{row.original.date}</Text>
+            <Text>{row.original.time}</Text>
+          </Box>
+        ),
       },
       {
         Header: 'Status',
@@ -174,6 +214,12 @@ export const BookingListPage = () => {
         Cell: ({ value }) => {
           if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'admin verification') {
+            return <Badge colorScheme="blue">Under Confirmation</Badge>;
+          }
+          if (value?.toLowerCase() === 'pending payment') {
+            return <Badge>Pending</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
@@ -214,7 +260,7 @@ export const BookingListPage = () => {
           Pemeriksaan Dokter
         </Heading> */}
         {/* Booking Step */}
-        <CreateNewBooking />
+        <CreateNewBooking dataBooking={currentBooking} />
 
         <Heading fontSize="2xl" mb="6" mt="-4">
           Riwayat Transaksi
@@ -231,7 +277,7 @@ export const BookingListPage = () => {
             data={data1 || []}
             columns={columns1}
             isLoading={isLoadingBooking}
-            skeletonCols={5}
+            skeletonCols={7}
             filterPlaceholder="Filter berdasarkan nama dokter..."
             noDataPlaceholder="Belum ada riwayat transaksi"
           />
@@ -247,7 +293,7 @@ export const BookingListPage = () => {
           data={data2 || []}
           columns={columns2}
           isLoading={isLoadingBookingResponsible}
-          skeletonCols={5}
+          skeletonCols={7}
           filterPlaceholder="Filter berdasarkan nama dokter..."
           noDataPlaceholder="Belum ada riwayat transaksi"
         />

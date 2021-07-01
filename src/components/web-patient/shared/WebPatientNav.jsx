@@ -26,6 +26,7 @@ export const WebPatientNav = ({ active }) => {
         color="white"
         px={{ base: '4', md: '6' }}
         h="16"
+        boxShadow="lg"
       >
         <Flex justify="space-between" align="center" w="7xl" mx="auto">
           <HStack spacing="3">
