@@ -66,6 +66,7 @@ export const PatientData = ({
     lg: patient === 'me' ? 2 : 1,
   });
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const profileInfoColumns = useBreakpointValue({ base: 1, md: 2 });
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
@@ -331,10 +332,10 @@ export const PatientData = ({
             Profile Info
           </Heading>
           <SimpleGrid
-            columns={patient === 'me' ? 1 : 2}
+            columns={patient === 'me' ? 1 : profileInfoColumns}
             w="full"
-            rowGap="3"
-            columnGap="10"
+            rowGap="4"
+            columnGap={{ base: '6', md: '10' }}
           >
             <FormControl
               id="fullname"
