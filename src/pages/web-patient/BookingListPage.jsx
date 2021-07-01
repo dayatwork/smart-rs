@@ -44,8 +44,10 @@ export const BookingListPage = () => {
   );
 
   const currentBooking = dataBooking?.data?.find(booking => {
-    const bookingDate = new Date(booking.schedule.date).toISOString();
-    const currentDate = new Date().toISOString();
+    const bookingDate = new Date(booking.schedule.date)
+      .toISOString()
+      .split('T')[0];
+    const currentDate = new Date().toISOString().split('T')[0];
     return bookingDate === currentDate;
   });
 
