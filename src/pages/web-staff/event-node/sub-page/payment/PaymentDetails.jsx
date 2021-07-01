@@ -21,12 +21,13 @@ import {
   Icon,
   Center,
   Spinner,
-  Image,
+  // Image,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 import { FaPrint } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
+import Lightbox from 'react-image-lightbox';
 
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { getOrderDetail } from '../../../../../api/payment-services/order';
@@ -45,6 +46,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const [isOpenPaymentSlip, setIsOpenPaymentSlip] = useState(false);
 
   const printRef = useRef();
   const handlePrint = useReactToPrint({
@@ -197,25 +199,32 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
         <Heading as="h3" size="sm" mt="2" mb="2">
           Payment Slip
         </Heading>
+        {isOpenPaymentSlip && (
+          <Lightbox
+            mainSrc={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+            onCloseRequest={() => setIsOpenPaymentSlip(false)}
+          />
+        )}
         {dataPaymentSlip?.data?.document ? (
-          <>
-            <Image
+          <Center h="10">
+            {/* <Image
               src={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
               alt="payment slip"
               maxH="40"
-            />
+            /> */}
             <Button
               variant="link"
               colorScheme="purple"
-              as="a"
-              href={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
-              target="_blank"
-              download={true}
+              // as="a"
+              // href={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+              // target="_blank"
+              // download={true}
+              onClick={() => setIsOpenPaymentSlip(true)}
             >
-              {/* Payment Slip */}
-              {`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+              Payment Slip
+              {/* {`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`} */}
             </Button>
-          </>
+          </Center>
         ) : (
           <VStack py="2">
             <Icon as={ImFileEmpty} h={6} w={6} color="purple.600" />
