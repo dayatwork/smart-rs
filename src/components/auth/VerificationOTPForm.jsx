@@ -48,6 +48,7 @@ export const VerificationOTPForm = ({ onSubmit, isLoading }) => {
               value={otp}
               onChange={value => setOTP(value)}
               otp
+              // colorScheme="primary"
             >
               <PinInputField />
               <PinInputField />
@@ -61,7 +62,7 @@ export const VerificationOTPForm = ({ onSubmit, isLoading }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
           fontSize="md"
           data-testid="verification-button"

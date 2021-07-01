@@ -43,12 +43,12 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
           fontSize="md"
           data-testid="forgot-button"
         >
-          Send
+          Kirim
         </Button>
       </Stack>
     </Box>

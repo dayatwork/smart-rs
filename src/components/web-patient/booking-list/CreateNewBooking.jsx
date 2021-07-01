@@ -9,24 +9,26 @@ export const CreateNewBooking = () => {
     <Center
       border="3px"
       borderStyle="dashed"
-      borderColor="blue.600"
+      borderColor="primary.500"
       h={{ base: '48', md: '60', '2xl': '72' }}
       rounded="2xl"
       mb="14"
-      // bg="blue.50"
+      bg="primary.50"
     >
       <Box textAlign="center">
         <Text
           fontSize={{ base: 'md', md: 'lg' }}
           fontWeight="medium"
-          color="blue.800"
+          color="primary.600"
         >
-          Anda sedang tidak dalam pemeriksaan dokter
+          Anda tidak memilik jadwal konsultasi untuk hari ini. Apakah Anda ingin
+          periksa ke dokter?
         </Text>
         <Button
           as={Link}
           to="/doctor/booking"
-          colorScheme="blue"
+          colorScheme="primary"
+          dark
           // size="lg"
           mt="4"
           fontWeight="bold"

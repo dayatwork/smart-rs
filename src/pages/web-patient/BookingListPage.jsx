@@ -42,8 +42,8 @@ export const BookingListPage = () => {
     getUserResponsibleBookingList(cookies.token)
   );
 
-  // console.log({ dataBooking });
-  // console.log({ dataBookingResponsible });
+  console.log({ dataBooking });
+  console.log({ dataBookingResponsible });
 
   const data1 = React.useMemo(
     () =>
@@ -78,10 +78,13 @@ export const BookingListPage = () => {
             return <Badge colorScheme="orange">{value}</Badge>;
           }
           if (value?.toLowerCase() === 'done') {
-            return <Badge colorScheme="blue">Checked In</Badge>;
+            return <Badge colorScheme="green">Checked-In</Badge>;
           }
           if (value?.toLowerCase() === 'cancel') {
             return <Badge colorScheme="red">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'examination') {
+            return <Badge colorScheme="blue">Ongoing</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
@@ -92,6 +95,12 @@ export const BookingListPage = () => {
         Cell: ({ value }) => {
           if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'admin verification') {
+            return <Badge colorScheme="blue">Under Confirmation</Badge>;
+          }
+          if (value?.toLowerCase() === 'pending payment') {
+            return <Badge>Pending</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
@@ -104,7 +113,7 @@ export const BookingListPage = () => {
               as={Link}
               to={`/doctor/detail/${row.original.id}`}
               variant="link"
-              colorScheme="blue"
+              colorScheme="primary"
             >
               Detail
             </Button>
@@ -148,16 +157,19 @@ export const BookingListPage = () => {
             return <Badge colorScheme="orange">{value}</Badge>;
           }
           if (value?.toLowerCase() === 'done') {
-            return <Badge colorScheme="blue">Checked In</Badge>;
+            return <Badge colorScheme="green">Checked-In</Badge>;
           }
           if (value?.toLowerCase() === 'cancel') {
             return <Badge colorScheme="red">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'examination') {
+            return <Badge colorScheme="blue">Ongoing</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
       },
       {
-        Header: 'Payment Status',
+        Header: 'Status Pembayaran',
         accessor: 'payment_status',
         Cell: ({ value }) => {
           if (value?.toLowerCase() === 'paid') {
@@ -174,7 +186,7 @@ export const BookingListPage = () => {
               as={Link}
               to={`/doctor/detail/${row.original.id}`}
               variant="link"
-              colorScheme="blue"
+              colorScheme="primary"
             >
               Detail
             </Button>
@@ -188,7 +200,7 @@ export const BookingListPage = () => {
   return (
     <Flex
       direction="column"
-      bg="gray.100"
+      bg="secondary.lighter"
       minH="100vh"
       maxW="100vw"
       overflow="hidden"
@@ -205,14 +217,14 @@ export const BookingListPage = () => {
         <CreateNewBooking />
 
         <Heading fontSize="2xl" mb="6" mt="-4">
-          Order History
+          Riwayat Transaksi
         </Heading>
 
         <Box mb="4">
           <HStack mb="2">
-            <Icon as={FaUser} />
+            <Icon color="secondary.dark" w="5" h="5" as={FaUser} />
             <Heading fontSize="lg" fontWeight="medium">
-              Order Saya
+              Pribadi
             </Heading>
           </HStack>
           <BookingTable
@@ -220,11 +232,13 @@ export const BookingListPage = () => {
             columns={columns1}
             isLoading={isLoadingBooking}
             skeletonCols={5}
+            filterPlaceholder="Filter berdasarkan nama dokter..."
+            noDataPlaceholder="Belum ada riwayat transaksi"
           />
         </Box>
 
         <HStack mb="2">
-          <Icon as={FaUsers} />
+          <Icon color="secondary.dark" w="5" h="5" as={FaUsers} />
           <Heading fontSize="lg" fontWeight="medium">
             Tanggungan
           </Heading>
@@ -234,6 +248,8 @@ export const BookingListPage = () => {
           columns={columns2}
           isLoading={isLoadingBookingResponsible}
           skeletonCols={5}
+          filterPlaceholder="Filter berdasarkan nama dokter..."
+          noDataPlaceholder="Belum ada riwayat transaksi"
         />
       </Wrapper>
     </Flex>

@@ -139,8 +139,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
           <Spinner
             thickness="4px"
             speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
+            emptyColor="secondary.light"
+            color="secondary.dark"
             size="xl"
           />
         </Center>
@@ -151,7 +151,12 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
               <CardHeader
                 title={
                   <HStack>
-                    <Icon as={RiFileList2Line} w="5" h="5" />
+                    <Icon
+                      color="secondary.dark"
+                      as={RiFileList2Line}
+                      w="5"
+                      h="5"
+                    />
                     <Text>Order Info</Text>
                   </HStack>
                 }
@@ -262,7 +267,22 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         {dataPaymentMethod?.data?.account_number}
                       </Text>
                     </Box>
-                    <Box>
+                    {/* <Box>
+                      <Text
+                        fontSize="sm"
+                        color="gray.600"
+                        fontWeight="semibold"
+                      >
+                        Payment Method
+                      </Text>
+                      <Text fontWeight="semibold">
+                        {dataPaymentMethod?.data?.name}
+                      </Text>
+                    </Box> */}
+                  </Box>
+
+                  <Box>
+                    <Box mb="6">
                       <Text
                         fontSize="sm"
                         color="gray.600"
@@ -274,9 +294,6 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         {dataPaymentMethod?.data?.name}
                       </Text>
                     </Box>
-                  </Box>
-
-                  <Box>
                     <Box mb="6">
                       <Text
                         fontSize="sm"
@@ -291,7 +308,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         )}
                       </Text>
                     </Box>
-                    <Box mb="6">
+                    {/* <Box mb="6">
                       <Text
                         fontSize="sm"
                         color="gray.600"
@@ -306,7 +323,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                             )
                           : formatter.format(0)}
                       </Text>
-                    </Box>
+                    </Box> */}
                   </Box>
                   {dataUserOrderDetail?.data?.status !== 'paid' && (
                     <Box>
@@ -325,10 +342,12 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                       <Text
                         fontSize="sm"
                         fontWeight="medium"
-                        bgColor="gray.100"
+                        bgColor="primary.500"
                         as="span"
                         px="2"
-                        color="gray.700"
+                        py="1"
+                        color="secondary.light"
+                        borderRadius="full"
                       >
                         Due date: {dataOrderDetail?.data?.due_date}
                       </Text>
@@ -394,7 +413,12 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                 <CardHeader
                   title={
                     <HStack>
-                      <Icon as={RiBillLine} w="5" h="5" />
+                      <Icon
+                        color="secondary.dark"
+                        as={RiBillLine}
+                        w="5"
+                        h="5"
+                      />
                       <Text>Upload Payment Slip</Text>
                     </HStack>
                   }
@@ -402,10 +426,10 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                 <CardContent>
                   {!isLoadingPaymentSlip && dataPaymentSlip?.data?.id ? (
                     <Box py="6">
-                      <Center fontWeight="semibold" color="blue.500">
+                      <Center fontWeight="semibold" color="secondary.dark">
                         Payment slip has been uploaded.
                       </Center>
-                      <Center color="blue.500" fontSize="sm">
+                      <Center color="secondary.dark" fontSize="sm">
                         Your payment will be processed
                       </Center>
                     </Box>
@@ -425,8 +449,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                           textAlign="center"
                           cursor="pointer"
                           m="0"
-                          borderColor="blue.500"
-                          color="blue.500"
+                          borderColor="primary.500"
+                          color="primary.500"
                         >
                           {paymentSlipWatch?.length ? (
                             paymentSlipWatch[0]?.name
@@ -435,7 +459,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                               as={AiOutlineFileSearch}
                               h={5}
                               w={5}
-                              color="blue.600"
+                              color="primary.500"
                             />
                           )}
                         </FormLabel>
@@ -448,7 +472,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                       </FormControl>
                       <Button
                         type="submit"
-                        colorScheme="blue"
+                        colorScheme="primary"
                         w="full"
                         isLoading={isLoading}
                         disabled={!paymentSlipWatch?.length}

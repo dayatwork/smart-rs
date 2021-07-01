@@ -20,12 +20,12 @@ export const menus = [
   },
   {
     to: '/doctor',
-    text: 'Order History',
+    text: 'Riwayat Transaksi',
     icon: RiHistoryFill,
   },
   {
     to: '/examination',
-    text: 'Examination',
+    text: 'Riwayat Pelayanan',
     icon: RiStethoscopeFill,
   },
 ];
@@ -54,7 +54,7 @@ export const MobileSidebarPatient = ({ isOpen, onClose }) => {
               // maxW="xs"
               w="full"
               pb="4"
-              bgColor="gray.100"
+              bgColor="secondary.lighter"
               style={{ flex: '1 1 0%' }}
             >
               {/* Close button */}

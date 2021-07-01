@@ -69,7 +69,7 @@ export const PatientExaminationResultsPage = () => {
               as={Link}
               to={`/examination/${row.original.id}`}
               variant="link"
-              colorScheme="blue"
+              colorScheme="primary"
             >
               Result
             </Button>
@@ -83,7 +83,7 @@ export const PatientExaminationResultsPage = () => {
   // console.log({ dataSoap });
 
   return (
-    <Flex direction="column" bg="gray.100" minH="100vh">
+    <Flex direction="column" bg="secondary.lighter" minH="100vh">
       <Helmet>
         <title>Examination | SMART-RS</title>
       </Helmet>

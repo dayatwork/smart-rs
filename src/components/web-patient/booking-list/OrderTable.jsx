@@ -49,9 +49,9 @@ export const OrderTable = ({
     return (
       <Box pb="20" overflow="hidden">
         <VStack py="20">
-          <Icon as={ImFileEmpty} h={10} w={10} color="blue.600" />
-          <Text color="blue.600" fontWeight="semibold">
-            Belum ada history order
+          <Icon as={ImFileEmpty} h={10} w={10} color="secondary.dark" />
+          <Text color="secondary.dark" fontWeight="semibold">
+            Belum ada riwayat transaksi
           </Text>
         </VStack>
       </Box>

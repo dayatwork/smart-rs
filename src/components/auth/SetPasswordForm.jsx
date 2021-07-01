@@ -40,28 +40,28 @@ export const SetPasswordForm = ({ onSubmit }) => {
           })}
         /> */}
         <InputText
-          label="Name"
+          label="Nama Lengkap Sesuai KTP"
           type="text"
           error={errors.name}
-          {...register('name', { required: 'Name is required' })}
+          {...register('name', { required: 'Nama harus diisi' })}
         />
         <InputPassword
-          label="Password"
+          label="Kata sandi"
           error={errors.password}
           {...register('password', {
-            required: 'Password is required',
-            minLength: { value: 6, message: 'Password min 6 characters' },
+            required: 'Kata sandi harus diisi',
+            minLength: { value: 6, message: 'Kata sandi minimal 6 karakter' },
           })}
         />
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
           fontSize="md"
           data-testid="set-password-button"
         >
-          Set Password
+          Simpan
         </Button>
       </Stack>
     </Box>

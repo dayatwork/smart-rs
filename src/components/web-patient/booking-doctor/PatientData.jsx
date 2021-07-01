@@ -301,8 +301,8 @@ export const PatientData = ({
         <Spinner
           thickness="4px"
           speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
+          emptyColor="secondary.light"
+          color="secondary.dark"
           size="xl"
         />
       </Center>
@@ -552,7 +552,7 @@ export const PatientData = ({
       </SimpleGrid>
       <Box
         h={{ base: '20', md: '28' }}
-        bg="gray.900"
+        bg="primary.500"
         position="fixed"
         bottom="0"
         left="0"
@@ -571,12 +571,23 @@ export const PatientData = ({
             leftIcon={<FaArrowLeft />}
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
             size={buttonSize}
+            bgColor="secondary.light"
+            color="secondary.dark"
+            _hover={{
+              bgColor: 'secondary.dark',
+              color: 'secondary.light',
+            }}
           >
             Back
           </Button>
           <Button
             rightIcon={<FaArrowRight />}
-            colorScheme="blue"
+            bgColor="secondary.light"
+            color="secondary.dark"
+            _hover={{
+              bgColor: 'secondary.dark',
+              color: 'secondary.light',
+            }}
             ml="2"
             onClick={handleSubmit(onSubmit)}
             isLoading={isLoadingSubmit}

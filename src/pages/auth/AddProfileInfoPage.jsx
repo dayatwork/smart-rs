@@ -86,7 +86,7 @@ export const AddProfileInfoPage = () => {
           {/* <Logo /> */}
           <VStack>
             <Logo />
-            <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+            <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
               SMART-RS
             </Text>
           </VStack>
@@ -97,7 +97,7 @@ export const AddProfileInfoPage = () => {
             size="xl"
             fontWeight="extrabold"
           >
-            Additional Info
+            Info Tambahan
           </Heading>
           <AddProfileInfoForm onSubmit={onSubmit} isLoading={isLoading} />
         </Box>

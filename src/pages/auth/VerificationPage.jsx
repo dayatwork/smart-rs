@@ -65,7 +65,7 @@ export const VerificationPage = () => {
       toast({
         position: 'top-right',
         title: 'Error',
-        description: error.message,
+        description: 'OTP tidak valid, mohon kirim ulang OTP',
         status: 'error',
         duration: 4000,
         isClosable: true,
@@ -95,7 +95,7 @@ export const VerificationPage = () => {
         {/* <Logo /> */}
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
@@ -107,7 +107,8 @@ export const VerificationPage = () => {
           <Button
             p="2"
             marginStart="1"
-            color="blue.600"
+            // color="blue.600"
+            colorScheme="primary"
             onClick={handleResendOTP}
             variant="link"
             isLoading={isLoading}

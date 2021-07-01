@@ -25,7 +25,7 @@ export const InputText = React.forwardRef(
 
             input:focus {
               outline: none;
-              border-color: ${error ? '#E53E3E' : colors.brand[500]};
+              border-color: ${error ? '#E53E3E' : colors.primary[500]};
             }
 
             input:focus ~ label,
@@ -35,7 +35,7 @@ export const InputText = React.forwardRef(
               font-weight: 500;
               background-color: white;
               padding: 0 4px;
-              color: ${error ? '#E53E3E' : colors.brand[500]};
+              color: ${error ? '#E53E3E' : colors.primary[500]};
             }
 
             label {

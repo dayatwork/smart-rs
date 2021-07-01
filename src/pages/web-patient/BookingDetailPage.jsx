@@ -134,7 +134,7 @@ export const BookingDetailPage = () => {
           to="/doctor"
           display="inline-flex"
           alignItems="center"
-          color="blue.600"
+          color="secondary.dark"
           fontSize="sm"
           fontWeight="semibold"
           mb="4"
@@ -170,8 +170,8 @@ export const BookingDetailPage = () => {
             <Spinner
               thickness="4px"
               speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
+              emptyColor="secondary.light"
+              color="secondary.dark"
               size="xl"
             />
           </Center>
@@ -182,7 +182,7 @@ export const BookingDetailPage = () => {
                 <CardHeader
                   title={
                     <HStack>
-                      <Icon as={GiTicket} w="5" h="5" />
+                      <Icon color="secondary.dark" as={GiTicket} w="5" h="5" />
                       <Text>Booking Info</Text>
                     </HStack>
                   }
@@ -370,7 +370,12 @@ export const BookingDetailPage = () => {
                       <span>RS KIC</span>
                     </HStack> */}
                     <HStack mr="6" spacing="1">
-                      <Icon as={RiCalendarEventFill} w="5" h="5" />
+                      <Icon
+                        color="secondary.dark"
+                        as={RiCalendarEventFill}
+                        w="5"
+                        h="5"
+                      />
                       <span>{`${
                         dataBookingDetail?.data?.schedule?.days
                       }, ${new Date(
@@ -382,7 +387,12 @@ export const BookingDetailPage = () => {
                       })}`}</span>
                     </HStack>
                     <HStack mr="6" spacing="1">
-                      <Icon as={RiTimerLine} w="5" h="5" />
+                      <Icon
+                        color="secondary.dark"
+                        as={RiTimerLine}
+                        w="5"
+                        h="5"
+                      />
                       <span>
                         {dataBookingDetail?.data?.schedule?.available_time}
                       </span>
@@ -409,7 +419,12 @@ export const BookingDetailPage = () => {
                   <CardHeader
                     title={
                       <HStack>
-                        <Icon as={RiInformationLine} w="5" h="5" />
+                        <Icon
+                          color="secondary.dark"
+                          as={RiInformationLine}
+                          w="5"
+                          h="5"
+                        />
                         <Text>Info</Text>
                       </HStack>
                     }

@@ -102,7 +102,7 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
     <>
       <Box>
         <Stack spacing="2">
-          <FormControl id="name">
+          <FormControl id="name" display="none">
             <FormLabel>Nama Lengkap</FormLabel>
             <Input {...register('name')} />
           </FormControl>
@@ -128,7 +128,7 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
             </FormControl>
           </SimpleGrid>
           <FormControl id="address">
-            <FormLabel>Alamat</FormLabel>
+            <FormLabel>Alamat Domisili</FormLabel>
             <Input {...register('address')} />
           </FormControl>
           <SimpleGrid columns={2} gap="4">
@@ -176,14 +176,14 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
           </SimpleGrid>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="primary"
             size="lg"
             fontSize="md"
             data-testid="submit-button"
             onClick={handleSubmit(onSubmit)}
             isLoading={isLoading}
           >
-            Simpan dan Lanjutkan
+            Simpan & Lanjutkan
           </Button>
         </Stack>
       </Box>
@@ -192,12 +192,12 @@ export const AddProfileInfoForm = ({ onSubmit, isLoading }) => {
           <Box
             as="span"
             marginStart="1"
-            color="blue.600"
-            _hover={{ color: 'blue.600' }}
+            color="primary.400"
+            _hover={{ color: 'primary.600' }}
             display={{ base: 'block', sm: 'revert' }}
             data-testid="skip-link"
           >
-            Skip
+            Lewati
           </Box>
         </Link>
       </Box>

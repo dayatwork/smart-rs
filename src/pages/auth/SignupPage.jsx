@@ -17,12 +17,13 @@ export const SignupPage = () => {
     const { email } = value;
 
     try {
-      const data = await signup({ email });
+      await signup({ email });
 
       toast({
         position: 'top-right',
-        title: data.title,
-        description: data.message,
+        title: 'Sukses',
+        description:
+          'OTP telah terkirim ke email Anda. Mohon cek INBOX atau SPAM di email Anda',
         status: 'success',
         duration: 4000,
         isClosable: true,
@@ -63,7 +64,7 @@ export const SignupPage = () => {
         {/* <Logo /> */}
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
@@ -74,7 +75,7 @@ export const SignupPage = () => {
           size="xl"
           fontWeight="extrabold"
         >
-          Registrasi Akun
+          Daftar
         </Heading>
         <SignupForm onSubmit={onSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -84,8 +85,8 @@ export const SignupPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="blue.600"
-              _hover={{ color: 'blue.600' }}
+              color="primary.400"
+              _hover={{ color: 'primary.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
               Login

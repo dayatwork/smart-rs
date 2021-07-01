@@ -22,7 +22,7 @@ export const WebPatientNav = ({ active }) => {
       <MobileSidebarPatient isOpen={isOpenMobile} onClose={onCloseMobile} />
       <Flex
         align="center"
-        bg="blue.600"
+        bg="secondary.dark"
         color="white"
         px={{ base: '4', md: '6' }}
         h="16"
@@ -49,13 +49,13 @@ export const WebPatientNav = ({ active }) => {
             <NavItem.Desktop
               active={active === 'doctor'}
               icon={<RiHistoryFill />}
-              label="Order History"
+              label="Riwayat Transaksi"
               href="/doctor"
             />
             <NavItem.Desktop
               active={active === 'examination'}
               icon={<RiStethoscopeFill />}
-              label="Examination"
+              label="Riwayat Pelayanan"
               href="/examination"
             />
           </HStack>
@@ -68,8 +68,9 @@ export const WebPatientNav = ({ active }) => {
                 as={Link}
                 to="/dashboard"
                 bg="white"
-                color="blue.500"
+                colorScheme="primary"
                 size="sm"
+                variant="ghost"
               >
                 Dashboard Staff
               </Button>

@@ -11,7 +11,7 @@ export const HomePage = () => {
   return (
     <Flex
       direction="column"
-      bg="gray.100"
+      bg="secondary.lighter"
       height="100vh"
       maxW="100vw"
       overflow="hidden"

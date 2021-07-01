@@ -20,17 +20,17 @@ export const HomeHero = ({ user }) => {
       </Helmet>
       <Center flexDirection="column" textAlign="center" h="full">
         <Heading size="xl" fontWeight="bold">
-          Selamat datang, {user?.name}
+          Selamat Datang, {user?.name}
         </Heading>
         <Text fontSize={{ base: 'lg', '2xl': 'xl' }} mt="3" color="gray.700">
-          Bagaimana kondisi kesehatan anda hari ini? Apakah anda ingin
+          Bagaimana kondisi kesehatan Anda hari ini? Apakah Anda ingin
           konsultasi dengan dokter?
         </Text>
 
         <Button
           as={Link}
           to="/doctor/booking"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
           mt="6"
           fontWeight="bold"

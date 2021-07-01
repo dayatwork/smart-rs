@@ -72,7 +72,7 @@ export const AddHealthInfoPage = () => {
         {/* <Logo /> */}
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
@@ -83,7 +83,7 @@ export const AddHealthInfoPage = () => {
           size="xl"
           fontWeight="extrabold"
         >
-          Health Info
+          Info Kesehatan
         </Heading>
         <AddHealthInfoForm onSubmit={onSubmit} isLoading={isLoading} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -93,11 +93,11 @@ export const AddHealthInfoPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="blue.600"
-              _hover={{ color: 'blue.600' }}
+              color="primary.400"
+              _hover={{ color: 'primary.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
-              Skip
+              Lewati
             </Box>
           </Link>
         </Box>

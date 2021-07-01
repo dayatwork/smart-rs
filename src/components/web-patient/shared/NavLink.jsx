@@ -8,9 +8,9 @@ export const NavLink = ({ children, icon, to, isPrimaryMenu, isMobile }) => {
   return (
     <Link to={to}>
       <Box
-        bgColor={pathname === to ? 'blue.600' : 'white'}
-        _hover={{ bgColor: 'blue.500', color: 'gray.100' }}
-        color={pathname === to ? 'gray.100' : 'blue.600'}
+        bgColor={pathname === to ? 'secondary.dark' : 'white'}
+        _hover={{ bgColor: 'secondary.darker', color: 'gray.100' }}
+        color={pathname === to ? 'gray.100' : 'secondary.dark'}
         display="flex"
         alignItems="center"
         px={{ base: '3', '2xl': '4' }}

@@ -23,22 +23,26 @@ const RadioBox = chakra('div', {
   },
 });
 
-const CheckboxIcon = (props) => (
+const CheckboxIcon = props => (
   <Box
     fontSize="4xl"
-    color={props.checked ? 'blue.600' : mode('gray.300', 'whiteAlpha.400')}>
+    color={
+      props.checked ? 'secondary.dark' : mode('gray.300', 'whiteAlpha.400')
+    }
+  >
     {props.checked ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
   </Box>
 );
 
-export const ButtonRadio = (props) => {
+export const ButtonRadio = props => {
   const { label, icon, description, onClick } = props;
-  const { getCheckboxProps, getInputProps, getLabelProps, state } = useRadio(props);
+  const { getCheckboxProps, getInputProps, getLabelProps, state } =
+    useRadio(props);
   const id = useId();
 
   const checkedStyles = {
-    bg: mode('blue.50', 'rgb(0 31 71)'),
-    borderColor: 'blue.600',
+    bg: mode('secondary.light', 'rgb(0 31 71)'),
+    borderColor: 'secondary.dark',
   };
 
   return (
@@ -48,14 +52,16 @@ export const ButtonRadio = (props) => {
         {...getCheckboxProps()}
         _checked={checkedStyles}
         id={id}
-        onClick={onClick}>
+        onClick={onClick}
+      >
         <VStack spacing="4">
           <VStack textAlign="center">
             <Box
               aria-hidden
               fontSize="4xl"
               mb="3"
-              color={state.isChecked ? 'blue.600' : undefined}>
+              color={state.isChecked ? 'secondary.dark' : undefined}
+            >
               {icon}
             </Box>
             <Text fontWeight="extrabold" fontSize="xl">

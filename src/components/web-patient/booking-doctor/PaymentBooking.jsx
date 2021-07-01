@@ -288,7 +288,7 @@ export const PaymentBooking = ({
               <Button
                 isLoading={isLoading}
                 w="full"
-                colorScheme="blue"
+                colorScheme="primary"
                 my="2"
                 onClick={handleBooking}
                 disabled={isLoadingServicePrice || !selectedPaymentMethod}
@@ -306,7 +306,7 @@ export const PaymentBooking = ({
       </Grid>
       <Box
         h={{ base: '20', md: '28' }}
-        bg="gray.900"
+        bg="primary.500"
         position="fixed"
         bottom="0"
         left="0"
@@ -327,6 +327,12 @@ export const PaymentBooking = ({
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
             mr="2"
             size={buttonSize}
+            bgColor="secondary.light"
+            color="secondary.dark"
+            _hover={{
+              bgColor: 'secondary.dark',
+              color: 'secondary.light',
+            }}
           >
             Back
           </Button>
@@ -376,7 +382,7 @@ const DoctorDetails = ({
       borderColor="gray.200"
     >
       <HStack spacing={{ base: '2', md: '4' }}>
-        <Icon as={FaUserMd} w="5" h="5" />
+        <Icon color="secondary.dark" as={FaUserMd} w="5" h="5" />
         <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
           Detail Dokter
         </Text>
@@ -387,9 +393,11 @@ const DoctorDetails = ({
         </Box>
         <Button
           onClick={() => setCurrentStepIndex(prev => prev - 3)}
-          variant="outline"
+          // variant="outline"
           minW="20"
           leftIcon={<RiCalendarEventFill />}
+          colorScheme="primary"
+          size="sm"
         >
           Ubah Jadwal
         </Button>
@@ -421,11 +429,13 @@ const DoctorDetails = ({
             </Text>
             <Text
               mt="-1.5"
-              color="blue.600"
+              color="secondary.dark"
               fontWeight="semibold"
               textAlign={{ base: 'center', md: 'left' }}
             >
-              {selectedSchedule?.employee?.profession}
+              {selectedSchedule?.employee?.profession === 'Doctor'
+                ? 'Dokter'
+                : selectedSchedule?.employee?.profession}
             </Text>
           </Box>
         </Flex>
@@ -436,17 +446,17 @@ const DoctorDetails = ({
           direction={{ base: 'column', md: 'row' }}
         >
           <HStack mr="6" spacing="1">
-            <Icon as={RiHospitalFill} w="5" h="5" />
+            <Icon color="secondary.dark" as={RiHospitalFill} w="5" h="5" />
             <span>{selectedSchedule?.institution?.name}</span>
           </HStack>
           <HStack mr="6" spacing="1">
-            <Icon as={RiCalendarEventFill} w="5" h="5" />
+            <Icon color="secondary.dark" as={RiCalendarEventFill} w="5" h="5" />
             <span>
               {selectedSchedule?.days}, {selectedSchedule?.date_name}
             </span>
           </HStack>
           <HStack mr="6" spacing="1">
-            <Icon as={RiTimerLine} w="5" h="5" />
+            <Icon color="secondary.dark" as={RiTimerLine} w="5" h="5" />
             <span>{selectedTime?.available_time}</span>
           </HStack>
         </Flex>
@@ -475,7 +485,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
       borderColor="gray.200"
     >
       <HStack spacing={{ base: '2', md: '4' }}>
-        <Icon as={FaUserAlt} w="5" h="5" />
+        <Icon color="secondary.dark" as={FaUserAlt} w="5" h="5" />
         <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
           Detail Patient
         </Text>
@@ -483,7 +493,9 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
 
       <Button
         onClick={() => setCurrentStepIndex(prev => prev - 1)}
-        variant="outline"
+        // variant="outline"
+        colorScheme="primary"
+        size="sm"
         minW="20"
         leftIcon={<HiPencilAlt />}
       >
@@ -518,7 +530,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
             fontSize="sm"
             fontWeight="semibold"
           >
-            <Icon as={RiUser3Fill} w="5" h="5" />
+            <Icon color="secondary.dark" as={RiUser3Fill} w="5" h="5" />
             <Text>Profile Information</Text>
           </HStack>
           <Description
@@ -561,7 +573,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
             fontSize="sm"
             fontWeight="semibold"
           >
-            <Icon as={RiContactsBook2Line} w="5" h="5" />
+            <Icon color="secondary.dark" as={RiContactsBook2Line} w="5" h="5" />
             <Text>Contact Information</Text>
           </HStack>
 
@@ -589,7 +601,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
               fontSize="sm"
               fontWeight="semibold"
             >
-              <Icon as={GiHeartBeats} w="5" h="5" />
+              <Icon color="secondary.dark" as={GiHeartBeats} w="5" h="5" />
               <Text>Health Information</Text>
             </HStack>
             <Description

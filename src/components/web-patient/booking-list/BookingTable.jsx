@@ -33,6 +33,8 @@ export const BookingTable = ({
   skeletonCols,
   skeletonRows,
   noFilter,
+  filterPlaceholder,
+  noDataPlaceholder,
 }) => {
   const {
     getTableProps,
@@ -50,9 +52,9 @@ export const BookingTable = ({
     return (
       <Box pb="20" overflow="hidden">
         <VStack py="20">
-          <Icon as={ImFileEmpty} h={10} w={10} color="blue.600" />
-          <Text color="blue.600" fontWeight="semibold">
-            Belum ada history pemeriksaan
+          <Icon as={ImFileEmpty} h={10} w={10} color="secondary.dark" />
+          <Text color="secondary.dark" fontWeight="semibold">
+            {noDataPlaceholder}
           </Text>
         </VStack>
       </Box>
@@ -77,7 +79,7 @@ export const BookingTable = ({
                 <Input
                   rounded="base"
                   type="search"
-                  placeholder="Filter by doctor name..."
+                  placeholder={filterPlaceholder}
                   value={globalFilter || ''}
                   onChange={e => setGlobalFilter(e.target.value)}
                 />

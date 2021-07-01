@@ -23,7 +23,7 @@ export const Logo = ({ mini, mobile, light, ...rest }) => {
     // >
     <Link to="/">
       <Flex
-        bg={light ? 'white' : 'blue.600'}
+        bg={light ? 'white' : 'secondary.dark'}
         h="16"
         px="4"
         align="center"
@@ -50,7 +50,7 @@ export const Logo = ({ mini, mobile, light, ...rest }) => {
           <Box>
             <Text
               fontSize="lg"
-              color={light ? 'blue.600' : 'white'}
+              color={light ? 'primary.500' : 'white'}
               fontWeight="bold"
             >
               SMART-RS
@@ -58,10 +58,10 @@ export const Logo = ({ mini, mobile, light, ...rest }) => {
             <Text
               fontSize="sm"
               fontWeight="semibold"
-              color={light ? 'blue.600' : 'white'}
+              color={light ? 'secondary.dark' : 'white'}
               mt="-1.5"
             >
-              Web Patient
+              Web Pasien
             </Text>
           </Box>
         )}

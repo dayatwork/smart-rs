@@ -70,7 +70,7 @@ export const ChangePasswordPage = () => {
         {/* <Logo /> */}
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>

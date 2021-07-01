@@ -32,6 +32,7 @@ import {
   RiCalendarEventFill,
   RiTimerLine,
 } from 'react-icons/ri';
+import { Helmet } from 'react-helmet-async';
 import doctorImg from './doctor.jpg';
 
 import { getServices } from '../../../api/master-data-services/service';
@@ -153,6 +154,9 @@ export const SelectDoctor = ({
 
   return (
     <>
+      <Helmet>
+        <style>{customStyle}</style>
+      </Helmet>
       <Grid
         gridTemplateColumns={selectDoctorGridTemplate}
         gap="10"
@@ -179,7 +183,7 @@ export const SelectDoctor = ({
             </Select>
           </FormControl>
           <FormControl mb="6">
-            <FormLabel>Schedule Day Range</FormLabel>
+            <FormLabel>Pilih Rentang Tanggal</FormLabel>
             <Box
               border="1px"
               borderColor="gray.200"
@@ -202,8 +206,8 @@ export const SelectDoctor = ({
               <Spinner
                 thickness="4px"
                 speed="0.65s"
-                emptyColor="blue.100"
-                color="blue.500"
+                emptyColor="secondary.light"
+                color="secondary.darker"
                 size="xl"
               />
             </Center>
@@ -222,7 +226,7 @@ export const SelectDoctor = ({
                 </Heading>
                 <HStack spacing="5">
                   <FormControl display="flex">
-                    <FormLabel mt="1">Limit</FormLabel>
+                    <FormLabel mt="1">Show</FormLabel>
                     <Select
                       bg="white"
                       size="sm"
@@ -290,7 +294,7 @@ export const SelectDoctor = ({
                       key={schedule.id}
                       bg={
                         selectedSchedule?.id === schedule.id
-                          ? 'blue.100'
+                          ? 'secondary.light'
                           : 'white'
                       }
                       boxShadow="md"
@@ -300,11 +304,14 @@ export const SelectDoctor = ({
                       border="2px"
                       borderColor={
                         selectedSchedule?.id === schedule.id
-                          ? 'blue.500'
+                          ? 'secondary.dark'
                           : 'transparent'
                       }
                       mb="4"
                       alignItems={{ base: 'start', md: 'center' }}
+                      _hover={{
+                        bgColor: 'secondary.light',
+                      }}
                     >
                       <Box
                         py={{ base: '2', md: '0' }}
@@ -339,16 +346,18 @@ export const SelectDoctor = ({
                             </Text>
                             <Text
                               mt="-1.5"
-                              color="blue.600"
+                              color="secondary.dark"
                               fontWeight="semibold"
                             >
-                              {schedule?.employee?.profession}
+                              {schedule?.employee?.profession === 'Doctor'
+                                ? 'Dokter'
+                                : schedule?.employee?.profession}
                             </Text>
                           </Box>
                           <Text
                             fontSize={{ base: 'lg', lg: '2xl' }}
                             fontWeight="bold"
-                            color="green.600"
+                            color="secondary.dark"
                           >
                             Rp.50.000
                           </Text>
@@ -368,7 +377,7 @@ export const SelectDoctor = ({
                             >
                               {schedule?.total_available?.status_available}
                             </Box>{' '}
-                            jadwal dari{' '}
+                            slot dari{' '}
                             <Box as="span" fontWeight="bold">
                               {schedule?.total_available?.total_data}
                             </Box>
@@ -382,17 +391,32 @@ export const SelectDoctor = ({
                           mb="1"
                         >
                           <HStack mr="6" spacing="1">
-                            <Icon as={RiHospitalFill} w="5" h="5" />
+                            <Icon
+                              color="secondary.dark"
+                              as={RiHospitalFill}
+                              w="5"
+                              h="5"
+                            />
                             <span>{schedule?.institution?.name}</span>
                           </HStack>
                           <HStack mr="6" spacing="1">
-                            <Icon as={RiCalendarEventFill} w="5" h="5" />
+                            <Icon
+                              color="secondary.dark"
+                              as={RiCalendarEventFill}
+                              w="5"
+                              h="5"
+                            />
                             <span>
                               {schedule?.days}, {schedule?.date_name}
                             </span>
                           </HStack>
                           <HStack mr="6" spacing="1">
-                            <Icon as={RiTimerLine} w="5" h="5" />
+                            <Icon
+                              color="secondary.dark"
+                              as={RiTimerLine}
+                              w="5"
+                              h="5"
+                            />
                             <span>
                               {schedule?.start_time} - {schedule?.end_time}
                             </span>
@@ -405,15 +429,15 @@ export const SelectDoctor = ({
                         h={{ base: '16', lg: '24' }}
                         p="4"
                         border="2px"
-                        borderColor="blue.600"
+                        borderColor="secondary.dark"
                         color={
                           selectedSchedule?.id === schedule.id
                             ? 'white'
-                            : 'blue.600'
+                            : 'secondary.dark'
                         }
                         bgColor={
                           selectedSchedule?.id === schedule.id
-                            ? 'blue.600'
+                            ? 'secondary.dark'
                             : 'white'
                         }
                         rounded="lg"
@@ -477,7 +501,7 @@ export const SelectDoctor = ({
       </Grid>
       <Box
         py="6"
-        bg="gray.900"
+        bg="primary.500"
         position="fixed"
         bottom="0"
         left="0"
@@ -497,8 +521,8 @@ export const SelectDoctor = ({
               <Spinner
                 thickness="4px"
                 speed="0.65s"
-                emptyColor="blue.100"
-                color="blue.500"
+                emptyColor="secondary.light"
+                color="secondary.dark"
                 // size="xl"
               />
             </Center>
@@ -523,16 +547,20 @@ export const SelectDoctor = ({
                           time.status
                             ? 'red.100'
                             : selectedTime?.id === time.id
-                            ? 'blue.100'
+                            ? 'secondary.dark'
                             : 'green.100'
                         }
                         boxShadow="md"
                         rounded="md"
                         border="2px"
                         borderColor={
-                          selectedTime?.id === time.id
-                            ? 'blue.500'
-                            : 'transparent'
+                          selectedTime?.id === time.id ? 'white' : 'transparent'
+                        }
+                        color={
+                          selectedTime?.id === time.id ? 'primary.500' : null
+                        }
+                        fontWeight={
+                          selectedTime?.id === time.id ? 'bold' : null
                         }
                       >
                         {time.available_time}
@@ -571,7 +599,12 @@ export const SelectDoctor = ({
             </Button>
             <Button
               rightIcon={<FaArrowRight />}
-              colorScheme="blue"
+              bgColor="secondary.light"
+              color="secondary.dark"
+              _hover={{
+                bgColor: 'secondary.dark',
+                color: 'secondary.light',
+              }}
               ml="2"
               disabled={!selectedSchedule || !selectedTime}
               onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
@@ -609,8 +642,12 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
             mb="2"
             w="full"
             display="block"
-            colorScheme="blue"
+            color="secondary.dark"
             size="sm"
+            bgColor="white"
+            _hover={{
+              bgColor: 'secondary.light',
+            }}
             onClick={handleResetClick}
           >
             Reset
@@ -620,3 +657,38 @@ const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
     </Box>
   );
 };
+
+const customStyle = `
+  .Selectable
+    .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+    background-color: #ECFFFF !important;
+    color: #006666 !important;
+  }
+  .Selectable .DayPicker-Day {
+    border-radius: 0 !important;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--today {
+    background-color: #ECFFFF !important;
+    color: #006666;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--start {
+    background-color: #006666 !important;
+    color: #ECFFFF !important;
+  }
+  .Selectable .DayPicker-Day.DayPicker-Day--end {
+    background-color: #006666 !important;
+    color: #ECFFFF !important;
+  }
+  .Selectable .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+  }
+  .Selectable .DayPicker-Day--end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+  }
+  .DayPicker-Day--today {
+    color: #006666 !important;
+    background-color: #ECFFFF !important;
+  }
+`;

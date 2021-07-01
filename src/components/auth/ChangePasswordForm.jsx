@@ -14,9 +14,10 @@ export const ChangePasswordForm = ({ onSubmit, isLoading }) => {
         <Button
           isLoading={isLoading}
           type="submit"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
-          fontSize="md">
+          fontSize="md"
+        >
           Reset Password
         </Button>
       </Stack>

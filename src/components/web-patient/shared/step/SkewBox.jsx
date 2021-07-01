@@ -13,8 +13,8 @@ const properties = {
 };
 
 export const SkewBox = ({ placement, isCurrent, ...rest }) => {
-  const defaultColor = 'gray.100';
-  const accentColor = 'blue.500';
+  const defaultColor = 'secondary.light';
+  const accentColor = 'secondary.dark';
 
   const { borderToOmit, transform } = properties[placement];
   const placementProps = {
@@ -36,7 +36,7 @@ export const SkewBox = ({ placement, isCurrent, ...rest }) => {
       // }}
       _groupFocus={{
         border: '2px solid',
-        borderColor: 'blue.200',
+        borderColor: 'secondary.dark',
         [borderToOmit]: '0',
       }}
       width="full"

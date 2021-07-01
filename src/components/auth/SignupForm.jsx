@@ -36,17 +36,17 @@ export const SignupForm = ({ onSubmit }) => {
           label="Email"
           type="email"
           error={errors.email}
-          {...register('email', { required: 'Email is required' })}
+          {...register('email', { required: 'Email harus diisi' })}
         />
         <Button
           isLoading={isSubmitting}
           type="submit"
-          colorScheme="blue"
+          colorScheme="primary"
           size="lg"
           fontSize="md"
           data-testid="signup-button"
         >
-          Sign up
+          Daftar
         </Button>
       </Stack>
     </Box>

@@ -17,12 +17,12 @@ const bookingStep = [
   {
     value: 'Step 1',
     text: 'Pilih Dokter',
-    description: 'Pilih dokter dan tentukan jadwal pemeriksaan anda',
+    description: 'Pilih dokter dan tentukan jadwal pemeriksaan Anda',
   },
   {
     value: 'Step 2',
     text: 'Pilih Pasien',
-    description: 'Pilih Pasien yang ingin anda daftarkan',
+    description: 'Pilih Pasien yang ingin Anda daftarkan',
   },
   {
     value: 'Step 3',
@@ -56,7 +56,7 @@ export const BookingDoctorPage = () => {
   return (
     <Flex
       direction="column"
-      bg="gray.100"
+      bg="secondary.lighter"
       minH="100vh"
       position="relative"
       maxW="100vw"

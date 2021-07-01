@@ -103,7 +103,7 @@ export const LoginPage = () => {
         <VStack>
           {/* <Image src={Logo} alt="Logo" w="20" /> */}
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
@@ -111,7 +111,7 @@ export const LoginPage = () => {
           Selamat Datang
         </Heading>
         <Box mt="2" mb="10" align="center" maxW="md" fontWeight="medium">
-          <span>Silahkan login menggunakan akun anda</span>
+          <span>Silahkan masuk menggunakan akun Anda</span>
         </Box>
         <LoginForm onSubmit={onSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -121,11 +121,11 @@ export const LoginPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="brand.400"
-              _hover={{ color: 'brand.600' }}
+              color="primary.400"
+              _hover={{ color: 'primary.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
-              Signup
+              Daftar
             </Box>
           </Link>
         </Box>

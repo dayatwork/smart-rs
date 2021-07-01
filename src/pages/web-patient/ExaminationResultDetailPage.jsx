@@ -122,8 +122,8 @@ export const PatientExaminationResultsDetailPage = () => {
             <Spinner
               thickness="4px"
               speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
+              emptyColor="secondary.light"
+              color="secondary.dark"
               size="xl"
             />
           </Center>
@@ -144,7 +144,7 @@ export const PatientExaminationResultsDetailPage = () => {
           to="/examination"
           display="inline-flex"
           alignItems="center"
-          color="blue.600"
+          color="secondary.dark"
           fontSize="sm"
           fontWeight="semibold"
           mb="4"

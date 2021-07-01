@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, Flex, useBreakpointValue, Text } from '@chakra-ui/react';
 import { FaArrowLeft, FaArrowRight, FaUser, FaUsers } from 'react-icons/fa';
 
 import { ButtonRadioGroup } from '../shared';
@@ -19,6 +19,9 @@ export const ChoosePatient = ({
   return (
     <>
       <Box maxW="xl" mx="auto" pb={{ base: '20', md: '28' }}>
+        <Text fontSize="3xl" textAlign="center" mb="6" fontWeight="semibold">
+          Booking ini untuk:
+        </Text>
         <ButtonRadioGroup
           defaultValue={patient}
           setPatient={setPatient}
@@ -44,7 +47,7 @@ export const ChoosePatient = ({
       </Box>
       <Box
         h={{ base: '20', md: '28' }}
-        bg="gray.900"
+        bg="primary.500"
         position="absolute"
         bottom="0"
         left="0"
@@ -64,12 +67,23 @@ export const ChoosePatient = ({
             // disabled
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
             size={buttonSize}
+            bgColor="secondary.light"
+            color="secondary.dark"
+            _hover={{
+              bgColor: 'secondary.dark',
+              color: 'secondary.light',
+            }}
           >
             Back
           </Button>
           <Button
             rightIcon={<FaArrowRight />}
-            colorScheme="blue"
+            bgColor="secondary.light"
+            color="secondary.dark"
+            _hover={{
+              bgColor: 'secondary.dark',
+              color: 'secondary.light',
+            }}
             ml="2"
             disabled={!patient}
             onClick={() => setCurrentStepIndex(currentStepIndex + 1)}

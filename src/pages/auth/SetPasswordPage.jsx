@@ -85,7 +85,7 @@ export const SetPasswordPage = () => {
       >
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
@@ -97,7 +97,7 @@ export const SetPasswordPage = () => {
           size="xl"
           fontWeight="extrabold"
         >
-          Set Nama Lengkap dan Password
+          Set Nama Lengkap dan Kata Sandi
         </Heading>
         <SetPasswordForm onSubmit={onSubmit} />
       </Box>

@@ -59,12 +59,12 @@ export const ForgotPasswordPage = () => {
         {/* <Logo /> */}
         <VStack>
           <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="blue.600">
+          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>
         </VStack>
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
-          Lupa password?
+          Lupa kata sandi?
         </Heading>
         <Text
           mt="4"
@@ -74,8 +74,8 @@ export const ForgotPasswordPage = () => {
           fontWeight="medium"
           color="gray.600"
         >
-          Masukkan alamat email anda dan kami akan mengirimkan link untuk reset
-          password
+          Masukkan alamat email anda dan kami akan mengirimkan link untuk ubah
+          kata sandi
         </Text>
         <ForgotPasswordForm onSubmit={onSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -84,11 +84,11 @@ export const ForgotPasswordPage = () => {
               as="span"
               marginStart="1"
               href="#"
-              color="brand.400"
-              _hover={{ color: 'brand.600' }}
+              color="primary.400"
+              _hover={{ color: 'primary.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
-              Back to login page
+              Kembali ke halaman login
             </Box>
           </Link>
         </Box>
