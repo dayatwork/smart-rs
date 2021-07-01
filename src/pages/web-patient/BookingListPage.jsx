@@ -186,7 +186,13 @@ export const BookingListPage = () => {
   );
 
   return (
-    <Flex direction="column" bg="gray.100" minH="100vh">
+    <Flex
+      direction="column"
+      bg="gray.100"
+      minH="100vh"
+      maxW="100vw"
+      overflow="hidden"
+    >
       <Helmet>
         <title>Doctor | SMART-RS</title>
       </Helmet>

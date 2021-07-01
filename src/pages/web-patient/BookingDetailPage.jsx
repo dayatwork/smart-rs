@@ -23,7 +23,6 @@ import {
   Divider,
   Avatar,
   Icon,
-  SimpleGrid,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
@@ -55,6 +54,10 @@ export const BookingDetailPage = () => {
   const bookingDetailGridTemplate = useBreakpointValue({
     base: 'repeat(1, 1fr)',
     md: 'repeat(3, 1fr)',
+  });
+  const bookingInfoColumns = useBreakpointValue({
+    base: 'repeat(2,1fr)',
+    lg: 'repeat(3,1fr)',
   });
 
   const {
@@ -243,90 +246,111 @@ export const BookingDetailPage = () => {
                   }
                 />
                 <CardContent>
-                  <SimpleGrid columns={3} py="4" gap="6">
-                    <Flex px="6" py="4" alignItems="center">
-                      <Avatar
-                        rounded="full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="foto pasien"
-                        size="lg"
-                      />
+                  <Grid
+                    gridTemplateColumns={bookingInfoColumns}
+                    py="4"
+                    columnGap={{ base: '2', lg: '4' }}
+                  >
+                    <GridItem colSpan={{ base: 2, lg: 1 }}>
+                      <Flex
+                        px="6"
+                        py={{ base: '2', lg: '4' }}
+                        alignItems="center"
+                      >
+                        <Avatar
+                          rounded="full"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt="foto pasien"
+                          size="lg"
+                        />
 
-                      <Box flexGrow="1" ml="4">
-                        <Flex justify="space-between">
-                          <Box>
-                            <Text
-                              fontSize="sm"
-                              fontWeight="semibold"
-                              color="gray.600"
-                            >
-                              Patient Name
-                            </Text>
-                            <Text fontWeight="semibold">
-                              {dataBookingDetail?.data?.patient?.name}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </Box>
-                    </Flex>
-                    <Flex px="6" py="4" alignItems="center">
-                      <Avatar
-                        rounded="full"
-                        src="/images/doctor.jpg"
-                        alt="foto dokter"
-                        size="lg"
-                      />
+                        <Box flexGrow="1" ml="4">
+                          <Flex justify="space-between">
+                            <Box>
+                              <Text
+                                fontSize="sm"
+                                fontWeight="semibold"
+                                color="gray.600"
+                              >
+                                Patient Name
+                              </Text>
+                              <Text fontWeight="semibold">
+                                {dataBookingDetail?.data?.patient?.name}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Box>
+                      </Flex>
+                    </GridItem>
+                    <GridItem colSpan={{ base: 2, lg: 1 }}>
+                      <Flex
+                        px="6"
+                        py={{ base: '2', lg: '4' }}
+                        alignItems="center"
+                      >
+                        <Avatar
+                          rounded="full"
+                          src="/images/doctor.jpg"
+                          alt="foto dokter"
+                          size="lg"
+                        />
 
-                      <Box flexGrow="1" ml="4">
-                        <Flex justify="space-between">
-                          <Box>
-                            <Text
-                              fontSize="sm"
-                              fontWeight="semibold"
-                              color="gray.600"
-                            >
-                              Doctor Name
-                            </Text>
-                            <Text fontWeight="semibold">
-                              {
-                                dataBookingDetail?.data?.schedule?.employee_data
-                                  ?.name
-                              }
-                            </Text>
-                          </Box>
-                        </Flex>
+                        <Box flexGrow="1" ml="4">
+                          <Flex justify="space-between">
+                            <Box>
+                              <Text
+                                fontSize="sm"
+                                fontWeight="semibold"
+                                color="gray.600"
+                              >
+                                Doctor Name
+                              </Text>
+                              <Text fontWeight="semibold">
+                                {
+                                  dataBookingDetail?.data?.schedule
+                                    ?.employee_data?.name
+                                }
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Box>
+                      </Flex>
+                    </GridItem>
+                    <GridItem colSpan={{ base: 2, lg: 1 }}>
+                      <Box
+                        px={{ base: '6', lg: '0' }}
+                        py={{ base: '3', lg: '0' }}
+                      >
+                        <Box mb="4">
+                          <Text
+                            fontSize="sm"
+                            color="gray.600"
+                            fontWeight="semibold"
+                          >
+                            Service Name
+                          </Text>
+                          <Text fontWeight="semibold">
+                            {
+                              dataBookingDetail?.data?.schedule?.service_data
+                                ?.name
+                            }
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text
+                            fontSize="sm"
+                            color="gray.600"
+                            fontWeight="semibold"
+                          >
+                            Transaction Number
+                          </Text>
+                          <Text fontWeight="semibold">
+                            {dataBookingDetail?.data?.transaction_number}
+                          </Text>
+                        </Box>
                       </Box>
-                    </Flex>
-                    <Box>
-                      <Box mb="4">
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                          fontWeight="semibold"
-                        >
-                          Service Name
-                        </Text>
-                        <Text fontWeight="semibold">
-                          {
-                            dataBookingDetail?.data?.schedule?.service_data
-                              ?.name
-                          }
-                        </Text>
-                      </Box>
-                      <Box>
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                          fontWeight="semibold"
-                        >
-                          Transaction Number
-                        </Text>
-                        <Text fontWeight="semibold">
-                          {dataBookingDetail?.data?.transaction_number}
-                        </Text>
-                      </Box>
-                    </Box>
-                  </SimpleGrid>
+                    </GridItem>
+                  </Grid>
                   <Divider />
                   <Flex
                     px="6"
@@ -467,7 +491,7 @@ export const CardHeader = props => {
     <Flex
       align="center"
       justify="space-between"
-      px="6"
+      px={{ base: '3', md: '6' }}
       py="4"
       borderBottomWidth="1px"
     >

@@ -20,7 +20,13 @@ export const WebPatientNav = ({ active }) => {
   return (
     <>
       <MobileSidebarPatient isOpen={isOpenMobile} onClose={onCloseMobile} />
-      <Flex align="center" bg="blue.600" color="white" px="6" h="16">
+      <Flex
+        align="center"
+        bg="blue.600"
+        color="white"
+        px={{ base: '4', md: '6' }}
+        h="16"
+      >
         <Flex justify="space-between" align="center" w="7xl" mx="auto">
           <HStack spacing="3">
             <MenuButton

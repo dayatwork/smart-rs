@@ -64,6 +64,7 @@ export const PatientData = ({
     base: 1,
     lg: patient === 'me' ? 2 : 1,
   });
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
@@ -318,7 +319,7 @@ export const PatientData = ({
           spacing="3"
           bg="white"
           boxShadow="md"
-          px="10"
+          px={{ base: '6', md: '10' }}
           pt="4"
           pb="8"
           rounded="md"
@@ -467,7 +468,7 @@ export const PatientData = ({
             spacing="3"
             bg="white"
             boxShadow="md"
-            px="10"
+            px={{ base: '6', md: '10' }}
             pt="4"
             pb="8"
             rounded="md"
@@ -554,6 +555,7 @@ export const PatientData = ({
           <Button
             leftIcon={<FaArrowLeft />}
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+            size={buttonSize}
           >
             Back
           </Button>
@@ -563,6 +565,7 @@ export const PatientData = ({
             ml="2"
             onClick={handleSubmit(onSubmit)}
             isLoading={isLoadingSubmit}
+            size={buttonSize}
           >
             Next
           </Button>

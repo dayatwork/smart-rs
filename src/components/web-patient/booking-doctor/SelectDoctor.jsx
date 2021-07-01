@@ -73,6 +73,7 @@ export const SelectDoctor = ({
     xl: 8,
     '2xl': 10,
   });
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
@@ -208,7 +209,7 @@ export const SelectDoctor = ({
             </Center>
           )}
           {dataSchedules?.data?.length ? (
-            <Box w="full">
+            <Box w="full" pr={{ base: '6', md: '0' }}>
               <Flex
                 justify="space-between"
                 align="center"
@@ -564,6 +565,7 @@ export const SelectDoctor = ({
               leftIcon={<FaArrowLeft />}
               disabled={currentStep.value === 'Step 1'}
               onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+              size={buttonSize}
             >
               Back
             </Button>
@@ -573,6 +575,7 @@ export const SelectDoctor = ({
               ml="2"
               disabled={!selectedSchedule || !selectedTime}
               onClick={() => setCurrentStepIndex(currentStepIndex + 1)}
+              size={buttonSize}
             >
               Next
             </Button>

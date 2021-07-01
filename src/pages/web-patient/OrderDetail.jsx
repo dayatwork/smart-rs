@@ -47,6 +47,21 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
     base: 'repeat(1, 1fr)',
     xl: 'repeat(3, 1fr)',
   });
+  const orderInfoColumns = useBreakpointValue({
+    base: 1,
+    md: 2,
+  });
+
+  const orderPaymentInfoColumns = useBreakpointValue({
+    base: 1,
+    md: 2,
+    lg: 3,
+  });
+
+  const orderPaymentInfoColumnsPaid = useBreakpointValue({
+    base: 1,
+    md: 2,
+  });
 
   const { data: dataUserOrderDetail, isLoading: isLoadingUserOrderDetail } =
     useQuery(
@@ -174,7 +189,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                 }
               />
               <CardContent>
-                <SimpleGrid columns={2} px="6" py="4" gap="6">
+                <SimpleGrid columns={orderInfoColumns} px="6" py="4" gap="6">
                   <Box>
                     <Text fontSize="sm" color="gray.600" fontWeight="semibold">
                       Order Number
@@ -210,7 +225,11 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                 </SimpleGrid>
                 <Divider py="4" />
                 <SimpleGrid
-                  columns={dataUserOrderDetail?.data?.status === 'paid' ? 2 : 3}
+                  columns={
+                    dataUserOrderDetail?.data?.status === 'paid'
+                      ? orderPaymentInfoColumnsPaid
+                      : orderPaymentInfoColumns
+                  }
                   px="6"
                   py="4"
                   gap="6"
@@ -464,7 +483,7 @@ export const CardHeader = props => {
     <Flex
       align="center"
       justify="space-between"
-      px="6"
+      px={{ base: '3', md: '6' }}
       py="4"
       borderBottomWidth="1px"
     >

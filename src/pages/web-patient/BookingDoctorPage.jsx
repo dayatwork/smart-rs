@@ -75,7 +75,7 @@ export const BookingDoctorPage = () => {
               Booking Dokter
             </Heading>
             {/* Booking Step */}
-            <Box w="lg">
+            <Box w={{ base: 'sm', md: 'lg' }}>
               <nav aria-label="Progress steps">
                 <HStack as="ol" listStyleType="none" spacing="2">
                   {bookingStep.map(step => (
@@ -93,9 +93,10 @@ export const BookingDoctorPage = () => {
           <Text
             color="red.500"
             fontWeight="semibold"
-            textAlign="right"
+            textAlign={{ base: 'center', md: 'right' }}
             mt="2"
             mr="4"
+            fontSize={{ base: 'sm', md: 'md' }}
           >
             {currentStep.description}
           </Text>
@@ -107,7 +108,7 @@ export const BookingDoctorPage = () => {
           <Box
             maxW={{ base: 'xl', md: '7xl' }}
             mx="auto"
-            px={{ base: '6', md: '0' }}
+            // px={{ base: '2', md: '0' }}
           >
             {/* Header */}
             {/* <Box textAlign="center" mb="10">

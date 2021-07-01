@@ -72,6 +72,7 @@ export const PaymentBooking = ({
     md: 'repeat(2, 1fr)',
     xl: 'repeat(3, 1fr)',
   });
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
   const { data: dataPaymentMethods } = useQuery(
     ['institution-payment-methods', selectedSchedule?.institution?.id],
@@ -323,10 +324,11 @@ export const PaymentBooking = ({
             disabled={currentStep.value === 'Step 1'}
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
             mr="2"
+            size={buttonSize}
           >
             Back
           </Button>
-          <Button leftIcon={<FaArrowRight />} disabled>
+          <Button leftIcon={<FaArrowRight />} disabled size={buttonSize}>
             Next
           </Button>
         </Flex>

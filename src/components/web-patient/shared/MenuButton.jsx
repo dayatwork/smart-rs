@@ -4,7 +4,7 @@ import { Button, VisuallyHidden, Image } from '@chakra-ui/react';
 export const MenuButton = ({ onClick, display }) => {
   return (
     <Button
-      w="12"
+      w={{ base: '10', md: '12' }}
       px="1"
       borderRight
       borderColor="gray.200"

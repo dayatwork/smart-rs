@@ -34,7 +34,7 @@ export const MobileSidebarPatient = ({ isOpen, onClose }) => {
   const { employeeDetail, user } = useContext(AuthContext);
 
   return (
-    <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
+    <Drawer placement="left" isOpen={isOpen} onClose={onClose} size="xs">
       <DrawerOverlay>
         <DrawerContent>
           <Box
@@ -51,7 +51,7 @@ export const MobileSidebarPatient = ({ isOpen, onClose }) => {
               position="relative"
               display="flex"
               flexDir="column"
-              maxW="xs"
+              // maxW="xs"
               w="full"
               pb="4"
               bgColor="gray.100"

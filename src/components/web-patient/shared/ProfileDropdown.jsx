@@ -24,7 +24,7 @@ const UserAvatar = () => (
   />
 );
 
-const ProfileMenuButton = (props) => {
+const ProfileMenuButton = props => {
   const buttonProps = useMenuButton(props);
   return (
     <Flex
@@ -33,7 +33,8 @@ const ProfileMenuButton = (props) => {
       flexShrink={0}
       rounded="full"
       outline="0"
-      _focus={{ shadow: 'outline' }}>
+      _focus={{ shadow: 'outline' }}
+    >
       <Box srOnly>Open user menu</Box>
       <UserAvatar />
     </Flex>
@@ -67,7 +68,8 @@ export const ProfileDropdown = () => {
         py="1"
         color={mode('gray.600', 'inherit')}
         fontSize="sm"
-        zIndex="10">
+        zIndex="10"
+      >
         <HStack px="3" py="4">
           <UserAvatar />
           <Box lineHeight="1">
@@ -84,7 +86,8 @@ export const ProfileDropdown = () => {
           fontWeight="medium"
           color={mode('red.500', 'red.300')}
           as="button"
-          onClick={handleLogout}>
+          onClick={handleLogout}
+        >
           Sign out
         </MenuItem>
       </MenuList>
