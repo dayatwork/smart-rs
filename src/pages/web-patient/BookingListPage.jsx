@@ -45,7 +45,7 @@ export const BookingListPage = () => {
 
   const currentBooking = dataBooking?.data?.find(booking => {
     const bookingDate = new Date(booking.schedule.date).toISOString();
-    const currentDate = new Date('2021-06-30').toISOString();
+    const currentDate = new Date().toISOString();
     return bookingDate === currentDate;
   });
 
