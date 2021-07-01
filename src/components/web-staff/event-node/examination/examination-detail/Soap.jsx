@@ -145,7 +145,10 @@ export const Soap = ({ dataSoap }) => {
               </AccordionButton>
             </h2>
             <AccordionPanel py="6">
-              <SoapHistory />
+              <SoapHistory
+                patientId={dataSoap?.patient_id}
+                institutionId={dataSoap.institution_id}
+              />
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
