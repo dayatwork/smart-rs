@@ -61,7 +61,7 @@ export const ChoosePatient = ({
         >
           <Button
             leftIcon={<FaArrowLeft />}
-            disabled
+            // disabled
             onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
             size={buttonSize}
           >

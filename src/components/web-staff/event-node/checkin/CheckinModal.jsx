@@ -7,7 +7,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
+  // ModalCloseButton,
   ModalBody,
   ModalFooter,
   useToast,
@@ -64,7 +64,7 @@ export const CheckInModal = ({ isOpen, onClose, selectedBooking }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Apakah anda ingin check-in pasien ini?</ModalHeader>
-        <ModalCloseButton />
+        {/* <ModalCloseButton /> */}
         <ModalBody>
           <Box>
             <Description

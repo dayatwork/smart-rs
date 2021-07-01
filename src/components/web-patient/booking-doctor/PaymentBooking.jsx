@@ -386,7 +386,7 @@ const DoctorDetails = ({
           {selectedSchedule?.service?.name}
         </Box>
         <Button
-          onClick={() => setCurrentStepIndex(prev => prev - 1)}
+          onClick={() => setCurrentStepIndex(prev => prev - 3)}
           variant="outline"
           minW="20"
           leftIcon={<RiCalendarEventFill />}
@@ -482,7 +482,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
       </HStack>
 
       <Button
-        onClick={() => setCurrentStepIndex(prev => prev - 2)}
+        onClick={() => setCurrentStepIndex(prev => prev - 1)}
         variant="outline"
         minW="20"
         leftIcon={<HiPencilAlt />}

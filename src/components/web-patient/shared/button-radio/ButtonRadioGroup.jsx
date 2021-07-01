@@ -27,12 +27,12 @@ export const ButtonRadioGroup = props => {
           onClick={() => {
             setPatient(option.value);
             setPatientData({});
-            setSelectedService('');
-            setSelectedDayRange({
-              from: undefined,
-              to: undefined,
-            });
-            setSelectedSchedule({});
+            // setSelectedService('');
+            // setSelectedDayRange({
+            //   from: undefined,
+            //   to: undefined,
+            // });
+            // setSelectedSchedule({});
           }}
           key={option.value}
           icon={option.icon}

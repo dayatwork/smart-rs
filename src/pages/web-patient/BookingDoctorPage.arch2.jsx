@@ -16,18 +16,18 @@ import {
 const bookingStep = [
   {
     value: 'Step 1',
-    text: 'Pilih Dokter',
-    description: 'Pilih dokter dan tentukan jadwal pemeriksaan anda',
-  },
-  {
-    value: 'Step 2',
     text: 'Pilih Pasien',
     description: 'Pilih Pasien yang ingin anda daftarkan',
   },
   {
-    value: 'Step 3',
+    value: 'Step 2',
     text: 'Isi Data Pasien',
     description: 'Data ini akan digunakan untuk keperluan pemeriksaan',
+  },
+  {
+    value: 'Step 3',
+    text: 'Pilih Dokter',
+    description: 'Pilih dokter dan tentukan jadwal pemeriksaan anda',
   },
   {
     value: 'Step 4',
@@ -125,6 +125,29 @@ export const BookingDoctorPage = () => {
 
             {/* Body */}
             {currentStep.value === 'Step 1' && (
+              <ChoosePatient
+                patient={patient}
+                setPatient={setPatient}
+                setPatientData={setPatientData}
+                currentStep={currentStep}
+                currentStepIndex={currentStepIndex}
+                setCurrentStepIndex={setCurrentStepIndex}
+                setSelectedService={setSelectedService}
+                setSelectedDayRange={setSelectedDayRange}
+                setSelectedSchedule={setSelectedSchedule}
+              />
+            )}
+            {currentStep.value === 'Step 2' && (
+              <PatientData
+                patient={patient}
+                patientData={patientData}
+                setPatientData={setPatientData}
+                currentStep={currentStep}
+                currentStepIndex={currentStepIndex}
+                setCurrentStepIndex={setCurrentStepIndex}
+              />
+            )}
+            {currentStep.value === 'Step 3' && (
               <SelectDoctor
                 patient={patient}
                 selectedService={selectedService}
@@ -140,29 +163,6 @@ export const BookingDoctorPage = () => {
                 setSelectedTime={setSelectedTime}
                 selectedPagination={selectedPagination}
                 setSelectedPagination={setSelectedPagination}
-              />
-            )}
-            {currentStep.value === 'Step 2' && (
-              <ChoosePatient
-                patient={patient}
-                setPatient={setPatient}
-                setPatientData={setPatientData}
-                currentStep={currentStep}
-                currentStepIndex={currentStepIndex}
-                setCurrentStepIndex={setCurrentStepIndex}
-                setSelectedService={setSelectedService}
-                setSelectedDayRange={setSelectedDayRange}
-                setSelectedSchedule={setSelectedSchedule}
-              />
-            )}
-            {currentStep.value === 'Step 3' && (
-              <PatientData
-                patient={patient}
-                patientData={patientData}
-                setPatientData={setPatientData}
-                currentStep={currentStep}
-                currentStepIndex={currentStepIndex}
-                setCurrentStepIndex={setCurrentStepIndex}
               />
             )}
             {currentStep.value === 'Step 4' && (

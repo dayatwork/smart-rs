@@ -53,6 +53,7 @@ export const PatientData = ({
     control,
     formState: { errors },
   } = useForm({
+    mode: 'onBlur',
     defaultValues,
   });
   const [allergies, setAllergies] = useState([]);
@@ -352,9 +353,20 @@ export const PatientData = ({
             <FormControl id="email" isInvalid={errors.email ? true : false}>
               <FormLabel>Email</FormLabel>
               <Input
+                // variant={patient === 'me' ? 'filled' : 'outline'}
                 readOnly={patient === 'me'}
-                {...register('email', { required: 'Email harus diisi' })}
+                // {...register('email', {
+                //   required: 'Email harus diisi',
+                // })}
+                {...register('email', {
+                  required: 'Email harus diisi',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Email tidak valid',
+                  },
+                })}
               />
+
               <FormErrorMessage>
                 {errors.email && errors.email.message}
               </FormErrorMessage>
