@@ -58,10 +58,14 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
     data: dataRoutes,
     isLoading: isLoadingRoute,
     isSuccess: isSuccessRoute,
-  } = useQuery(['master-routes', menuWatch], () => getRoutesByMenu(cookies, menuWatch), {
-    enabled: Boolean(menuWatch),
-    staleTime: Infinity,
-  });
+  } = useQuery(
+    ['master-routes', menuWatch],
+    () => getRoutesByMenu(cookies, menuWatch),
+    {
+      enabled: Boolean(menuWatch),
+      staleTime: Infinity,
+    }
+  );
 
   const { mutate } = useMutation(assignAccessControl(cookies), {
     onMutate: () => {
@@ -76,6 +80,7 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Role berhasil di assign`,
           status: 'success',
@@ -96,17 +101,17 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { role, menu, routes } = value;
     const menuParse = JSON.parse(menu);
     const resource_id = menuParse.id;
     const resource = menuParse.alias;
 
     const filteredRoutes = routes
-      .filter((route) => !!route)
-      .map((route) => JSON.parse(route));
+      .filter(route => !!route)
+      .map(route => JSON.parse(route));
 
-    const data = filteredRoutes.map((route) => ({
+    const data = filteredRoutes.map(route => ({
       resource_id,
       resource,
       route_id: route.id,
@@ -128,27 +133,32 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
               <FormLabel>Role</FormLabel>
               <Select {...register('role', { required: 'Role is required' })}>
                 <option value="">Select Role</option>
-                {dataRoles?.data?.map((role) => (
+                {dataRoles?.data?.map(role => (
                   <option key={role.id} value={role.id}>
                     {role.name}
                   </option>
                 ))}
               </Select>
-              <FormErrorMessage>{errors.role && errors.role.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.role && errors.role.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl id="menu" isInvalid={errors?.menu ? true : false}>
               <FormLabel>Menu</FormLabel>
               <Select {...register('menu', { required: 'Menu is required' })}>
                 <option value="">Select menu</option>
-                {dataMenu?.data?.map((menu) => (
+                {dataMenu?.data?.map(menu => (
                   <option
                     key={menu.id}
-                    value={JSON.stringify({ id: menu.id, alias: menu.alias })}>
+                    value={JSON.stringify({ id: menu.id, alias: menu.alias })}
+                  >
                     {menu.name}
                   </option>
                 ))}
               </Select>
-              <FormErrorMessage>{errors.menu && errors.menu.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.menu && errors.menu.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl id="routes">
               <FormLabel>Routes</FormLabel>
@@ -159,12 +169,15 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
                     colorScheme="purple"
                     key={route.id}
                     value={JSON.stringify({ id: route.id, alias: route.alias })}
-                    {...register(`routes[${index}]`)}>
+                    {...register(`routes[${index}]`)}
+                  >
                     {route.name}
                   </Checkbox>
                 ))}
               </SimpleGrid>
-              {isSuccessRoute && !dataRoutes.data.length && <Text>Belum ada route</Text>}
+              {isSuccessRoute && !dataRoutes.data.length && (
+                <Text>Belum ada route</Text>
+              )}
             </FormControl>
           </VStack>
         </ModalBody>
@@ -176,7 +189,8 @@ export const AssignAccessModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

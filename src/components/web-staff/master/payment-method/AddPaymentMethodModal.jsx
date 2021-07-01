@@ -58,6 +58,7 @@ export const AddPaymentMethodModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Payment method added successfully`,
           status: 'success',
@@ -78,8 +79,8 @@ export const AddPaymentMethodModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const data = values.paymentMethods.map((paymentMethod) => ({
+  const onSubmit = async values => {
+    const data = values.paymentMethods.map(paymentMethod => ({
       name: paymentMethod.name,
       alias: slugify(paymentMethod.name, { lower: true }),
       description: paymentMethod.description,
@@ -105,7 +106,8 @@ export const AddPaymentMethodModal = ({ isOpen, onClose }) => {
                     id={`name-${index}`}
                     mb="1"
                     mr="2"
-                    isInvalid={errors?.name ? true : false}>
+                    isInvalid={errors?.name ? true : false}
+                  >
                     <VisuallyHidden as="label">Name</VisuallyHidden>
                     <Input
                       placeholder="Name"
@@ -155,7 +157,8 @@ export const AddPaymentMethodModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

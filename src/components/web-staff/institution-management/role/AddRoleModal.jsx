@@ -56,6 +56,7 @@ export const AddRoleModal = ({ isOpen, onClose, selectedInstitution }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Role berhasil dibuat`,
           status: 'success',

@@ -35,7 +35,8 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
-  const { register, handleSubmit, reset, clearErrors, control, watch } = useForm();
+  const { register, handleSubmit, reset, clearErrors, control, watch } =
+    useForm();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'subcategories',
@@ -44,7 +45,7 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
 
   const { data: dataCategories, isLoading: isLoadingCategories } = useQuery(
     'master-radiology-categories',
-    () => getRadiologyCategories(cookies),
+    () => getRadiologyCategories(cookies)
   );
 
   const { mutate } = useMutation(createRadiologySubCategory(cookies), {
@@ -60,6 +61,7 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Radiology Sub Category berhasil ditambahkan`,
           status: 'success',
@@ -80,8 +82,8 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const subcategories = values.subcategories.map((sub) => {
+  const onSubmit = async values => {
+    const subcategories = values.subcategories.map(sub => {
       if (!sub.parent_id) {
         return { ...sub, parent_id: null };
       }
@@ -132,7 +134,8 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>
@@ -141,7 +144,13 @@ export const AddRadiologySubCategoryModal = ({ isOpen, onClose }) => {
   );
 };
 
-const AddSubCategoryField = ({ register, dataCategories, index, remove, watch }) => {
+const AddSubCategoryField = ({
+  register,
+  dataCategories,
+  index,
+  remove,
+  watch,
+}) => {
   const [cookies] = useCookies(['token']);
   const categoryWatch = watch('subcategories');
 
@@ -150,20 +159,30 @@ const AddSubCategoryField = ({ register, dataCategories, index, remove, watch })
     isSuccess,
     isLoading,
   } = useQuery(
-    ['master-radiology-subcategories', categoryWatch[index]?.radiology_category_id],
-    () => getRadiologySubCategories(cookies, categoryWatch[index]?.radiology_category_id),
+    [
+      'master-radiology-subcategories',
+      categoryWatch[index]?.radiology_category_id,
+    ],
+    () =>
+      getRadiologySubCategories(
+        cookies,
+        categoryWatch[index]?.radiology_category_id
+      ),
     {
       enabled: Boolean(categoryWatch[index]?.radiology_category_id),
-    },
+    }
   );
 
   return (
     <Flex>
       <FormControl id={`category-${index}`} mb="1" mr="1">
         <VisuallyHidden as="label">Category</VisuallyHidden>
-        <Select mr="2" {...register(`subcategories[${index}].radiology_category_id`)}>
+        <Select
+          mr="2"
+          {...register(`subcategories[${index}].radiology_category_id`)}
+        >
           <option value="">Select Category</option>
-          {dataCategories?.data?.map((category) => (
+          {dataCategories?.data?.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -181,7 +200,7 @@ const AddSubCategoryField = ({ register, dataCategories, index, remove, watch })
         {isSuccess && (
           <Select mr="2" {...register(`subcategories[${index}].parent_id`)}>
             <option value="">Select Parent Sub Category</option>
-            {dataSubCategories?.data?.map((subcategory) => (
+            {dataSubCategories?.data?.map(subcategory => (
               <option key={subcategory.id} value={subcategory.id}>
                 {subcategory.name}
               </option>
@@ -191,7 +210,11 @@ const AddSubCategoryField = ({ register, dataCategories, index, remove, watch })
       </FormControl>
       <FormControl id={`name-${index}`} mb="1" mr="1">
         <VisuallyHidden as="label">Name</VisuallyHidden>
-        <Input mr="2" placeholder="Name" {...register(`subcategories[${index}].name`)} />
+        <Input
+          mr="2"
+          placeholder="Name"
+          {...register(`subcategories[${index}].name`)}
+        />
       </FormControl>
       <IconButton
         onClick={() => remove(index)}

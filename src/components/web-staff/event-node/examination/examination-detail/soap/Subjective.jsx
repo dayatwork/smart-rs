@@ -100,6 +100,7 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
       ]);
       setIsLoadingDelete(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Symptom berhasil dihapus`,
         status: 'success',
@@ -109,6 +110,7 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
     } catch (error) {
       setIsLoadingDelete(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Symptom gagal dihapus`,
         status: 'success',
@@ -134,6 +136,7 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
       // ]);
       setIsLoadingUpdatePatientComplaint(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Patient complaint updated`,
         status: 'success',
@@ -143,6 +146,7 @@ export const Subjective = ({ soapSubjectives, patientDetail, userDetails }) => {
     } catch (error) {
       setIsLoadingUpdatePatientComplaint(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error update patient complaint`,
         status: 'error',
@@ -354,6 +358,7 @@ const AddSymptomModal = ({
           reset();
           clearErrors();
           toast({
+            position: 'top-right',
             title: 'Success',
             description: `Symptom berhasil ditambahkan`,
             status: 'success',
@@ -392,6 +397,7 @@ const AddSymptomModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Symptom berhasil ditambahkan`,
           status: 'success',

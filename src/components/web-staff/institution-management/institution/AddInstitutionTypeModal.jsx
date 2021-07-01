@@ -49,6 +49,7 @@ export const AddInstitutionTypeModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Institution Type berhasil dibuat`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddInstitutionTypeModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { name } = values;
 
     const applicationType = {
@@ -88,13 +89,19 @@ export const AddInstitutionTypeModal = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <Box as="form">
-            <FormControl id="name" mb="4" isInvalid={errors.name ? true : false}>
+            <FormControl
+              id="name"
+              mb="4"
+              isInvalid={errors.name ? true : false}
+            >
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
                 {...register('name', { required: 'Type name is required' })}
               />
-              <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
             </FormControl>
           </Box>
         </ModalBody>
@@ -106,7 +113,8 @@ export const AddInstitutionTypeModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

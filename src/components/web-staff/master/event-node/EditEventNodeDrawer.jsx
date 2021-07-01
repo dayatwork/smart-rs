@@ -63,6 +63,7 @@ export const EditEventNodeDrawer = ({ isOpen, onClose, selectedEventNode }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Event node berhasil diedit`,
           status: 'success',

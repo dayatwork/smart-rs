@@ -49,6 +49,7 @@ export const AddDivisionModal = ({ isOpen, onClose, selectedInstitution }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Divisi berhasil dibuat`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddDivisionModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const divisions = {
       institution_id: selectedInstitution,
       data: values.divisions,
@@ -134,7 +135,8 @@ export const AddDivisionModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

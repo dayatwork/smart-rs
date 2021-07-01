@@ -51,6 +51,7 @@ export const EditBloodDataDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Blood data edited`,
           status: 'success',

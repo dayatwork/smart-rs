@@ -43,7 +43,12 @@ import { createPatientPrescription } from '../../../../../../../api/medical-reco
 import { getPatientAllergies } from '../../../../../../../api/medical-record-services/allergies';
 import { getDrugs } from '../../../../../../../api/pharmacy-services/drug';
 
-export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap }) => {
+export const AddPrescriptionModal = ({
+  isOpen,
+  onClose,
+  patientDetail,
+  dataSoap,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,13 +69,13 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
   } = useQuery(
     ['patient-allergies', patientDetail?.patient_id],
     () => getPatientAllergies(cookies, patientDetail?.patient_id),
-    { enabled: Boolean(patientDetail?.patient_id) },
+    { enabled: Boolean(patientDetail?.patient_id) }
   );
 
   const { data: dataDrugs } = useQuery(
     ['drugs', dataSoap?.institution_id],
     () => getDrugs(cookies, dataSoap?.institution_id),
-    { enabled: Boolean(dataSoap?.institution_id) },
+    { enabled: Boolean(dataSoap?.institution_id) }
   );
 
   const queryClient = useQueryClient();
@@ -92,6 +97,7 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Prescription added successfully`,
           status: 'success',
@@ -112,8 +118,8 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
     },
   });
 
-  const onSubmit = async (values) => {
-    const formattedMedicines = values.medicines.map((medicine) => ({
+  const onSubmit = async values => {
+    const formattedMedicines = values.medicines.map(medicine => ({
       drug_id: JSON.parse(medicine?.drug).id,
       drug_name: JSON.parse(medicine?.drug).name,
       quantity: medicine.quantity,
@@ -162,7 +168,7 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
                       Drug
                     </Heading>
                     <UnorderedList>
-                      {dataPatientAllergies?.data?.Drugs?.map((drug) => (
+                      {dataPatientAllergies?.data?.Drugs?.map(drug => (
                         <ListItem key={drug.id}>{drug.name}</ListItem>
                       ))}
                     </UnorderedList>
@@ -173,7 +179,7 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
                     </Heading>
 
                     <UnorderedList>
-                      {dataPatientAllergies?.data?.Food?.map((food) => (
+                      {dataPatientAllergies?.data?.Food?.map(food => (
                         <ListItem key={food.id}>{food.name}</ListItem>
                       ))}
                     </UnorderedList>
@@ -184,7 +190,7 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
                     </Heading>
 
                     <UnorderedList>
-                      {dataPatientAllergies?.data?.Others?.map((allergy) => (
+                      {dataPatientAllergies?.data?.Others?.map(allergy => (
                         <ListItem key={allergy.id}>{allergy.name}</ListItem>
                       ))}
                     </UnorderedList>
@@ -197,7 +203,12 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
                 Medical Routine
               </Heading>
               <Box>
-                <Table fontSize="sm" variant="simple" border="1px" borderColor="gray.200">
+                <Table
+                  fontSize="sm"
+                  variant="simple"
+                  border="1px"
+                  borderColor="gray.200"
+                >
                   <Thead bg="gray.100">
                     <Tr>
                       <Th>Item</Th>
@@ -240,13 +251,18 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
               <Switch
                 id="internal_farmacy"
                 value={internalPharmacy}
-                onChange={() => setInternalPharmacy((prev) => !prev)}
+                onChange={() => setInternalPharmacy(prev => !prev)}
                 isChecked={internalPharmacy}
                 colorScheme="purple"
                 size="md"
               />
             </FormControl>
-            <Table variant="simple" size="sm" border="1px" borderColor="gray.200">
+            <Table
+              variant="simple"
+              size="sm"
+              border="1px"
+              borderColor="gray.200"
+            >
               <Thead bgColor="gray.100">
                 <Tr>
                   <Th>Drug</Th>
@@ -301,7 +317,8 @@ export const AddPrescriptionModal = ({ isOpen, onClose, patientDetail, dataSoap 
           <Button
             colorScheme="purple"
             isLoading={isLoading}
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Submit
           </Button>
         </ModalFooter>
@@ -319,13 +336,14 @@ const DrugInput = ({ field, remove, register, index, dataDrugs, control }) => {
       <Td>
         <Select {...register(`medicines[${index}].drug`)}>
           <option value="">Select Medicine</option>
-          {dataDrugs?.data?.map((drug) => (
+          {dataDrugs?.data?.map(drug => (
             <option
               key={drug.id}
               value={JSON.stringify({
                 id: drug.id,
                 name: drug.name,
-              })}>
+              })}
+            >
               {drug.name}
             </option>
           ))}
@@ -358,7 +376,10 @@ const DrugInput = ({ field, remove, register, index, dataDrugs, control }) => {
         </Select>
       </Td>
       <Td w="20">
-        <Checkbox colorScheme="purple" {...register(`medicines[${index}].routine`)} />
+        <Checkbox
+          colorScheme="purple"
+          {...register(`medicines[${index}].routine`)}
+        />
       </Td>
       <Td w="44">
         <Controller
@@ -367,7 +388,7 @@ const DrugInput = ({ field, remove, register, index, dataDrugs, control }) => {
               <Input
                 as={DayPickerInput}
                 value={value}
-                onDayChange={(v) => {
+                onDayChange={v => {
                   onChange(v);
                   setFrom(v);
                 }}
@@ -389,7 +410,7 @@ const DrugInput = ({ field, remove, register, index, dataDrugs, control }) => {
               <Input
                 as={DayPickerInput}
                 value={value}
-                onDayChange={(v) => {
+                onDayChange={v => {
                   onChange(v);
                   setTo(v);
                 }}

@@ -67,6 +67,7 @@ export const CreateScheduleModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Schedule berhasil ditambahkan`,
           status: 'success',

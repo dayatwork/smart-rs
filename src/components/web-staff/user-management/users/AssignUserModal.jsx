@@ -75,6 +75,7 @@ export const AssignUserModal = ({
 
       setSelectedUser(null);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Assign role berhasil`,
         status: 'success',
@@ -85,6 +86,7 @@ export const AssignUserModal = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Assign role gagal`,
         status: 'error',

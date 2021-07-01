@@ -145,6 +145,7 @@ export const AssignNewStaffPage = () => {
         setErrMessage('');
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Assign staff success`,
           status: 'success',

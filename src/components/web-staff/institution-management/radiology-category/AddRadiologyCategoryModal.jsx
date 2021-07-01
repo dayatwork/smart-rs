@@ -26,12 +26,17 @@ import {
   createRadiologyCategory,
 } from '../../../../api/institution-services/radiology-category';
 
-export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddRadiologyCategoryModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
-  const [selectedRadiologyCategory, setSelectedRadiologyCategory] = useState('');
+  const [selectedRadiologyCategory, setSelectedRadiologyCategory] =
+    useState('');
   const [subCategories, setSubCategories] = useState([]);
   const queryClient = useQueryClient();
 
@@ -39,7 +44,7 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
     data: dataRadiologyCatagoriesMaster,
     isSuccess: isSuccessRadiologyCatagoriesMaster,
   } = useQuery('master-radiology-categories', () =>
-    getRadiologyCategoriesMaster(cookies),
+    getRadiologyCategoriesMaster(cookies)
   );
 
   const {
@@ -50,13 +55,13 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
     () => getRadiologySubCategoriesMaster(cookies, selectedRadiologyCategory),
     {
       enabled: Boolean(selectedRadiologyCategory),
-    },
+    }
   );
 
   const { data: dataCategories } = useQuery(
     ['insitution-radiology-categories', selectedInstitution],
     () => getRadiologyCategories(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) },
+    { enabled: Boolean(selectedInstitution) }
   );
 
   const { mutate } = useMutation(createRadiologyCategory(cookies), {
@@ -75,6 +80,7 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
         setSelectedRadiologyCategory('');
         setSubCategories([]);
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Radiology category added successfully`,
           status: 'success',
@@ -95,9 +101,11 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
     },
   });
 
-  const onSubmit = async (e) => {
+  const onSubmit = async e => {
     e.preventDefault();
-    const data = subCategories.map((subcategory) => JSON.parse(subcategory.value));
+    const data = subCategories.map(subcategory =>
+      JSON.parse(subcategory.value)
+    );
     const payload = {
       institution_id: selectedInstitution,
       data,
@@ -117,10 +125,11 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
             <Select
               name="RadiologyCategory"
               value={selectedRadiologyCategory}
-              onChange={(e) => setSelectedRadiologyCategory(e.target.value)}>
+              onChange={e => setSelectedRadiologyCategory(e.target.value)}
+            >
               <option value="">Select Radiology Category</option>
               {isSuccessRadiologyCatagoriesMaster &&
-                dataRadiologyCatagoriesMaster?.data?.map((category) => (
+                dataRadiologyCatagoriesMaster?.data?.map(category => (
                   <option key={category?.id} value={category?.id}>
                     {category?.name}
                   </option>
@@ -135,13 +144,13 @@ export const AddRadiologyCategoryModal = ({ isOpen, onClose, selectedInstitution
                 isMulti
                 name="subcategories"
                 options={dataLabSubCategoriesMaster?.data
-                  ?.filter((category) => {
+                  ?.filter(category => {
                     const alreadyCategory = dataCategories?.data?.map(
-                      (category) => category.subcategory_id,
+                      category => category.subcategory_id
                     );
                     return !alreadyCategory?.includes(category.id);
                   })
-                  ?.map((subcategory) => {
+                  ?.map(subcategory => {
                     return {
                       label: subcategory?.name,
                       value: JSON.stringify({

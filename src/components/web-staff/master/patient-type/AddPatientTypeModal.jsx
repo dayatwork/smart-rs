@@ -56,6 +56,7 @@ export const AddPatientTypeModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Patient type added successfully`,
           status: 'success',
@@ -76,7 +77,7 @@ export const AddPatientTypeModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const patientTypes = {
       data: values.patientTypes,
     };
@@ -98,7 +99,8 @@ export const AddPatientTypeModal = ({ isOpen, onClose }) => {
                     id={`name-${index}`}
                     mb="1"
                     mr="2"
-                    isInvalid={errors?.name ? true : false}>
+                    isInvalid={errors?.name ? true : false}
+                  >
                     <VisuallyHidden as="label">Name</VisuallyHidden>
                     <Input
                       placeholder="Name"
@@ -139,7 +141,8 @@ export const AddPatientTypeModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

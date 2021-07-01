@@ -41,7 +41,7 @@ export const AddEventNodeModal = ({ isOpen, onClose }) => {
   const queryClient = useQueryClient();
 
   const { data: dataApp } = useQuery('master-application', () =>
-    getApplications(cookies),
+    getApplications(cookies)
   );
 
   const { mutate } = useMutation(createEventNode(cookies), {
@@ -57,6 +57,7 @@ export const AddEventNodeModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Event node berhasil dibuat`,
           status: 'success',
@@ -77,7 +78,7 @@ export const AddEventNodeModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { app_id, event_nodes } = value;
 
     await mutate({
@@ -96,9 +97,11 @@ export const AddEventNodeModal = ({ isOpen, onClose }) => {
           <Box as="form">
             <FormControl id="application" mb="4">
               <FormLabel>Application</FormLabel>
-              <Select {...register('app_id', { required: 'Application required' })}>
+              <Select
+                {...register('app_id', { required: 'Application required' })}
+              >
                 <option value="">Select Application</option>
-                {dataApp?.data?.map((app) => (
+                {dataApp?.data?.map(app => (
                   <option key={app.id} value={app.id}>
                     {app.name}
                   </option>
@@ -161,7 +164,8 @@ export const AddEventNodeModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

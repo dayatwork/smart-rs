@@ -193,6 +193,7 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
       setIsLoadingSubmit(false);
       reset({});
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Alergi berhasil di update`,
         status: 'success',
@@ -203,6 +204,7 @@ const UpdateAllergiesModal = ({ isOpen, onClose, patientDetail }) => {
     } catch (error) {
       setIsLoadingSubmit(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Alergi gagal di update`,
         status: 'error',

@@ -62,6 +62,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Drug edited successfully`,
           status: 'success',

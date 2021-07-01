@@ -56,6 +56,7 @@ export const EditICD9Drawer = ({ isOpen, onClose, selectedICD9 }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `ICD 9 berhasil diedit`,
           status: 'success',

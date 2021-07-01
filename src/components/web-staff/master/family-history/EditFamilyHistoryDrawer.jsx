@@ -56,6 +56,7 @@ export const EditFamilyHistoryDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Family history berhasil diedit`,
           status: 'success',

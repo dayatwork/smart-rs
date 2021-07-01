@@ -56,6 +56,7 @@ export const AddProfessionModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Profession berhasil ditambahkan`,
           status: 'success',
@@ -76,7 +77,7 @@ export const AddProfessionModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const professions = {
       data: values.professions,
     };
@@ -98,7 +99,8 @@ export const AddProfessionModal = ({ isOpen, onClose }) => {
                     id={`code-${index}`}
                     mb="1"
                     mr="2"
-                    isInvalid={errors?.name ? true : false}>
+                    isInvalid={errors?.name ? true : false}
+                  >
                     <VisuallyHidden as="label">Name</VisuallyHidden>
                     <Input
                       placeholder="Name"
@@ -138,7 +140,8 @@ export const AddProfessionModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

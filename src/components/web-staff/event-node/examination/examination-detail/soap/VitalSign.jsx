@@ -135,6 +135,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
       ]);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Vital sign updated`,
         status: 'success',
@@ -144,6 +145,7 @@ export const VitalSign = ({ patientDetail, userDetail }) => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error update vital sign`,
         status: 'error',

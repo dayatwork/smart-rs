@@ -37,10 +37,10 @@ export const EditPrescriptionDrawer = ({
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
   const [from, setFrom] = useState(
-    selectedPrescription?.start_at && new Date(selectedPrescription?.start_at),
+    selectedPrescription?.start_at && new Date(selectedPrescription?.start_at)
   );
   const [to, setTo] = useState(
-    selectedPrescription?.end_at && new Date(selectedPrescription?.end_at),
+    selectedPrescription?.end_at && new Date(selectedPrescription?.end_at)
   );
   const { register, handleSubmit, reset, clearErrors, control } = useForm();
 
@@ -59,7 +59,7 @@ export const EditPrescriptionDrawer = ({
   } = useQuery(
     ['drugs', dataSoap?.institution_id],
     () => getDrugs(cookies, dataSoap?.institution_id),
-    { enabled: Boolean(dataSoap?.institution_id) },
+    { enabled: Boolean(dataSoap?.institution_id) }
   );
 
   const queryClient = useQueryClient();
@@ -81,6 +81,7 @@ export const EditPrescriptionDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Prescription edited successfully`,
           status: 'success',
@@ -101,9 +102,17 @@ export const EditPrescriptionDrawer = ({
     },
   });
 
-  const onSubmit = async (values) => {
-    const { drug, quantity, frequency, description, eat, routine, start_at, end_at } =
-      values;
+  const onSubmit = async values => {
+    const {
+      drug,
+      quantity,
+      frequency,
+      description,
+      eat,
+      routine,
+      start_at,
+      end_at,
+    } = values;
     const data = {
       id: selectedPrescription?.id,
       drug_id: JSON.parse(drug).id,
@@ -136,15 +145,17 @@ export const EditPrescriptionDrawer = ({
                     id: selectedPrescription?.drug_id,
                     name: selectedPrescription?.drug_name,
                   })}
-                  {...register('drug')}>
+                  {...register('drug')}
+                >
                   <option value="">Select Medicine</option>
-                  {dataDrugs?.data?.map((drug) => (
+                  {dataDrugs?.data?.map(drug => (
                     <option
                       key={drug.id}
                       value={JSON.stringify({
                         id: drug.id,
                         name: drug.name,
-                      })}>
+                      })}
+                    >
                       {drug.name}
                     </option>
                   ))}
@@ -175,7 +186,10 @@ export const EditPrescriptionDrawer = ({
               </FormControl>
               <FormControl id="eat" mb="4">
                 <FormLabel>Eat</FormLabel>
-                <Select defaultValue={selectedPrescription?.eat} {...register('eat')}>
+                <Select
+                  defaultValue={selectedPrescription?.eat}
+                  {...register('eat')}
+                >
                   <option value="After">After</option>
                   <option value="Before">Before</option>
                   <option value="Free">Free</option>
@@ -198,7 +212,7 @@ export const EditPrescriptionDrawer = ({
                       <Input
                         as={DayPickerInput}
                         value={value}
-                        onDayChange={(v) => {
+                        onDayChange={v => {
                           onChange(v);
                           setFrom(v);
                         }}
@@ -221,7 +235,7 @@ export const EditPrescriptionDrawer = ({
                       <Input
                         as={DayPickerInput}
                         value={value}
-                        onDayChange={(v) => {
+                        onDayChange={v => {
                           onChange(v);
                           setTo(v);
                         }}
@@ -250,7 +264,8 @@ export const EditPrescriptionDrawer = ({
             <Button
               isLoading={isLoading}
               colorScheme="purple"
-              onClick={handleSubmit(onSubmit)}>
+              onClick={handleSubmit(onSubmit)}
+            >
               Save
             </Button>
           </DrawerFooter>

@@ -59,6 +59,7 @@ export const EditDrugPriceDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Drug price edited successfully`,
           status: 'success',

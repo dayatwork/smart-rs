@@ -48,6 +48,7 @@ export const AddServiceTypeModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service type added successfully`,
           status: 'success',
@@ -68,7 +69,7 @@ export const AddServiceTypeModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const types = {
       data: values.types,
     };
@@ -135,7 +136,8 @@ export const AddServiceTypeModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

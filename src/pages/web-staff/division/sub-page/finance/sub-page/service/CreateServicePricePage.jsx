@@ -113,6 +113,7 @@ export const CreateServicePricePage = () => {
       setPaymentMethod([]);
       reset({ service: '', note: '', name: '' });
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Tarif layanan berhasil ditambahkan`,
         status: 'success',
@@ -123,6 +124,7 @@ export const CreateServicePricePage = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Tarif gagal ditambahkan`,
         status: 'error',

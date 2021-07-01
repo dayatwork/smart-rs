@@ -49,6 +49,7 @@ export const AddRoleModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Role berhasil dibuat`,
           status: 'success',
@@ -69,8 +70,8 @@ export const AddRoleModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (value) => {
-    const roles = value.roles.map((role) => ({
+  const onSubmit = async value => {
+    const roles = value.roles.map(role => ({
       name: role.name,
       alias: slugify(role.name, { lower: true }),
     }));
@@ -128,7 +129,8 @@ export const AddRoleModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

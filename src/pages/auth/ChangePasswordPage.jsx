@@ -23,6 +23,7 @@ export const ChangePasswordPage = () => {
       await resetPassword({ token, password });
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Silahkan login dengan password baru',
         status: 'success',
@@ -33,6 +34,7 @@ export const ChangePasswordPage = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

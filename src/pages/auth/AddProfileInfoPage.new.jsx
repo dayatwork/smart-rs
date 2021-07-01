@@ -54,6 +54,7 @@ export const AddProfileInfoPage = () => {
       await updateUserDetail(cookies)(data);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Profile berhasil di update',
         status: 'success',
@@ -64,6 +65,7 @@ export const AddProfileInfoPage = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

@@ -22,7 +22,10 @@ import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 
 import { getApplications } from '../../../../api/application-services/application';
-import { createMenu, getMenus } from '../../../../api/application-services/menu';
+import {
+  createMenu,
+  getMenus,
+} from '../../../../api/application-services/menu';
 
 export const AddMenuModal = ({ isOpen, onClose }) => {
   const toast = useToast();
@@ -40,10 +43,11 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
 
   // ========== Query ========== //
   const { data: resMenu, isSuccess: isSuccessMenu } = useQuery('menu', () =>
-    getMenus(cookies),
+    getMenus(cookies)
   );
-  const { data: resApp, isSuccess: isSuccessApp } = useQuery('application', () =>
-    getApplications(cookies),
+  const { data: resApp, isSuccess: isSuccessApp } = useQuery(
+    'application',
+    () => getApplications(cookies)
   );
 
   // ========== Mutation ========== //
@@ -60,6 +64,7 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Menu berhasil dibuat`,
           status: 'success',
@@ -74,7 +79,7 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     const { application, name, description, parent } = value;
     const menu = {
       app_id: application,
@@ -103,12 +108,17 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
             <FormControl
               id="application"
               mb="4"
-              isInvalid={errors?.application ? true : false}>
+              isInvalid={errors?.application ? true : false}
+            >
               <FormLabel>Application</FormLabel>
-              <Select {...register('application', { required: 'Application Required' })}>
+              <Select
+                {...register('application', {
+                  required: 'Application Required',
+                })}
+              >
                 <option value="">Select App</option>
                 {isSuccessApp &&
-                  resApp?.data?.map((app) => (
+                  resApp?.data?.map(app => (
                     <option key={app.id} value={app.id}>
                       {app.name}
                     </option>
@@ -118,13 +128,19 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
                 {errors.application && errors.application.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl id="name" mb="4" isInvalid={errors?.name ? true : false}>
+            <FormControl
+              id="name"
+              mb="4"
+              isInvalid={errors?.name ? true : false}
+            >
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
                 {...register('name', { required: 'Menu Name Required' })}
               />
-              <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl id="description" mb="4">
               <FormLabel>Description</FormLabel>
@@ -135,7 +151,7 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
               <Select {...register('parent')}>
                 <option value="">Select Parent</option>
                 {isSuccessMenu &&
-                  resMenu?.data?.map((menu) => (
+                  resMenu?.data?.map(menu => (
                     <option key={menu.id} value={menu.id}>
                       {menu.name}
                     </option>
@@ -153,7 +169,8 @@ export const AddMenuModal = ({ isOpen, onClose }) => {
             colorScheme="purple"
             type="submit"
             onClick={handleSubmit(onSubmit)}
-            isLoading={isLoading}>
+            isLoading={isLoading}
+          >
             Create
           </Button>
         </ModalFooter>

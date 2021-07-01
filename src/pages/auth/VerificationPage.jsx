@@ -32,6 +32,7 @@ export const VerificationPage = () => {
       await resendOTP({ email });
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'OTP baru sudah dikirimkan ke email anda',
         status: 'success',
@@ -41,6 +42,7 @@ export const VerificationPage = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',
@@ -61,6 +63,7 @@ export const VerificationPage = () => {
     } catch (error) {
       setIsLoadingSubmit(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

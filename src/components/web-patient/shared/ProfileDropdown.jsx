@@ -49,6 +49,7 @@ export const ProfileDropdown = () => {
   const handleLogout = () => {
     logout(() => {
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Anda berhasil logout`,
         status: 'success',

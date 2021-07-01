@@ -66,6 +66,7 @@ export const EditServiceDrawer = ({ isOpen, onClose, selectedService }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service edited successfully`,
           status: 'success',

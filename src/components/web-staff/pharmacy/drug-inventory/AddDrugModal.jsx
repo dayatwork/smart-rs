@@ -50,6 +50,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Drug added successfully`,
           status: 'success',

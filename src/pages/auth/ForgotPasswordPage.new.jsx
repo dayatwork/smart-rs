@@ -27,6 +27,7 @@ export const ForgotPasswordPage = () => {
       await forgotPassword({ email });
       e.target.reset();
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Cek email anda untuk mendapatkan link reset password',
         status: 'success',
@@ -35,6 +36,7 @@ export const ForgotPasswordPage = () => {
       });
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

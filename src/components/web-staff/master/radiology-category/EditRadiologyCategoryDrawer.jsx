@@ -56,6 +56,7 @@ export const EditRadiologyCategoryDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Radiology Category berhasil diedit`,
           status: 'success',

@@ -67,6 +67,7 @@ export const AddPaymentMethodModal = ({
         setErrMessage('');
         reset();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Payment method added successfully`,
           status: 'success',

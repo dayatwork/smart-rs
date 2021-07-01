@@ -155,6 +155,7 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
       setIsLoadingSubmit(false);
       reset({});
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Medical history berhasil di update`,
         status: 'success',
@@ -165,6 +166,7 @@ const UpdateMedicalHistoryModal = ({ isOpen, onClose, patientDetail }) => {
     } catch (error) {
       setIsLoadingSubmit(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Medical history gagal di update`,
         status: 'error',

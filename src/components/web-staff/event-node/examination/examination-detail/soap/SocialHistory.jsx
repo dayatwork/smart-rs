@@ -168,6 +168,7 @@ const UpdateSocialHistoryModal = ({
       ]);
       reset({});
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Social history berhasil di update`,
         status: 'success',
@@ -177,6 +178,7 @@ const UpdateSocialHistoryModal = ({
       onClose();
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Social history gagal di update`,
         status: 'error',

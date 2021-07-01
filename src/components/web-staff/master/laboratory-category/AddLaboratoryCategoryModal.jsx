@@ -48,6 +48,7 @@ export const AddLaboratoryCategoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Laboratory Category berhasil ditambahkan`,
           status: 'success',
@@ -68,7 +69,7 @@ export const AddLaboratoryCategoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const categories = {
       data: values.categories,
     };
@@ -125,7 +126,8 @@ export const AddLaboratoryCategoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

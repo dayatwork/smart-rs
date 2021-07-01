@@ -645,6 +645,7 @@ export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
       setIsLoading(false);
       onClose();
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `SOAP Completed`,
         status: 'success',
@@ -655,6 +656,7 @@ export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error complete SOAP`,
         status: 'error',

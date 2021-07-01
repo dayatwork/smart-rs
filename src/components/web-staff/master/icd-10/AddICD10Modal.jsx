@@ -49,6 +49,7 @@ export const AddICD10Modal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `ICD 10 berhasil ditambahkan`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddICD10Modal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const icd10 = {
       data: values.icd10,
     };
@@ -89,7 +90,10 @@ export const AddICD10Modal = ({ isOpen, onClose }) => {
                 <Flex key={id}>
                   <FormControl id={`code-${index}`} mb="1" maxW="32" mr="2">
                     <VisuallyHidden as="label">Code</VisuallyHidden>
-                    <Input placeholder="Code" {...register(`icd10[${index}].code`)} />
+                    <Input
+                      placeholder="Code"
+                      {...register(`icd10[${index}].code`)}
+                    />
                   </FormControl>
                   <FormControl id={`code-${index}`} mb="1" mr="2">
                     <VisuallyHidden as="label">Name</VisuallyHidden>
@@ -136,7 +140,8 @@ export const AddICD10Modal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

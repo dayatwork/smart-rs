@@ -37,6 +37,7 @@ export const DeleteLabCategoryAlert = ({
       setIsLoading(false);
       onClose();
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Lab category deleted successfully`,
         status: 'success',
@@ -46,6 +47,7 @@ export const DeleteLabCategoryAlert = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error delete lab category`,
         status: 'error',
@@ -60,7 +62,8 @@ export const DeleteLabCategoryAlert = ({
       motionPreset="slideInBottom"
       onClose={onClose}
       isOpen={isOpen}
-      isCentered>
+      isCentered
+    >
       <AlertDialogOverlay />
 
       <AlertDialogContent>
@@ -71,7 +74,12 @@ export const DeleteLabCategoryAlert = ({
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button onClick={onClose}>No</Button>
-          <Button colorScheme="red" ml={3} onClick={handleDelete} isLoading={isLoading}>
+          <Button
+            colorScheme="red"
+            ml={3}
+            onClick={handleDelete}
+            isLoading={isLoading}
+          >
             Yes
           </Button>
         </AlertDialogFooter>

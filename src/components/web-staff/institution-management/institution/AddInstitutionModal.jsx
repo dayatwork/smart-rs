@@ -42,7 +42,7 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
   const { data: resType, isSuccess: isSuccessType } = useQuery(
     'institution-types',
     () => getInstitutionTypes(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createInstitution(cookies), {
@@ -58,6 +58,7 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Institution berhasil dibuat`,
           status: 'success',
@@ -78,17 +79,23 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const toBase64 = (file) =>
+  const onSubmit = async values => {
+    const toBase64 = file =>
       new window.Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
+        reader.onerror = error => reject(error);
       });
 
-    const { institution_type_id, name, email, phone_number, identity_number, logo } =
-      values;
+    const {
+      institution_type_id,
+      name,
+      email,
+      phone_number,
+      identity_number,
+      logo,
+    } = values;
     const institution = {
       institution_type_id,
       name,
@@ -112,44 +119,60 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
             <FormControl
               id="institution_type_id"
               mb="4"
-              isInvalid={errors?.institution_type_id ? true : false}>
+              isInvalid={errors?.institution_type_id ? true : false}
+            >
               <FormLabel>Institution Type</FormLabel>
               <Select
                 {...register('institution_type_id', {
                   required: 'Institution type Required',
-                })}>
+                })}
+              >
                 <option value="">Select App</option>
                 {isSuccessType &&
-                  resType?.data?.map((type) => (
+                  resType?.data?.map(type => (
                     <option key={type.id} value={type.id}>
                       {type.name}
                     </option>
                   ))}
               </Select>
               <FormErrorMessage>
-                {errors.institution_type_id && errors.institution_type_id.message}
+                {errors.institution_type_id &&
+                  errors.institution_type_id.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl id="name" mb="4" isInvalid={errors.name ? true : false}>
+            <FormControl
+              id="name"
+              mb="4"
+              isInvalid={errors.name ? true : false}
+            >
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
                 {...register('name', { required: 'Type name is required' })}
               />
-              <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl id="email" mb="4" isInvalid={errors.email ? true : false}>
+            <FormControl
+              id="email"
+              mb="4"
+              isInvalid={errors.email ? true : false}
+            >
               <FormLabel>Email</FormLabel>
               <Input
                 type="email"
                 {...register('email', { required: 'Email is required' })}
               />
-              <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl
               id="phone_number"
               mb="4"
-              isInvalid={errors.phone_number ? true : false}>
+              isInvalid={errors.phone_number ? true : false}
+            >
               <FormLabel>Phone</FormLabel>
               <Input
                 type="number"
@@ -162,7 +185,8 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
             <FormControl
               id="identity_number"
               mb="4"
-              isInvalid={errors.identity_number ? true : false}>
+              isInvalid={errors.identity_number ? true : false}
+            >
               <FormLabel>Identity Number</FormLabel>
               <Input
                 type="text"
@@ -188,7 +212,8 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

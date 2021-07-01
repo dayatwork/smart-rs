@@ -42,7 +42,7 @@ export const AddServiceModal = ({ isOpen, onClose }) => {
   const { data: dataServiceTypes } = useQuery(
     'master-service-types',
     () => getServiceTypes(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createService(cookies), {
@@ -58,6 +58,7 @@ export const AddServiceModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service added successfully`,
           status: 'success',
@@ -78,7 +79,7 @@ export const AddServiceModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const services = {
       data: values.services,
     };
@@ -98,9 +99,12 @@ export const AddServiceModal = ({ isOpen, onClose }) => {
                 <Flex key={id}>
                   <FormControl id={`type-${index}`} mb="1" mr="1">
                     <VisuallyHidden as="label">Service Type</VisuallyHidden>
-                    <Select mr="2" {...register(`services[${index}].service_type_id`)}>
+                    <Select
+                      mr="2"
+                      {...register(`services[${index}].service_type_id`)}
+                    >
                       <option value="">Select service type</option>
-                      {dataServiceTypes?.data?.map((type) => (
+                      {dataServiceTypes?.data?.map(type => (
                         <option key={type.id} value={type.id}>
                           {type.name}
                         </option>
@@ -152,7 +156,8 @@ export const AddServiceModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

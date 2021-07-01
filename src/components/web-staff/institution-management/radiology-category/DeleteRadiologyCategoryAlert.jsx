@@ -37,6 +37,7 @@ export const DeleteRadiologyCategoryAlert = ({
       setIsLoading(false);
       onClose();
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Radiology category deleted successfully`,
         status: 'success',
@@ -46,6 +47,7 @@ export const DeleteRadiologyCategoryAlert = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error delete radiology category`,
         status: 'error',
@@ -60,7 +62,8 @@ export const DeleteRadiologyCategoryAlert = ({
       motionPreset="slideInBottom"
       onClose={onClose}
       isOpen={isOpen}
-      isCentered>
+      isCentered
+    >
       <AlertDialogOverlay />
 
       <AlertDialogContent>
@@ -71,7 +74,12 @@ export const DeleteRadiologyCategoryAlert = ({
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button onClick={onClose}>No</Button>
-          <Button colorScheme="red" ml={3} onClick={handleDelete} isLoading={isLoading}>
+          <Button
+            colorScheme="red"
+            ml={3}
+            onClick={handleDelete}
+            isLoading={isLoading}
+          >
             Yes
           </Button>
         </AlertDialogFooter>

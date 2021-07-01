@@ -91,6 +91,7 @@ export const AddNewStaffPage = () => {
         setErrMessage('');
         // clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Staff berhasil ditambahkan`,
           status: 'success',
@@ -170,22 +171,22 @@ export const AddNewStaffPage = () => {
 
     if (json.code === 404) {
       toast({
+        position: 'top-right',
         title: 'ID Available',
         description: `ID belum terdaftarkan`,
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right',
       });
       setIdStatus('available');
     } else if (json.code === 200) {
       toast({
+        position: 'top-right',
         title: 'ID Not Available',
         description: `ID sudah terdaftarkan`,
         status: 'error',
         duration: 3000,
         isClosable: true,
-        position: 'top-right',
       });
       setIdStatus('notAvailable');
       setError('employee_number', {

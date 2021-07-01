@@ -51,6 +51,7 @@ export const AddApplicationModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Applikasi berhasil dibuat`,
           status: 'success',
@@ -71,8 +72,8 @@ export const AddApplicationModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const platform = values.platform.filter((plat) => plat !== false);
+  const onSubmit = async values => {
+    const platform = values.platform.filter(plat => plat !== false);
     const application = {
       name: values.name,
       platform,
@@ -90,10 +91,18 @@ export const AddApplicationModal = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <Box>
-            <FormControl id="name" mb="8" isInvalid={errors?.name ? true : false}>
+            <FormControl
+              id="name"
+              mb="8"
+              isInvalid={errors?.name ? true : false}
+            >
               <FormLabel>Application Name</FormLabel>
-              <Input {...register('name', { required: 'Application name required' })} />
-              <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+              <Input
+                {...register('name', { required: 'Application name required' })}
+              />
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl id="platform" mb="8">
               <FormLabel>Platform</FormLabel>
@@ -101,19 +110,22 @@ export const AddApplicationModal = ({ isOpen, onClose }) => {
                 <Checkbox
                   colorScheme="purple"
                   value="website"
-                  {...register('platform[0]')}>
+                  {...register('platform[0]')}
+                >
                   Website
                 </Checkbox>
                 <Checkbox
                   colorScheme="purple"
                   value="mobile"
-                  {...register('platform[1]')}>
+                  {...register('platform[1]')}
+                >
                   Mobile
                 </Checkbox>
                 <Checkbox
                   colorScheme="purple"
                   value="desktop"
-                  {...register('platform[2]')}>
+                  {...register('platform[2]')}
+                >
                   Desktop
                 </Checkbox>
               </HStack>
@@ -135,7 +147,8 @@ export const AddApplicationModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

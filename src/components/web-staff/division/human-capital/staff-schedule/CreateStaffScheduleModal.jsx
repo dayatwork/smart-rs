@@ -61,6 +61,7 @@ export const CreateStaffScheduleModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Schedule Employee berhasil ditambahkan`,
           status: 'success',

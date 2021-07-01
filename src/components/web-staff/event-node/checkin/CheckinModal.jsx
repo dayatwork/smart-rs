@@ -31,6 +31,7 @@ export const CheckInModal = ({ isOpen, onClose, selectedBooking }) => {
       await queryClient.invalidateQueries('booking-list');
       setIsLoadingCheckIn(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `${name} berhasil checkin`,
         status: 'success',
@@ -41,6 +42,7 @@ export const CheckInModal = ({ isOpen, onClose, selectedBooking }) => {
     } catch (error) {
       setIsLoadingCheckIn(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Check in gagal`,
         status: 'error',
@@ -57,16 +59,26 @@ export const CheckInModal = ({ isOpen, onClose, selectedBooking }) => {
         setName('');
         onClose();
       }}
-      size="xl">
+      size="xl"
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Apakah anda ingin check-in pasien ini?</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box>
-            <Description title="Nama Pasien" value={selectedBooking?.patient_name} />
-            <Description title="Nama Dokter" value={selectedBooking?.doctor_name} />
-            <Description title="Layanan" value={selectedBooking?.service_name} />
+            <Description
+              title="Nama Pasien"
+              value={selectedBooking?.patient_name}
+            />
+            <Description
+              title="Nama Dokter"
+              value={selectedBooking?.doctor_name}
+            />
+            <Description
+              title="Layanan"
+              value={selectedBooking?.service_name}
+            />
             <Description
               title="Tanggal"
               value={`${selectedBooking?.days}, ${selectedBooking?.date}`}
@@ -82,7 +94,8 @@ export const CheckInModal = ({ isOpen, onClose, selectedBooking }) => {
           <Button
             colorScheme="purple"
             onClick={handleCheckIn}
-            isLoading={isLoadingCheckIn}>
+            isLoading={isLoadingCheckIn}
+          >
             Check In
           </Button>
         </ModalFooter>

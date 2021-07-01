@@ -158,6 +158,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       setSelectedCategory('');
       // setSelectedSubcategory("");
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Request laboratory success`,
         status: 'success',
@@ -169,6 +170,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       setIsLoadingRequestLaboratory(false);
 
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Request laboratory failed`,
         status: 'error',

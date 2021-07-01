@@ -56,6 +56,7 @@ export const EditProfessionDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Profession berhasil diedit`,
           status: 'success',

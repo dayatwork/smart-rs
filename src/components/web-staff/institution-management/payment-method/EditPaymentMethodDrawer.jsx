@@ -69,6 +69,7 @@ export const EditPaymentMethodDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Payment method edited`,
           status: 'success',

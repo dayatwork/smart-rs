@@ -66,6 +66,7 @@ export const CreateTestResultModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Blood test result created`,
           status: 'success',

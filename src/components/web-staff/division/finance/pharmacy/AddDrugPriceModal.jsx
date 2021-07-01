@@ -65,6 +65,7 @@ export const AddDrugPriceModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Drug price added successfully`,
           status: 'success',

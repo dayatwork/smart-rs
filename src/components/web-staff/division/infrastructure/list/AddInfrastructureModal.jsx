@@ -72,6 +72,7 @@ export const AddInfrastructureModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Infrastructure created`,
           status: 'success',

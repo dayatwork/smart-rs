@@ -36,7 +36,7 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
   const { data: dataEventNodeMaster } = useQuery(
     'master-event-nodes',
     () => getEventNodesMaster(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataEventNode } = useQuery(
@@ -44,7 +44,7 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
     () => getEventNodes(cookies, selectedInstitution),
     {
       enabled: Boolean(selectedInstitution),
-    },
+    }
   );
 
   const { mutate } = useMutation(createEventNode(cookies), {
@@ -55,11 +55,15 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries(['event-nodes', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'event-nodes',
+          selectedInstitution,
+        ]);
         setErrMessage('');
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Event node berhasil ditambah`,
           status: 'success',
@@ -80,12 +84,12 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const events = values.events
-      .filter((event) => !!event)
-      .map((event) => JSON.parse(event));
+      .filter(event => !!event)
+      .map(event => JSON.parse(event));
 
-    const data = events.map((event) => ({
+    const data = events.map(event => ({
       master_event_node_id: event.master_event_node_id,
       name: event.name,
       description: event.description,
@@ -111,9 +115,9 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
             <FormLabel>Event Nodes</FormLabel>
             <SimpleGrid columns={3} gap="4">
               {dataEventNodeMaster?.data
-                ?.filter((event) => {
+                ?.filter(event => {
                   const alreadyEvent = dataEventNode?.data?.map(
-                    (event) => event.master_event_node_id,
+                    event => event.master_event_node_id
                   );
                   return !alreadyEvent?.includes(event.id);
                 })
@@ -128,7 +132,8 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
                         description: event.description,
                         path: event.path,
                       })}
-                      {...register(`events[${index}]`)}>
+                      {...register(`events[${index}]`)}
+                    >
                       <Text fontWeight="semibold">
                         {event.name} ({event.path})
                       </Text>
@@ -149,7 +154,8 @@ export const AddEventNodeModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Add
           </Button>
         </ModalFooter>

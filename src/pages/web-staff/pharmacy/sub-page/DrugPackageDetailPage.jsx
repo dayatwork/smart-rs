@@ -330,6 +330,7 @@ const ConfirmCompletePackageModal = ({
       ]);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Packaging Completed',
         status: 'success',
@@ -340,6 +341,7 @@ const ConfirmCompletePackageModal = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Error complete packaging',
         status: 'error',

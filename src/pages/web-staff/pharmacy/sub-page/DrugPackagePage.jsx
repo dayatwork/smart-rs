@@ -295,6 +295,7 @@ const ConfirmProcessPackageModal = ({
       await queryClient.invalidateQueries('drugs-order');
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Success start packaging',
         status: 'success',
@@ -305,6 +306,7 @@ const ConfirmProcessPackageModal = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Error start packaging',
         status: 'error',

@@ -52,6 +52,7 @@ export const EditSymptomDrawer = ({ isOpen, onClose, selectedSymptom }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Symptom berhasil diedit`,
           status: 'success',

@@ -26,7 +26,11 @@ import {
   createLabCategory,
 } from '../../../../api/institution-services/lab-category';
 
-export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddLabCategoryModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,25 +39,27 @@ export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) =>
   const [subCategories, setSubCategories] = useState([]);
   const queryClient = useQueryClient();
 
-  const { data: dataLabCatagories, isSuccess: isSuccessLabCatagories } = useQuery(
-    'master-laboratory-categories',
-    () => getLaboratoryCategories(cookies),
-    { staleTime: Infinity },
-  );
+  const { data: dataLabCatagories, isSuccess: isSuccessLabCatagories } =
+    useQuery(
+      'master-laboratory-categories',
+      () => getLaboratoryCategories(cookies),
+      { staleTime: Infinity }
+    );
 
-  const { data: dataLabSubCategories, isFetching: isFetchingLabSubCategories } = useQuery(
-    ['master-laboratory-subcategories', selectedLabCategory],
-    () => getLaboratorySubCategories(cookies, selectedLabCategory),
-    {
-      enabled: Boolean(selectedLabCategory),
-      staleTime: Infinity,
-    },
-  );
+  const { data: dataLabSubCategories, isFetching: isFetchingLabSubCategories } =
+    useQuery(
+      ['master-laboratory-subcategories', selectedLabCategory],
+      () => getLaboratorySubCategories(cookies, selectedLabCategory),
+      {
+        enabled: Boolean(selectedLabCategory),
+        staleTime: Infinity,
+      }
+    );
 
   const { data: dataCategories } = useQuery(
     ['insitution-lab-categories', selectedInstitution],
     () => getLabCategories(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createLabCategory(cookies), {
@@ -72,6 +78,7 @@ export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) =>
         setSelectedLabCategory('');
         setSubCategories([]);
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Lab category added successfully`,
           status: 'success',
@@ -92,9 +99,11 @@ export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) =>
     },
   });
 
-  const onSubmit = async (e) => {
+  const onSubmit = async e => {
     e.preventDefault();
-    const data = subCategories.map((subcategory) => JSON.parse(subcategory.value));
+    const data = subCategories.map(subcategory =>
+      JSON.parse(subcategory.value)
+    );
     const payload = {
       institution_id: selectedInstitution,
       data,
@@ -114,10 +123,11 @@ export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) =>
             <Select
               name="labCategory"
               value={selectedLabCategory}
-              onChange={(e) => setSelectedLabCategory(e.target.value)}>
+              onChange={e => setSelectedLabCategory(e.target.value)}
+            >
               <option value="">Select Lab Category</option>
               {isSuccessLabCatagories &&
-                dataLabCatagories?.data?.map((category) => (
+                dataLabCatagories?.data?.map(category => (
                   <option key={category?.id} value={category?.id}>
                     {category?.name}
                   </option>
@@ -132,13 +142,13 @@ export const AddLabCategoryModal = ({ isOpen, onClose, selectedInstitution }) =>
                 isMulti
                 name="subcategories"
                 options={dataLabSubCategories?.data
-                  ?.filter((category) => {
+                  ?.filter(category => {
                     const alreadyCategory = dataCategories?.data?.map(
-                      (category) => category.subcategory_id,
+                      category => category.subcategory_id
                     );
                     return !alreadyCategory?.includes(category.id);
                   })
-                  ?.map((subcategory) => ({
+                  ?.map(subcategory => ({
                     label: subcategory?.name,
                     value: JSON.stringify({
                       category_id: subcategory?.laboratory_category?.id,

@@ -295,6 +295,7 @@ const ConfirmTakeModal = ({
       await queryClient.invalidateQueries(['drugs-order', selectedInstitution]);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Order delivered',
         status: 'success',
@@ -305,6 +306,7 @@ const ConfirmTakeModal = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Failed to deliver order',
         status: 'error',

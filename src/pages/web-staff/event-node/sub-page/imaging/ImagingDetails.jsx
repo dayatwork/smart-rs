@@ -52,6 +52,7 @@ export const ImagingDetails = () => {
       await createRadiologyResult(cookies, data);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Imaging result uploaded successfully',
         status: 'success',
@@ -62,6 +63,7 @@ export const ImagingDetails = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Error upload imaging result',
         status: 'error',

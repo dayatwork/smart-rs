@@ -25,7 +25,11 @@ import {
 } from '../../../../api/institution-services/service';
 import { getServiceTypes as getServiceTypesMaster } from '../../../../api/master-data-services/service';
 
-export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddServiceTypeModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,13 +40,13 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
   const { data: dataServiceTypesMaster } = useQuery(
     'master-service-types',
     () => getServiceTypesMaster(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { data: dataServiceTypes } = useQuery(
     ['service-types', selectedInstitution],
     () => getServiceTypes(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
+    { enabled: Boolean(selectedInstitution), staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createServiceType(cookies), {
@@ -53,11 +57,15 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries(['service-types', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'service-types',
+          selectedInstitution,
+        ]);
         setErrMessage('');
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service type created`,
           status: 'success',
@@ -78,9 +86,9 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const { types } = values;
-    const formattedTypes = types.map((type) => JSON.parse(type));
+    const formattedTypes = types.map(type => JSON.parse(type));
     const data = {
       institution_id: selectedInstitution,
       data: formattedTypes,
@@ -99,9 +107,9 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
             <VisuallyHidden as="label">Service Types</VisuallyHidden>
             <SimpleGrid columns={3} gap="2">
               {dataServiceTypesMaster?.data
-                ?.filter((type) => {
+                ?.filter(type => {
                   const alreadyTypes = dataServiceTypes?.data?.map(
-                    (type) => type.master_type_id,
+                    type => type.master_type_id
                   );
                   return !alreadyTypes?.includes(type.id);
                 })
@@ -113,7 +121,8 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
                       name: type.name,
                       description: type.description,
                     })}
-                    {...register(`types[${index}]`)}>
+                    {...register(`types[${index}]`)}
+                  >
                     <Text fontWeight="semibold">{type.name}</Text>
                     <Text fontSize="sm" color="gray.500" fontWeight="medium">
                       {type.description}
@@ -131,7 +140,8 @@ export const AddServiceTypeModal = ({ isOpen, onClose, selectedInstitution }) =>
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Add
           </Button>
         </ModalFooter>

@@ -48,6 +48,7 @@ export const AddMedicalHistoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Medical history berhasil ditambahkan`,
           status: 'success',
@@ -68,7 +69,7 @@ export const AddMedicalHistoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const medicalHistories = {
       data: values.medicalHistories,
     };
@@ -125,7 +126,8 @@ export const AddMedicalHistoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

@@ -192,6 +192,7 @@ export const CreateBooking = () => {
       });
       setSelectedTime('');
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Booking Success`,
         status: 'success',
@@ -202,6 +203,7 @@ export const CreateBooking = () => {
     } catch (error) {
       setIsLoadingBooking(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Booking Failed`,
         status: 'error',

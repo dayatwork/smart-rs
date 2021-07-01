@@ -51,6 +51,7 @@ export const EditApplicationDrawer = ({ isOpen, onClose, selectedApp }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Applikasi berhasil diedit`,
           status: 'success',
@@ -71,8 +72,8 @@ export const EditApplicationDrawer = ({ isOpen, onClose, selectedApp }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const platform = values.platform.filter((plat) => plat !== false);
+  const onSubmit = async values => {
+    const platform = values.platform.filter(plat => plat !== false);
     const application = {
       id: selectedApp?.id,
       name: values.name,
@@ -92,13 +93,21 @@ export const EditApplicationDrawer = ({ isOpen, onClose, selectedApp }) => {
 
           <DrawerBody>
             <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-              <FormControl id="name" mb="8" isInvalid={errors?.name ? true : false}>
+              <FormControl
+                id="name"
+                mb="8"
+                isInvalid={errors?.name ? true : false}
+              >
                 <FormLabel>Application Name</FormLabel>
                 <Input
                   defaultValue={selectedApp?.name || ''}
-                  {...register('name', { required: 'Application name required' })}
+                  {...register('name', {
+                    required: 'Application name required',
+                  })}
                 />
-                <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
               </FormControl>
               <FormControl id="platform" mb="8">
                 <FormLabel>Platform</FormLabel>
@@ -108,21 +117,24 @@ export const EditApplicationDrawer = ({ isOpen, onClose, selectedApp }) => {
                     colorScheme="purple"
                     value="website"
                     defaultIsChecked={selectedApp?.platform.includes('website')}
-                    {...register('platform[0]')}>
+                    {...register('platform[0]')}
+                  >
                     Website
                   </Checkbox>
                   <Checkbox
                     colorScheme="purple"
                     value="mobile"
                     defaultIsChecked={selectedApp?.platform.includes('mobile')}
-                    {...register('platform[1]')}>
+                    {...register('platform[1]')}
+                  >
                     Mobile
                   </Checkbox>
                   <Checkbox
                     colorScheme="purple"
                     value="desktop"
                     defaultIsChecked={selectedApp?.platform.includes('desktop')}
-                    {...register('platform[2]')}>
+                    {...register('platform[2]')}
+                  >
                     Desktop
                   </Checkbox>
                   <FormErrorMessage>
@@ -148,7 +160,8 @@ export const EditApplicationDrawer = ({ isOpen, onClose, selectedApp }) => {
             <Button
               isLoading={isLoading}
               colorScheme="purple"
-              onClick={handleSubmit(onSubmit)}>
+              onClick={handleSubmit(onSubmit)}
+            >
               Save
             </Button>
           </DrawerFooter>

@@ -44,6 +44,7 @@ export const SetPasswordPage = () => {
       }
 
       toast({
+        position: 'top-right',
         title: data.title,
         description: data.message,
         status: 'success',
@@ -53,6 +54,7 @@ export const SetPasswordPage = () => {
       history.push(`/add-profile-info`);
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

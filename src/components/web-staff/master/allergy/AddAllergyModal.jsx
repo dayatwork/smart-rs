@@ -49,6 +49,7 @@ export const AddAllergyModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Alergi berhasil ditambahkan`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddAllergyModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const allergies = {
       data: values.allergies,
     };
@@ -138,7 +139,8 @@ export const AddAllergyModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

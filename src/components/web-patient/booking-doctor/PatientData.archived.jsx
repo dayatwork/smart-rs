@@ -208,6 +208,7 @@ export const PatientData = ({
       setIsLoadingSubmit(true);
       setCurrentStepIndex(currentStepIndex + 1);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Profile info dan health info berhasil di update',
         status: 'success',
@@ -217,6 +218,7 @@ export const PatientData = ({
     } catch (error) {
       setIsLoadingSubmit(true);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Profile info dan health info gagal di update',
         status: 'Error',

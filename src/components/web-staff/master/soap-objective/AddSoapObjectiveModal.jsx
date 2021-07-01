@@ -49,6 +49,7 @@ export const AddSoapObjectiveModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Template Objective berhasil ditambahkan`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddSoapObjectiveModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const objectives = {
       data: values.objectives,
     };
@@ -89,7 +90,9 @@ export const AddSoapObjectiveModal = ({ isOpen, onClose }) => {
                 <Flex key={id} mb="2">
                   <HStack>
                     <FormControl id={`objective-name-${index}`}>
-                      <VisuallyHidden as="label">objectives name</VisuallyHidden>
+                      <VisuallyHidden as="label">
+                        objectives name
+                      </VisuallyHidden>
                       <Input
                         placeholder="Name"
                         mr="2"
@@ -97,7 +100,9 @@ export const AddSoapObjectiveModal = ({ isOpen, onClose }) => {
                       />
                     </FormControl>
                     <FormControl id={`objective-value-${index}`}>
-                      <VisuallyHidden as="label">objectives value</VisuallyHidden>
+                      <VisuallyHidden as="label">
+                        objectives value
+                      </VisuallyHidden>
                       <Input
                         placeholder="Default Value"
                         mr="2"
@@ -135,7 +140,8 @@ export const AddSoapObjectiveModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

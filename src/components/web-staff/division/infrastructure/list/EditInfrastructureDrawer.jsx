@@ -87,6 +87,7 @@ export const EditInfrastructureDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Infrastructure updated`,
           status: 'success',
@@ -98,6 +99,7 @@ export const EditInfrastructureDrawer = ({
       if (error) {
         setErrMessage(error.message || 'Error');
         toast({
+          position: 'top-right',
           title: 'Error',
           description: `Infrastructure updated error`,
           status: 'error',

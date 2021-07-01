@@ -83,6 +83,7 @@ export const OrderDetail = ({ orderId }) => {
       ]);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Payment slip uploaded successfully`,
         status: 'success',
@@ -92,6 +93,7 @@ export const OrderDetail = ({ orderId }) => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error upload payment slip`,
         status: 'error',

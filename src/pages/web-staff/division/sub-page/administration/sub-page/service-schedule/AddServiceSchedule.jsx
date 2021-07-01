@@ -108,6 +108,7 @@ export const AddServiceSchedule = () => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Jadwal layanan berhasil ditambahkan`,
           status: 'success',

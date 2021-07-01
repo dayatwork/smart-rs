@@ -32,6 +32,7 @@ export const SignupPage = () => {
       const data = await signup({ email });
 
       toast({
+        position: 'top-right',
         title: data.title,
         description: data.message,
         status: 'success',
@@ -42,6 +43,7 @@ export const SignupPage = () => {
       history.push(`/verification?email=${email}`);
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

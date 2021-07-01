@@ -49,6 +49,7 @@ export const AddSocialHistoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Social history berhasil ditambahkan`,
           status: 'success',
@@ -69,11 +70,11 @@ export const AddSocialHistoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    const socialHistories = values.socialHistories.map((val) => {
+  const onSubmit = async values => {
+    const socialHistories = values.socialHistories.map(val => {
       return {
         name: val.name,
-        default_value: val.default_value.split(',').map((dv) => dv.trim()),
+        default_value: val.default_value.split(',').map(dv => dv.trim()),
       };
     });
 
@@ -98,18 +99,26 @@ export const AddSocialHistoryModal = ({ isOpen, onClose }) => {
                   <Box flexGrow="1">
                     <VisuallyHidden as="label">Social History</VisuallyHidden>
                     <HStack>
-                      <FormControl id={`social-history-name-${index}`} maxW="52">
+                      <FormControl
+                        id={`social-history-name-${index}`}
+                        maxW="52"
+                      >
                         <Input
                           placeholder="name"
                           mr="2"
                           {...register(`socialHistories[${index}].name`)}
                         />
                       </FormControl>
-                      <FormControl id={`social-history-value-${index}`} flexGrow="1">
+                      <FormControl
+                        id={`social-history-value-${index}`}
+                        flexGrow="1"
+                      >
                         <Input
                           placeholder="default value (separate with commas)"
                           mr="2"
-                          {...register(`socialHistories[${index}].default_value`)}
+                          {...register(
+                            `socialHistories[${index}].default_value`
+                          )}
                         />
                       </FormControl>
                     </HStack>
@@ -144,7 +153,8 @@ export const AddSocialHistoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

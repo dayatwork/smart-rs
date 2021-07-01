@@ -22,6 +22,7 @@ export const VerificationOTPForm = ({ onSubmit, isLoading }) => {
     e.preventDefault();
     if (!email || otp.length !== 6) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `URL atau OTP tidak valid`,
         status: 'error',

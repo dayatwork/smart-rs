@@ -25,7 +25,7 @@ const UserAvatar = ({ src, name }) => (
   />
 );
 
-const ProfileMenuButton = (props) => {
+const ProfileMenuButton = props => {
   const buttonProps = useMenuButton(props);
   return (
     <Flex
@@ -34,7 +34,8 @@ const ProfileMenuButton = (props) => {
       flexShrink={0}
       rounded="full"
       outline="0"
-      _focus={{ shadow: 'outline' }}>
+      _focus={{ shadow: 'outline' }}
+    >
       <Box srOnly>Open user menu</Box>
       <UserAvatar />
     </Flex>
@@ -49,6 +50,7 @@ export const ProfileDropdown = () => {
   const handleLogout = () => {
     logout(() => {
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Anda berhasil logout`,
         status: 'success',
@@ -75,7 +77,12 @@ export const ProfileDropdown = () => {
         <MenuItem fontWeight="medium" as={Link} to="/account-setting">
           Account Setting
         </MenuItem>
-        <MenuItem fontWeight="medium" color="red.500" as="button" onClick={handleLogout}>
+        <MenuItem
+          fontWeight="medium"
+          color="red.500"
+          as="button"
+          onClick={handleLogout}
+        >
           Sign out
         </MenuItem>
       </MenuList>

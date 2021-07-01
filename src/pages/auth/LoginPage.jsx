@@ -59,6 +59,7 @@ export const LoginPage = () => {
       }
 
       toast({
+        position: 'top-right',
         title: data?.title,
         description: data?.message,
         status: 'success',
@@ -69,6 +70,7 @@ export const LoginPage = () => {
       history.push('/');
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

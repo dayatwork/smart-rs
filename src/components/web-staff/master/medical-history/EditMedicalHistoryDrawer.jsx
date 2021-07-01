@@ -56,6 +56,7 @@ export const EditMedicalHistoryDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Medical history berhasil diedit`,
           status: 'success',

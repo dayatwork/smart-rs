@@ -56,6 +56,7 @@ export const EditAllergyDrawer = ({ isOpen, onClose, selectedAllergy }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Allergy berhasil diedit`,
           status: 'success',

@@ -56,6 +56,7 @@ export const EditSoapObjectiveDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Template Objective berhasil diedit`,
           status: 'success',

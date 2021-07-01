@@ -70,6 +70,7 @@ export const EditLaboratorySubCategoryDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Laboratory Sub Category berhasil diedit`,
           status: 'success',

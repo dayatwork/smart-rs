@@ -56,6 +56,7 @@ export const EditPatientTypeDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Patient type edited successfully`,
           status: 'success',

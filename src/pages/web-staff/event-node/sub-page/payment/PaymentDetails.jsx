@@ -79,6 +79,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
       ]);
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Payment Confirmed',
         status: 'success',
@@ -89,6 +90,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Error confirm payment',
         status: 'error',

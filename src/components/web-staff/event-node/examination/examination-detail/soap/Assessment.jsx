@@ -134,6 +134,7 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
       await createPatientAssessment(cookies, payload);
       setIsLoadingCreateAssessment(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Assessment added successfully`,
         status: 'success',
@@ -143,6 +144,7 @@ export const Assesment = ({ patientDetail, soapAssessments }) => {
     } catch (error) {
       setIsLoadingCreateAssessment(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Error add assessment`,
         status: 'error',

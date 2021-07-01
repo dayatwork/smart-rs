@@ -56,6 +56,7 @@ export const EditSocialHistoryDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Social history berhasil diedit`,
           status: 'success',

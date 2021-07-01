@@ -23,7 +23,11 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { createDepartmentType } from '../../../../api/institution-services/department';
 
-export const AddDepartmentTypeModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddDepartmentTypeModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,11 +47,15 @@ export const AddDepartmentTypeModal = ({ isOpen, onClose, selectedInstitution })
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries(['department-types', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'department-types',
+          selectedInstitution,
+        ]);
         setErrMessage('');
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Department type created`,
           status: 'success',
@@ -68,7 +76,7 @@ export const AddDepartmentTypeModal = ({ isOpen, onClose, selectedInstitution })
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const data = {
       institution_id: selectedInstitution,
       data: values.departmentTypes,
@@ -131,7 +139,8 @@ export const AddDepartmentTypeModal = ({ isOpen, onClose, selectedInstitution })
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

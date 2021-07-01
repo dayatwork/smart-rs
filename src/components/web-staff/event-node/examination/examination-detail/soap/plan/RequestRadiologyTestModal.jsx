@@ -176,6 +176,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       setSelectedCategory('');
       setSelectedSubcategory('');
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Request radiology success`,
         status: 'success',
@@ -187,6 +188,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       setIsLoadingRequestRadiology(false);
 
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Request radiology failed`,
         status: 'error',

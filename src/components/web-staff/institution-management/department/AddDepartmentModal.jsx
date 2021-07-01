@@ -29,7 +29,11 @@ import {
 } from '../../../../api/institution-services/department';
 import { getEventNodes } from '../../../../api/application-services/event-node';
 
-export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const AddDepartmentModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [, setErrMessage] = useState('');
   const { register, handleSubmit, reset, clearErrors, control } = useForm();
@@ -41,16 +45,17 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
   const [cookies] = useCookies(['token']);
   const queryClient = useQueryClient();
 
-  const { data: dataDepartmentTypes, isSuccess: isSuccessDepartmentTypes } = useQuery(
-    ['department-types', selectedInstitution],
-    () => getDepartmentTypes(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution), staleTime: Infinity },
-  );
+  const { data: dataDepartmentTypes, isSuccess: isSuccessDepartmentTypes } =
+    useQuery(
+      ['department-types', selectedInstitution],
+      () => getDepartmentTypes(cookies, selectedInstitution),
+      { enabled: Boolean(selectedInstitution), staleTime: Infinity }
+    );
 
   const { data: resEventNode } = useQuery(
     'master-event-nodes',
     () => getEventNodes(cookies),
-    { staleTime: Infinity },
+    { staleTime: Infinity }
   );
 
   const { mutate } = useMutation(createDepartment(cookies), {
@@ -61,11 +66,15 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries(['departments', selectedInstitution]);
+        await queryClient.invalidateQueries([
+          'departments',
+          selectedInstitution,
+        ]);
         setErrMessage('');
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Department created`,
           status: 'success',
@@ -86,10 +95,10 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
     },
   });
 
-  const onSubmit = async (values) => {
-    const departments = values.departments.map((department) => ({
+  const onSubmit = async values => {
+    const departments = values.departments.map(department => ({
       ...department,
-      event_node: department.event_node.map((event) => event.value),
+      event_node: department.event_node.map(event => event.value),
     }));
     const data = {
       institution_id: selectedInstitution,
@@ -112,10 +121,12 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
                 <HStack key={id} mb="2">
                   <FormControl id="type">
                     <VisuallyHidden as="label">Type</VisuallyHidden>
-                    <Select {...register(`departments[${index}].department_type_id`)}>
+                    <Select
+                      {...register(`departments[${index}].department_type_id`)}
+                    >
                       <option value="">Select Department Type</option>
                       {isSuccessDepartmentTypes &&
-                        dataDepartmentTypes?.data?.map((type) => (
+                        dataDepartmentTypes?.data?.map(type => (
                           <option key={type.id} value={type.id}>
                             {type.name}
                           </option>
@@ -143,7 +154,7 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
                       name={`departments[${index}].event_node`}
                       isMulti
                       control={control}
-                      options={resEventNode?.data.map((event) => ({
+                      options={resEventNode?.data.map(event => ({
                         value: event.id,
                         label: event.name,
                       }))}
@@ -179,7 +190,8 @@ export const AddDepartmentModal = ({ isOpen, onClose, selectedInstitution }) => 
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

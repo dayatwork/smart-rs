@@ -33,6 +33,7 @@ export const AddHealthInfoPage = () => {
       ]);
       setIsLoading(true);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Profile berhasil di update',
         status: 'success',
@@ -43,6 +44,7 @@ export const AddHealthInfoPage = () => {
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

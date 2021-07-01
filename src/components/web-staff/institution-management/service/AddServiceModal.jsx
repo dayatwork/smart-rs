@@ -38,7 +38,7 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
 
   const { data: dataServicesMaster } = useQuery(
     'master-services',
-    () => getServicesMaster(cookies),
+    () => getServicesMaster(cookies)
     // { staleTime: Infinity },
   );
 
@@ -48,7 +48,7 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
     {
       enabled: Boolean(selectedInstitution),
       // staleTime: Infinity,
-    },
+    }
   );
 
   const { data: dataServiceTypes, isSuccess: isSuccessServiceTypes } = useQuery(
@@ -57,7 +57,7 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
     {
       enabled: Boolean(selectedInstitution),
       // staleTime: Infinity
-    },
+    }
   );
 
   const { mutate } = useMutation(createService(cookies), {
@@ -73,6 +73,7 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service created`,
           status: 'success',
@@ -93,13 +94,13 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const services = values.services
-      .filter((service) => !!service)
-      .map((service) => JSON.parse(service));
+      .filter(service => !!service)
+      .map(service => JSON.parse(service));
     const service_type_id = JSON.parse(serviceType).id;
 
-    const data = services.map((service) => ({
+    const data = services.map(service => ({
       service_type_id,
       master_service_id: service.master_service_id,
       name: service.name,
@@ -123,17 +124,21 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
         <ModalBody>
           <FormControl mb="4" maxW="md">
             <FormLabel>Service Type</FormLabel>
-            <Select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+            <Select
+              value={serviceType}
+              onChange={e => setServiceType(e.target.value)}
+            >
               <option value="">Select Service Type</option>
               {isSuccessServiceTypes &&
-                dataServiceTypes?.data?.map((type) => {
+                dataServiceTypes?.data?.map(type => {
                   return (
                     <option
                       key={type.id}
                       value={JSON.stringify({
                         id: type.id,
                         master: type.master_type_id,
-                      })}>
+                      })}
+                    >
                       {type.name}
                     </option>
                   );
@@ -145,15 +150,16 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
               <FormLabel>Services</FormLabel>
               <SimpleGrid columns={3} gap="2">
                 {dataServicesMaster?.data
-                  ?.filter((service) => {
+                  ?.filter(service => {
                     const alreadyService = dataServices?.data?.map(
-                      (service) => service.master_service_id,
+                      service => service.master_service_id
                     );
                     return !alreadyService?.includes(service.id);
                   })
                   .filter(
-                    (service) =>
-                      service.service_type_id === JSON.parse(serviceType || {}).master,
+                    service =>
+                      service.service_type_id ===
+                      JSON.parse(serviceType || {}).master
                   )
                   .map((service, index) => {
                     return (
@@ -164,9 +170,14 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
                           name: service.name,
                           description: service.description,
                         })}
-                        {...register(`services[${index}]`)}>
+                        {...register(`services[${index}]`)}
+                      >
                         <Text fontWeight="semibold">{service.name}</Text>
-                        <Text fontSize="sm" color="gray.500" fontWeight="medium">
+                        <Text
+                          fontSize="sm"
+                          color="gray.500"
+                          fontWeight="medium"
+                        >
                           {service.description}
                         </Text>
                       </Checkbox>
@@ -184,7 +195,8 @@ export const AddServiceModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Add
           </Button>
         </ModalFooter>

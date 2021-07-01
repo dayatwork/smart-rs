@@ -175,6 +175,7 @@ export const PaymentBooking = ({
         setBookingData(res?.data);
         setIsLoading(false);
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Booking success`,
           status: 'success',
@@ -188,6 +189,7 @@ export const PaymentBooking = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Failed',
         description: `Booking failed`,
         status: 'error',

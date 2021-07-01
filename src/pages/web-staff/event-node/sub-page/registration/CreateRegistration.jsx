@@ -97,6 +97,7 @@ export const CreateRegistration = () => {
         setIdentity('');
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Pasien berhasil didaftarkan`,
           status: 'success',
@@ -183,6 +184,7 @@ export const CreateRegistration = () => {
       if (res?.data?.email) {
         setFoundUser(res.data);
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `User found`,
           status: 'success',
@@ -191,6 +193,7 @@ export const CreateRegistration = () => {
         });
       } else {
         toast({
+          position: 'top-right',
           title: 'Error',
           description: `User not found`,
           status: 'error',

@@ -97,6 +97,7 @@ export const BookingDetailPage = () => {
       await queryClient.invalidateQueries('user-booking-list');
       setIsLoadingCancel(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Cancel booking success`,
         status: 'success',
@@ -108,6 +109,7 @@ export const BookingDetailPage = () => {
     } catch (error) {
       setIsLoadingCancel(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Cancel booking gagal`,
         status: 'error',

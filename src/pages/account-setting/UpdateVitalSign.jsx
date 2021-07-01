@@ -132,6 +132,7 @@ export const UpdateVitalSign = () => {
       ]);
       setIsLoadingUpdateVitalSign(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Health info berhasil di update',
         status: 'success',
@@ -141,6 +142,7 @@ export const UpdateVitalSign = () => {
     } catch (error) {
       setIsLoadingUpdateVitalSign(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Health info gagal di update',
         status: 'Error',

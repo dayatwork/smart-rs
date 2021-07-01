@@ -119,6 +119,7 @@ export const AccountSettingPage = () => {
       // await queryClient.invalidateQueries(['user-profile', cookies.token]);
       setIsLoadingPersonalInfo(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Personal berhasil di update',
         status: 'success',
@@ -128,6 +129,7 @@ export const AccountSettingPage = () => {
     } catch (error) {
       setIsLoadingPersonalInfo(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',
@@ -154,6 +156,7 @@ export const AccountSettingPage = () => {
       // await queryClient.invalidateQueries(['user-profile', cookies.token]);
       setIsLoadingAddressInfo(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Alamat berhasil di update',
         status: 'success',
@@ -163,6 +166,7 @@ export const AccountSettingPage = () => {
     } catch (error) {
       setIsLoadingAddressInfo(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

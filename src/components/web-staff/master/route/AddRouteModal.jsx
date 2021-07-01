@@ -76,6 +76,7 @@ export const AddRouteModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Applikasi berhasil dibuat`,
           status: 'success',

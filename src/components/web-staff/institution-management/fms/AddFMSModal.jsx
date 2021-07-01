@@ -49,6 +49,7 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `SMF berhasil dibuat`,
           status: 'success',
@@ -69,7 +70,7 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const fms = {
       institution_id: selectedInstitution,
       data: values.fms,
@@ -135,7 +136,8 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

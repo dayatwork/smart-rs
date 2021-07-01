@@ -48,6 +48,7 @@ export const AddSymptomModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Symptom berhasil ditambahkan`,
           status: 'success',
@@ -68,7 +69,7 @@ export const AddSymptomModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const symptoms = {
       data: values.symptoms,
     };
@@ -125,7 +126,8 @@ export const AddSymptomModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

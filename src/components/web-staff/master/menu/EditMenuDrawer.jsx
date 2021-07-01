@@ -71,6 +71,7 @@ export const EditMenuDrawer = ({ isOpen, onClose, selectedMenu }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Menu berhasil diedit`,
           status: 'success',

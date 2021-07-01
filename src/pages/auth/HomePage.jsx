@@ -61,6 +61,7 @@ export const HomePage = () => {
       }
 
       toast({
+        position: 'top-right',
         title: data?.title,
         description: data?.message,
         status: 'success',
@@ -71,6 +72,7 @@ export const HomePage = () => {
       history.push('/');
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: error.message,
         status: 'error',

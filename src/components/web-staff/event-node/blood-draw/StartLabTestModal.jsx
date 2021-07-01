@@ -52,6 +52,7 @@ export const StartLabTestModal = ({
         ]);
         setIsLoading(false);
         toast({
+          position: 'top-right',
           title: 'Success',
           description: 'Blood test created',
           status: 'success',
@@ -65,6 +66,7 @@ export const StartLabTestModal = ({
     } catch (error) {
       setIsLoading(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Patient not found',
         status: 'error',

@@ -48,6 +48,7 @@ export const AddFamilyHistoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Family history berhasil ditambahkan`,
           status: 'success',
@@ -68,7 +69,7 @@ export const AddFamilyHistoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const familyHistories = {
       data: values.familyHistories,
     };
@@ -125,7 +126,8 @@ export const AddFamilyHistoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

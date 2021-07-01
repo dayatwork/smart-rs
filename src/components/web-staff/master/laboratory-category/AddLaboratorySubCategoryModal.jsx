@@ -39,8 +39,9 @@ export const AddLaboratorySubCategoryModal = ({ isOpen, onClose }) => {
   });
   const queryClient = useQueryClient();
 
-  const { data: dataCategories } = useQuery('master-laboratory-categories', () =>
-    getLaboratoryCategories(cookies),
+  const { data: dataCategories } = useQuery(
+    'master-laboratory-categories',
+    () => getLaboratoryCategories(cookies)
   );
 
   const { mutate } = useMutation(createLaboratorySubCategory(cookies), {
@@ -56,6 +57,7 @@ export const AddLaboratorySubCategoryModal = ({ isOpen, onClose }) => {
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Laboratory Sub Category berhasil ditambahkan`,
           status: 'success',
@@ -76,7 +78,7 @@ export const AddLaboratorySubCategoryModal = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const subcategories = {
       data: values.subcategories,
     };
@@ -98,9 +100,12 @@ export const AddLaboratorySubCategoryModal = ({ isOpen, onClose }) => {
                     <VisuallyHidden as="label">Category</VisuallyHidden>
                     <Select
                       mr="2"
-                      {...register(`subcategories[${index}].laboratory_category_id`)}>
+                      {...register(
+                        `subcategories[${index}].laboratory_category_id`
+                      )}
+                    >
                       <option value="">Select Category</option>
-                      {dataCategories?.data?.map((category) => (
+                      {dataCategories?.data?.map(category => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
@@ -160,7 +165,8 @@ export const AddLaboratorySubCategoryModal = ({ isOpen, onClose }) => {
           <Button
             isLoading={isLoading}
             colorScheme="purple"
-            onClick={handleSubmit(onSubmit)}>
+            onClick={handleSubmit(onSubmit)}
+          >
             Create
           </Button>
         </ModalFooter>

@@ -155,6 +155,7 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
       ]);
       reset({});
       toast({
+        position: 'top-right',
         title: 'Success',
         description: `Family history berhasil di update`,
         status: 'success',
@@ -164,6 +165,7 @@ const UpdateFamilyHistoryModal = ({ isOpen, onClose, patientDetail }) => {
       onClose();
     } catch (error) {
       toast({
+        position: 'top-right',
         title: 'Error',
         description: `Family history gagal di update`,
         status: 'error',

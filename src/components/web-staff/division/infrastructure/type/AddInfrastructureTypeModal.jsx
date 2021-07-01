@@ -59,6 +59,7 @@ export const AddInfrastructureTypeModal = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Service type created`,
           status: 'success',

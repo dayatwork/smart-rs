@@ -61,6 +61,7 @@ export const DrugReceiptDetailPage = () => {
       await queryClient.invalidateQueries('drugs-order');
       setIsLoadingCreatePackage(false);
       toast({
+        position: 'top-right',
         title: 'Success',
         description: 'Package created',
         status: 'success',
@@ -71,6 +72,7 @@ export const DrugReceiptDetailPage = () => {
     } catch (error) {
       setIsLoadingCreatePackage(false);
       toast({
+        position: 'top-right',
         title: 'Error',
         description: 'Error create package',
         status: 'error',

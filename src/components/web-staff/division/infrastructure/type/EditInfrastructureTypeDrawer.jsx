@@ -60,6 +60,7 @@ export const EditInfrastructureTypeDrawer = ({
         reset();
         clearErrors();
         toast({
+          position: 'top-right',
           title: 'Success',
           description: `Infrastructure type updated`,
           status: 'success',
