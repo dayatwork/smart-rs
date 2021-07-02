@@ -12,7 +12,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-// import LazyLoad from 'react-lazyload';
+import LazyLoad from 'react-lazyload';
 // import Logo from './Logo.svg';
 import { Logo } from './Logo';
 
@@ -81,9 +81,9 @@ export const SignupPage = () => {
           colSpan={3}
           display={{ base: 'none', lg: 'flex' }}
         >
-          {/* <LazyLoad height={200}> */}
-          <img src="/images/bg-auth.jpg" alt="bg-auth" />
-          {/* </LazyLoad> */}
+          <LazyLoad resize height={200}>
+            <img src="/images/bg-auth.jpg" alt="bg-auth" />
+          </LazyLoad>
         </GridItem>
         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
@@ -96,7 +96,7 @@ export const SignupPage = () => {
             mt="6"
             mb="10"
             textAlign="center"
-            fontSize={{ base: '2xl', md: null }}
+            fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
             fontWeight="extrabold"
           >
             Daftar

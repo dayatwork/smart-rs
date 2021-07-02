@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-// import LazyLoad from 'react-lazyload';
+import LazyLoad from 'react-lazyload';
 import { Logo } from './Logo';
 
 import { login } from '../../api/auth-services/auth';
@@ -113,9 +113,9 @@ export const LoginPage = () => {
           colSpan={3}
           display={{ base: 'none', lg: 'flex' }}
         >
-          {/* <LazyLoad height={200}> */}
-          <img src="/images/bg-auth.jpg" alt="bg-auth" />
-          {/* </LazyLoad> */}
+          <LazyLoad resize height={200}>
+            <img src="/images/bg-auth.jpg" alt="bg-auth" />
+          </LazyLoad>
         </GridItem>
         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
@@ -128,7 +128,7 @@ export const LoginPage = () => {
           <Heading
             mt="6"
             textAlign="center"
-            fontSize={{ base: '2xl', md: null }}
+            fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
             fontWeight="extrabold"
           >
             Selamat Datang
