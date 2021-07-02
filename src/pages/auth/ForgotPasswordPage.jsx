@@ -42,8 +42,9 @@ export const ForgotPasswordPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}
+      bgColor="secondary.lighter"
+      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      // bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Forgot Password | SMART-RS</title>

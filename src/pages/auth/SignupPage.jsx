@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Center, Heading, Text, useToast, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+  useToast,
+  VStack,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
+// import LazyLoad from 'react-lazyload';
 // import Logo from './Logo.svg';
 import { Logo } from './Logo';
 
@@ -12,6 +23,8 @@ import { SignupForm } from '../../components/auth/SignupForm';
 export const SignupPage = () => {
   const history = useHistory();
   const toast = useToast();
+  const formColumns = useBreakpointValue({ base: 5, lg: 2 });
+  const minWGrid = useBreakpointValue({ base: 'xs', xs: 'sm', sm: 'md' });
 
   const onSubmit = async value => {
     const { email } = value;
@@ -47,53 +60,66 @@ export const SignupPage = () => {
       minH="100vh"
       minW="100vw"
       p="3"
-      backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      bgColor={{ base: 'gray.100', lg: 'white' }}
+      bgColor="secondary.lighter"
+      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
+      // bgColor={{ base: 'gray.100', lg: 'white' }}
     >
       <Helmet>
         <title>Sign up | SMART-RS</title>
       </Helmet>
-      <Box
+      <Grid
         bg="white"
-        py="8"
-        px={{ base: '8', md: '10' }}
-        shadow={{ base: 'xl', lg: 'base' }}
+        shadow="xl"
         rounded={{ sm: 'lg' }}
-        w="md"
+        templateColumns="repeat(5, 1fr)"
+        overflow="hidden"
+        maxW="6xl"
+        minW={minWGrid}
       >
-        {/* <Logo /> */}
-        <VStack>
-          <Logo />
-          <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
-            SMART-RS
-          </Text>
-        </VStack>
-        <Heading
-          mt="6"
-          mb="10"
-          textAlign="center"
-          size="xl"
-          fontWeight="extrabold"
+        <GridItem
+          as={Center}
+          colSpan={3}
+          display={{ base: 'none', lg: 'flex' }}
         >
-          Daftar
-        </Heading>
-        <SignupForm onSubmit={onSubmit} />
-        <Box mt="4" align="center" maxW="md" fontWeight="medium">
-          <span>Sudah punya akun?</span>
-          <Link to="/login">
-            <Box
-              as="span"
-              marginStart="1"
-              href="#"
-              color="primary.400"
-              _hover={{ color: 'primary.600' }}
-              display={{ base: 'block', sm: 'revert' }}
-            >
-              Login
-            </Box>
-          </Link>
-        </Box>
-      </Box>
+          {/* <LazyLoad height={200}> */}
+          <img src="/images/bg-auth.jpg" alt="bg-auth" />
+          {/* </LazyLoad> */}
+        </GridItem>
+        <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
+          <VStack>
+            <Logo />
+            <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
+              SMART-RS
+            </Text>
+          </VStack>
+          <Heading
+            mt="6"
+            mb="10"
+            textAlign="center"
+            fontSize={{ base: '2xl', md: null }}
+            fontWeight="extrabold"
+          >
+            Daftar
+          </Heading>
+          <SignupForm onSubmit={onSubmit} />
+          <Box mt="4" align="center" maxW="md" fontWeight="medium">
+            <span>Sudah punya akun?</span>
+            <Link to="/login">
+              <Box
+                as="span"
+                marginStart="1"
+                href="#"
+                color="primary.400"
+                _hover={{ color: 'primary.600' }}
+                display={{ base: 'block', sm: 'revert' }}
+              >
+                Login
+              </Box>
+            </Link>
+          </Box>
+        </GridItem>
+        {/* <Logo /> */}
+      </Grid>
     </Center>
   );
 };

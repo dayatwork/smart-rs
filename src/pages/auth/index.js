@@ -6,3 +6,4 @@ export * from './AddProfileInfoPage';
 export * from './AddHealthInfoPage';
 export * from './ForgotPasswordPage';
 export * from './ChangePasswordPage';
+export * from './LandingPage';

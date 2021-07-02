@@ -29,6 +29,7 @@ import {
   AddHealthInfoPage,
   ForgotPasswordPage,
   ChangePasswordPage,
+  LandingPage,
 } from './pages/auth';
 import {
   HomePage,
@@ -75,6 +76,9 @@ const AppRoutes = () => {
   return (
     <Switch>
       {/* Auth Routes */}
+      <Route path="/landing">
+        <LandingPage />
+      </Route>
       <Route path="/signup">
         <SignupPage />
       </Route>
