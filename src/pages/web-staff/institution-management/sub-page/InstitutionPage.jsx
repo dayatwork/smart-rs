@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,9 +11,11 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Avatar,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
+import Lightbox from 'react-image-lightbox';
 
 import {
   getInstitutionTypes,
@@ -150,6 +152,8 @@ const InstitutionType = () => {
 // ================================
 const Institution = () => {
   const [cookies] = useCookies(['token']);
+  const [isOpenLogo, setIsOpenLogo] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState('');
 
   const {
     onOpen: onModalOpen,
@@ -195,7 +199,16 @@ const Institution = () => {
       {
         Header: 'Logo',
         accessor: 'logo',
-        // Cell: ({ value }) => <Image src={value} />,
+        Cell: ({ value }) => (
+          <Avatar
+            src={value && `http://local-dev.ejemplo.me/smartrs/${value}`}
+            onClick={() => {
+              setSelectedLogo(value);
+              setIsOpenLogo(true);
+            }}
+            cursor="pointer"
+          />
+        ),
       },
       {
         Header: 'Email',
@@ -222,6 +235,9 @@ const Institution = () => {
     []
   );
 
+  console.log({ selectedLogo });
+  console.log({ isOpenLogo });
+
   return (
     <Box>
       {isFetching && (
@@ -229,7 +245,12 @@ const Institution = () => {
       )}
 
       <AddInstitutionModal isOpen={isModalOpen} onClose={onModalClose} />
-
+      {isOpenLogo && selectedLogo && (
+        <Lightbox
+          mainSrc={`http://local-dev.ejemplo.me/smartrs/${selectedLogo}`}
+          onCloseRequest={() => setIsOpenLogo(false)}
+        />
+      )}
       <PaginationTable
         columns={columns}
         data={data || []}
