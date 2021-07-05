@@ -76,9 +76,9 @@ const AppRoutes = () => {
   return (
     <Switch>
       {/* Auth Routes */}
-      <Route path="/landing">
+      {/* <Route path="/landing">
         <LandingPage />
-      </Route>
+      </Route> */}
       <Route path="/signup">
         <SignupPage />
       </Route>

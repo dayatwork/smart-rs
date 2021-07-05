@@ -1,4 +1,5 @@
 export const getBookingList = async (cookies, institution_id) => {
+  // console.log({ cookies });
   const formattedId = institution_id.replace(/['"]+/g, '');
   const res = await fetch(
     `${process.env.REACT_APP_BOOKING_API}/booking-patient/list?institution_id=${formattedId}`,

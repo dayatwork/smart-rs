@@ -80,32 +80,38 @@ export const AddInstitutionModal = ({ isOpen, onClose }) => {
   });
 
   const onSubmit = async values => {
-    const toBase64 = file =>
-      new window.Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
+    const data = new FormData();
+    data.append('logo', values.logo[0]);
+    data.append('institution_type_id', values.institution_type_id);
+    data.append('name', values.name);
+    data.append('email', values.email);
+    data.append('phone_number', values.phone_number);
+    // const toBase64 = file =>
+    //   new window.Promise((resolve, reject) => {
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = () => resolve(reader.result);
+    //     reader.onerror = error => reject(error);
+    //   });
 
-    const {
-      institution_type_id,
-      name,
-      email,
-      phone_number,
-      identity_number,
-      logo,
-    } = values;
-    const institution = {
-      institution_type_id,
-      name,
-      email,
-      phone_number,
-      identity_number,
-      logo: await toBase64(logo[0]),
-    };
+    // const {
+    //   institution_type_id,
+    //   name,
+    //   email,
+    //   phone_number,
+    //   identity_number,
+    //   logo,
+    // } = values;
+    // const institution = {
+    //   institution_type_id,
+    //   name,
+    //   email,
+    //   phone_number,
+    //   identity_number,
+    //   logo: await toBase64(logo[0]),
+    // };
 
-    await mutate(institution);
+    await mutate(data);
   };
 
   return (

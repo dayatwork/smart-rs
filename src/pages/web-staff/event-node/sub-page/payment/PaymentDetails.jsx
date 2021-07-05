@@ -201,7 +201,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
         </Heading>
         {isOpenPaymentSlip && (
           <Lightbox
-            mainSrc={`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+            mainSrc={`http://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
             onCloseRequest={() => setIsOpenPaymentSlip(false)}
           />
         )}

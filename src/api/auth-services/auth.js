@@ -6,9 +6,9 @@ export const login = async ({ email, password }) => {
     },
     body: JSON.stringify({ username: email, password, app: 'smartrs' }),
   });
-
   if (!res.ok) {
     const error = await res.json();
+    // console.log({ error });
     throw new Error(error.message);
   }
 

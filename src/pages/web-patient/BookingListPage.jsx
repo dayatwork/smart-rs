@@ -245,6 +245,8 @@ export const BookingListPage = () => {
     []
   );
 
+  console.log({ dataBooking });
+
   return (
     <Flex
       direction="column"

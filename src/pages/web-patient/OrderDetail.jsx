@@ -25,6 +25,8 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import { AiOutlineFileSearch } from 'react-icons/ai';
 import { RiFileList2Line, RiBillLine } from 'react-icons/ri';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { getPaymentMethodById } from '../../api/institution-services/payment-method';
 import { getUserOrderDetail } from '../../api/payment-services/user-order';
@@ -34,12 +36,39 @@ import {
   getPaymentSlipDetail,
 } from '../../api/payment-services/manual-verification';
 
+const schema = yup.object().shape({
+  payment_slip: yup
+    .mixed()
+    .required('Payment slip dibutuhkan')
+    .test('fileSize', 'Ukuran file terlalu besar', value => {
+      console.log({ value });
+      return value && value[0].size <= 1000000;
+    })
+    .test('type', 'Format file harus jpeg/jpg, png, atau pdf', value => {
+      return (
+        value &&
+        (value[0].type === 'image/jpeg' ||
+          value[0].type === 'image/jpg' ||
+          value[0].type === 'image/png' ||
+          value[0].type === 'application/pdf')
+      );
+    }),
+});
+
 export const OrderDetail = ({ orderId, bookingStatus }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, watch } = useForm({
-    payment_slip: '',
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    // payment_slip: '',
+    mode: 'onBlur',
+    defaultValues: { payment_slip: null },
+    resolver: yupResolver(schema),
   });
   const paymentSlipWatch = watch('payment_slip');
   const queryClient = useQueryClient();
@@ -129,6 +158,9 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
   if (bookingStatus === 'cancel') {
     return null;
   }
+
+  console.log({ paymentSlipWatch });
+  console.log({ errors });
 
   return (
     <>
@@ -470,6 +502,17 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                           {...register('payment_slip')}
                         ></Input>
                       </FormControl>
+                      {errors?.payment_slip && (
+                        <Text
+                          mt="-2"
+                          mb="3"
+                          fontSize="sm"
+                          fontWeight="semibold"
+                          color="red.500"
+                        >
+                          {errors?.payment_slip?.message}
+                        </Text>
+                      )}
                       <Button
                         type="submit"
                         colorScheme="primary"

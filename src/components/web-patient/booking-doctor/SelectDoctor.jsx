@@ -122,7 +122,7 @@ export const SelectDoctor = ({
     }
   );
 
-  console.log({ dataSchedules });
+  // console.log({ dataSchedules });
 
   const {
     data: dataEstimatedTimes,

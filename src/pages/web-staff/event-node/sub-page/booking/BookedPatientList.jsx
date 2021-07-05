@@ -219,6 +219,8 @@ export const BookedPatientList = () => {
     [onCancelBookingClick]
   );
 
+  console.log({ dataBookingList });
+
   return (
     <Box>
       {isFetchingBookingList && (

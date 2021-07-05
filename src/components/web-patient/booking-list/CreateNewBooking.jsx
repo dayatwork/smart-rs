@@ -22,7 +22,7 @@ import {
 } from 'react-icons/ri';
 
 export const CreateNewBooking = ({ dataBooking }) => {
-  console.log({ dataBooking });
+  // console.log({ dataBooking });
   if (!dataBooking) {
     return (
       <Center
