@@ -13,6 +13,9 @@ import {
   useDisclosure,
   Select,
   useToast,
+  CheckboxGroup,
+  HStack,
+  Checkbox,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
 import { useQuery, useQueryClient } from 'react-query';
@@ -29,6 +32,8 @@ import { BackButton } from '../../../../../components/shared/BackButton';
 import { CancelBookingAlert } from '../../../../../components/web-staff/event-node/booking';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
 
+const allFilter = ['booked', 'cancel', 'done', 'examination', 'complete'];
+
 export const BookedPatientList = () => {
   const { employeeDetail, user } = useContext(AuthContext);
   const toast = useToast();
@@ -39,6 +44,7 @@ export const BookedPatientList = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isLoadingCancel, setIsLoadingCancel] = useState(false);
   const queryClient = useQueryClient();
+  const [filter, setFilter] = useState(allFilter);
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
@@ -108,6 +114,7 @@ export const BookedPatientList = () => {
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
+        ?.filter(booking => filter.includes(booking.booking_status))
         // ?.filter(
         //   booking =>
         //     booking.booking_status === 'booked' ||
@@ -130,7 +137,7 @@ export const BookedPatientList = () => {
             payment_status: booking?.booking_orders[0].status,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList]
+    [dataBookingList?.data, isSuccessBookingList, filter]
   );
 
   const columns = React.useMemo(
@@ -221,7 +228,7 @@ export const BookedPatientList = () => {
     [onCancelBookingClick]
   );
 
-  console.log({ dataBookingList });
+  console.log({ filter });
 
   return (
     <Box>
@@ -268,16 +275,41 @@ export const BookedPatientList = () => {
           skeletonCols={9}
           isLoading={isLoadingBookingList}
           action={
-            <PrivateComponent permission={Permissions.createBookingDoctor}>
-              <Button
-                as={Link}
-                to="/events/booking/create"
-                leftIcon={<FaPlus />}
+            <HStack spacing="8">
+              <CheckboxGroup
                 colorScheme="purple"
+                defaultValue={filter}
+                onChange={setFilter}
               >
-                Add New Booking
-              </Button>
-            </PrivateComponent>
+                <HStack spacing="4">
+                  <Checkbox fontWeight="semibold" value="booked">
+                    Booked
+                  </Checkbox>
+                  <Checkbox fontWeight="semibold" value="cancel">
+                    Cancel
+                  </Checkbox>
+                  <Checkbox fontWeight="semibold" value="done">
+                    Checked-in
+                  </Checkbox>
+                  <Checkbox fontWeight="semibold" value="examination">
+                    Examination
+                  </Checkbox>
+                  <Checkbox fontWeight="semibold" value="complete">
+                    Complete
+                  </Checkbox>
+                </HStack>
+              </CheckboxGroup>
+              <PrivateComponent permission={Permissions.createBookingDoctor}>
+                <Button
+                  as={Link}
+                  to="/events/booking/create"
+                  leftIcon={<FaPlus />}
+                  colorScheme="purple"
+                >
+                  Add New Booking
+                </Button>
+              </PrivateComponent>
+            </HStack>
           }
           size="sm"
         />

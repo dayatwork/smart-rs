@@ -129,6 +129,7 @@ const PaginationTable = ({
                     bgColor="gray.200"
                     color="gray.700"
                     py="2"
+                    _hover={{ color: 'purple.600' }}
                   >
                     {column.render('Header')}
                     <chakra.span pl="4">
