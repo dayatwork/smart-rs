@@ -465,9 +465,13 @@ export const PatientData = ({
                   })}
                 >
                   <option>Pilih status penanggung jawab</option>
-                  <option value="suami-istri">Suami/istri</option>
-                  <option value="orang-tua">Orang tua</option>
-                  <option value="anak">Anak</option>
+                  <option value="husband">Suami</option>
+                  <option value="wife">Istri</option>
+                  <option value="father">Ayah</option>
+                  <option value="mother">Ibu</option>
+                  <option value="child">Anak</option>
+                  <option value="sibling">Saudara</option>
+                  <option value="friend">Teman</option>
                   <option value="lainnya">Lainnya</option>
                 </Select>
               </FormControl>
