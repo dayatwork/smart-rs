@@ -108,11 +108,11 @@ export const BookedPatientList = () => {
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
-        ?.filter(
-          booking =>
-            booking.booking_status === 'booked' ||
-            booking.booking_status === 'cancel'
-        )
+        // ?.filter(
+        //   booking =>
+        //     booking.booking_status === 'booked' ||
+        //     booking.booking_status === 'cancel'
+        // )
         .map(booking => {
           return {
             id: booking?.id,
@@ -172,18 +172,20 @@ export const BookedPatientList = () => {
         Header: 'Status',
         accessor: 'status',
         Cell: ({ value }) => {
-          let color = 'gray';
           if (value === 'booked') {
-            color = 'yellow';
+            return <Badge colorScheme="yellow">{value}</Badge>;
           }
           if (value === 'done') {
-            color = 'green';
+            return <Badge colorScheme="green">checked-in</Badge>;
           }
           if (value === 'cancel') {
-            color = 'red';
+            return <Badge colorScheme="red">{value}</Badge>;
+          }
+          if (value === 'examination') {
+            return <Badge colorScheme="blue">{value}</Badge>;
           }
 
-          return <Badge colorScheme={color}>{value}</Badge>;
+          return <Badge>{value}</Badge>;
         },
       },
       {
