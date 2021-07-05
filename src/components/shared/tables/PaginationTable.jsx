@@ -74,6 +74,7 @@ const PaginationTable = ({
     return (
       <Box pb="20" overflow="hidden">
         <Flex
+          // mt="2"
           justify={{ base: 'stretch', md: 'space-between' }}
           direction={{ base: 'column', md: 'row' }}
           mb="4"

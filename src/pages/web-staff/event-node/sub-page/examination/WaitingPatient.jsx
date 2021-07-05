@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useContext, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Button, Spinner } from '@chakra-ui/react';
+import { Box, Button, Spinner, Switch, Text, HStack } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
@@ -24,6 +24,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
   const { employeeDetail } = useContext(AuthContext);
   const [isLoadingCreateSoap, SetIsLoadingCreateSoap] = useState(false);
   const [patient, setPatient] = useState('');
+  const [isToday, setIsToday] = useState(true);
   const queryClient = useQueryClient();
 
   const {
@@ -87,6 +88,16 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
       isSuccessBookingList &&
       dataBookingList?.data
         ?.filter(booking => booking.booking_status === 'done')
+        ?.filter(booking => {
+          console.log({ booking });
+          if (isToday) {
+            return (
+              new Date(booking?.date).toISOString() ===
+              new Date(new Date().toISOString().split('T')[0]).toISOString()
+            );
+          }
+          return booking;
+        })
         .map(booking => {
           return {
             booking_id: booking.id,
@@ -102,7 +113,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
             transaction_number: booking.transaction_number,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList]
+    [dataBookingList?.data, isSuccessBookingList, isToday]
   );
 
   const columns = React.useMemo(
@@ -174,6 +185,23 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
         data={data || []}
         skeletonCols={7}
         isLoading={isLoadingBookingList}
+        action={
+          <HStack p="2">
+            <Text
+              fontWeight="semibold"
+              fontSize={{ base: 'sm', md: 'md' }}
+              mt={{ base: '-1.5', md: '0' }}
+              color="gray.500"
+            >
+              Only Today
+            </Text>
+            <Switch
+              colorScheme="purple"
+              isChecked={isToday}
+              onChange={e => setIsToday(e.target.checked)}
+            />
+          </HStack>
+        }
       />
     </Box>
   );

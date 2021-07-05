@@ -120,10 +120,16 @@ export const BookingListPage = () => {
           if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
           }
-          if (value?.toLowerCase() === 'admin verification') {
+          if (
+            value?.toLowerCase() === 'admin verification' ||
+            value?.toLowerCase() === 'under confirmation'
+          ) {
             return <Badge colorScheme="blue">Under Confirmation</Badge>;
           }
-          if (value?.toLowerCase() === 'pending payment') {
+          if (
+            value?.toLowerCase() === 'pending payment' ||
+            value?.toLowerCase() === 'pending'
+          ) {
             return <Badge>Pending</Badge>;
           }
           return <Badge>{value}</Badge>;

@@ -12,6 +12,7 @@ import {
   Switch,
   useDisclosure,
   Button,
+  HStack,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
@@ -32,6 +33,8 @@ export const CheckinPatientList = () => {
   );
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [checkedIn, setCheckedIn] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+  const [isToday, setIsToday] = useState(true);
 
   const {
     isOpen: isCheckInOpen,
@@ -76,6 +79,22 @@ export const CheckinPatientList = () => {
             ? booking.booking_status === 'done'
             : booking.booking_status === 'booked'
         )
+        ?.filter(booking => {
+          if (isPaid) {
+            return booking?.booking_orders[0].status === 'paid';
+          }
+          return booking;
+        })
+        .filter(booking => {
+          console.log({ booking });
+          if (isToday) {
+            return (
+              new Date(booking?.date).toISOString() ===
+              new Date(new Date().toISOString().split('T')[0]).toISOString()
+            );
+          }
+          return booking;
+        })
         .map(booking => {
           return {
             id: booking?.id,
@@ -93,7 +112,7 @@ export const CheckinPatientList = () => {
             payment_status: booking?.booking_orders[0].status,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList, checkedIn]
+    [dataBookingList?.data, isSuccessBookingList, checkedIn, isPaid, isToday]
   );
 
   // console.log({ dataBookingList });
@@ -154,8 +173,20 @@ export const CheckinPatientList = () => {
         Header: 'Payment Status',
         accessor: 'payment_status',
         Cell: ({ value }) => {
-          if (value === 'paid') {
+          if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
+          }
+          if (
+            value?.toLowerCase() === 'admin verification' ||
+            value?.toLowerCase() === 'under confirmation'
+          ) {
+            return <Badge colorScheme="blue">Under Confirmation</Badge>;
+          }
+          if (
+            value?.toLowerCase() === 'pending payment' ||
+            value?.toLowerCase() === 'pending'
+          ) {
+            return <Badge>Pending</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
@@ -228,21 +259,47 @@ export const CheckinPatientList = () => {
           isLoading={isLoadingBookingList}
           size="sm"
           action={
-            <Box p="2">
+            <HStack minW="md" spacing="4" p="2">
+              <FormControl display="flex" alignItems="center">
+                <FormLabel htmlFor="only-today" mb="0">
+                  Only Today
+                </FormLabel>
+                <Switch
+                  id="only-today"
+                  // size="lg"
+                  defaultChecked={isToday}
+                  checked={isToday}
+                  colorScheme="purple"
+                  onChange={e => setIsToday(e.target.checked)}
+                />
+              </FormControl>
+              <FormControl display="flex" alignItems="center">
+                <FormLabel htmlFor="only-paid" mb="0">
+                  Only Paid
+                </FormLabel>
+                <Switch
+                  id="only-paid"
+                  // size="lg"
+                  defaultChecked={isPaid}
+                  checked={isPaid}
+                  colorScheme="purple"
+                  onChange={e => setIsPaid(e.target.checked)}
+                />
+              </FormControl>
               <FormControl display="flex" alignItems="center">
                 <FormLabel htmlFor="check-in" mb="0">
                   Checked-In
                 </FormLabel>
                 <Switch
                   id="check-in"
-                  size="lg"
+                  // size="lg"
                   defaultChecked={checkedIn}
                   checked={checkedIn}
                   colorScheme="purple"
                   onChange={e => setCheckedIn(e.target.checked)}
                 />
               </FormControl>
-            </Box>
+            </HStack>
           }
         />
       )}

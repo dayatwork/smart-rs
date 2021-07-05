@@ -16,6 +16,9 @@ import {
   CheckboxGroup,
   HStack,
   Checkbox,
+  Switch,
+  Stack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
 import { useQuery, useQueryClient } from 'react-query';
@@ -45,6 +48,9 @@ export const BookedPatientList = () => {
   const [isLoadingCancel, setIsLoadingCancel] = useState(false);
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState(allFilter);
+  const [isToday, setIsToday] = useState(true);
+  const checkboxSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const stackSpacing = useBreakpointValue({ base: '4', md: '8' });
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
@@ -115,6 +121,16 @@ export const BookedPatientList = () => {
       isSuccessBookingList &&
       dataBookingList?.data
         ?.filter(booking => filter.includes(booking.booking_status))
+        .filter(booking => {
+          console.log({ booking });
+          if (isToday) {
+            return (
+              new Date(booking?.date).toISOString() ===
+              new Date(new Date().toISOString().split('T')[0]).toISOString()
+            );
+          }
+          return booking;
+        })
         // ?.filter(
         //   booking =>
         //     booking.booking_status === 'booked' ||
@@ -137,7 +153,7 @@ export const BookedPatientList = () => {
             payment_status: booking?.booking_orders[0].status,
           };
         }),
-    [dataBookingList?.data, isSuccessBookingList, filter]
+    [dataBookingList?.data, isSuccessBookingList, filter, isToday]
   );
 
   const columns = React.useMemo(
@@ -161,11 +177,12 @@ export const BookedPatientList = () => {
       },
       {
         Header: 'Jadwal',
-        Cell: ({ row }) => {
+        accessor: 'date',
+        Cell: ({ value, row }) => {
           return (
             <Box>
               <Text mb="1">{row?.original?.days}</Text>
-              <Text mb="1">{row?.original?.date}</Text>
+              <Text mb="1">{value}</Text>
               <Text>{row?.original?.time}</Text>
             </Box>
           );
@@ -199,8 +216,20 @@ export const BookedPatientList = () => {
         Header: 'Payment Status',
         accessor: 'payment_status',
         Cell: ({ value }) => {
-          if (value === 'paid') {
+          if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
+          }
+          if (
+            value?.toLowerCase() === 'admin verification' ||
+            value?.toLowerCase() === 'under confirmation'
+          ) {
+            return <Badge colorScheme="blue">Under Confirmation</Badge>;
+          }
+          if (
+            value?.toLowerCase() === 'pending payment' ||
+            value?.toLowerCase() === 'pending'
+          ) {
+            return <Badge>Pending</Badge>;
           }
           return <Badge>{value}</Badge>;
         },
@@ -269,36 +298,68 @@ export const BookedPatientList = () => {
         </FormControl>
       )}
       {selectedInstitution && (
-        <PaginationTable
-          columns={columns}
-          data={data || []}
-          skeletonCols={9}
-          isLoading={isLoadingBookingList}
-          action={
-            <HStack spacing="8">
-              <CheckboxGroup
-                colorScheme="purple"
-                defaultValue={filter}
-                onChange={setFilter}
+        <>
+          <Stack
+            mb="4"
+            spacing={stackSpacing}
+            direction={{ base: 'column', md: 'row' }}
+            align="center"
+          >
+            <HStack>
+              <Text
+                fontWeight="semibold"
+                fontSize={{ base: 'sm', md: 'md' }}
+                mt={{ base: '-1.5', md: '0' }}
+                color="gray.500"
               >
-                <HStack spacing="4">
-                  <Checkbox fontWeight="semibold" value="booked">
-                    Booked
-                  </Checkbox>
-                  <Checkbox fontWeight="semibold" value="cancel">
-                    Cancel
-                  </Checkbox>
-                  <Checkbox fontWeight="semibold" value="done">
-                    Checked-in
-                  </Checkbox>
-                  <Checkbox fontWeight="semibold" value="examination">
-                    Examination
-                  </Checkbox>
-                  <Checkbox fontWeight="semibold" value="complete">
-                    Complete
-                  </Checkbox>
-                </HStack>
-              </CheckboxGroup>
+                Only Today
+              </Text>
+              <Switch
+                colorScheme="purple"
+                isChecked={isToday}
+                onChange={e => setIsToday(e.target.checked)}
+              />
+            </HStack>
+
+            <CheckboxGroup
+              colorScheme="purple"
+              defaultValue={filter}
+              onChange={setFilter}
+              size={checkboxSize}
+            >
+              <HStack>
+                <Checkbox fontWeight="semibold" color="gray.500" value="booked">
+                  Booked
+                </Checkbox>
+                <Checkbox fontWeight="semibold" color="gray.500" value="cancel">
+                  Cancel
+                </Checkbox>
+                <Checkbox fontWeight="semibold" color="gray.500" value="done">
+                  Checked-in
+                </Checkbox>
+                <Checkbox
+                  fontWeight="semibold"
+                  color="gray.500"
+                  value="examination"
+                >
+                  Examination
+                </Checkbox>
+                <Checkbox
+                  fontWeight="semibold"
+                  color="gray.500"
+                  value="complete"
+                >
+                  Complete
+                </Checkbox>
+              </HStack>
+            </CheckboxGroup>
+          </Stack>
+          <PaginationTable
+            columns={columns}
+            data={data || []}
+            skeletonCols={9}
+            isLoading={isLoadingBookingList}
+            action={
               <PrivateComponent permission={Permissions.createBookingDoctor}>
                 <Button
                   as={Link}
@@ -309,10 +370,10 @@ export const BookedPatientList = () => {
                   Add New Booking
                 </Button>
               </PrivateComponent>
-            </HStack>
-          }
-          size="sm"
-        />
+            }
+            size="sm"
+          />
+        </>
       )}
     </Box>
   );

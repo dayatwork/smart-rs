@@ -1,7 +1,15 @@
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Box, Button, Spinner } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Button,
+  HStack,
+  Spinner,
+  Switch,
+  Text,
+} from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
@@ -11,6 +19,7 @@ import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
   const [cookies] = useCookies(['token']);
+  const [isToday, setIsToday] = useState(true);
 
   const {
     data: dataSoapList,
@@ -28,19 +37,32 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
   const data = React.useMemo(
     () =>
       isSuccessSoapList &&
-      dataSoapList?.data.map(soap => ({
-        id: soap?.id,
-        soap_date: soap?.date,
-        soap_number: soap?.soap_number,
-        patient_id: soap?.patient_id,
-        patient_name: soap?.patient_data?.name,
-        patient_number: soap?.patient_data?.patient_number,
-        patient_status: soap?.patient_data?.critical,
-        doctor_id: soap?.doctor_id,
-        status: soap?.status,
-        transaction_number: soap?.transaction_number,
-      })),
-    [dataSoapList?.data, isSuccessSoapList]
+      dataSoapList?.data
+        ?.filter(soap => {
+          console.log({ soap });
+          if (isToday) {
+            return (
+              new Date(soap?.date.split('T')[0]).toISOString() ===
+              new Date(new Date().toISOString().split('T')[0]).toISOString()
+            );
+          }
+          return soap;
+        })
+        .map(soap => {
+          return {
+            id: soap?.id,
+            soap_date: soap?.date,
+            soap_number: soap?.soap_number,
+            patient_id: soap?.patient_id,
+            patient_name: soap?.patient_data?.name,
+            patient_number: soap?.patient_data?.patient_number,
+            patient_status: soap?.patient_data?.critical,
+            doctor_id: soap?.doctor_id,
+            status: soap?.status,
+            transaction_number: soap?.transaction_number,
+          };
+        }),
+    [dataSoapList?.data, isSuccessSoapList, isToday]
   );
 
   const columns = React.useMemo(
@@ -138,6 +160,23 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
         columns={columns}
         data={data || []}
         isLoading={isLoadingSoapList}
+        action={
+          <HStack p="2">
+            <Text
+              fontWeight="semibold"
+              fontSize={{ base: 'sm', md: 'md' }}
+              mt={{ base: '-1.5', md: '0' }}
+              color="gray.500"
+            >
+              Only Today
+            </Text>
+            <Switch
+              colorScheme="purple"
+              isChecked={isToday}
+              onChange={e => setIsToday(e.target.checked)}
+            />
+          </HStack>
+        }
       />
     </Box>
   );
