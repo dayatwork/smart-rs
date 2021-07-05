@@ -40,7 +40,7 @@ const schema = yup.object().shape({
   payment_slip: yup
     .mixed()
     .required('Payment slip dibutuhkan')
-    .test('fileSize', 'Ukuran file terlalu besar', value => {
+    .test('fileSize', 'Ukuran file terlalu besar (Max 1MB)', value => {
       console.log({ value });
       return value && value[0].size <= 1000000;
     })
