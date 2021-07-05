@@ -357,34 +357,35 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                       </Text>
                     </Box> */}
                   </Box>
-                  {dataUserOrderDetail?.data?.status !== 'paid' && (
-                    <Box>
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        fontWeight="semibold"
-                      >
-                        Balance Due
-                      </Text>
-                      <Text fontWeight="semibold" fontSize="3xl" mb="1">
-                        {formatter.format(
-                          dataUserOrderDetail?.data?.total_price
-                        )}
-                      </Text>
-                      <Text
-                        fontSize="sm"
-                        fontWeight="medium"
-                        bgColor="primary.500"
-                        as="span"
-                        px="2"
-                        py="1"
-                        color="secondary.light"
-                        borderRadius="full"
-                      >
-                        Due date: {dataOrderDetail?.data?.due_date}
-                      </Text>
-                    </Box>
-                  )}
+                  {dataUserOrderDetail?.data?.status !== 'paid' &&
+                    dataUserOrderDetail?.data?.status !== 'over due' && (
+                      <Box>
+                        <Text
+                          fontSize="sm"
+                          color="gray.600"
+                          fontWeight="semibold"
+                        >
+                          Balance Due
+                        </Text>
+                        <Text fontWeight="semibold" fontSize="3xl" mb="1">
+                          {formatter.format(
+                            dataUserOrderDetail?.data?.total_price
+                          )}
+                        </Text>
+                        <Text
+                          fontSize="sm"
+                          fontWeight="medium"
+                          bgColor="primary.500"
+                          as="span"
+                          px="2"
+                          py="1"
+                          color="secondary.light"
+                          borderRadius="full"
+                        >
+                          Due date: {dataOrderDetail?.data?.due_date}
+                        </Text>
+                      </Box>
+                    )}
                 </SimpleGrid>
                 {/* <Property
                   label="Order Number"
@@ -439,95 +440,108 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
               </CardContent>
             </Card>
           </GridItem>
-          {dataUserOrderDetail?.data?.status !== 'paid' && (
-            <GridItem colSpan={{ base: 2, xl: 1 }}>
-              <Card>
-                <CardHeader
-                  title={
-                    <HStack>
-                      <Icon
-                        color="secondary.dark"
-                        as={RiBillLine}
-                        w="5"
-                        h="5"
-                      />
-                      <Text>Upload Payment Slip</Text>
-                    </HStack>
-                  }
-                />
-                <CardContent>
-                  {!isLoadingPaymentSlip && dataPaymentSlip?.data?.id ? (
-                    <Box py="6">
-                      <Center fontWeight="semibold" color="secondary.dark">
-                        Payment slip has been uploaded.
-                      </Center>
-                      <Center color="secondary.dark" fontSize="sm">
-                        Your payment will be processed
-                      </Center>
-                    </Box>
-                  ) : (
-                    <Box
-                      as="form"
-                      px="6"
-                      py="4"
-                      onSubmit={handleSubmit(onSubmit)}
-                    >
-                      <FormControl mb="4">
-                        <FormLabel
-                          border="2px"
-                          borderStyle="dashed"
-                          p="10"
-                          borderRadius="5px"
-                          textAlign="center"
-                          cursor="pointer"
-                          m="0"
-                          borderColor="primary.500"
-                          color="primary.500"
-                        >
-                          {paymentSlipWatch?.length ? (
-                            paymentSlipWatch[0]?.name
-                          ) : (
-                            <Icon
-                              as={AiOutlineFileSearch}
-                              h={5}
-                              w={5}
-                              color="primary.500"
-                            />
-                          )}
-                        </FormLabel>
-                        <Input
-                          type="file"
-                          mb="2"
-                          display="none"
-                          {...register('payment_slip')}
-                        ></Input>
-                      </FormControl>
-                      {errors?.payment_slip && (
-                        <Text
-                          mt="-2"
-                          mb="3"
-                          fontSize="sm"
-                          fontWeight="semibold"
-                          color="red.500"
-                        >
-                          {errors?.payment_slip?.message}
-                        </Text>
-                      )}
-                      <Button
-                        type="submit"
-                        colorScheme="primary"
-                        w="full"
-                        isLoading={isLoading}
-                        disabled={!paymentSlipWatch?.length}
+          {dataUserOrderDetail?.data?.status !== 'paid' &&
+            dataUserOrderDetail?.data?.status !== 'over due' && (
+              <GridItem colSpan={{ base: 2, xl: 1 }}>
+                <Card>
+                  <CardHeader
+                    title={
+                      <HStack>
+                        <Icon
+                          color="secondary.dark"
+                          as={RiBillLine}
+                          w="5"
+                          h="5"
+                        />
+                        <Text>Upload Payment Slip</Text>
+                      </HStack>
+                    }
+                  />
+                  <CardContent>
+                    {!isLoadingPaymentSlip && dataPaymentSlip?.data?.id ? (
+                      <Box py="6">
+                        <Center fontWeight="semibold" color="secondary.dark">
+                          Payment slip has been uploaded.
+                        </Center>
+                        <Center color="secondary.dark" fontSize="sm">
+                          Your payment will be processed
+                        </Center>
+                      </Box>
+                    ) : (
+                      <Box
+                        as="form"
+                        px="6"
+                        py="4"
+                        onSubmit={handleSubmit(onSubmit)}
                       >
-                        Upload
-                      </Button>
-                    </Box>
-                  )}
-                </CardContent>
-              </Card>
-            </GridItem>
-          )}
+                        <FormControl mb="4">
+                          <FormLabel
+                            border="2px"
+                            borderStyle="dashed"
+                            p={paymentSlipWatch ? '4' : '10'}
+                            borderRadius="5px"
+                            textAlign="center"
+                            cursor="pointer"
+                            m="0"
+                            borderColor="primary.500"
+                            color="primary.500"
+                          >
+                            {paymentSlipWatch?.length ? (
+                              <>
+                                {paymentSlipWatch[0] && (
+                                  <img
+                                    src={URL.createObjectURL(
+                                      paymentSlipWatch[0]
+                                    )}
+                                    alt="payment slip preview"
+                                  />
+                                )}
+                                <Text>{paymentSlipWatch[0]?.name}</Text>
+                              </>
+                            ) : (
+                              <Icon
+                                as={AiOutlineFileSearch}
+                                h={5}
+                                w={5}
+                                color="primary.500"
+                              />
+                            )}
+                          </FormLabel>
+                          <Input
+                            type="file"
+                            accept="image/png, application/pdf, image/jpeg"
+                            mb="2"
+                            display="none"
+                            {...register('payment_slip')}
+                          ></Input>
+                        </FormControl>
+                        {errors?.payment_slip && (
+                          <Box
+                            mt="-2"
+                            mb="3"
+                            fontSize="sm"
+                            fontWeight="semibold"
+                            color="red.500"
+                          >
+                            {errors?.payment_slip?.message}
+                          </Box>
+                        )}
+
+                        <Button
+                          type="submit"
+                          colorScheme="primary"
+                          w="full"
+                          isLoading={isLoading}
+                          disabled={!paymentSlipWatch?.length}
+                        >
+                          Upload
+                        </Button>
+                      </Box>
+                    )}
+                  </CardContent>
+                </Card>
+              </GridItem>
+            )}
         </Grid>
       )}
     </>
