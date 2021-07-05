@@ -64,7 +64,7 @@ export const PaymentList = ({ fromFinanceMenu }) => {
     [dataInstitutionOrderList?.data, isSuccessInstitutionOrderList]
   );
 
-  // console.log({ dataInstitutionOrderList });
+  console.log({ dataInstitutionOrderList });
 
   const columns = React.useMemo(
     () => [
@@ -93,9 +93,21 @@ export const PaymentList = ({ fromFinanceMenu }) => {
       {
         Header: 'Status',
         accessor: 'status',
+        // Cell: ({ value }) => {
+        //   if (value.toLowerCase() === 'paid') {
+        //     return <Badge colorScheme="green">{value}</Badge>;
+        //   }
+        //   return <Badge>{value}</Badge>;
+        // },
         Cell: ({ value }) => {
-          if (value.toLowerCase() === 'paid') {
+          if (value?.toLowerCase() === 'paid') {
             return <Badge colorScheme="green">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'cancel') {
+            return <Badge colorScheme="red">{value}</Badge>;
+          }
+          if (value?.toLowerCase() === 'over due') {
+            return <Badge colorScheme="orange">{value}</Badge>;
           }
           return <Badge>{value}</Badge>;
         },

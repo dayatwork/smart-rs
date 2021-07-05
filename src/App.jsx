@@ -29,7 +29,7 @@ import {
   AddHealthInfoPage,
   ForgotPasswordPage,
   ChangePasswordPage,
-  LandingPage,
+  // LandingPage,
 } from './pages/auth';
 import {
   HomePage,

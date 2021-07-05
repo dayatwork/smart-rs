@@ -201,7 +201,7 @@ const Institution = () => {
         accessor: 'logo',
         Cell: ({ value }) => (
           <Avatar
-            src={value && `http://local-dev.ejemplo.me/smartrs/${value}`}
+            src={value && `${process.env.REACT_APP_UPLOADED_FILE_URL}/${value}`}
             onClick={() => {
               setSelectedLogo(value);
               setIsOpenLogo(true);
@@ -247,7 +247,7 @@ const Institution = () => {
       <AddInstitutionModal isOpen={isModalOpen} onClose={onModalClose} />
       {isOpenLogo && selectedLogo && (
         <Lightbox
-          mainSrc={`http://local-dev.ejemplo.me/smartrs/${selectedLogo}`}
+          mainSrc={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${selectedLogo}`}
           onCloseRequest={() => setIsOpenLogo(false)}
         />
       )}

@@ -201,7 +201,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
         </Heading>
         {isOpenPaymentSlip && (
           <Lightbox
-            mainSrc={`http://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`}
+            mainSrc={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${dataPaymentSlip?.data?.document}`}
             onCloseRequest={() => setIsOpenPaymentSlip(false)}
           />
         )}
