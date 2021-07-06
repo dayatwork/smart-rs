@@ -5,3 +5,4 @@ export * from './BookingDetailPage';
 export * from './OrderDetailPage';
 export * from './ExaminationResultPage.jsx';
 export * from './ExaminationResultDetailPage';
+export * from './UploadPaymentSlipPage';

@@ -39,6 +39,7 @@ import {
   OrderDetailPage,
   PatientExaminationResultsPage,
   PatientExaminationResultsDetailPage,
+  UploadPaymentSlipPage,
 } from './pages/web-patient';
 import {
   DashboardPage,
@@ -153,6 +154,12 @@ const AppRoutes = () => {
         pageTitle="Examination | SMART-RS"
       >
         <PatientExaminationResultsDetailPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute
+        path="/payment/manual/upload/:orderId"
+        pageTitle="Examination | SMART-RS"
+      >
+        <UploadPaymentSlipPage />
       </AuthenticatedRoute>
 
       {/* Web Staff Routes */}

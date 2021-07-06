@@ -161,6 +161,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
 
   // console.log({ paymentSlipWatch });
   // console.log({ errors });
+  console.log({ orderId });
 
   return (
     <>
