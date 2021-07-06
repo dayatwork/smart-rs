@@ -251,7 +251,7 @@ export const BookingListPage = () => {
     []
   );
 
-  console.log({ dataBooking });
+  // console.log({ dataBooking });
 
   return (
     <Flex

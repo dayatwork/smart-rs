@@ -64,7 +64,7 @@ export const PaymentList = ({ fromFinanceMenu }) => {
     [dataInstitutionOrderList?.data, isSuccessInstitutionOrderList]
   );
 
-  console.log({ dataInstitutionOrderList });
+  // console.log({ dataInstitutionOrderList });
 
   const columns = React.useMemo(
     () => [

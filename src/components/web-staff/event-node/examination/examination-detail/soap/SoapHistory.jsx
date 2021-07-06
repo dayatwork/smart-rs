@@ -24,8 +24,8 @@ export const SoapHistory = ({ patientId, institutionId }) => {
     }
   );
 
-  console.log({ patientId });
-  console.log({ dataPatientSoaps });
+  // console.log({ patientId });
+  // console.log({ dataPatientSoaps });
 
   const data = React.useMemo(
     () =>

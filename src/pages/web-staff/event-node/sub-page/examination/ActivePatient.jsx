@@ -39,7 +39,7 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
       isSuccessSoapList &&
       dataSoapList?.data
         ?.filter(soap => {
-          console.log({ soap });
+          // console.log({ soap });
           if (isToday) {
             return (
               new Date(soap?.date.split('T')[0]).toISOString() ===

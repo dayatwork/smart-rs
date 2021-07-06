@@ -41,7 +41,7 @@ const schema = yup.object().shape({
     .mixed()
     .required('Payment slip dibutuhkan')
     .test('fileSize', 'Ukuran file terlalu besar (Max 1MB)', value => {
-      console.log({ value });
+      // console.log({ value });
       return value && value[0].size <= 1000000;
     })
     .test('type', 'Format file harus jpeg/jpg, png, atau pdf', value => {
@@ -159,8 +159,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
     return null;
   }
 
-  console.log({ paymentSlipWatch });
-  console.log({ errors });
+  // console.log({ paymentSlipWatch });
+  // console.log({ errors });
 
   return (
     <>

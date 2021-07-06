@@ -89,7 +89,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
       dataBookingList?.data
         ?.filter(booking => booking.booking_status === 'done')
         ?.filter(booking => {
-          console.log({ booking });
+          // console.log({ booking });
           if (isToday) {
             return (
               new Date(booking?.date).toISOString() ===

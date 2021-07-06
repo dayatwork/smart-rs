@@ -86,7 +86,7 @@ export const CheckinPatientList = () => {
           return booking;
         })
         .filter(booking => {
-          console.log({ booking });
+          // console.log({ booking });
           if (isToday) {
             return (
               new Date(booking?.date).toISOString() ===

@@ -149,10 +149,10 @@ export const PaymentBooking = ({
             responsible_status: patientData?.responsible_status,
           };
         }
-        console.log({ data });
+        // console.log({ data });
         setIsLoading(true);
         const res = await createBooking(cookies, data);
-        console.log({ resBooking: res });
+        // console.log({ resBooking: res });
         const orderData = {
           booking_order_id: res?.data?.booking_order?.id,
           type: '02',

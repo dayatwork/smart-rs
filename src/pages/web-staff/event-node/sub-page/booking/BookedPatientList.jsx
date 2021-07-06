@@ -122,7 +122,7 @@ export const BookedPatientList = () => {
       dataBookingList?.data
         ?.filter(booking => filter.includes(booking.booking_status))
         .filter(booking => {
-          console.log({ booking });
+          // console.log({ booking });
           if (isToday) {
             return (
               new Date(booking?.date).toISOString() ===
@@ -257,7 +257,7 @@ export const BookedPatientList = () => {
     [onCancelBookingClick]
   );
 
-  console.log({ filter });
+  // console.log({ filter });
 
   return (
     <Box>

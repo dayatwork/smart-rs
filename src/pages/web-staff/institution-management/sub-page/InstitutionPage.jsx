@@ -235,8 +235,8 @@ const Institution = () => {
     []
   );
 
-  console.log({ selectedLogo });
-  console.log({ isOpenLogo });
+  // console.log({ selectedLogo });
+  // console.log({ isOpenLogo });
 
   return (
     <Box>
