@@ -42,7 +42,7 @@ export const InputText = React.forwardRef(
               position: absolute;
               bottom: 12px;
               left: 16px;
-              color: gray;
+              color: #4a5568;
               transition: all 0.2s ease;
             }
 

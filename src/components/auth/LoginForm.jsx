@@ -68,8 +68,8 @@ export const LoginForm = ({ onSubmit }) => {
               variant="link"
               as={Link}
               to="/forgot-password"
+              // color="primary.600"
               colorScheme="primary"
-              size="sm"
             >
               Lupa kata sandi?
             </Button>
@@ -78,6 +78,9 @@ export const LoginForm = ({ onSubmit }) => {
         <Button
           isLoading={isSubmitting}
           type="submit"
+          // color="white"
+          // bgColor="primary.600"
+          // _hover={{ bgColor: 'primary.500' }}
           colorScheme="primary"
           size="lg"
           fontSize="md"

@@ -58,7 +58,7 @@ export const InputPassword = React.forwardRef(
               position: absolute;
               bottom: 12px;
               left: 16px;
-              color: gray;
+              color: #4a5568;
               transition: all 0.2s ease;
             }
 
@@ -80,6 +80,7 @@ export const InputPassword = React.forwardRef(
           />
           <label htmlFor={id || label}>{label}</label>
           <button
+            aria-label="show-password-button"
             type="button"
             className="show-password"
             onClick={handleTypeChange}

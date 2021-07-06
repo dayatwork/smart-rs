@@ -10,6 +10,7 @@ import {
   useToast,
   VStack,
   useBreakpointValue,
+  Button,
   // Image,
   // Text,
   // VStack,
@@ -139,18 +140,20 @@ const LoginPage = () => {
           <LoginForm onSubmit={onSubmit} />
           <Box mt="4" align="center" maxW="md" fontWeight="medium">
             <span>Belum punya akun?</span>
-            <Link to="/signup">
-              <Box
-                as="span"
-                marginStart="1"
-                href="#"
-                color="primary.400"
-                _hover={{ color: 'primary.600' }}
-                display={{ base: 'block', sm: 'revert' }}
-              >
-                Daftar
-              </Box>
-            </Link>
+            {/* <Link to="/signup"> */}
+            <Button
+              variant="link"
+              as={Link}
+              to="/signup"
+              marginStart="1"
+              // color="primary.600"
+              colorScheme="primary"
+              // _hover={{ color: 'primary.400' }}
+              display={{ base: 'block', sm: 'revert' }}
+            >
+              Daftar
+            </Button>
+            {/* </Link> */}
           </Box>
         </GridItem>
       </Grid>
