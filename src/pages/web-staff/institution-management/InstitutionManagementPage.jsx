@@ -29,7 +29,7 @@ import {
 } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
 
-export const InstitutionManagementPage = () => {
+const InstitutionManagementPage = () => {
   const { path } = useRouteMatch();
   const { permissions, user } = useContext(AuthContext);
 
@@ -166,3 +166,5 @@ export const InstitutionManagementPage = () => {
     </AppShell>
   );
 };
+
+export default InstitutionManagementPage;

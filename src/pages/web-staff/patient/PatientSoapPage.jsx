@@ -39,7 +39,7 @@ import { BackButton } from '../../../components/shared/BackButton';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
 
-export const PatientSoapPage = () => {
+const PatientSoapPage = () => {
   const params = useParams();
   const [cookies] = useCookies(['token']);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,6 +150,8 @@ export const PatientSoapPage = () => {
     </AppShell>
   );
 };
+
+export default PatientSoapPage;
 
 const CriticalBar = ({ onOpen }) => {
   return (

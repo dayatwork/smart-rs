@@ -22,7 +22,7 @@ import { BookingStatus, BookingChart } from './components';
 import { getInstitutions } from '../../../api/institution-services/institution';
 import { getBookingList } from '../../../api/booking-services/booking';
 
-export const DashboardPage = () => {
+const DashboardPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
   const [selectedInstitution, setSelectedInstitution] = useState(
@@ -116,3 +116,5 @@ export const DashboardPage = () => {
     </AppShell>
   );
 };
+
+export default DashboardPage;

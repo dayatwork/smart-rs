@@ -1,1 +1,1 @@
-export * from './MasterPage';
+export { default as MasterPage } from './MasterPage';

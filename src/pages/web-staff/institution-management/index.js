@@ -1,1 +1,1 @@
-export * from './InstitutionManagementPage';
+export { default as InstitutionManagementPage } from './InstitutionManagementPage';

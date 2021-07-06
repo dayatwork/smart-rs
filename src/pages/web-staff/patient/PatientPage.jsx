@@ -39,7 +39,7 @@ const subMenus = [
   },
 ];
 
-export const PatientPage = () => {
+const PatientPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
@@ -146,3 +146,5 @@ export const PatientPage = () => {
     </AppShell>
   );
 };
+
+export default PatientPage;

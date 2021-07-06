@@ -30,7 +30,7 @@ import { BackButton } from '../../../components/shared/BackButton';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
 
-export const PatientSoapResultPage = () => {
+const PatientSoapResultPage = () => {
   const params = useParams();
   const [cookies] = useCookies(['token']);
 
@@ -368,6 +368,8 @@ export const PatientSoapResultPage = () => {
     </AppShell>
   );
 };
+
+export default PatientSoapResultPage;
 
 const Description = ({ title, value, ...props }) => {
   return (

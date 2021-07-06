@@ -1,1 +1,1 @@
-export * from './DivisionPage';
+export { default as DivisionPage } from './DivisionPage';

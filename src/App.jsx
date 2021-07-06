@@ -1,7 +1,7 @@
 import 'react-day-picker/lib/style.css';
 import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';
 import 'react-image-lightbox/style.css';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Suspense, lazy } from 'react';
 import { useCookies } from 'react-cookie';
 import {
   BrowserRouter as Router,
@@ -41,21 +41,68 @@ import {
   PatientExaminationResultsDetailPage,
   UploadPaymentSlipPage,
 } from './pages/web-patient';
-import {
-  DashboardPage,
-  MasterPage,
-  InstitutionManagementPage,
-  UserManagementPage,
-  EventNodePage,
-  PharmacyPage,
-  DivisionPage,
-  FinancePage,
-  PatientPage,
-  PatientSoapPage,
-  PatientSoapResultPage,
-} from './pages/web-staff';
+// import {
+//   DashboardPage,
+//   MasterPage,
+//   InstitutionManagementPage,
+//   UserManagementPage,
+//   EventNodePage,
+//   PharmacyPage,
+//   DivisionPage,
+//   FinancePage,
+//   PatientPage,
+//   PatientSoapPage,
+//   PatientSoapResultPage,
+// } from './pages/web-staff';
 import { AccountSettingPage } from './pages/account-setting/AccountSettingPage';
 import { PrivateRoute, Permissions } from './access-control';
+
+const Loadable = Component => props => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <Component {...props} />
+    </Suspense>
+  );
+};
+
+// Lazy Load Component
+const DashboardPage = Loadable(
+  lazy(() => import('./pages/web-staff/dashboard/DashboardPage'))
+);
+const MasterPage = Loadable(
+  lazy(() => import('./pages/web-staff/master/MasterPage'))
+);
+const InstitutionManagementPage = Loadable(
+  lazy(() =>
+    import('./pages/web-staff/institution-management/InstitutionManagementPage')
+  )
+);
+const UserManagementPage = Loadable(
+  lazy(() => import('./pages/web-staff/user-management/UserManagementPage'))
+);
+const EventNodePage = Loadable(
+  lazy(() => import('./pages/web-staff/event-node/EventNodePage'))
+);
+const PharmacyPage = Loadable(
+  lazy(() => import('./pages/web-staff/pharmacy/PharmacyPage'))
+);
+const DivisionPage = Loadable(
+  lazy(() => import('./pages/web-staff/division/DivisionPage'))
+);
+const FinancePage = Loadable(
+  lazy(() => import('./pages/web-staff/finance/FinancePage'))
+);
+const PatientPage = Loadable(
+  lazy(() => import('./pages/web-staff/patient/PatientPage'))
+);
+const PatientSoapPage = Loadable(
+  lazy(() => import('./pages/web-staff/patient/PatientSoapPage'))
+);
+const PatientSoapResultPage = Loadable(
+  lazy(() => import('./pages/web-staff/patient/PatientSoapResultPage'))
+);
 
 const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   const { token, user } = useContext(AuthContext);
@@ -222,31 +269,23 @@ const AppRoutes = () => {
   );
 };
 
-// const App = () => {
-//   const [cookies, , removeCookie] = useCookies();
+const LoadingScreen = () => (
+  <Center style={{ height: '100vh' }}>
+    <motion.div
+      animate={{
+        scale: [1, 0.8, 1.8, 0.8, 1],
+        // rotate: [0, 0, 270, 270, 0],
+        opacity: [0.7, 0.3, 1, 0.3, 0.7],
+        // borderRadius: ['20%', '20%', '50%', '50%', '20%'],
+      }}
+      transition={{ repeat: Infinity, duration: 0.7 }}
+    >
+      {/* <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" /> */}
+      <Image src={LogoSvg} w="16" />
+    </motion.div>
+  </Center>
+);
 
-//   const [token, setToken] = useState(cookies.token);
-//   const [user, setUser] = useState(cookies.user);
-
-//   useEffect(() => {
-//     setToken(cookies.token);
-//     setUser(cookies.user);
-//   }, [cookies.token, cookies.user]);
-
-//   const logout = async callback => {
-//     removeCookie('token');
-//     removeCookie('user');
-//     callback();
-//   };
-
-//   return (
-//     <Router>
-//       <AuthContext.Provider value={{ token, setToken, logout, user, setUser }}>
-//         <AppRoutes />
-//       </AuthContext.Provider>
-//     </Router>
-//   );
-// };
 const App = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
 
@@ -353,20 +392,7 @@ const App = () => {
         }}
       >
         {isLoadingPermissions && isLoadingEmployeeDetail ? (
-          <Center style={{ height: '100vh' }}>
-            <motion.div
-              animate={{
-                scale: [1, 0.8, 1.8, 0.8, 1],
-                // rotate: [0, 0, 270, 270, 0],
-                opacity: [0.7, 0.3, 1, 0.3, 0.7],
-                // borderRadius: ['20%', '20%', '50%', '50%', '20%'],
-              }}
-              transition={{ repeat: Infinity, duration: 0.7 }}
-            >
-              {/* <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" /> */}
-              <Image src={LogoSvg} w="16" />
-            </motion.div>
-          </Center>
+          <LoadingScreen />
         ) : (
           <AppRoutes />
         )}

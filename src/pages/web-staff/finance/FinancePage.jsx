@@ -14,7 +14,7 @@ import { PaymentList, PaymentDetails } from '../event-node/sub-page/payment';
 import { PrivateRoute, Permissions } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
 
-export const FinancePage = () => {
+const FinancePage = () => {
   const { path } = useRouteMatch();
   const { permissions, user } = useContext(AuthContext);
 
@@ -89,3 +89,5 @@ export const FinancePage = () => {
     </AppShell>
   );
 };
+
+export default FinancePage;

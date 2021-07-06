@@ -13,7 +13,7 @@ import { subMenus } from './subMenus';
 import { UsersPage, RolePage } from './sub-page';
 import { SuperAdminRoute } from '../../../access-control';
 
-export const UserManagementPage = () => {
+const UserManagementPage = () => {
   const { path } = useRouteMatch();
 
   return (
@@ -46,3 +46,5 @@ export const UserManagementPage = () => {
     </AppShell>
   );
 };
+
+export default UserManagementPage;

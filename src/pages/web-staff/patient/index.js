@@ -1,3 +1,3 @@
-export * from './PatientPage';
-export * from './PatientSoapPage';
-export * from './PatientSoapResultPage';
+export { default as PatientPage } from './PatientPage';
+export { default as PatientSoapPage } from './PatientSoapPage';
+export { default as PatientSoapResultPage } from './PatientSoapResultPage';

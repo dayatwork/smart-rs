@@ -1,1 +1,1 @@
-export * from './PharmacyPage';
+export { default as PharmacyPage } from './PharmacyPage';

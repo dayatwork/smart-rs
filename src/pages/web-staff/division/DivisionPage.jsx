@@ -18,7 +18,7 @@ import {
 import { PrivateRoute, Permissions } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
 
-export const DivisionPage = () => {
+const DivisionPage = () => {
   const { path } = useRouteMatch();
   const { permissions, user } = useContext(AuthContext);
 
@@ -89,3 +89,5 @@ export const DivisionPage = () => {
     </AppShell>
   );
 };
+
+export default DivisionPage;

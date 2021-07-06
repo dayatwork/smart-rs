@@ -32,7 +32,7 @@ import {
 } from './sub-page';
 import { SuperAdminRoute } from '../../../access-control';
 
-export const MasterPage = () => {
+const MasterPage = () => {
   const { path } = useRouteMatch();
 
   return (
@@ -113,3 +113,5 @@ export const MasterPage = () => {
     </AppShell>
   );
 };
+
+export default MasterPage;

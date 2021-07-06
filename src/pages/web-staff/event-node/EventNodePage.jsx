@@ -31,7 +31,7 @@ import {
 import { PrivateRoute, Permissions } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
 
-export const EventNodePage = () => {
+const EventNodePage = () => {
   const { path } = useRouteMatch();
   const { permissions, user } = useContext(AuthContext);
 
@@ -216,3 +216,5 @@ export const EventNodePage = () => {
     </AppShell>
   );
 };
+
+export default EventNodePage;
