@@ -15,7 +15,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-import DatePicker from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
 import 'react-day-picker/lib/style.css';
 
 export const AppointmentModal = ({ isOpen, onClose }) => {
@@ -52,7 +52,7 @@ export const AppointmentModal = ({ isOpen, onClose }) => {
           </FormControl>
           <FormControl mb="4" id="date">
             <FormLabel>Date</FormLabel>
-            <Input as={DatePicker} />
+            <Input />
           </FormControl>
           <FormControl mb="4" id="time">
             <FormLabel>Time</FormLabel>

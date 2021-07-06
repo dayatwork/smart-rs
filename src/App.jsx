@@ -1,5 +1,4 @@
 import 'react-day-picker/lib/style.css';
-import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';
 import 'react-image-lightbox/style.css';
 import React, { useContext, useEffect, useState, Suspense, lazy } from 'react';
 import { useCookies } from 'react-cookie';
