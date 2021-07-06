@@ -25,7 +25,7 @@ import { getUserProfile } from '../../api/user-services/user-management';
 import { LoginForm } from '../../components/auth/LoginForm';
 // import { Logo } from '../../components/shared';
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
@@ -157,3 +157,5 @@ export const LoginPage = () => {
     </Center>
   );
 };
+
+export default LoginPage;

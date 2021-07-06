@@ -9,7 +9,7 @@ import { Logo } from './Logo';
 import { AddHealthInfoForm } from '../../components/auth/AddHealthInfoForm';
 import { createUserVitalSign } from '../../api/user-services/user-management';
 
-export const AddHealthInfoPage = () => {
+const AddHealthInfoPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -106,3 +106,5 @@ export const AddHealthInfoPage = () => {
     </Center>
   );
 };
+
+export default AddHealthInfoPage;

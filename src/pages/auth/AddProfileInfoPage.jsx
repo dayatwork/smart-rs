@@ -8,7 +8,7 @@ import { Logo } from './Logo';
 import { AddProfileInfoForm } from '../../components/auth/AddProfileInfoForm';
 import { updateUserDetail } from '../../api/user-services/user-management';
 
-export const AddProfileInfoPage = () => {
+const AddProfileInfoPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -106,3 +106,5 @@ export const AddProfileInfoPage = () => {
     </Box>
   );
 };
+
+export default AddProfileInfoPage;

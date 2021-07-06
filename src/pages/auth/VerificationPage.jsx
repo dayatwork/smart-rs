@@ -17,7 +17,7 @@ import { Logo } from './Logo';
 import { VerificationOTPForm } from '../../components/auth/VerificationOTPForm';
 import { verification, resendOTP } from '../../api/auth-services/auth';
 
-export const VerificationPage = () => {
+const VerificationPage = () => {
   const [, setCookie] = useCookies(['token']);
   const toast = useToast();
   const history = useHistory();
@@ -121,3 +121,5 @@ export const VerificationPage = () => {
     </Center>
   );
 };
+
+export default VerificationPage;

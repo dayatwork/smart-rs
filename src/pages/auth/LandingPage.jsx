@@ -11,7 +11,7 @@ import {
 import * as React from 'react';
 // import { HiPlay } from 'react-icons/hi';
 
-export const LandingPage = () => {
+const LandingPage = () => {
   return (
     <Box as="section" minH="100vh" bg="secondary.lighter" pt="16" pb="24">
       <Box
@@ -150,3 +150,5 @@ export const LandingPage = () => {
     </Box>
   );
 };
+
+export default LandingPage;

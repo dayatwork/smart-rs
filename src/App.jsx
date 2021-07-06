@@ -20,17 +20,17 @@ import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
 
 import { AuthContext } from './contexts/authContext';
-import {
-  LoginPage,
-  SignupPage,
-  VerificationPage,
-  SetPasswordPage,
-  AddProfileInfoPage,
-  AddHealthInfoPage,
-  ForgotPasswordPage,
-  ChangePasswordPage,
-  // LandingPage,
-} from './pages/auth';
+// import {
+//   LoginPage,
+//   SignupPage,
+//   VerificationPage,
+//   SetPasswordPage,
+//   AddProfileInfoPage,
+//   AddHealthInfoPage,
+//   ForgotPasswordPage,
+//   ChangePasswordPage,
+//   LandingPage,
+// } from './pages/auth';
 import {
   HomePage,
   BookingDoctorPage,
@@ -67,7 +67,33 @@ const Loadable = Component => props => {
   );
 };
 
-// Lazy Load Component
+// ====================
+// Lazy Load Auth Page
+// ====================
+const LoginPage = Loadable(lazy(() => import('./pages/auth/LoginPage')));
+const SignupPage = Loadable(lazy(() => import('./pages/auth/SignupPage')));
+const VerificationPage = Loadable(
+  lazy(() => import('./pages/auth/VerificationPage'))
+);
+const SetPasswordPage = Loadable(
+  lazy(() => import('./pages/auth/SetPasswordPage'))
+);
+const AddProfileInfoPage = Loadable(
+  lazy(() => import('./pages/auth/AddProfileInfoPage'))
+);
+const AddHealthInfoPage = Loadable(
+  lazy(() => import('./pages/auth/AddHealthInfoPage'))
+);
+const ForgotPasswordPage = Loadable(
+  lazy(() => import('./pages/auth/ForgotPasswordPage'))
+);
+const ChangePasswordPage = Loadable(
+  lazy(() => import('./pages/auth/ChangePasswordPage'))
+);
+
+// ====================
+// Lazy Load Web Staff
+// ====================
 const DashboardPage = Loadable(
   lazy(() => import('./pages/web-staff/dashboard/DashboardPage'))
 );
@@ -103,6 +129,8 @@ const PatientSoapPage = Loadable(
 const PatientSoapResultPage = Loadable(
   lazy(() => import('./pages/web-staff/patient/PatientSoapResultPage'))
 );
+
+// Lazy Load Web Patient
 
 const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   const { token, user } = useContext(AuthContext);

@@ -20,7 +20,7 @@ import { signup } from '../../api/auth-services/auth';
 import { SignupForm } from '../../components/auth/SignupForm';
 // import { Logo } from '../../components/shared';
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const history = useHistory();
   const toast = useToast();
   const formColumns = useBreakpointValue({ base: 5, lg: 2 });
@@ -123,3 +123,5 @@ export const SignupPage = () => {
     </Center>
   );
 };
+
+export default SignupPage;

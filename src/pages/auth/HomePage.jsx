@@ -22,7 +22,7 @@ import { getUserProfile } from '../../api/user-services/user-management';
 import { LoginForm } from '../../components/auth/LoginForm';
 // import { Logo } from '../../components/shared';
 
-export const HomePage = () => {
+const HomePage = () => {
   const history = useHistory();
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
@@ -167,3 +167,5 @@ export const HomePage = () => {
     </Center>
   );
 };
+
+export default HomePage;

@@ -1,9 +1,9 @@
-export * from './LoginPage';
-export * from './SignupPage';
-export * from './VerificationPage';
-export * from './SetPasswordPage';
-export * from './AddProfileInfoPage';
-export * from './AddHealthInfoPage';
-export * from './ForgotPasswordPage';
-export * from './ChangePasswordPage';
-export * from './LandingPage';
+export { default as LoginPage } from './LoginPage';
+export { default as SignupPage } from './SignupPage';
+export { default as VerificationPage } from './VerificationPage';
+export { default as SetPasswordPage } from './SetPasswordPage';
+export { default as AddProfileInfoPage } from './AddProfileInfoPage';
+export { default as AddHealthInfoPage } from './AddHealthInfoPage';
+export { default as ForgotPasswordPage } from './ForgotPasswordPage';
+export { default as ChangePasswordPage } from './ChangePasswordPage';
+export { default as LandingPage } from './LandingPage';

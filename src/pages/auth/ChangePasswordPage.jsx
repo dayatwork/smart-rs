@@ -8,7 +8,7 @@ import { Logo } from './Logo';
 import { ChangePasswordForm } from '../../components/auth/ChangePasswordForm';
 import { resetPassword } from '../../api/auth-services/auth';
 
-export const ChangePasswordPage = () => {
+const ChangePasswordPage = () => {
   const toast = useToast();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -86,3 +86,5 @@ export const ChangePasswordPage = () => {
     </Center>
   );
 };
+
+export default ChangePasswordPage;

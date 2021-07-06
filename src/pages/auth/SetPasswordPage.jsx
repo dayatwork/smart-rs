@@ -12,7 +12,7 @@ import {
   updateUserInfo,
 } from '../../api/user-services/user-management';
 
-export const SetPasswordPage = () => {
+const SetPasswordPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [cookies, setCookie] = useCookies(['token']);
@@ -105,3 +105,5 @@ export const SetPasswordPage = () => {
     </Center>
   );
 };
+
+export default SetPasswordPage;

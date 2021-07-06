@@ -8,7 +8,7 @@ import { Logo } from './Logo';
 import { ForgotPasswordForm } from '../../components/auth/ForgotPasswordForm';
 import { forgotPassword } from '../../api/auth-services/auth';
 
-export const ForgotPasswordPage = () => {
+const ForgotPasswordPage = () => {
   const toast = useToast();
 
   const onSubmit = async (value, e) => {
@@ -97,3 +97,5 @@ export const ForgotPasswordPage = () => {
     </Center>
   );
 };
+
+export default ForgotPasswordPage;
