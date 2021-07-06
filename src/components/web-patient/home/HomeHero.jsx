@@ -1,9 +1,9 @@
-import { Box, Button, Center, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-import BookingIcon from '../../../assets/icons/Booking.svg';
+import BookingDoctorIcon from '../../../assets/icons/BookingDoctorIcon';
 
 export const HomeHero = ({ user }) => {
   // console.log({ user });
@@ -36,9 +36,11 @@ export const HomeHero = ({ user }) => {
           fontWeight="bold"
           fontSize="md"
         >
-          <Image src={BookingIcon} w="8" h="8" ml="-1" />
+          {/* <Image src={BookingIcon} alt="booking-icon" w="8" h="8" ml="-1" /> */}
+          {/* <Icon color="secondary.dark" as={BookingIcon} w="5" h="5" /> */}
+          <BookingDoctorIcon width={36} height={36} />
           <Box as="span" ml="2">
-            Booking Dokter
+            Temui Dokter
           </Box>
         </Button>
       </Center>

@@ -14,7 +14,7 @@ import {
   LinkOverlay,
 } from '@chakra-ui/react';
 
-import BookingIcon from '../../../assets/icons/Booking.svg';
+import BookingDoctorIcon from '../../../assets/icons/BookingDoctorIcon';
 import {
   RiCalendarEventFill,
   RiHospitalFill,
@@ -52,9 +52,9 @@ export const CreateNewBooking = ({ dataBooking }) => {
             fontWeight="bold"
             fontSize="md"
           >
-            <Image src={BookingIcon} w="6" h="6" ml="-1" />
+            <BookingDoctorIcon width="30" height="30" />
             <Box as="span" ml="2">
-              Booking Dokter
+              Temui Dokter
             </Box>
           </Button>
         </Box>
