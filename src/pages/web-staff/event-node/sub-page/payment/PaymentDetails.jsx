@@ -59,7 +59,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
     { enabled: Boolean(params?.id) }
   );
 
-  console.log({ dataOrder });
+  // console.log({ dataOrder });
 
   const { data: dataPaymentSlip, isLoading: isLoadingPaymentSlip } = useQuery(
     ['payment-slip', dataOrder?.data?.id],

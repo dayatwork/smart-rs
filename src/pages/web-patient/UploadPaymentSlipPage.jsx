@@ -122,9 +122,9 @@ export const UploadPaymentSlipPage = () => {
     }
   };
 
-  console.log({ dataOrderDetail });
-  console.log({ dataPaymentSlip });
-  console.log({ dataPaymentMethod });
+  // console.log({ dataOrderDetail });
+  // console.log({ dataPaymentSlip });
+  // console.log({ dataPaymentMethod });
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
