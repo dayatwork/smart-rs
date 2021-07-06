@@ -29,15 +29,16 @@ import { AuthContext } from './contexts/authContext';
 //   ChangePasswordPage,
 //   LandingPage,
 // } from './pages/auth';
-import // HomePage,
-// BookingDoctorPage,
-// BookingListPage,
-// BookingDetailPage,
-// OrderDetailPage,
-// PatientExaminationResultsPage,
-// PatientExaminationResultsDetailPage,
-// UploadPaymentSlipPage,
-'./pages/web-patient';
+import {
+  HomePage,
+  // BookingDoctorPage,
+  // BookingListPage,
+  // BookingDetailPage,
+  // OrderDetailPage,
+  // PatientExaminationResultsPage,
+  // PatientExaminationResultsDetailPage,
+  // UploadPaymentSlipPage,
+} from './pages/web-patient';
 // import {
 //   DashboardPage,
 //   MasterPage,
@@ -96,7 +97,7 @@ const PatientExaminationResultsDetailPage = Loadable(
 // ====================
 // Lazy Load Web Patient
 // ====================
-const HomePage = Loadable(lazy(() => import('./pages/web-patient/HomePage')));
+// const HomePage = Loadable(lazy(() => import('./pages/web-patient/HomePage')));
 const BookingDoctorPage = Loadable(
   lazy(() => import('./pages/web-patient/BookingDoctorPage'))
 );

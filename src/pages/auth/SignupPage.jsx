@@ -12,7 +12,6 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import LazyLoad from 'react-lazyload';
 import Logo from '../../assets/Logo';
 
 import { signup } from '../../api/auth-services/auth';
@@ -23,7 +22,6 @@ const SignupPage = () => {
   const history = useHistory();
   const toast = useToast();
   const formColumns = useBreakpointValue({ base: 5, lg: 2 });
-  const minWGrid = useBreakpointValue({ base: 'xs', xs: 'sm', sm: 'md' });
 
   const onSubmit = async value => {
     const { email } = value;
@@ -67,6 +65,61 @@ const SignupPage = () => {
         <title>Sign up | SMART-RS</title>
       </Helmet>
       <Grid
+        gridTemplateColumns="repeat(5,1fr)"
+        w="6xl"
+        bg="white"
+        boxShadow="2xl"
+        rounded="2xl"
+        overflow="hidden"
+      >
+        <GridItem
+          colSpan={3}
+          backgroundImage="url('/images/bg-auth.jpg')"
+          backgroundPosition="center"
+          backgroundRepeat="no-repeat"
+          backgroundSize="cover"
+          display={{ base: 'none', lg: 'flex' }}
+        ></GridItem>
+        <GridItem
+          colSpan={formColumns}
+          py="8"
+          px={{ base: '8', md: '10' }}
+          minH="2xl"
+        >
+          <VStack>
+            <Logo width={110} height={110} />
+            <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
+              SMART-RS
+            </Text>
+          </VStack>
+          <Heading
+            mt="6"
+            mb="10"
+            textAlign="center"
+            fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
+            fontWeight="extrabold"
+          >
+            Daftar
+          </Heading>
+          <SignupForm onSubmit={onSubmit} />
+          <Box mt="4" align="center" maxW="md" fontWeight="medium">
+            <span>Sudah punya akun?</span>
+            <Link to="/login">
+              <Box
+                as="span"
+                marginStart="1"
+                href="#"
+                color="primary.400"
+                _hover={{ color: 'primary.600' }}
+                display={{ base: 'block', sm: 'revert' }}
+              >
+                Login
+              </Box>
+            </Link>
+          </Box>
+        </GridItem>
+      </Grid>
+      {/* <Grid
         bg="white"
         shadow="xl"
         rounded={{ sm: 'lg' }}
@@ -117,8 +170,7 @@ const SignupPage = () => {
             </Link>
           </Box>
         </GridItem>
-        {/* <Logo /> */}
-      </Grid>
+      </Grid> */}
     </Center>
   );
 };

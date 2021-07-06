@@ -11,7 +11,6 @@ import {
   VStack,
   useBreakpointValue,
   Button,
-  Img,
   // Image,
   // Text,
   // VStack,
@@ -32,7 +31,6 @@ const LoginPage = () => {
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
   const formColumns = useBreakpointValue({ base: 5, lg: 2 });
-  const minWGrid = useBreakpointValue({ base: 'xs', xs: 'sm', sm: 'md' });
 
   const fetchUserDetails = async token => {
     const { data } = await getUserProfile(token);
@@ -101,32 +99,27 @@ const LoginPage = () => {
         <title>Login | SMART-RS</title>
       </Helmet>
       <Grid
+        gridTemplateColumns="repeat(5,1fr)"
+        w="6xl"
         bg="white"
-        shadow="xl"
-        rounded={{ sm: 'lg' }}
-        templateColumns="repeat(5, 1fr)"
+        boxShadow="2xl"
+        rounded="2xl"
         overflow="hidden"
-        maxW="6xl"
-        minW={minWGrid}
       >
-        {/* <Logo /> */}
         <GridItem
-          as={Center}
           colSpan={3}
+          backgroundImage="url('/images/bg-auth.jpg')"
+          backgroundPosition="center"
+          backgroundRepeat="no-repeat"
+          backgroundSize="cover"
           display={{ base: 'none', lg: 'flex' }}
+        ></GridItem>
+        <GridItem
+          colSpan={formColumns}
+          py="8"
+          px={{ base: '8', md: '10' }}
+          minH="2xl"
         >
-          {/* <LazyLoad resize height={200}>
-            <img src="/images/bg-auth.jpg" alt="bg-auth" />
-          </LazyLoad> */}
-          <Img
-            w="full"
-            h="full"
-            src="/images/bg-auth.jpg"
-            alt="bg-auth"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
             <Logo width={110} height={110} />
             <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
@@ -147,20 +140,17 @@ const LoginPage = () => {
           <LoginForm onSubmit={onSubmit} />
           <Box mt="4" align="center" maxW="md" fontWeight="medium">
             <span>Belum punya akun?</span>
-            {/* <Link to="/signup"> */}
+
             <Button
               variant="link"
               as={Link}
               to="/signup"
               marginStart="1"
-              // color="primary.600"
               colorScheme="primary"
-              // _hover={{ color: 'primary.400' }}
               display={{ base: 'block', sm: 'revert' }}
             >
               Daftar
             </Button>
-            {/* </Link> */}
           </Box>
         </GridItem>
       </Grid>
@@ -169,3 +159,67 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+// const a = () => (
+//   <Grid
+//         bg="white"
+//         shadow="xl"
+//         rounded={{ sm: 'lg' }}
+//         templateColumns="repeat(5, 1fr)"
+//         overflow="hidden"
+//         maxW="6xl"
+//         minW={minWGrid}
+//       >
+//         {/* <Logo /> */}
+//         <GridItem
+//           as={Center}
+//           colSpan={3}
+//           display={{ base: 'none', lg: 'flex' }}
+//         >
+//           <Img
+//             w="full"
+//             h="full"
+//             src="/images/bg-auth.jpg"
+//             alt="bg-auth"
+//             objectFit="cover"
+//           />
+//         </GridItem>
+//         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
+//           <VStack>
+//             <Logo width={110} height={110} />
+//             <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
+//               SMART-RS
+//             </Text>
+//           </VStack>
+//           <Heading
+//             mt="6"
+//             textAlign="center"
+//             fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
+//             fontWeight="extrabold"
+//           >
+//             Selamat Datang
+//           </Heading>
+//           <Box mt="2" mb="10" align="center" maxW="md" fontWeight="medium">
+//             <span>Silahkan masuk menggunakan akun Anda</span>
+//           </Box>
+//           <LoginForm onSubmit={onSubmit} />
+//           <Box mt="4" align="center" maxW="md" fontWeight="medium">
+//             <span>Belum punya akun?</span>
+
+//             <Button
+//               variant="link"
+//               as={Link}
+//               to="/signup"
+//               marginStart="1"
+
+//               colorScheme="primary"
+
+//               display={{ base: 'block', sm: 'revert' }}
+//             >
+//               Daftar
+//             </Button>
+
+//           </Box>
+//         </GridItem>
+//       </Grid>
+// )
