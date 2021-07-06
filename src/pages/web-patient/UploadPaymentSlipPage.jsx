@@ -51,7 +51,7 @@ const schema = yup.object().shape({
     }),
 });
 
-export const UploadPaymentSlipPage = () => {
+const UploadPaymentSlipPage = () => {
   const params = useParams();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -303,6 +303,8 @@ export const UploadPaymentSlipPage = () => {
     </Flex>
   );
 };
+
+export default UploadPaymentSlipPage;
 
 const formatter = new Intl.NumberFormat('id-ID', {
   style: 'currency',

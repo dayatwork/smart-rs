@@ -10,7 +10,7 @@ import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import { BookingTable } from '../../components/web-patient/booking-list';
 import { getUserSoaps } from '../../api/medical-record-services/soap';
 
-export const PatientExaminationResultsPage = () => {
+const PatientExaminationResultsPage = () => {
   const [cookies] = useCookies(['token']);
 
   const {
@@ -108,3 +108,5 @@ export const PatientExaminationResultsPage = () => {
     </Flex>
   );
 };
+
+export default PatientExaminationResultsPage;

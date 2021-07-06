@@ -14,7 +14,7 @@ import {
 import { BookingTable } from '../../components/web-patient/booking-list';
 import { BsCaretLeftFill } from 'react-icons/bs';
 
-export const PatientExaminationResultsDetailPage = () => {
+const PatientExaminationResultsDetailPage = () => {
   const params = useParams();
   const [cookies] = useCookies(['token']);
 
@@ -182,6 +182,8 @@ export const PatientExaminationResultsDetailPage = () => {
     </Flex>
   );
 };
+
+export default PatientExaminationResultsDetailPage;
 
 const Property = ({ label, value, ...flexProps }) => {
   return (

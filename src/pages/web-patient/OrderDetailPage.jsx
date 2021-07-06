@@ -32,7 +32,7 @@ import {
   getPaymentSlipDetail,
 } from '../../api/payment-services/manual-verification';
 
-export const OrderDetailPage = () => {
+const OrderDetailPage = () => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const params = useParams();
@@ -313,6 +313,8 @@ export const OrderDetailPage = () => {
     </Flex>
   );
 };
+
+export default OrderDetailPage;
 
 export const Card = props => (
   <Box

@@ -5,7 +5,7 @@ import { HomeHero } from '../../components/web-patient/home';
 import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
 import { AuthContext } from '../../contexts/authContext';
 
-export const HomePage = () => {
+const HomePage = () => {
   const { user } = React.useContext(AuthContext);
 
   return (
@@ -23,3 +23,5 @@ export const HomePage = () => {
     </Flex>
   );
 };
+
+export default HomePage;

@@ -44,7 +44,7 @@ import {
   RiTimerLine,
 } from 'react-icons/ri';
 
-export const BookingDetailPage = () => {
+const BookingDetailPage = () => {
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -452,6 +452,8 @@ export const BookingDetailPage = () => {
     </Flex>
   );
 };
+
+export default BookingDetailPage;
 
 const CancelBookingAlert = ({
   isOpen,

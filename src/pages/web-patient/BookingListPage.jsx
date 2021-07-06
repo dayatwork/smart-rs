@@ -26,7 +26,7 @@ import {
   getUserResponsibleBookingList,
 } from '../../api/booking-services/booking';
 
-export const BookingListPage = () => {
+const BookingListPage = () => {
   const [cookies] = useCookies(['token']);
 
   const {
@@ -311,3 +311,5 @@ export const BookingListPage = () => {
     </Flex>
   );
 };
+
+export default BookingListPage;

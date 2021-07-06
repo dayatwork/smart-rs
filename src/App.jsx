@@ -9,9 +9,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-// import { Center, Icon, Image } from '@chakra-ui/react';
 import { Center, Image } from '@chakra-ui/react';
-// import { FaHospitalSymbol } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import LogoSvg from './Logo.svg';
@@ -31,16 +29,15 @@ import { AuthContext } from './contexts/authContext';
 //   ChangePasswordPage,
 //   LandingPage,
 // } from './pages/auth';
-import {
-  HomePage,
-  BookingDoctorPage,
-  BookingListPage,
-  BookingDetailPage,
-  OrderDetailPage,
-  PatientExaminationResultsPage,
-  PatientExaminationResultsDetailPage,
-  UploadPaymentSlipPage,
-} from './pages/web-patient';
+import // HomePage,
+// BookingDoctorPage,
+// BookingListPage,
+// BookingDetailPage,
+// OrderDetailPage,
+// PatientExaminationResultsPage,
+// PatientExaminationResultsDetailPage,
+// UploadPaymentSlipPage,
+'./pages/web-patient';
 // import {
 //   DashboardPage,
 //   MasterPage,
@@ -59,7 +56,6 @@ import { PrivateRoute, Permissions } from './access-control';
 
 const Loadable = Component => props => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Component {...props} />
@@ -89,6 +85,32 @@ const ForgotPasswordPage = Loadable(
 );
 const ChangePasswordPage = Loadable(
   lazy(() => import('./pages/auth/ChangePasswordPage'))
+);
+const PatientExaminationResultsPage = Loadable(
+  lazy(() => import('./pages/web-patient/ExaminationResultPage'))
+);
+const PatientExaminationResultsDetailPage = Loadable(
+  lazy(() => import('./pages/web-patient/ExaminationResultDetailPage'))
+);
+
+// ====================
+// Lazy Load Web Patient
+// ====================
+const HomePage = Loadable(lazy(() => import('./pages/web-patient/HomePage')));
+const BookingDoctorPage = Loadable(
+  lazy(() => import('./pages/web-patient/BookingDoctorPage'))
+);
+const BookingListPage = Loadable(
+  lazy(() => import('./pages/web-patient/BookingListPage'))
+);
+const BookingDetailPage = Loadable(
+  lazy(() => import('./pages/web-patient/BookingDetailPage'))
+);
+const OrderDetailPage = Loadable(
+  lazy(() => import('./pages/web-patient/OrderDetailPage'))
+);
+const UploadPaymentSlipPage = Loadable(
+  lazy(() => import('./pages/web-patient/UploadPaymentSlipPage'))
 );
 
 // ====================

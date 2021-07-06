@@ -36,7 +36,7 @@ const bookingStep = [
   },
 ];
 
-export const BookingDoctorPage = () => {
+const BookingDoctorPage = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const currentStep = bookingStep[currentStepIndex];
 
@@ -183,3 +183,5 @@ export const BookingDoctorPage = () => {
     </Flex>
   );
 };
+
+export default BookingDoctorPage;
