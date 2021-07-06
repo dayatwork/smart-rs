@@ -18,41 +18,6 @@ import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
 
 import { AuthContext } from './contexts/authContext';
-// import {
-//   LoginPage,
-//   SignupPage,
-//   VerificationPage,
-//   SetPasswordPage,
-//   AddProfileInfoPage,
-//   AddHealthInfoPage,
-//   ForgotPasswordPage,
-//   ChangePasswordPage,
-//   LandingPage,
-// } from './pages/auth';
-import {
-  HomePage,
-  // BookingDoctorPage,
-  // BookingListPage,
-  // BookingDetailPage,
-  // OrderDetailPage,
-  // PatientExaminationResultsPage,
-  // PatientExaminationResultsDetailPage,
-  // UploadPaymentSlipPage,
-} from './pages/web-patient';
-// import {
-//   DashboardPage,
-//   MasterPage,
-//   InstitutionManagementPage,
-//   UserManagementPage,
-//   EventNodePage,
-//   PharmacyPage,
-//   DivisionPage,
-//   FinancePage,
-//   PatientPage,
-//   PatientSoapPage,
-//   PatientSoapResultPage,
-// } from './pages/web-staff';
-import { AccountSettingPage } from './pages/account-setting/AccountSettingPage';
 import { PrivateRoute, Permissions } from './access-control';
 
 const Loadable = Component => props => {
@@ -97,7 +62,7 @@ const PatientExaminationResultsDetailPage = Loadable(
 // ====================
 // Lazy Load Web Patient
 // ====================
-// const HomePage = Loadable(lazy(() => import('./pages/web-patient/HomePage')));
+const HomePage = Loadable(lazy(() => import('./pages/web-patient/HomePage')));
 const BookingDoctorPage = Loadable(
   lazy(() => import('./pages/web-patient/BookingDoctorPage'))
 );
@@ -112,6 +77,10 @@ const OrderDetailPage = Loadable(
 );
 const UploadPaymentSlipPage = Loadable(
   lazy(() => import('./pages/web-patient/UploadPaymentSlipPage'))
+);
+
+const AccountSettingPage = Loadable(
+  lazy(() => import('./pages/account-setting/AccountSettingPage'))
 );
 
 // ====================
@@ -153,8 +122,6 @@ const PatientSoapResultPage = Loadable(
   lazy(() => import('./pages/web-staff/patient/PatientSoapResultPage'))
 );
 
-// Lazy Load Web Patient
-
 const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   const { token, user } = useContext(AuthContext);
 
@@ -171,6 +138,22 @@ const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   );
 };
 
+const GuestRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
+  const { token, user } = useContext(AuthContext);
+
+  return (
+    <>
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+      <Route
+        {...rest}
+        render={() => (token && user ? <Redirect to="/" /> : children)}
+      />
+    </>
+  );
+};
+
 const AppRoutes = () => {
   return (
     <Switch>
@@ -178,21 +161,21 @@ const AppRoutes = () => {
       {/* <Route path="/landing">
         <LandingPage />
       </Route> */}
-      <Route path="/signup">
+      <GuestRoute path="/signup">
         <SignupPage />
-      </Route>
-      <Route path="/verification">
+      </GuestRoute>
+      <GuestRoute path="/verification">
         <VerificationPage />
-      </Route>
+      </GuestRoute>
       <Route path="/set-password">
         <SetPasswordPage />
       </Route>
-      <Route path="/login" exact>
+      <GuestRoute path="/login" exact>
         <LoginPage />
-      </Route>
-      <Route path="/forgot-password">
+      </GuestRoute>
+      <GuestRoute path="/forgot-password">
         <ForgotPasswordPage />
-      </Route>
+      </GuestRoute>
       <Route path="/login/change-password">
         <ChangePasswordPage />
       </Route>

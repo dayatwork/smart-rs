@@ -35,7 +35,7 @@ import {
   InputDate,
 } from '../../components/shared/input';
 
-export const AccountSettingPage = () => {
+const AccountSettingPage = () => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [defaultValues, setDefaultValues] = useState({
@@ -333,3 +333,5 @@ export const AccountSettingPage = () => {
     </>
   );
 };
+
+export default AccountSettingPage;
