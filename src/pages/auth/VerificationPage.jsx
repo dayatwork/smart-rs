@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import { Logo } from './Logo';
+import Logo from '../../assets/Logo';
 
 // import { Logo } from '../../components/shared';
 import { VerificationOTPForm } from '../../components/auth/VerificationOTPForm';
@@ -95,7 +95,7 @@ const VerificationPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Logo />
+          <Logo width={110} height={110} />
           <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { Box, Heading, Center, useToast, VStack, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { Logo } from './Logo';
+import Logo from '../../assets/Logo';
 
 // import { Logo } from '../../components/shared';
 import { ChangePasswordForm } from '../../components/auth/ChangePasswordForm';
@@ -70,7 +70,7 @@ const ChangePasswordPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Logo />
+          <Logo width={110} height={110} />
           <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>

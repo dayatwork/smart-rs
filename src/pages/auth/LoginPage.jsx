@@ -19,7 +19,7 @@ import {
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
 import LazyLoad from 'react-lazyload';
-import { Logo } from './Logo';
+import Logo from '../../assets/Logo';
 
 import { login } from '../../api/auth-services/auth';
 import { getUserProfile } from '../../api/user-services/user-management';
@@ -120,8 +120,7 @@ const LoginPage = () => {
         </GridItem>
         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
-            {/* <Image src={Logo} alt="Logo" w="20" /> */}
-            <Logo />
+            <Logo width={110} height={110} />
             <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
               SMART-RS
             </Text>

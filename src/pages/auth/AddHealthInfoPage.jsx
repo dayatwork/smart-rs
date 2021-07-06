@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Box, Center, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQueryClient } from 'react-query';
-import { Logo } from './Logo';
+import Logo from '../../assets/Logo';
 
 // import { Logo } from '../../components/shared';
 import { AddHealthInfoForm } from '../../components/auth/AddHealthInfoForm';
@@ -72,7 +72,7 @@ const AddHealthInfoPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Logo />
+          <Logo width={110} height={110} />
           <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>

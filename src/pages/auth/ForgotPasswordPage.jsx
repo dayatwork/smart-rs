@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Heading, Text, Center, useToast, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { Logo } from './Logo';
+import Logo from '../../assets/Logo';
 
 // import { Logo } from '../../components/shared';
 import { ForgotPasswordForm } from '../../components/auth/ForgotPasswordForm';
@@ -59,7 +59,7 @@ const ForgotPasswordPage = () => {
       >
         {/* <Logo /> */}
         <VStack>
-          <Logo />
+          <Logo width={110} height={110} />
           <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
             SMART-RS
           </Text>

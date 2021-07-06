@@ -9,10 +9,10 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { Center, Image } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import LogoSvg from './Logo.svg';
+import Logo from './assets/Logo';
 
 import { getEmployeeDetail } from './api/human-capital-services/employee';
 import { getUserPermissions } from './api/user-services/role-management';
@@ -330,8 +330,7 @@ const LoadingScreen = () => (
       }}
       transition={{ repeat: Infinity, duration: 0.7 }}
     >
-      {/* <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" /> */}
-      <Image src={LogoSvg} w="16" />
+      <Logo width={90} height={90} />
     </motion.div>
   </Center>
 );
