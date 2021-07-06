@@ -11,6 +11,7 @@ import {
   VStack,
   useBreakpointValue,
   Button,
+  Img,
   // Image,
   // Text,
   // VStack,
@@ -18,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet-async';
-import LazyLoad from 'react-lazyload';
+// import LazyLoad from 'react-lazyload';
 import Logo from '../../assets/Logo';
 
 import { login } from '../../api/auth-services/auth';
@@ -114,9 +115,16 @@ const LoginPage = () => {
           colSpan={3}
           display={{ base: 'none', lg: 'flex' }}
         >
-          <LazyLoad resize height={200}>
+          {/* <LazyLoad resize height={200}>
             <img src="/images/bg-auth.jpg" alt="bg-auth" />
-          </LazyLoad>
+          </LazyLoad> */}
+          <Img
+            w="full"
+            h="full"
+            src="/images/bg-auth.jpg"
+            alt="bg-auth"
+            objectFit="cover"
+          />
         </GridItem>
         <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
           <VStack>
