@@ -58,6 +58,7 @@ export const PaymentBooking = ({
   patientData,
   selectedSchedule,
   selectedTime,
+  selectedService,
 }) => {
   // console.log({ patientData });
   const history = useHistory();
@@ -105,6 +106,9 @@ export const PaymentBooking = ({
     }
   );
 
+  // console.log({ selectedService });
+  // console.log({ selectedSchedule });
+
   const handleBooking = async () => {
     if (!selectedPaymentMethod) return;
 
@@ -118,7 +122,8 @@ export const PaymentBooking = ({
             ourself: 1,
             type: 'appointment',
             institution_id: selectedSchedule?.institution?.id,
-            service_id: selectedSchedule?.service?.id,
+            // service_id: selectedSchedule?.service?.id,
+            service_id: selectedService,
             schedule_id: selectedSchedule?.schedule_id,
             schedule_detail_id: selectedSchedule?.id,
             estimate_time_id: selectedTime?.id,
@@ -128,7 +133,8 @@ export const PaymentBooking = ({
             ourself: 0,
             type: 'appointment',
             institution_id: selectedSchedule?.institution?.id,
-            service_id: selectedSchedule?.service?.id,
+            // service_id: selectedSchedule?.service?.id,
+            service_id: selectedService,
             schedule_id: selectedSchedule?.schedule_id,
             schedule_detail_id: selectedSchedule?.id,
             estimate_time_id: selectedTime?.id,

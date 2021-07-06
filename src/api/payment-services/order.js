@@ -1,7 +1,7 @@
 export const getInstitutionOrderList = async (cookies, institution_id) => {
   const formattedId = institution_id.replace(/['"]+/g, '');
   const res = await fetch(
-    `${process.env.REACT_APP_PAYMENT_API}/order/institution?institution_id=${formattedId}&sort_unix_created_at=asc`,
+    `${process.env.REACT_APP_PAYMENT_API}/order/institution?institution_id=${formattedId}&sort_transaction_number=desc`,
     {
       method: 'GET',
       headers: {

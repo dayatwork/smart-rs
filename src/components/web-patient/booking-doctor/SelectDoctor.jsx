@@ -88,6 +88,7 @@ export const SelectDoctor = ({
     'services',
     () => getServices(cookies)
   );
+  // console.log({ dataServices });
 
   const {
     data: dataSchedules,

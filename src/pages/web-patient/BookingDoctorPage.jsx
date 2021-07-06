@@ -174,6 +174,7 @@ export const BookingDoctorPage = () => {
                 setCurrentStepIndex={setCurrentStepIndex}
                 selectedSchedule={selectedSchedule}
                 selectedTime={selectedTime}
+                selectedService={selectedService}
               />
             )}
           </Box>
