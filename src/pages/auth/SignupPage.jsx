@@ -53,14 +53,7 @@ const SignupPage = () => {
   };
 
   return (
-    <Center
-      minH="100vh"
-      minW="100vw"
-      p="3"
-      bgColor="secondary.lighter"
-      // backgroundImage={{ base: 'none', lg: "url('/images/bg-image.jpg')" }}
-      // bgColor={{ base: 'gray.100', lg: 'white' }}
-    >
+    <Center minH="100vh" minW="100vw" p="3" bgColor="secondary.lighter">
       <Helmet>
         <title>Sign up | SMART-RS</title>
       </Helmet>
@@ -84,7 +77,7 @@ const SignupPage = () => {
           colSpan={formColumns}
           py="8"
           px={{ base: '8', md: '10' }}
-          minH="2xl"
+          h="2xl"
         >
           <VStack>
             <Logo width={110} height={110} />
@@ -119,58 +112,6 @@ const SignupPage = () => {
           </Box>
         </GridItem>
       </Grid>
-      {/* <Grid
-        bg="white"
-        shadow="xl"
-        rounded={{ sm: 'lg' }}
-        templateColumns="repeat(5, 1fr)"
-        overflow="hidden"
-        maxW="6xl"
-        minW={minWGrid}
-      >
-        <GridItem
-          as={Center}
-          colSpan={3}
-          display={{ base: 'none', lg: 'flex' }}
-        >
-          <LazyLoad resize height={200}>
-            <img src="/images/bg-auth.jpg" alt="bg-auth" />
-          </LazyLoad>
-        </GridItem>
-        <GridItem colSpan={formColumns} py="8" px={{ base: '8', md: '10' }}>
-          <VStack>
-            <Logo width={110} height={110} />
-            <Text fontWeight="extrabold" fontSize="xl" color="primary.500">
-              SMART-RS
-            </Text>
-          </VStack>
-          <Heading
-            mt="6"
-            mb="10"
-            textAlign="center"
-            fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
-            fontWeight="extrabold"
-          >
-            Daftar
-          </Heading>
-          <SignupForm onSubmit={onSubmit} />
-          <Box mt="4" align="center" maxW="md" fontWeight="medium">
-            <span>Sudah punya akun?</span>
-            <Link to="/login">
-              <Box
-                as="span"
-                marginStart="1"
-                href="#"
-                color="primary.400"
-                _hover={{ color: 'primary.600' }}
-                display={{ base: 'block', sm: 'revert' }}
-              >
-                Login
-              </Box>
-            </Link>
-          </Box>
-        </GridItem>
-      </Grid> */}
     </Center>
   );
 };
