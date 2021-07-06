@@ -53,15 +53,12 @@ export const DrugPackageDetailPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const {
-    data: dataDrugPackageDetail,
-
-    isLoading: isLoadingDrugPackageDetail,
-  } = useQuery(
-    ['drugs-package-detail', params?.id],
-    () => getDrugPackageDetail(cookies, params?.id),
-    { enabled: Boolean(params?.id) }
-  );
+  const { data: dataDrugPackageDetail, isLoading: isLoadingDrugPackageDetail } =
+    useQuery(
+      ['drugs-package-detail', params?.id],
+      () => getDrugPackageDetail(cookies, params?.id),
+      { enabled: Boolean(params?.id) }
+    );
 
   const { data: dataDrugOrderDetail, isLoading: isLoadingDrugOrderDetail } =
     useQuery(

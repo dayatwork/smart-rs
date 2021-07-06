@@ -356,11 +356,12 @@ const App = () => {
           <Center style={{ height: '100vh' }}>
             <motion.div
               animate={{
-                scale: [1, 1.8, 1.8, 1, 1],
-                rotate: [0, 0, 270, 270, 0],
-                borderRadius: ['20%', '20%', '50%', '50%', '20%'],
+                scale: [1, 0.8, 1.8, 0.8, 1],
+                // rotate: [0, 0, 270, 270, 0],
+                opacity: [0.7, 0.3, 1, 0.3, 0.7],
+                // borderRadius: ['20%', '20%', '50%', '50%', '20%'],
               }}
-              transition={{ repeat: Infinity, duration: 0.8 }}
+              transition={{ repeat: Infinity, duration: 0.7 }}
             >
               {/* <Icon as={FaHospitalSymbol} w="16" h="16" fill="blue.600" /> */}
               <Image src={LogoSvg} w="16" />
