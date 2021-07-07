@@ -138,7 +138,8 @@ const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
 };
 
 const GuestRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
-  const { token, user } = useContext(AuthContext);
+  // const { token, user } = useContext(AuthContext);
+  const [cookies] = useCookies();
 
   return (
     <>
@@ -147,7 +148,9 @@ const GuestRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
       </Helmet>
       <Route
         {...rest}
-        render={() => (token && user ? <Redirect to="/" /> : children)}
+        render={() =>
+          cookies.token && cookies.user ? <Redirect to="/" /> : children
+        }
       />
     </>
   );

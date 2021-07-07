@@ -78,8 +78,6 @@ export const ServiceScheduleDetailPage = () => {
   ).map(([key, value]) => value);
 
   const flatScheduleDetails = scheduleDetails.flat();
-  console.log({ flatScheduleDetails });
-  console.log({ scheduleDetails });
 
   const calendarEvents = flatScheduleDetails.map(value => ({
     allDay: false,
@@ -111,8 +109,6 @@ export const ServiceScheduleDetailPage = () => {
   //   end_time: value[0].end_time,
   //   service_name: dataServiceDetail?.data?.service?.name,
   // }));
-
-  console.log({ dataServiceDetail });
 
   return (
     <Box>
@@ -183,7 +179,6 @@ export const ServiceScheduleDetailPage = () => {
 };
 
 const renderEventContent = view => eventInfo => {
-  console.log({ view });
   return (
     <Flex
       direction="column"
