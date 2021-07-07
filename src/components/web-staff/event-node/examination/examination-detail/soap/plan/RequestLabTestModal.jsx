@@ -47,9 +47,7 @@ const MASTER_LAB = '9fde6ede-38b8-47f7-b080-baa50a1b587c';
 export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
-  const [selectedService, setSelectedService] = useState(
-    'f0d0b365-ed2a-46cb-a056-8cc589d6e3b5'
-  );
+  const [selectedService, setSelectedService] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [location, setLocation] = useState('UGD');
@@ -185,26 +183,13 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
     };
     console.log({ dataBooking });
 
-    const dataRegisterLab = {
-      institution_id,
-      patient_id,
-      soap_id,
-      category_id,
-      // subcategory_id,
-      method: 'default',
-      booking_id: null,
-      employee_id,
-      date,
-      time,
-      description,
-      location,
-    };
-    console.log({ dataRegisterLab });
+    // console.log({ dataRegisterLab });
 
     try {
       setIsLoadingRequestLaboratory(true);
       // Create Booking
       const res = await createOnsiteBooking(cookies, dataBooking);
+      console.log({ res });
 
       // Create Order
       const orderData = {
@@ -233,6 +218,20 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       await createOrder(cookies)(orderData);
 
       // Create Registration Lab
+      const dataRegisterLab = {
+        institution_id,
+        patient_id,
+        soap_id,
+        category_id,
+        // subcategory_id,
+        method: 'default',
+        booking_id: res?.data?.booking_order?.booking_id,
+        employee_id,
+        date,
+        time,
+        description,
+        location,
+      };
       await createLaboratoryRegistration(cookies)(dataRegisterLab);
 
       await queryClient.invalidateQueries('booking-list');

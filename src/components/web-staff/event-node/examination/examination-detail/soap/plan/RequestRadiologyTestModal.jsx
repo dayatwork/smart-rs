@@ -34,6 +34,10 @@ import {
   getScheduleEstimatedTimes,
   getBookingSchedulesInstitution,
 } from '../../../../../../../api/institution-services/service';
+import { createOnsiteBooking } from '../../../../../../../api/booking-services/booking';
+import { createOrder } from '../../../../../../../api/payment-services/order';
+import { getServicePriceDetails } from '../../../../../../../api/finance-services/service-price';
+import { getPaymentMethods } from '../../../../../../../api/institution-services/payment-method';
 import {
   getRadiologyCategoriesName,
   getRadiologySubCategoriesName,
@@ -45,15 +49,14 @@ const MASTER_RADIOLOGY = '0dcb09ce-cfee-4d6c-bf9c-23048be9c526';
 export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
-  const [selectedService, setSelectedService] = useState(
-    'b192973b-70c6-464d-98f2-327184874b5a'
-  );
+  const [selectedService, setSelectedService] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDayRange, setSelectedDayRange] = useState({
     from: undefined,
     to: undefined,
   });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [description, setDescription] = useState('');
   const [isLoadingRequestRadiology, setIsLoadingRequestRadiology] =
     useState(false);
@@ -64,6 +67,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   // ==========================
   // ======= Calendar =========
   // ==========================
+  // console.log({ dataSoap });
   const startDate =
     selectedDayRange.from && format(selectedDayRange.from, 'yyyy-MM-dd');
   const endDate =
@@ -71,6 +75,31 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   // ==========================
   // ===== End Calendar =======
   // ==========================
+  const { data: dataServicePrice, isSuccess: isSuccessServicePrice } = useQuery(
+    ['service-price', selectedService, dataSoap?.institution_id],
+    () =>
+      getServicePriceDetails(
+        cookies,
+        dataSoap?.institution_id,
+        selectedService
+      ),
+    {
+      enabled: Boolean(selectedService) && Boolean(dataSoap?.institution_id),
+    }
+  );
+
+  // console.log({ selectedService });
+  // console.log({ inst: dataSoap?.institution_id });
+
+  // console.log({ dataServicePrice });
+
+  const { data: dataPaymentMethods } = useQuery(
+    ['institution-payment-methods', dataSoap?.institution_id],
+    () => getPaymentMethods(cookies, dataSoap?.institution_id),
+    {
+      enabled: Boolean(dataSoap?.institution_id),
+    }
+  );
 
   const { data: dataServices } = useQuery(
     ['services', dataSoap?.institution_id],
@@ -78,22 +107,35 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     { enabled: Boolean(dataSoap?.institution_id) }
   );
 
+  // console.log({ dataServices });
+
   const {
     data: dataSchedules,
     isLoading: isLoadingSchedules,
     isSuccess: isSuccessSchedule,
   } = useQuery(
-    ['booking-schedule', { selectedService, startDate, endDate }],
+    [
+      'booking-schedule',
+      {
+        first_date: startDate,
+        last_date: endDate,
+        serviceId: selectedService,
+        institutionId: dataSoap?.institution_id,
+      },
+    ],
     () =>
       getBookingSchedulesInstitution(cookies, {
-        startDate,
-        endDate,
+        first_date: startDate,
+        last_date: endDate,
         serviceId: selectedService,
         institutionId: dataSoap?.institution_id,
       }),
     {
       enabled:
-        Boolean(selectedService) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedService) &&
+        Boolean(startDate) &&
+        Boolean(endDate) &&
+        Boolean(dataSoap?.institution_id),
     }
   );
 
@@ -110,6 +152,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       ),
     { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
   );
+
   const {
     data: dataCategories,
     // isLoading: isLoadingCategories,
@@ -142,28 +185,76 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     const { id: soap_id, patient_id, institution_id } = dataSoap;
-    const { employee_id, date } = JSON.parse(selectedSchedule);
-    const { value: time } = JSON.parse(selectedTime);
-
-    const data = {
-      institution_id,
-      patient_id,
-      soap_id,
-      radiology_type_id: selectedSubcategory,
-      booking_id: null,
+    const {
       employee_id,
       date,
-      time,
-      description,
+      id: scheduleId,
+      detailId: scheduleDetailId,
+    } = JSON.parse(selectedSchedule);
+    const { value: time, id: timeId } = JSON.parse(selectedTime);
+
+    const paymentMethod = JSON.parse(selectedPaymentMethod);
+
+    const dataBooking = {
+      patient_id,
+      service_id: selectedService,
+      schedule_id: scheduleId,
+      schedule_detail_id: scheduleDetailId,
+      estimate_time_id: timeId,
     };
+    console.log({ dataBooking });
 
     try {
       setIsLoadingRequestRadiology(true);
-      await createRadiology(cookies)(data);
+      // Create Booking
+      const res = await createOnsiteBooking(cookies, dataBooking);
+
+      // Create Order
+      const orderData = {
+        booking_order_id: res?.data?.booking_order?.id,
+        type: '02',
+        address_id: null,
+        event_node: 'Booking',
+        estimate_time_id: timeId,
+        method_id: paymentMethod?.id,
+        institution_id,
+        method_name: paymentMethod?.name,
+        transaction_number: res?.data?.transaction_number,
+        transfer_to: paymentMethod?.account_number,
+        tax: dataServicePrice?.data?.tax,
+        discount: null,
+        items: [
+          {
+            product_id: dataServicePrice?.data?.service_id,
+            price: dataServicePrice?.data?.total_price,
+            quantity: 1,
+            description: null,
+          },
+        ],
+      };
+      console.log({ orderData });
+      await createOrder(cookies)(orderData);
+
+      // Create Registration Radiology
+      const dataRegisterImaging = {
+        institution_id,
+        patient_id,
+        soap_id,
+        radiology_type_id: selectedSubcategory,
+        booking_id: res?.data?.booking_order?.booking_id,
+        employee_id,
+        date,
+        time,
+        description,
+      };
+      await createRadiology(cookies)(dataRegisterImaging);
+
+      await queryClient.invalidateQueries('booking-list');
       await queryClient.invalidateQueries([
-        'radiology-list',
-        data.institution_id,
+        'institution-order-list',
+        institution_id,
       ]);
+      await queryClient.invalidateQueries(['radiology-list', institution_id]);
       setIsLoadingRequestRadiology(false);
 
       setSelectedService('');
@@ -199,7 +290,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <Helmet>
         <style>{customStyle}</style>
       </Helmet>
@@ -208,175 +299,221 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
         <ModalHeader>Request Radiology Test</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl id="radiology-service" mb="4">
-            <FormLabel>Pilih Layanan</FormLabel>
-            <Select
-              bg="white"
-              value={selectedService}
-              onChange={e => {
-                setSelectedSchedule('');
-                setSelectedService(e.target.value);
-              }}
-            >
-              <option>Pilih Layanan</option>
-              {dataServices?.data
-                ?.filter(
-                  service => service.master_service_id === MASTER_RADIOLOGY
-                )
-                ?.map(service => (
-                  <option key={service.id} value={service.id}>
-                    {service.name}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl id="radiology-category" mb="4">
-            <FormLabel>Pilih Category</FormLabel>
-            <Select
-              bg="white"
-              value={selectedCategory}
-              onChange={e => {
-                setSelectedCategory(e.target.value);
-              }}
-            >
-              <option>Pilih Category</option>
-              {dataCategories?.data?.map(category => (
-                <option key={category.category_id} value={category.category_id}>
-                  {category.category_name}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          {isLoadingSubcategories && (
-            <Center py="6">
-              <Spinner />
-            </Center>
-          )}
-          {selectedCategory && isSuccessSubcategories && (
-            <FormControl id="radiology-subcategory" mb="4">
-              <FormLabel>Pilih Sub Category</FormLabel>
-              <Select
-                bg="white"
-                value={selectedSubcategory}
-                onChange={e => {
-                  setSelectedSubcategory(e.target.value);
-                }}
-              >
-                <option>Pilih Sub Category</option>
-                {dataSubcategories?.data?.map(subcategory => (
-                  <option
-                    key={subcategory.subcategory_id}
-                    value={subcategory.subcategory_id}
-                  >
-                    {subcategory.subcategory_name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-          {selectedSubcategory && (
-            <FormControl mb="4">
-              <FormLabel>Jadwal</FormLabel>
-              <Box
-                border="1px"
-                borderColor="gray.200"
-                px="4"
-                py="2"
-                rounded="md"
-                bgColor="white"
-              >
-                <ScheduleDate
-                  range={selectedDayRange}
-                  selectedDayRange={selectedDayRange}
-                  setSelectedDayRange={setSelectedDayRange}
-                  setSelectedSchedule={setSelectedSchedule}
-                />
-              </Box>
-            </FormControl>
-          )}
-          {isLoadingSchedules && (
-            <Center py="6">
-              <Spinner />
-            </Center>
-          )}
-          {isSuccessSchedule && dataSchedules.code === 404 && (
-            <Center py="6">
-              <Box>Schedule not found</Box>
-            </Center>
-          )}
-          {dataSchedules && dataSchedules.code !== 404 && (
-            <FormControl mb="4">
-              <FormLabel>Schedule</FormLabel>
-              <Select
-                value={selectedSchedule}
-                onChange={e => setSelectedSchedule(e.target.value)}
-              >
-                <option>Select Schedule</option>
-                {dataSchedules?.data?.map(schedule => {
-                  return (
+          <SimpleGrid columns={2} gap="6">
+            <Box>
+              <FormControl id="radiology-service" mb="4">
+                <FormLabel>Pilih Layanan</FormLabel>
+                <Select
+                  bg="white"
+                  value={selectedService}
+                  onChange={e => {
+                    setSelectedSchedule('');
+                    setSelectedService(e.target.value);
+                  }}
+                >
+                  <option>Pilih Layanan</option>
+                  {dataServices?.data
+                    ?.filter(
+                      service => service.master_service_id === MASTER_RADIOLOGY
+                    )
+                    ?.map(service => (
+                      <option key={service.id} value={service.id}>
+                        {service.name}
+                      </option>
+                    ))}
+                </Select>
+              </FormControl>
+              <FormControl id="radiology-category" mb="4">
+                <FormLabel>Pilih Category</FormLabel>
+                <Select
+                  bg="white"
+                  value={selectedCategory}
+                  onChange={e => {
+                    setSelectedCategory(e.target.value);
+                  }}
+                >
+                  <option>Pilih Category</option>
+                  {dataCategories?.data?.map(category => (
                     <option
-                      key={schedule.id}
-                      value={JSON.stringify({
-                        id: schedule?.schedule_id,
-                        detailId: schedule?.id,
-                        date: schedule?.date,
-                        employee_id: schedule?.employee?.id,
-                        employee_name: schedule?.employee?.name,
-                      })}
+                      key={category.category_id}
+                      value={category.category_id}
                     >
-                      Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
-                      {schedule.date} --- Pukul: {schedule.start_time}-
-                      {schedule.end_time}
+                      {category.category_name}
                     </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          )}
-          {isLoadingEstimatedTime && (
-            <Center py="6">
-              <Spinner />
-            </Center>
-          )}
-          {isSuccessEstimatedTime && selectedSchedule && (
-            <FormControl mb="4">
-              <FormLabel>Time</FormLabel>
-              <RadioGroup onChange={setSelectedTime} value={selectedTime}>
-                <SimpleGrid columns={4} gap="6">
-                  {dataEstimatedTimes &&
-                    dataEstimatedTimes?.data?.map(time => (
-                      <Radio
-                        id={time.id}
-                        disabled={time.status}
-                        value={JSON.stringify({
-                          id: time.id,
-                          value: time.available_time,
-                        })}
-                        key={time.id}
-                        colorScheme="purple"
+                  ))}
+                </Select>
+              </FormControl>
+              {isLoadingSubcategories && (
+                <Center py="6">
+                  <Spinner />
+                </Center>
+              )}
+              {selectedCategory && isSuccessSubcategories && (
+                <FormControl id="radiology-subcategory" mb="4">
+                  <FormLabel>Pilih Sub Category</FormLabel>
+                  <Select
+                    bg="white"
+                    value={selectedSubcategory}
+                    onChange={e => {
+                      setSelectedSubcategory(e.target.value);
+                    }}
+                  >
+                    <option>Pilih Sub Category</option>
+                    {dataSubcategories?.data?.map(subcategory => (
+                      <option
+                        key={subcategory.subcategory_id}
+                        value={subcategory.subcategory_id}
                       >
-                        <Text color={time.status ? 'red' : 'green'}>
-                          {time.available_time}
-                        </Text>
-                        {/* {time.status && (
+                        {subcategory.subcategory_name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              {selectedSubcategory && (
+                <FormControl mb="4">
+                  <FormLabel>Jadwal</FormLabel>
+                  <Box
+                    border="1px"
+                    borderColor="gray.200"
+                    px="4"
+                    py="2"
+                    rounded="md"
+                    bgColor="white"
+                  >
+                    <ScheduleDate
+                      range={selectedDayRange}
+                      selectedDayRange={selectedDayRange}
+                      setSelectedDayRange={setSelectedDayRange}
+                      setSelectedSchedule={setSelectedSchedule}
+                    />
+                  </Box>
+                </FormControl>
+              )}
+            </Box>
+            <Box>
+              {isLoadingSchedules && (
+                <Center py="6">
+                  <Spinner />
+                </Center>
+              )}
+              {isSuccessSchedule && dataSchedules.code === 404 && (
+                <Center py="6">
+                  <Box>Schedule not found</Box>
+                </Center>
+              )}
+              {dataSchedules && dataSchedules.code !== 404 && (
+                <FormControl mb="4">
+                  <FormLabel>Schedule</FormLabel>
+                  <Select
+                    value={selectedSchedule}
+                    onChange={e => setSelectedSchedule(e.target.value)}
+                  >
+                    <option>Select Schedule</option>
+                    {dataSchedules?.data?.map(schedule => {
+                      return (
+                        <option
+                          key={schedule.id}
+                          value={JSON.stringify({
+                            id: schedule?.schedule_id,
+                            detailId: schedule?.id,
+                            date: schedule?.date,
+                            employee_id: schedule?.employee?.id,
+                            employee_name: schedule?.employee?.name,
+                          })}
+                        >
+                          Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
+                          {schedule.date} --- Pukul: {schedule.start_time}-
+                          {schedule.end_time}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              )}
+              {isLoadingEstimatedTime && (
+                <Center py="6">
+                  <Spinner />
+                </Center>
+              )}
+              {isSuccessEstimatedTime && selectedSchedule && (
+                <FormControl mb="6">
+                  <FormLabel>Time</FormLabel>
+                  <RadioGroup onChange={setSelectedTime} value={selectedTime}>
+                    <SimpleGrid columns={4} gap="4">
+                      {dataEstimatedTimes &&
+                        dataEstimatedTimes?.data?.map(time => (
+                          <Radio
+                            id={time.id}
+                            disabled={time.status}
+                            value={JSON.stringify({
+                              id: time.id,
+                              value: time.available_time,
+                            })}
+                            key={time.id}
+                            colorScheme="purple"
+                          >
+                            <Text color={time.status ? 'red' : 'green'}>
+                              {time.available_time}
+                            </Text>
+                            {/* {time.status && (
                               <Text fontSize="sm">Not Available</Text>
                             )} */}
-                      </Radio>
-                    ))}
-                </SimpleGrid>
-              </RadioGroup>
-            </FormControl>
-          )}
-          {selectedSchedule && (
-            <FormControl mb="4" id="description">
-              <FormLabel>Description</FormLabel>
-              <Textarea
-                rows="6"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-              />
-            </FormControl>
-          )}
+                          </Radio>
+                        ))}
+                    </SimpleGrid>
+                  </RadioGroup>
+                </FormControl>
+              )}
+              <SimpleGrid columns={2} gap="4">
+                <Box>
+                  {selectedSchedule && selectedTime && (
+                    <FormControl mb="4" id="description">
+                      <FormLabel>Description</FormLabel>
+                      <Textarea
+                        rows="6"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                      />
+                    </FormControl>
+                  )}
+                </Box>
+                <Box>
+                  {isSuccessServicePrice && selectedTime && (
+                    <FormControl mb="2">
+                      <FormLabel mb="-1">Price</FormLabel>
+                      <Box fontSize="2xl" fontWeight="extrabold" as="span">
+                        {formatter.format(
+                          Number(dataServicePrice?.data?.total_price)
+                        )}
+                      </Box>
+                    </FormControl>
+                  )}
+                  {selectedTime && (
+                    <FormControl id="payment_method" my="4">
+                      <FormLabel>Payment Method</FormLabel>
+                      <Select
+                        value={selectedPaymentMethod}
+                        onChange={e => setSelectedPaymentMethod(e.target.value)}
+                      >
+                        <option value="">Pilih Metode Pembayaran</option>
+                        {dataPaymentMethods?.data
+                          ?.filter(paymentMethod => paymentMethod.active)
+                          .map(paymentMethod => (
+                            <option
+                              key={paymentMethod.id}
+                              value={JSON.stringify(paymentMethod)}
+                            >
+                              {paymentMethod.name}
+                            </option>
+                          ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </Box>
+              </SimpleGrid>
+            </Box>
+          </SimpleGrid>
         </ModalBody>
 
         <ModalFooter>
@@ -387,6 +524,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
             colorScheme="purple"
             onClick={handleSubmit}
             isLoading={isLoadingRequestRadiology}
+            disabled={!selectedTime || !selectedPaymentMethod}
           >
             Submit
           </Button>
@@ -395,6 +533,11 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     </Modal>
   );
 };
+
+const formatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+});
 
 const ScheduleDate = ({
   range,

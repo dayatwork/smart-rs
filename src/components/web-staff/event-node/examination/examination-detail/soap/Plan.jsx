@@ -27,7 +27,6 @@ import {
 } from '../../../../../../access-control';
 
 export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
-  // console.log({ dataLabPatient });
   const {
     isOpen: isOpenRequestLabModal,
     onOpen: onOpenRequestLabModal,
