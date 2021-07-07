@@ -73,7 +73,46 @@ export const ServiceScheduleDetailPage = () => {
     );
   }
 
-  // console.log({ dataServiceDetail });
+  const scheduleDetails = Object.entries(
+    dataServiceDetail?.data?.service_schedule_details
+  ).map(([key, value]) => value);
+
+  const flatScheduleDetails = scheduleDetails.flat();
+  console.log({ flatScheduleDetails });
+  console.log({ scheduleDetails });
+
+  const calendarEvents = flatScheduleDetails.map(value => ({
+    allDay: false,
+    title: dataServiceDetail?.data?.employee_name,
+    date: value.date,
+    start: new Date(`${value.date}T${value.start_time}`),
+    end: new Date(`${value.date}T${value.end_time}`),
+    color: '#6B46C1',
+    id: value.id,
+    classNames: ['calendar-test'],
+    start_time: value.start_time,
+    end_time: value.end_time,
+    textColor: 'white',
+    service_name: dataServiceDetail?.data?.service?.name,
+  }));
+
+  // const calendarEvents = Object.entries(
+  //   dataServiceDetail?.data?.service_schedule_details
+  // ).map(([key, value]) => ({
+  //   allDay: false,
+  //   title: dataServiceDetail?.data?.employee_name,
+  //   date: value[0].date,
+  //   start: new Date(`${value[0].date}T${value[0].start_time}`),
+  //   end: new Date(`${value[0].date}T${value[0].end_time}`),
+  //   color: '#6B46C1',
+  //   id: value[0].id,
+  //   classNames: ['calendar-test'],
+  //   start_time: value[0].start_time,
+  //   end_time: value[0].end_time,
+  //   service_name: dataServiceDetail?.data?.service?.name,
+  // }));
+
+  console.log({ dataServiceDetail });
 
   return (
     <Box>
@@ -133,21 +172,7 @@ export const ServiceScheduleDetailPage = () => {
       </SimpleGrid> */}
 
       <Calendar
-        events={Object.entries(
-          dataServiceDetail?.data?.service_schedule_details
-        ).map(([key, value]) => ({
-          allDay: false,
-          title: dataServiceDetail?.data?.employee_name,
-          date: value[0].date,
-          start: new Date(`${value[0].date}T${value[0].start_time}`),
-          end: new Date(`${value[0].date}T${value[0].end_time}`),
-          color: '#6B46C1',
-          id: value[0].id,
-          classNames: ['calendar-test'],
-          start_time: value[0].start_time,
-          end_time: value[0].end_time,
-          service_name: dataServiceDetail?.data?.service?.name,
-        }))}
+        events={calendarEvents}
         eventClick={({ event }) => {
           handleDetailTime(event.id);
         }}
@@ -158,8 +183,20 @@ export const ServiceScheduleDetailPage = () => {
 };
 
 const renderEventContent = view => eventInfo => {
+  console.log({ view });
   return (
-    <Flex direction="column" justify="center" h="full">
+    <Flex
+      direction="column"
+      justify="center"
+      h="full"
+      w="full"
+      _hover={{
+        bgColor:
+          view === 'dayGridMonth' || view === 'listWeek'
+            ? 'purple.100'
+            : 'purple.500',
+      }}
+    >
       <Description
         // display={{ base: 'none', lg: 'block' }}
         title="Doctor"
@@ -178,6 +215,12 @@ const renderEventContent = view => eventInfo => {
         <>
           <Description
             // display={{ base: 'none', lg: 'block' }}
+            title="Schedule"
+            value={`${eventInfo.event.extendedProps.start_time} - ${eventInfo.event.extendedProps.end_time}`}
+            view={view}
+          />
+          {/* <Description
+            // display={{ base: 'none', lg: 'block' }}
             title="Start"
             value={eventInfo.event.extendedProps.start_time}
             view={view}
@@ -187,7 +230,7 @@ const renderEventContent = view => eventInfo => {
             title="End"
             value={eventInfo.event.extendedProps.end_time}
             view={view}
-          />
+          /> */}
         </>
       )}
     </Flex>

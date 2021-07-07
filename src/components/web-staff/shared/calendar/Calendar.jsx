@@ -8,7 +8,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { CalendarToolbar } from './CalendarToolbar';
 
-export const Calendar = ({ eventClick, events, eventContent }) => {
+export const Calendar = ({ eventClick, events, eventContent, ...rest }) => {
   const [isMobile] = useMediaQuery('(max-width: 600px)');
   const [view, setView] = useState(isMobile ? 'listWeek' : 'dayGridMonth');
   const calendarRef = useRef(null);
@@ -31,7 +31,8 @@ export const Calendar = ({ eventClick, events, eventContent }) => {
         plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
         events={events}
         eventClick={eventClick}
-        eventContent={eventContent(view)}
+        eventContent={eventContent && eventContent(view)}
+        {...rest}
       />
     </Box>
   );
