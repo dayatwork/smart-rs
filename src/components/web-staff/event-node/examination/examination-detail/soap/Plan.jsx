@@ -26,7 +26,8 @@ import {
   Permissions,
 } from '../../../../../../access-control';
 
-export const Plan = ({ patientDetail, dataSoap }) => {
+export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
+  // console.log({ dataLabPatient });
   const {
     isOpen: isOpenRequestLabModal,
     onOpen: onOpenRequestLabModal,
@@ -112,6 +113,19 @@ export const Plan = ({ patientDetail, dataSoap }) => {
             </Box>
           </PrivateComponent>
         </VStack>
+      </Box>
+
+      <Box bg="white" boxShadow="md" p="4" overflow="auto" mt="4">
+        <Box px="4">
+          <Heading fontSize="lg" fontWeight="semibold" mb="4">
+            Procedure Result
+          </Heading>
+          {dataLabPatient?.data?.length ? (
+            <Heading fontSize="md" fontWeight="semibold" mb="4">
+              Lab Test Result
+            </Heading>
+          ) : null}
+        </Box>
       </Box>
     </>
   );

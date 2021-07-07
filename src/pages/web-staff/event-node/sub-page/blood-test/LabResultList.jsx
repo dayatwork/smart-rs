@@ -90,6 +90,8 @@ export const LabResultList = ({ selectedInstitution }) => {
     []
   );
 
+  console.log({ dataLaboratoryResultList });
+
   return (
     <>
       {isFetchingLaboratoryResultList && (

@@ -30,6 +30,7 @@ import { useCookies } from 'react-cookie';
 import { getHospitalPatientById } from '../../../../../api/patient-services/hospital-patient';
 import { getUsersByIdentity } from '../../../../../api/user-services/user-management';
 import { updateSoapStatus } from '../../../../../api/medical-record-services/soap';
+import { getLaboratoryBloodList } from '../../../../../api/laboratory-services/blood';
 
 import { Subjective } from './soap/Subjective';
 import { Objective } from './soap/Objective';
@@ -71,6 +72,17 @@ export const Soap = ({ dataSoap }) => {
     () => getUsersByIdentity(cookies, dataPatientDetail?.data?.patient?.email),
     { enabled: Boolean(dataPatientDetail?.data?.patient?.email) }
   );
+
+  const { data: dataLabPatient } = useQuery(
+    ['lab-patient-data', dataSoap?.institution_id, dataSoap?.id],
+    () =>
+      getLaboratoryBloodList(cookies, dataSoap?.institution_id, dataSoap?.id),
+    {
+      enabled: Boolean(dataSoap?.institution_id) && Boolean(dataSoap?.id),
+    }
+  );
+
+  // console.log({ dataLabPatient });
 
   if (dataSoap?.status === 'completed') {
     return <Redirect to="/events/examination" />;
@@ -544,6 +556,7 @@ export const Soap = ({ dataSoap }) => {
                             patientDetail={dataPatientDetail?.data}
                             soapPlans={dataSoap?.soap_plans}
                             dataSoap={dataSoap}
+                            dataLabPatient={dataLabPatient}
                           />
                         </Box>
                       </Flex>

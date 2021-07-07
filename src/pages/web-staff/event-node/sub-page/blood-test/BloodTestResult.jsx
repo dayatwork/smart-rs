@@ -64,6 +64,8 @@ export const BloodTestResult = () => {
     );
   }
 
+  console.log({ dataLaboratoryResult });
+
   return (
     <Box>
       <BackButton to="/events/blood-test" text="Back to Blood Test List" />

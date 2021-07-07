@@ -99,23 +99,28 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
       { enabled: Boolean(orderId) }
     );
 
+  // const { data: dataOrderDetail, isLoading: isLoadingOrderDetail } = useQuery(
+  //   ['order-detail', dataUserOrderDetail?.data?.id],
+  //   () => getOrderDetail(cookies, dataUserOrderDetail?.data?.id),
+  //   { enabled: Boolean(dataUserOrderDetail?.data?.id) }
+  // );
   const { data: dataOrderDetail, isLoading: isLoadingOrderDetail } = useQuery(
-    ['order-detail', dataUserOrderDetail?.data?.id],
-    () => getOrderDetail(cookies, dataUserOrderDetail?.data?.id),
-    { enabled: Boolean(dataUserOrderDetail?.data?.id) }
+    ['order-detail', orderId],
+    () => getOrderDetail(cookies, orderId),
+    { enabled: Boolean(orderId) }
   );
 
   const { data: dataPaymentMethod, isLoading: isLoadingPaymentMethod } =
     useQuery(
-      ['payment-method', dataUserOrderDetail?.data?.method_id],
-      () => getPaymentMethodById(cookies, dataUserOrderDetail?.data?.method_id),
-      { enabled: Boolean(dataUserOrderDetail?.data?.method_id) }
+      ['payment-method', dataOrderDetail?.data?.method?.id],
+      () => getPaymentMethodById(cookies, dataOrderDetail?.data?.method?.id),
+      { enabled: Boolean(dataOrderDetail?.data?.method?.id) }
     );
 
   const { data: dataPaymentSlip, isLoading: isLoadingPaymentSlip } = useQuery(
-    ['payment-slip-detail', dataUserOrderDetail?.data?.id],
-    () => getPaymentSlipDetail(cookies, dataUserOrderDetail?.data?.id),
-    { enabled: Boolean(dataUserOrderDetail?.data?.id) }
+    ['payment-slip-detail', orderId],
+    () => getPaymentSlipDetail(cookies, orderId),
+    { enabled: Boolean(orderId) }
   );
 
   const onSubmit = async value => {
@@ -125,10 +130,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
     try {
       setIsLoading(true);
       await uploadOrderReceipt(cookies, data);
-      await queryClient.invalidateQueries([
-        'payment-slip-detail',
-        dataUserOrderDetail?.data?.id,
-      ]);
+      await queryClient.invalidateQueries(['payment-slip-detail', orderId]);
       setIsLoading(false);
       toast({
         position: 'top-right',
@@ -162,6 +164,9 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
   // console.log({ paymentSlipWatch });
   // console.log({ errors });
   // console.log({ orderId });
+  console.log({ orderId });
+  console.log({ dataUserOrderDetail });
+  console.log({ dataOrderDetail });
 
   return (
     <>
@@ -198,7 +203,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                     <Text fontSize="sm" fontWeight="semibold">
                       Payment Status
                     </Text>
-                    {dataUserOrderDetail?.data?.status === 'paid' ? (
+                    {dataOrderDetail?.data?.status === 'paid' ? (
                       <Box
                         bgColor="green.200"
                         px="3"
@@ -209,7 +214,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         textTransform="uppercase"
                         fontSize="sm"
                       >
-                        {dataUserOrderDetail?.data?.status}
+                        {dataOrderDetail?.data?.status}
                       </Box>
                     ) : (
                       <Box
@@ -222,7 +227,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         textTransform="uppercase"
                         fontSize="sm"
                       >
-                        {dataUserOrderDetail?.data?.status}
+                        {dataOrderDetail?.data?.status}
                       </Box>
                     )}
                   </HStack>
@@ -259,14 +264,14 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                       Transaction Number
                     </Text>
                     <Text fontWeight="semibold">
-                      {dataUserOrderDetail?.data?.transaction_number}
+                      {dataOrderDetail?.data?.transaction_number}
                     </Text>
                   </Box>
                 </SimpleGrid>
                 <Divider py="4" />
                 <SimpleGrid
                   columns={
-                    dataUserOrderDetail?.data?.status === 'paid'
+                    dataOrderDetail?.data?.status === 'paid'
                       ? orderPaymentInfoColumnsPaid
                       : orderPaymentInfoColumns
                   }
@@ -336,9 +341,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                         Total Amount
                       </Text>
                       <Text fontWeight="semibold">
-                        {formatter.format(
-                          dataUserOrderDetail?.data?.total_price
-                        )}
+                        {formatter.format(dataOrderDetail?.data?.total_price)}
                       </Text>
                     </Box>
                     {/* <Box mb="6">
@@ -358,8 +361,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                       </Text>
                     </Box> */}
                   </Box>
-                  {dataUserOrderDetail?.data?.status !== 'paid' &&
-                    dataUserOrderDetail?.data?.status !== 'over due' && (
+                  {dataOrderDetail?.data?.status !== 'paid' &&
+                    dataOrderDetail?.data?.status !== 'over due' && (
                       <Box>
                         <Text
                           fontSize="sm"
@@ -369,9 +372,7 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
                           Balance Due
                         </Text>
                         <Text fontWeight="semibold" fontSize="3xl" mb="1">
-                          {formatter.format(
-                            dataUserOrderDetail?.data?.total_price
-                          )}
+                          {formatter.format(dataOrderDetail?.data?.total_price)}
                         </Text>
                         <Text
                           fontSize="sm"
@@ -441,8 +442,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
               </CardContent>
             </Card>
           </GridItem>
-          {dataUserOrderDetail?.data?.status !== 'paid' &&
-            dataUserOrderDetail?.data?.status !== 'over due' && (
+          {dataOrderDetail?.data?.status !== 'paid' &&
+            dataOrderDetail?.data?.status !== 'over due' && (
               <GridItem colSpan={{ base: 2, xl: 1 }}>
                 <Card>
                   <CardHeader
