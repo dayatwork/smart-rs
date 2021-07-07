@@ -122,14 +122,15 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
     const { id: soap_id, patient_id, institution_id } = dataSoap;
     const { employee_id, date } = JSON.parse(selectedSchedule);
     const { value: time } = JSON.parse(selectedTime);
-    const { category_id, subcategory_id } = JSON.parse(selectedCategory);
+    // const { category_id, subcategory_id } = JSON.parse(selectedCategory);
+    const { category_id } = JSON.parse(selectedCategory);
 
     const data = {
       institution_id,
       patient_id,
       soap_id,
       category_id,
-      subcategory_id,
+      // subcategory_id,
       method: 'default',
       booking_id: null,
       employee_id,
@@ -180,6 +181,23 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
     }
   };
 
+  // console.log({
+  //   dataSchedules,
+  //   dataEstimatedTimes,
+  //   dataServices,
+  //   dataCategories,
+  // });
+
+  // console.log({ dataSoap });
+  // console.log({ selectedService });
+  console.log({ dataCategories });
+
+  const labCategories = dataCategories?.data?.map(
+    category => `${category.category_id} ${category.category_name}`
+  );
+  const categories = [...new Set(labCategories)];
+  console.log({ categories });
+
   return (
     <>
       <Helmet>
@@ -202,6 +220,11 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
                 }}
               >
                 <option>Pilih Layanan</option>
+                {/* {dataServices?.data?.map(service => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
+                  </option>
+                ))} */}
                 {dataServices?.data
                   ?.filter(service => service.master_service_id === MASTER_LAB)
                   ?.map(service => (
@@ -227,7 +250,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
                   setSelectedCategory(e.target.value);
                 }}
               >
-                <option>Pilih Category</option>
+                {/* <option>Pilih Category</option>
                 {dataCategories?.data?.map(category => (
                   <option
                     key={category.id}
@@ -237,6 +260,18 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
                     })}
                   >
                     {category.category_name} - {category.subcategory_name}
+                  </option>
+                ))} */}
+                <option>Pilih Category</option>
+                {categories.map(category => (
+                  <option
+                    key={category}
+                    value={JSON.stringify({
+                      category_id: category.split(' ')[0],
+                      // subcategory_id: category.subcategory_id,
+                    })}
+                  >
+                    {category.split(' ')[1]}
                   </option>
                 ))}
               </Select>
