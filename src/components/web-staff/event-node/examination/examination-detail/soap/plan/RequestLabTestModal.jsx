@@ -181,7 +181,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       schedule_detail_id: scheduleDetailId,
       estimate_time_id: timeId,
     };
-    console.log({ dataBooking });
+    // console.log({ dataBooking });
 
     // console.log({ dataRegisterLab });
 
@@ -189,14 +189,14 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       setIsLoadingRequestLaboratory(true);
       // Create Booking
       const res = await createOnsiteBooking(cookies, dataBooking);
-      console.log({ res });
+      // console.log({ res });
 
       // Create Order
       const orderData = {
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
         address_id: null,
-        event_node: 'Booking',
+        event_node: 'Pemeriksaan di Laboratorium',
         estimate_time_id: timeId,
         method_id: paymentMethod?.id,
         institution_id,
@@ -214,7 +214,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
           },
         ],
       };
-      console.log({ orderData });
+      // console.log({ orderData });
       await createOrder(cookies)(orderData);
 
       // Create Registration Lab

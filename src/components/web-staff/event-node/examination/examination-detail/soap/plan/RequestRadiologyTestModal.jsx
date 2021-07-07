@@ -202,7 +202,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       schedule_detail_id: scheduleDetailId,
       estimate_time_id: timeId,
     };
-    console.log({ dataBooking });
+    // console.log({ dataBooking });
 
     try {
       setIsLoadingRequestRadiology(true);
@@ -214,7 +214,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
         address_id: null,
-        event_node: 'Booking',
+        event_node: 'Pemeriksaan di Radiology',
         estimate_time_id: timeId,
         method_id: paymentMethod?.id,
         institution_id,
@@ -232,7 +232,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
           },
         ],
       };
-      console.log({ orderData });
+      // console.log({ orderData });
       await createOrder(cookies)(orderData);
 
       // Create Registration Radiology
