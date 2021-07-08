@@ -22,21 +22,26 @@ export const CalendarToolbar = ({ view, onChangeView }) => {
         aria-label="View"
       >
         <ToggleButton
+          tooltip="Monthly"
           value="dayGridMonth"
           aria-label="Month"
           icon={<Icon icon={roundViewModule} />}
         />
+
         <ToggleButton
+          tooltip="Weekly"
           value="timeGridWeek"
           aria-label="Week"
           icon={<Icon icon={roundViewWeek} />}
         />
         <ToggleButton
+          tooltip="Daily"
           value="timeGridDay"
           aria-label="Day"
           icon={<Icon icon={roundViewDay} />}
         />
         <ToggleButton
+          tooltip="Monthly List"
           value="listWeek"
           aria-label="Agenda"
           icon={<Icon icon={roundViewAgenda} />}
