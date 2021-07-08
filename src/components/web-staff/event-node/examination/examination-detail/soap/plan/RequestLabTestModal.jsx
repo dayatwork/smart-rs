@@ -179,6 +179,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
 
       // Create Order
       const orderData = {
+        patient_id,
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
         address_id: null,
