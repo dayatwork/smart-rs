@@ -18,8 +18,6 @@ import {
   Text,
   Center,
   Spinner,
-  RadioGroup,
-  Radio,
   useToast,
   Flex,
 } from '@chakra-ui/react';
@@ -144,13 +142,9 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     isLoading: isLoadingEstimatedTime,
     isSuccess: isSuccessEstimatedTime,
   } = useQuery(
-    ['estimated-times', JSON.parse(selectedSchedule || '{}')?.detailId],
-    () =>
-      getScheduleEstimatedTimes(
-        cookies,
-        JSON.parse(selectedSchedule || '{}')?.detailId
-      ),
-    { enabled: Boolean(JSON.parse(selectedSchedule || '{}')?.detailId) }
+    ['estimated-times', selectedSchedule?.id],
+    () => getScheduleEstimatedTimes(cookies, selectedSchedule?.id),
+    { enabled: Boolean(selectedSchedule?.id) }
   );
 
   const {
@@ -185,22 +179,14 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     const { id: soap_id, patient_id, institution_id } = dataSoap;
-    const {
-      employee_id,
-      date,
-      id: scheduleId,
-      detailId: scheduleDetailId,
-    } = JSON.parse(selectedSchedule);
-    const { value: time, id: timeId } = JSON.parse(selectedTime);
-
     const paymentMethod = JSON.parse(selectedPaymentMethod);
 
     const dataBooking = {
       patient_id,
       service_id: selectedService,
-      schedule_id: scheduleId,
-      schedule_detail_id: scheduleDetailId,
-      estimate_time_id: timeId,
+      schedule_id: selectedSchedule?.schedule_id,
+      schedule_detail_id: selectedSchedule?.id,
+      estimate_time_id: selectedTime?.id,
     };
     // console.log({ dataBooking });
 
@@ -215,7 +201,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
         type: '02',
         address_id: null,
         event_node: 'Pemeriksaan di Radiology',
-        estimate_time_id: timeId,
+        estimate_time_id: selectedTime?.id,
         method_id: paymentMethod?.id,
         institution_id,
         method_name: paymentMethod?.name,
@@ -242,9 +228,9 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
         soap_id,
         radiology_type_id: selectedSubcategory,
         booking_id: res?.data?.booking_order?.booking_id,
-        employee_id,
-        date,
-        time,
+        employee_id: selectedSchedule?.employee?.id,
+        date: selectedSchedule?.date,
+        time: selectedTime?.available_time,
         description,
       };
       await createRadiology(cookies)(dataRegisterImaging);
@@ -260,8 +246,8 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       setSelectedService('');
       setSelectedSchedule('');
       setSelectedDayRange({
-        from: '',
-        to: '',
+        from: undefined,
+        to: undefined,
       });
       setSelectedTime('');
       setSelectedCategory('');
@@ -288,6 +274,8 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
       });
     }
   };
+
+  console.log({ selectedTime });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">
@@ -405,30 +393,69 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               {dataSchedules && dataSchedules.code !== 404 && (
                 <FormControl mb="4">
                   <FormLabel>Schedule</FormLabel>
-                  <Select
-                    value={selectedSchedule}
-                    onChange={e => setSelectedSchedule(e.target.value)}
+                  <Box
+                    maxH="96"
+                    overflow="auto"
+                    border="1px"
+                    borderColor="gray.200"
+                    px="4"
+                    py="4"
+                    rounded="md"
+                    bgColor="white"
                   >
-                    <option>Select Schedule</option>
                     {dataSchedules?.data?.map(schedule => {
                       return (
-                        <option
+                        <Box
+                          mb="2"
+                          cursor="pointer"
+                          onClick={() => {
+                            setSelectedSchedule(schedule);
+                            setSelectedTime('');
+                            setSelectedPaymentMethod('');
+                          }}
                           key={schedule.id}
-                          value={JSON.stringify({
-                            id: schedule?.schedule_id,
-                            detailId: schedule?.id,
-                            date: schedule?.date,
-                            employee_id: schedule?.employee?.id,
-                            employee_name: schedule?.employee?.name,
-                          })}
+                          bg={
+                            selectedSchedule?.id === schedule.id
+                              ? 'purple.100'
+                              : 'purple.50'
+                          }
+                          boxShadow="md"
+                          px="4"
+                          py="1"
+                          rounded="md"
+                          border="2px"
+                          borderColor={
+                            selectedSchedule?.id === schedule.id
+                              ? 'purple.500'
+                              : 'transparent'
+                          }
                         >
-                          Dokter: {schedule?.employee?.name} --- Tanggal:{' '}
-                          {schedule.date} --- Pukul: {schedule.start_time}-
-                          {schedule.end_time}
-                        </option>
+                          <Flex justify="space-between">
+                            <Box>
+                              <Text
+                                fontSize="md"
+                                color="purple.500"
+                                fontWeight="bold"
+                              >
+                                {schedule?.institution?.name}
+                              </Text>
+                              <Text fontSize="md" fontWeight="bold">
+                                {schedule?.employee?.name}
+                              </Text>
+                            </Box>
+                            <Box>
+                              <Text fontWeight="semibold" color="gray.700">
+                                {schedule?.days}, {schedule?.date_name}
+                              </Text>
+                              <Text fontWeight="semibold" color="gray.700">
+                                {schedule?.start_time} - {schedule?.end_time}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Box>
                       );
                     })}
-                  </Select>
+                  </Box>
                 </FormControl>
               )}
               {isLoadingEstimatedTime && (
@@ -439,79 +466,89 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
               {isSuccessEstimatedTime && selectedSchedule && (
                 <FormControl mb="6">
                   <FormLabel>Time</FormLabel>
-                  <RadioGroup onChange={setSelectedTime} value={selectedTime}>
-                    <SimpleGrid columns={4} gap="4">
-                      {dataEstimatedTimes &&
-                        dataEstimatedTimes?.data?.map(time => (
-                          <Radio
-                            id={time.id}
-                            disabled={time.status}
-                            value={JSON.stringify({
-                              id: time.id,
-                              value: time.available_time,
-                            })}
-                            key={time.id}
-                            colorScheme="purple"
-                          >
-                            <Text color={time.status ? 'red' : 'green'}>
-                              {time.available_time}
-                            </Text>
-                            {/* {time.status && (
-                              <Text fontSize="sm">Not Available</Text>
-                            )} */}
-                          </Radio>
-                        ))}
-                    </SimpleGrid>
-                  </RadioGroup>
+                  <SimpleGrid
+                    columns={4}
+                    gap="4"
+                    border="1px"
+                    borderColor="gray.200"
+                    px="4"
+                    py="4"
+                    rounded="md"
+                    maxH="96"
+                    overflow="auto"
+                  >
+                    {dataEstimatedTimes?.data?.map(time => {
+                      return (
+                        <Center
+                          as="button"
+                          disabled={time.status}
+                          cursor={time.status ? 'not-allowed' : 'pointer'}
+                          onClick={() => setSelectedTime(time)}
+                          key={time.id}
+                          bg={
+                            time.status
+                              ? 'red.100'
+                              : selectedTime?.id === time.id
+                              ? 'purple.100'
+                              : 'green.100'
+                          }
+                          boxShadow="md"
+                          rounded="md"
+                          border="2px"
+                          borderColor={
+                            selectedTime?.id === time.id
+                              ? 'purple.500'
+                              : 'transparent'
+                          }
+                        >
+                          {time.available_time}
+                        </Center>
+                      );
+                    })}
+                  </SimpleGrid>
                 </FormControl>
               )}
-              <SimpleGrid columns={2} gap="4">
-                <Box>
-                  {selectedSchedule && selectedTime && (
-                    <FormControl mb="4" id="description">
-                      <FormLabel>Description</FormLabel>
-                      <Textarea
-                        rows="6"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                      />
-                    </FormControl>
-                  )}
-                </Box>
-                <Box>
-                  {isSuccessServicePrice && selectedTime && (
-                    <FormControl mb="2">
-                      <FormLabel mb="-1">Price</FormLabel>
-                      <Box fontSize="2xl" fontWeight="extrabold" as="span">
-                        {formatter.format(
-                          Number(dataServicePrice?.data?.total_price)
-                        )}
-                      </Box>
-                    </FormControl>
-                  )}
-                  {selectedTime && (
-                    <FormControl id="payment_method" my="4">
-                      <FormLabel>Payment Method</FormLabel>
-                      <Select
-                        value={selectedPaymentMethod}
-                        onChange={e => setSelectedPaymentMethod(e.target.value)}
-                      >
-                        <option value="">Pilih Metode Pembayaran</option>
-                        {dataPaymentMethods?.data
-                          ?.filter(paymentMethod => paymentMethod.active)
-                          .map(paymentMethod => (
-                            <option
-                              key={paymentMethod.id}
-                              value={JSON.stringify(paymentMethod)}
-                            >
-                              {paymentMethod.name}
-                            </option>
-                          ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </Box>
-              </SimpleGrid>
+              {selectedSchedule && selectedTime && (
+                <FormControl mb="2" id="description">
+                  <FormLabel>Description</FormLabel>
+                  <Textarea
+                    rows="3"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                  />
+                </FormControl>
+              )}
+              {isSuccessServicePrice && selectedSchedule && selectedTime && (
+                <FormControl mb="2">
+                  <FormLabel mb="-1">Price</FormLabel>
+                  <Box fontSize="2xl" fontWeight="extrabold" as="span">
+                    {formatter.format(
+                      Number(dataServicePrice?.data?.total_price)
+                    )}
+                  </Box>
+                </FormControl>
+              )}
+              {selectedSchedule && selectedTime && (
+                <FormControl id="payment_method" my="4">
+                  <FormLabel>Payment Method</FormLabel>
+                  <Select
+                    value={selectedPaymentMethod}
+                    onChange={e => setSelectedPaymentMethod(e.target.value)}
+                  >
+                    <option value="">Pilih Metode Pembayaran</option>
+                    {dataPaymentMethods?.data
+                      ?.filter(paymentMethod => paymentMethod.active)
+                      .map(paymentMethod => (
+                        <option
+                          key={paymentMethod.id}
+                          value={JSON.stringify(paymentMethod)}
+                        >
+                          {paymentMethod.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+              )}
             </Box>
           </SimpleGrid>
         </ModalBody>
@@ -559,7 +596,7 @@ const ScheduleDate = ({
   };
 
   return (
-    <Box className="RangeExample">
+    <Center flexDir="column" className="RangeExample">
       <DayPicker
         className="Selectable"
         numberOfMonths={1}
@@ -576,6 +613,7 @@ const ScheduleDate = ({
         {range.from && range.to && (
           <Button
             mb="2"
+            minW="56"
             // w="full"
             display="block"
             colorScheme="purple"
@@ -586,7 +624,7 @@ const ScheduleDate = ({
           </Button>
         )}
       </Flex>
-    </Box>
+    </Center>
   );
 };
 

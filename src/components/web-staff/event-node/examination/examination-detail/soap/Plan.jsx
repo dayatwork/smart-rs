@@ -62,6 +62,7 @@ export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
       <AppointmentModal
         isOpen={isOpenAppointmentModal}
         onClose={onCloseAppointmentModal}
+        dataSoap={dataSoap}
       />
 
       <Box bg="white" boxShadow="md" p="4" overflow="auto">

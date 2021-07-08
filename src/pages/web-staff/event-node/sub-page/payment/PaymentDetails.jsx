@@ -223,7 +223,7 @@ export const PaymentDetails = ({ fromFinanceMenu }) => {
               // download={true}
               onClick={() => setIsOpenPaymentSlip(true)}
             >
-              Payment Slip
+              Klik disini untuk melihat bukti pembayaran
               {/* {`https://local-dev.ejemplo.me/smartrs/${dataPaymentSlip?.data?.document}`} */}
             </Button>
           </Center>
