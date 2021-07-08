@@ -275,7 +275,7 @@ export const RequestRadiologyTestModal = ({ isOpen, onClose, dataSoap }) => {
     }
   };
 
-  console.log({ selectedTime });
+  // console.log({ selectedTime });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">

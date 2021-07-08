@@ -90,7 +90,7 @@ export const LabResultList = ({ selectedInstitution }) => {
     []
   );
 
-  console.log({ dataLaboratoryResultList });
+  // console.log({ dataLaboratoryResultList });
 
   return (
     <>

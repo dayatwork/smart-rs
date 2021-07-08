@@ -29,7 +29,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { getPaymentMethodById } from '../../api/institution-services/payment-method';
-import { getUserOrderDetail } from '../../api/payment-services/user-order';
+// import { getUserOrderDetail } from '../../api/payment-services/user-order';
 import { getOrderDetail } from '../../api/payment-services/order';
 import {
   uploadOrderReceipt,
@@ -92,12 +92,12 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
     md: 2,
   });
 
-  const { data: dataUserOrderDetail, isLoading: isLoadingUserOrderDetail } =
-    useQuery(
-      ['user-order-detail', orderId],
-      () => getUserOrderDetail(cookies, orderId),
-      { enabled: Boolean(orderId) }
-    );
+  // const { data: dataUserOrderDetail, isLoading: isLoadingUserOrderDetail } =
+  //   useQuery(
+  //     ['user-order-detail', orderId],
+  //     () => getUserOrderDetail(cookies, orderId),
+  //     { enabled: Boolean(orderId) }
+  //   );
 
   // const { data: dataOrderDetail, isLoading: isLoadingOrderDetail } = useQuery(
   //   ['order-detail', dataUserOrderDetail?.data?.id],
@@ -164,15 +164,13 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
   // console.log({ paymentSlipWatch });
   // console.log({ errors });
   // console.log({ orderId });
-  console.log({ orderId });
-  console.log({ dataUserOrderDetail });
-  console.log({ dataOrderDetail });
+  // console.log({ orderId });
+  // console.log({ dataUserOrderDetail });
+  // console.log({ dataOrderDetail });
 
   return (
     <>
-      {isLoadingUserOrderDetail ||
-      isLoadingOrderDetail ||
-      isLoadingPaymentMethod ? (
+      {isLoadingOrderDetail || isLoadingPaymentMethod ? (
         <Center h="60">
           <Spinner
             thickness="4px"

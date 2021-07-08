@@ -76,8 +76,8 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
     { enabled: Boolean(dataSoap?.institution_id) }
   );
 
-  console.log({ startDate });
-  console.log({ endDate });
+  // console.log({ startDate });
+  // console.log({ endDate });
 
   const {
     data: dataSchedules,
@@ -120,9 +120,9 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
     }
   );
 
-  console.log({ selectedSchedule });
-  console.log({ selectedService });
-  console.log({ selectedTime });
+  // console.log({ selectedSchedule });
+  // console.log({ selectedService });
+  // console.log({ selectedTime });
 
   const handleSubmit = async e => {
     e.preventDefault();

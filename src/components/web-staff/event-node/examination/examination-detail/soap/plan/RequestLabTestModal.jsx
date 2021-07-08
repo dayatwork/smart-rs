@@ -167,7 +167,7 @@ export const RequestLabTestModal = ({ isOpen, onClose, dataSoap }) => {
       schedule_detail_id: selectedSchedule?.id,
       estimate_time_id: selectedTime?.id,
     };
-    console.log({ dataBooking });
+    // console.log({ dataBooking });
 
     // console.log({ dataRegisterLab });
 

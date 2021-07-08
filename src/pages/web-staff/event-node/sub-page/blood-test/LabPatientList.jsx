@@ -45,7 +45,7 @@ export const LabPatientList = ({ selectedInstitution }) => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  console.log({ dataLaboratoryBloodList });
+  // console.log({ dataLaboratoryBloodList });
 
   const handleUpdate = useCallback(
     id => {

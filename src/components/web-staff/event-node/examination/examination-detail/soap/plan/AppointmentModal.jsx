@@ -39,7 +39,7 @@ import { getServicePriceDetails } from '../../../../../../../api/finance-service
 import { getPaymentMethods } from '../../../../../../../api/institution-services/payment-method';
 
 export const AppointmentModal = ({ isOpen, onClose, dataSoap }) => {
-  console.log({ dataSoap });
+  // console.log({ dataSoap });
   const { employeeDetail } = useContext(AuthContext);
   const toast = useToast();
   const [cookies] = useCookies(['token']);
@@ -150,12 +150,12 @@ export const AppointmentModal = ({ isOpen, onClose, dataSoap }) => {
     };
     const paymentMethod = JSON.parse(selectedPaymentMethod);
 
-    console.log({ data });
+    // console.log({ data });
 
     try {
       setIsLoadingBooking(true);
       const res = await createOnsiteBooking(cookies, data);
-      console.log({ res });
+      // console.log({ res });
       const orderData = {
         booking_order_id: res?.data?.booking_order?.id,
         type: '02',
@@ -178,9 +178,9 @@ export const AppointmentModal = ({ isOpen, onClose, dataSoap }) => {
           },
         ],
       };
-      console.log({ orderData });
-      const resOrder = await createOrder(cookies)(orderData);
-      console.log({ resOrder });
+      // console.log({ orderData });
+      await createOrder(cookies)(orderData);
+      // console.log({ resOrder });
       await queryClient.invalidateQueries('booking-list');
       await queryClient.invalidateQueries([
         'institution-order-list',

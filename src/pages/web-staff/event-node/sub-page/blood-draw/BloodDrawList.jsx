@@ -185,7 +185,7 @@ export const BloodDrawList = () => {
     [handleStartBloodTest, isLoadingGenerateQR]
   );
 
-  console.log({ dataLaboratoryList });
+  // console.log({ dataLaboratoryList });
 
   return (
     <Box>
