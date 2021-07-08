@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Heading,
@@ -9,6 +10,17 @@ import {
   Text,
   Divider,
   Stack,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from '@chakra-ui/react';
 import 'react-day-picker/lib/style.css';
 import { useQuery } from 'react-query';
@@ -21,12 +33,15 @@ import { AddPrescriptionModal } from './plan/AddPrescriptionModal';
 import { EditPrescriptionDrawer } from './plan/EditPrescriptionDrawer';
 import { AppointmentModal } from './plan/AppointmentModal';
 import { getPatientPrescription } from '../../../../../../api/medical-record-services/soap';
+import { getSoapLaboratoryResultList } from '../../../../../../api/laboratory-services/result';
 import {
   PrivateComponent,
   Permissions,
 } from '../../../../../../access-control';
 
-export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
+export const Plan = ({ patientDetail, dataSoap }) => {
+  const [cookies] = useCookies(['token']);
+
   const {
     isOpen: isOpenRequestLabModal,
     onOpen: onOpenRequestLabModal,
@@ -44,6 +59,16 @@ export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
     onOpen: onOpenAppointmentModal,
     onClose: onCloseAppointmentModal,
   } = useDisclosure();
+
+  const { data: dataLabResult, isSuccess: isSuccessLabResult } = useQuery(
+    ['soap-lab-result', dataSoap?.id],
+    () => getSoapLaboratoryResultList(cookies, dataSoap?.id)
+    // { enabled: Boolean(dataSoap?.id) }
+  );
+
+  console.log({ dataSoap });
+  console.log({ cookies });
+  console.log({ dataLabResult });
 
   return (
     <>
@@ -120,10 +145,88 @@ export const Plan = ({ patientDetail, dataSoap, dataLabPatient }) => {
           <Heading fontSize="lg" fontWeight="semibold" mb="4">
             Procedure Result
           </Heading>
-          {dataLabPatient?.data?.length ? (
-            <Heading fontSize="md" fontWeight="semibold" mb="4">
-              Lab Test Result
-            </Heading>
+          {isSuccessLabResult && dataLabResult?.data?.length ? (
+            <>
+              <Heading fontSize="md" fontWeight="semibold" mb="4">
+                Lab Test Result
+              </Heading>
+              <Accordion allowMultiple>
+                {dataLabResult?.data?.map((result, index) => {
+                  console.log({ result });
+                  return (
+                    <AccordionItem key={result.id}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            Lab Test {index + 1}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        {result.bloods[0] &&
+                        result.bloods[0]?.id &&
+                        result.bloods[0]?.blood_results[0] ? (
+                          <>
+                            <Heading size="md" mb="2">
+                              Result
+                            </Heading>
+                            <Box mb="4">
+                              <Text
+                                fontSize="sm"
+                                fontWeight="semibold"
+                                color="gray.600"
+                              >
+                                Code
+                              </Text>
+                              <Text fontWeight="semibold">
+                                {result.bloods[0].code}
+                              </Text>
+                              <Button
+                                as={Link}
+                                to={`/events/blood-test-result/${result.bloods[0]?.blood_results[0]?.id}`}
+                                variant="link"
+                                colorScheme="purple"
+                              >
+                                Details
+                              </Button>
+                            </Box>
+                            <Table
+                              variant="simple"
+                              border="1px"
+                              borderColor="gray.200"
+                              mb="8"
+                            >
+                              <Thead>
+                                <Tr>
+                                  <Th>Pemeriksaan</Th>
+                                  <Th isNumeric>Hasil</Th>
+                                  <Th>Satuan</Th>
+                                  <Th>Nilai Normal</Th>
+                                  {/* <Th>Metode</Th> */}
+                                </Tr>
+                              </Thead>
+                              <Tbody>
+                                {result.bloods[0]?.blood_results[0]?.blood_result_details?.map(
+                                  data => (
+                                    <Tr key={data.id}>
+                                      <Td>{data.name}</Td>
+                                      <Td isNumeric>{data.result}</Td>
+                                      <Td>{data.unit}</Td>
+                                      <Td>{data.normal_result}</Td>
+                                    </Tr>
+                                  )
+                                )}
+                              </Tbody>
+                            </Table>
+                          </>
+                        ) : null}
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
+            </>
           ) : null}
         </Box>
       </Box>

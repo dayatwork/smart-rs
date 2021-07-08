@@ -64,7 +64,7 @@ export const BloodTestResult = () => {
     );
   }
 
-  // console.log({ dataLaboratoryResult });
+  console.log({ dataLaboratoryResult });
 
   return (
     <Box>
@@ -113,8 +113,12 @@ export const BloodTestResult = () => {
             title="Nama Pasien"
             value={dataLaboratoryResult?.data?.patient?.name}
           />
-          <Description title="Alamat" value="..." />
-          <Description title="Tanggal Selesai Hasil" value="???" />
+          <Description
+            title="Nomor Pasien"
+            value={dataLaboratoryResult?.data?.patient?.patient_number}
+          />
+          <Description title="Alamat" value="" />
+          <Description title="Tanggal Selesai Hasil" value="" />
         </Box>
         <Table variant="simple" border="1px" borderColor="gray.200" mb="8">
           <Thead>
@@ -128,7 +132,7 @@ export const BloodTestResult = () => {
           </Thead>
           <Tbody>
             {dataLaboratoryResult?.data?.blood_result_details?.map(data => (
-              <Tr>
+              <Tr key={data.id}>
                 <Td>{data.name}</Td>
                 <Td isNumeric>{data.result}</Td>
                 <Td>{data.unit}</Td>

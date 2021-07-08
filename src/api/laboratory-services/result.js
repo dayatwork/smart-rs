@@ -17,6 +17,25 @@ export const getLaboratoryResultList = async (cookies, institution_id) => {
   return await res.json();
 };
 
+export const getSoapLaboratoryResultList = async (cookies, soap_id) => {
+  const formattedId = soap_id.replace(/['"]+/g, '');
+  const res = await fetch(
+    `${process.env.REACT_APP_LAB_API}/blood/result/detail/soap?soap_id=${formattedId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get SOAP Laboratory Result List');
+  }
+
+  return await res.json();
+};
+
 // export const getLaboratoryResultList = async (cookies) => {
 //   const res = await fetch(`${process.env.REACT_APP_LAB_API}/blood/result`, {
 //     method: "GET",
