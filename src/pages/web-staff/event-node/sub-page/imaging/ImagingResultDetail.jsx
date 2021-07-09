@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Badge,
@@ -9,21 +9,10 @@ import {
   Flex,
   Heading,
   Image,
-  SimpleGrid,
   Spinner,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
 } from '@chakra-ui/react';
-import { FaPrint } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
-import QRCode from 'qrcode.react';
-import { useReactToPrint } from 'react-to-print';
 import Lightbox from 'react-image-lightbox';
 
 import { getRadiologyResultDetail } from '../../../../../api/radiology-services/result';
