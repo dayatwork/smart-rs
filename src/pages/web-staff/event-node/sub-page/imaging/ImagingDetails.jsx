@@ -54,7 +54,11 @@ export const ImagingDetails = () => {
 
     try {
       setIsLoading(true);
-      const res = await createRadiologyResult(cookies, data);
+      const res = await createRadiologyResult(
+        cookies,
+        data,
+        dataRadiologyDetails?.data?.patient_id
+      );
       console.log({ res });
       setIsLoading(false);
       toast({

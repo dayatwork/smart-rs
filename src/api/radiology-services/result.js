@@ -1,10 +1,13 @@
-export const createRadiologyResult = async (cookies, data) => {
+export const createRadiologyResult = async (cookies, data, patient_id) => {
+  console.log({ patient_id });
   const res = await fetch(
     `${process.env.REACT_APP_RADIOLOGY}/radiology/result/create`,
     {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${cookies?.token}`,
+        patient_id,
+        // Accept: 'application/json, application/xml, text/plain, text/html, *.*',
       },
       body: data,
     }

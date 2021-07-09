@@ -23,10 +23,12 @@ import {
   Td,
   Badge,
   SimpleGrid,
+  Image,
 } from '@chakra-ui/react';
 import 'react-day-picker/lib/style.css';
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
+import Lightbox from 'react-image-lightbox';
 
 import { PrescriptionTable } from './plan/PrescriptionTable';
 import { RequestLabTestModal } from './plan/RequestLabTestModal';
@@ -36,7 +38,7 @@ import { EditPrescriptionDrawer } from './plan/EditPrescriptionDrawer';
 import { AppointmentModal } from './plan/AppointmentModal';
 import { getPatientPrescription } from '../../../../../../api/medical-record-services/soap';
 import { getSoapLaboratoryResultList } from '../../../../../../api/laboratory-services/result';
-// import { getSoapRadiologyResultList } from '../../../../../../api/radiology-services/result';
+import { getSoapRadiologyResultList } from '../../../../../../api/radiology-services/result';
 import {
   PrivateComponent,
   Permissions,
@@ -44,6 +46,8 @@ import {
 
 export const Plan = ({ patientDetail, dataSoap }) => {
   const [cookies] = useCookies(['token']);
+  const [isOpenImage, setIsOpenImage] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
 
   const {
     isOpen: isOpenRequestLabModal,
@@ -74,22 +78,22 @@ export const Plan = ({ patientDetail, dataSoap }) => {
     { enabled: Boolean(dataSoap?.id) && Boolean(patientDetail?.patient_id) }
   );
 
-  // const { data: dataRadiologyResult, isSuccess: isSuccessRadiologyResult } =
-  //   useQuery(
-  //     ['soap-radiology-result', dataSoap?.id],
-  //     () =>
-  //       getSoapRadiologyResultList(
-  //         cookies,
-  //         dataSoap?.id,
-  //         patientDetail?.patient_id
-  //       ),
-  //     { enabled: Boolean(dataSoap?.id) && Boolean(patientDetail?.patient_id) }
-  //   );
+  const { data: dataRadiologyResult, isSuccess: isSuccessRadiologyResult } =
+    useQuery(
+      ['soap-radiology-result', dataSoap?.id],
+      () =>
+        getSoapRadiologyResultList(
+          cookies,
+          dataSoap?.id,
+          patientDetail?.patient_id
+        ),
+      { enabled: Boolean(dataSoap?.id) && Boolean(patientDetail?.patient_id) }
+    );
 
   // console.log({ dataSoap });
   // console.log({ cookies });
   console.log({ dataLabResult });
-  // console.log({ dataRadiologyResult });
+  console.log({ dataRadiologyResult });
   console.log({ patientDetail });
 
   return (
@@ -168,7 +172,7 @@ export const Plan = ({ patientDetail, dataSoap }) => {
             Procedure Result
           </Heading>
           {isSuccessLabResult && dataLabResult?.data?.length ? (
-            <>
+            <Box mt="10">
               <Heading fontSize="md" fontWeight="semibold" mb="4">
                 Lab Test Result
               </Heading>
@@ -186,13 +190,18 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                       </h2>
                       <AccordionPanel pb={4}>
                         {result?.blood_result_details?.length ? (
-                          <>
+                          <Box p="4">
+                            <Heading size="sm" mb="2">
+                              Info
+                            </Heading>
                             <Box
                               mb="4"
                               w="xs"
                               p="4"
                               boxShadow="md"
                               rounded="md"
+                              border="1px"
+                              borderColor="gray.200"
                             >
                               <SimpleGrid columns={2}>
                                 <Text
@@ -229,11 +238,16 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                                 Details
                               </Button>
                             </Box>
+                            <Heading size="sm" mb="2">
+                              Result
+                            </Heading>
                             <Table
                               variant="simple"
                               border="1px"
                               borderColor="gray.200"
                               mb="8"
+                              boxShadow="md"
+                              rounded="md"
                             >
                               <Thead>
                                 <Tr>
@@ -255,41 +269,52 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                                 ))}
                               </Tbody>
                             </Table>
-                          </>
+                          </Box>
                         ) : null}
                       </AccordionPanel>
                     </AccordionItem>
                   );
                 })}
               </Accordion>
-            </>
+            </Box>
           ) : null}
-          {/* {isSuccessRadiologyResult && dataRadiologyResult?.data?.length ? (
-            <>
+          {isSuccessRadiologyResult && dataRadiologyResult?.data?.length ? (
+            <Box mt="10">
               <Heading fontSize="md" fontWeight="semibold" mb="4">
-                Lab Test Result
+                Radiology Test Result
               </Heading>
+              {isOpenImage && selectedImage && (
+                <Lightbox
+                  mainSrc={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${selectedImage}`}
+                  onCloseRequest={() => setIsOpenImage(false)}
+                />
+              )}
               <Accordion allowMultiple>
-                {dataLabResult?.data?.map((result, index) => {
+                {dataRadiologyResult?.data?.map((result, index) => {
                   return (
                     <AccordionItem key={result.id}>
                       <h2>
                         <AccordionButton>
                           <Box flex="1" textAlign="left">
-                            Lab Test {index + 1}
+                            Radiology Test {index + 1}
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
                         {result?.result?.length ? (
-                          <>
+                          <Box p="4">
+                            <Heading size="sm" mb="2">
+                              Info
+                            </Heading>
                             <Box
                               mb="4"
                               w="xs"
                               p="4"
                               boxShadow="md"
                               rounded="md"
+                              border="1px"
+                              borderColor="gray.200"
                             >
                               <SimpleGrid columns={2}>
                                 <Text
@@ -316,22 +341,52 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                             </Box>
                             {result?.result?.map((data, index) => (
                               <Box>
-                                <Heading size="md">
+                                <Heading size="sm" mb="2">
                                   Result {index > 0 ? index + 1 : null}
                                 </Heading>
-                                <Text>Description</Text>
-                                <Text>{data.description}</Text>
+                                <Box
+                                  mb="4"
+                                  p="4"
+                                  rounded="md"
+                                  boxShadow="md"
+                                  border="1px"
+                                  borderColor="gray.200"
+                                >
+                                  <Box mb="4">
+                                    <Text fontWeight="semibold" mb="1">
+                                      Description
+                                    </Text>
+                                    <Text>{data.description}</Text>
+                                  </Box>
+                                  <Box>
+                                    <Text fontWeight="semibold" mb="1">
+                                      Image
+                                    </Text>
+                                    <Image
+                                      onClick={() => {
+                                        setSelectedImage(data.image);
+                                        setIsOpenImage(true);
+                                      }}
+                                      _hover={{ opacity: 0.7 }}
+                                      cursor="pointer"
+                                      boxSize="150px"
+                                      objectFit="cover"
+                                      src={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${data.image}`}
+                                      alt="Imaging Result"
+                                    />
+                                  </Box>
+                                </Box>
                               </Box>
                             ))}
-                          </>
+                          </Box>
                         ) : null}
                       </AccordionPanel>
                     </AccordionItem>
                   );
                 })}
               </Accordion>
-            </>
-          ) : null} */}
+            </Box>
+          ) : null}
         </Box>
       </Box>
     </>
