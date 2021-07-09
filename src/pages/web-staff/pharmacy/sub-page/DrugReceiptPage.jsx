@@ -49,7 +49,7 @@ export const DrugReceiptPage = () => {
     () => getDrugOrders(cookies, selectedInstitution),
     { enabled: Boolean(selectedInstitution) }
   );
-  console.log({ dataDrugOrders });
+  // console.log({ dataDrugOrders });
 
   const data = React.useMemo(
     () =>

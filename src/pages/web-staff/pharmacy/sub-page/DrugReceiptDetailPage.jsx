@@ -96,7 +96,7 @@ export const DrugReceiptDetailPage = () => {
     );
   }
 
-  console.log({ dataDrugOrderDetail });
+  // console.log({ dataDrugOrderDetail });
 
   return (
     <Box>

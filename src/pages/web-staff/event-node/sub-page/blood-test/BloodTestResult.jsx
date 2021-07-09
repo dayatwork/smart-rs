@@ -64,7 +64,7 @@ export const BloodTestResult = () => {
     );
   }
 
-  console.log({ dataLaboratoryResult });
+  // console.log({ dataLaboratoryResult });
 
   return (
     <Box>

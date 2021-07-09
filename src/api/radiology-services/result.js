@@ -1,5 +1,4 @@
 export const createRadiologyResult = async (cookies, data, patient_id) => {
-  console.log({ patient_id });
   const res = await fetch(
     `${process.env.REACT_APP_RADIOLOGY}/radiology/result/create`,
     {

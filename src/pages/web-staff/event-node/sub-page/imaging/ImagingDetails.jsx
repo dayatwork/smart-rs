@@ -41,7 +41,7 @@ export const ImagingDetails = () => {
       () => getRadiologyDetail(cookies, params?.id),
       { enabled: Boolean(params?.id) }
     );
-  console.log({ dataRadiologyDetails });
+  // console.log({ dataRadiologyDetails });
 
   // const { data: dataResultDetail, isLoading: isLoadingResultDetail } = useQuery(
   //   ['radiology-result', dataRadiologyDetails?.data?.id],
@@ -58,18 +58,14 @@ export const ImagingDetails = () => {
     data.append('radiology_id', dataRadiologyDetails?.data?.id);
     data.append('description', value.description);
 
-    for (var a of data.entries()) {
-      console.log(a);
-    }
-
     try {
       setIsLoading(true);
-      const res = await createRadiologyResult(
+      await createRadiologyResult(
         cookies,
         data,
         dataRadiologyDetails?.data?.patient_id
       );
-      console.log({ res });
+      // console.log({ res });
       setIsLoading(false);
       toast({
         position: 'top-right',

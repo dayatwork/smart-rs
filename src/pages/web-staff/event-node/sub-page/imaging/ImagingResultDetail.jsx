@@ -58,8 +58,8 @@ export const ImagingResultDetail = () => {
     );
   }
 
-  console.log({ dataRadiologyResultDetail });
-  console.log({ dataRadiologyDetail });
+  // console.log({ dataRadiologyResultDetail });
+  // console.log({ dataRadiologyDetail });
 
   return (
     <Box>
