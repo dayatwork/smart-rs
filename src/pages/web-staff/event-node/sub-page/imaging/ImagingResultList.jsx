@@ -79,7 +79,7 @@ export const ImagingResultList = ({ selectedInstitution }) => {
         columns={columns}
         data={data || []}
         isLoading={isLoadingRadiologyResultList}
-        skeletonCols={9}
+        skeletonCols={4}
       />
     </>
   );

@@ -93,7 +93,7 @@ export const Plan = ({ patientDetail, dataSoap }) => {
   // console.log({ dataSoap });
   // console.log({ cookies });
   // console.log({ dataLabResult });
-  // console.log({ dataRadiologyResult });
+  console.log({ dataRadiologyResult });
   // console.log({ patientDetail });
 
   return (
@@ -330,14 +330,6 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                                   </Badge>
                                 </Box>
                               </SimpleGrid>
-                              <Button
-                                as={Link}
-                                to={`/events/blood-test-result/${result.id}`}
-                                variant="link"
-                                colorScheme="purple"
-                              >
-                                Details
-                              </Button>
                             </Box>
                             {result?.result?.map((data, index) => (
                               <Box>
@@ -375,6 +367,14 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                                       alt="Imaging Result"
                                     />
                                   </Box>
+                                  <Button
+                                    as={Link}
+                                    to={`/events/imaging-result/${data.id}`}
+                                    variant="link"
+                                    colorScheme="purple"
+                                  >
+                                    Details
+                                  </Button>
                                 </Box>
                               </Box>
                             ))}
