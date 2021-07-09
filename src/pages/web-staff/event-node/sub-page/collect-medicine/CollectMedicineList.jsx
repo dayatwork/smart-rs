@@ -16,7 +16,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
+  // ModalCloseButton,
   ModalBody,
   Flex,
   ModalFooter,
@@ -320,7 +320,7 @@ const ConfirmTakeModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Deliver Order</ModalHeader>
-        <ModalCloseButton />
+        {/* <ModalCloseButton /> */}
         <ModalBody>
           {isLoadingQrCode && (
             <Center>

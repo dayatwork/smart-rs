@@ -49,6 +49,7 @@ export const DrugReceiptPage = () => {
     () => getDrugOrders(cookies, selectedInstitution),
     { enabled: Boolean(selectedInstitution) }
   );
+  console.log({ dataDrugOrders });
 
   const data = React.useMemo(
     () =>
@@ -130,25 +131,25 @@ export const DrugReceiptPage = () => {
         Header: 'Status',
         accessor: 'status',
         Cell: ({ value }) => {
-          if (value === 'Delivered') {
-            return <Badge colorScheme="green">{value}</Badge>;
+          if (value?.toLowerCase() === 'delivered') {
+            return <Badge colorScheme="green">{value?.toLowerCase()}</Badge>;
           }
-          if (value === 'packed') {
-            return <Badge colorScheme="blue">{value}</Badge>;
+          if (value?.toLowerCase() === 'packed') {
+            return <Badge colorScheme="blue">{value?.toLowerCase()}</Badge>;
           }
-          if (value === 'packaging') {
-            return <Badge colorScheme="yellow">{value}</Badge>;
+          if (value?.toLowerCase() === 'packaging') {
+            return <Badge colorScheme="yellow">{value?.toLowerCase()}</Badge>;
           }
-          return <Badge colorScheme="gray">{value}</Badge>;
+          return <Badge colorScheme="gray">{value?.toLowerCase()}</Badge>;
         },
       },
       {
         Header: 'Action',
         Cell: ({ row }) => {
           if (
-            row.original.status === 'Delivered' ||
-            row.original.status === 'packed' ||
-            row.original.status === 'packaging'
+            row.original.status?.toLowerCase() === 'delivered' ||
+            row.original.status?.toLowerCase() === 'packed' ||
+            row.original.status?.toLowerCase() === 'packaging'
           ) {
             return null;
           }

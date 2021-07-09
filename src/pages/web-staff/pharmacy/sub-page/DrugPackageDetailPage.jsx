@@ -12,7 +12,7 @@ import {
   ListItem,
   Modal,
   ModalBody,
-  ModalCloseButton,
+  // ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -98,7 +98,7 @@ export const DrugPackageDetailPage = () => {
         orderDetail={dataDrugOrderDetail?.data}
       />
 
-      <BackButton to="/pharmacy" text="Back to Packaging List" />
+      <BackButton to="/pharmacy/packaging" text="Back to Packaging List" />
       <Flex
         justify="space-between"
         align="center"
@@ -353,7 +353,7 @@ const ConfirmCompletePackageModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Complete Packaging</ModalHeader>
-        <ModalCloseButton />
+        {/* <ModalCloseButton /> */}
         <ModalBody>Finish packaging? </ModalBody>
 
         <ModalFooter>

@@ -96,6 +96,8 @@ export const DrugReceiptDetailPage = () => {
     );
   }
 
+  console.log({ dataDrugOrderDetail });
+
   return (
     <Box>
       <ConfirmCreatePackageModal
@@ -114,11 +116,13 @@ export const DrugReceiptDetailPage = () => {
         <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
           Receipt Details
         </Heading>
-        <PrivateComponent permission={Permissions.createPackaging}>
-          <Button colorScheme="purple" onClick={onOpen}>
-            Process to Packaging
-          </Button>
-        </PrivateComponent>
+        {dataDrugOrderDetail?.data?.status?.toLowerCase() === 'requested' && (
+          <PrivateComponent permission={Permissions.createPackaging}>
+            <Button colorScheme="purple" onClick={onOpen}>
+              Process to Packaging
+            </Button>
+          </PrivateComponent>
+        )}
       </Flex>
       <Box boxShadow="md" maxW="5xl" py="4" px="6">
         <Description
