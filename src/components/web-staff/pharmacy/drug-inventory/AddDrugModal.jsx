@@ -8,7 +8,7 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
+  // ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -16,6 +16,9 @@ import {
   Textarea,
   useToast,
   VisuallyHidden,
+  HStack,
+  Text,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
@@ -88,18 +91,30 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add New Drug</ModalHeader>
-        <ModalCloseButton />
+        {/* <ModalCloseButton /> */}
         <ModalBody>
           <Box mb="2">
+            <Flex mb="1">
+              <SimpleGrid flexGrow="1" columns={6} fontWeight="bold">
+                <Text>Name</Text>
+                <Text>Price</Text>
+                <Text>Expired</Text>
+                <Text>Type</Text>
+                <Text>Quantity</Text>
+                <Text>Description</Text>
+              </SimpleGrid>
+              <Box w="10" />
+            </Flex>
+
             {fields.map(({ id }, index) => {
               return (
-                <Flex key={id}>
+                <HStack key={id}>
                   <FormControl id={`name-${index}`} mb="1">
                     <VisuallyHidden as="label">Name</VisuallyHidden>
                     <Flex>
                       <Input
                         placeholder="name"
-                        mr="2"
+                        // mr="2"
                         {...register(`drugs[${index}].name`)}
                       />
                     </Flex>
@@ -109,7 +124,8 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                     <Flex>
                       <Input
                         placeholder="price"
-                        mr="2"
+                        type="number"
+                        // mr="2"
                         {...register(`drugs[${index}].price`)}
                       />
                     </Flex>
@@ -136,7 +152,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                     <Flex>
                       <Input
                         placeholder="type"
-                        mr="2"
+                        // mr="2"
                         {...register(`drugs[${index}].type`)}
                       />
                     </Flex>
@@ -146,7 +162,8 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                     <Flex>
                       <Input
                         placeholder="quantity"
-                        mr="2"
+                        type="number"
+                        // mr="2"
                         {...register(`drugs[${index}].quantity`)}
                       />
                     </Flex>
@@ -156,30 +173,30 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                     <Flex>
                       <Textarea
                         placeholder="description"
-                        mr="2"
+                        // mr="2"
                         rows={1}
                         {...register(`drugs[${index}].description`)}
                       />
                     </Flex>
                   </FormControl>
                   <IconButton
-                    onClick={() => remove}
+                    onClick={() => remove(index)}
                     p="3"
                     icon={<FaTrashAlt />}
                     colorScheme="red"
                   />
-                </Flex>
+                </HStack>
               );
             })}
           </Box>
-          <Box textAlign="center">
+          <Box textAlign="center" mt="4">
             <Button
               leftIcon={<FaPlus />}
               type="button"
               onClick={() => append({})}
               // w="full"
             >
-              Add drugs
+              Add drug
             </Button>
           </Box>
         </ModalBody>

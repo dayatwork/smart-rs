@@ -141,6 +141,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
               >
                 <FormLabel>Price</FormLabel>
                 <Input
+                  type="number"
                   defaultValue={selectedDrug?.price || ''}
                   {...register('price', { required: 'Drug price is required' })}
                 />
@@ -181,6 +182,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
               >
                 <FormLabel>Quantity</FormLabel>
                 <Input
+                  type="number"
                   defaultValue={selectedDrug?.quantity || ''}
                   {...register('quantity', {
                     required: 'Drug quantity is required',

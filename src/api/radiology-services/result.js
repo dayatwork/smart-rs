@@ -3,7 +3,6 @@ export const createRadiologyResult = async (cookies, data) => {
     `${process.env.REACT_APP_RADIOLOGY}/radiology/result/create`,
     {
       method: 'POST',
-
       headers: {
         Authorization: `Bearer ${cookies?.token}`,
       },
