@@ -20,6 +20,7 @@ import {
   ExaminationDetailPage,
   ImagingList,
   ImagingDetails,
+  ImagingResultDetail,
   BloodDrawList,
   BloodTestList,
   BloodTestResult,
@@ -152,6 +153,14 @@ const EventNodePage = () => {
                 pageTitle="Detail Imaging | SMART-RS"
               >
                 <ImagingDetails />
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions['read-detailBloodResult']}
+                exact
+                path={`${path}/imaging-result/:id`}
+                pageTitle="Imaging Result | SMART-RS"
+              >
+                <ImagingResultDetail />
               </PrivateRoute>
               <PrivateRoute
                 permission={Permissions.indexBloodDraw}

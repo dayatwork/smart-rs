@@ -19,7 +19,10 @@ import { useQuery } from 'react-query';
 import { useForm } from 'react-hook-form';
 
 import { getRadiologyDetail } from '../../../../../api/radiology-services/radiology';
-import { createRadiologyResult } from '../../../../../api/radiology-services/result';
+import {
+  createRadiologyResult,
+  // getRadiologyResultDetail,
+} from '../../../../../api/radiology-services/result';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
 // import { createRadiologyResult } from "query/radiology/result";
@@ -39,6 +42,13 @@ export const ImagingDetails = () => {
       { enabled: Boolean(params?.id) }
     );
   console.log({ dataRadiologyDetails });
+
+  // const { data: dataResultDetail, isLoading: isLoadingResultDetail } = useQuery(
+  //   ['radiology-result', dataRadiologyDetails?.data?.id],
+  //   () => getRadiologyResultDetail(cookies, dataRadiologyDetails?.data?.id),
+  //   { enabled: Boolean(dataRadiologyDetails?.data?.id) }
+  // );
+  // console.log({ dataResultDetail });
 
   const onSubmit = async value => {
     const data = new FormData();
@@ -105,7 +115,7 @@ export const ImagingDetails = () => {
       >
         Imaging Details
       </Heading>
-      <Text mb="4">Booking ID: {dataRadiologyDetails?.data?.id}</Text>
+      {/* <Text mb="4">Booking ID: {dataRadiologyDetails?.data?.id}</Text> */}
 
       <SimpleGrid columns={{ base: 1, xl: 2 }} gap="10" mb="8">
         <Box>
@@ -200,51 +210,90 @@ export const ImagingDetails = () => {
           />
         </Box>
       </SimpleGrid>
-      <Box rounded={{ md: 'lg' }} bg="white" shadow="base">
-        <Flex align="center" justify="space-between" px="6" py="4">
-          <Text as="h3" fontWeight="bold" fontSize="lg">
-            Result
-          </Text>
-        </Flex>
-        <Divider />
-        <Box px="6" py="4">
-          <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
-            <Box as="dt" flexBasis="25%" color="gray.600">
-              Upload Result
+      {dataRadiologyDetails?.data?.status === 'process' && (
+        <>
+          <Box rounded={{ md: 'lg' }} bg="white" shadow="base">
+            <Flex align="center" justify="space-between" px="6" py="4">
+              <Text as="h3" fontWeight="bold" fontSize="lg">
+                Upload Result
+              </Text>
+            </Flex>
+            <Divider />
+            <Box px="6" py="4">
+              <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
+                <Box as="dt" flexBasis="25%" color="gray.600">
+                  Image
+                </Box>
+                <Box as="dd" flex="1" fontWeight="semibold">
+                  <input
+                    type="file"
+                    border="none"
+                    accept="image/png, application/pdf, image/jpeg"
+                    p="0"
+                    pl="1"
+                    {...register('image')}
+                  />
+                </Box>
+              </Flex>
+              <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
+                <Box as="dt" flexBasis="25%" color="gray.600">
+                  Description
+                </Box>
+                <Box as="dd" flex="1" fontWeight="semibold" maxW="xl">
+                  <Textarea rows={5} {...register('description')} />
+                </Box>
+              </Flex>
             </Box>
-            <Box as="dd" flex="1" fontWeight="semibold">
-              <input
-                type="file"
-                border="none"
-                accept="image/png, application/pdf, image/jpeg"
-                p="0"
-                pl="1"
-                {...register('image')}
-              />
+          </Box>
+          <PrivateComponent permission={Permissions.updateImaging}>
+            <Box textAlign="right" mt="4">
+              <Button
+                colorScheme="purple"
+                size="lg"
+                onClick={handleSubmit(onSubmit)}
+                isLoading={isLoading}
+              >
+                Submit
+              </Button>
             </Box>
+          </PrivateComponent>
+        </>
+      )}
+      {/* {dataRadiologyDetails?.data?.status === 'completed' && (
+        <Box rounded={{ md: 'lg' }} bg="white" shadow="base">
+          <Flex align="center" justify="space-between" px="6" py="4">
+            <Text as="h3" fontWeight="bold" fontSize="lg">
+              Result
+            </Text>
           </Flex>
-          <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
-            <Box as="dt" flexBasis="25%" color="gray.600">
-              Description
-            </Box>
-            <Box as="dd" flex="1" fontWeight="semibold" maxW="xl">
-              <Textarea rows={5} {...register('description')} />
-            </Box>
-          </Flex>
+          <Divider />
+          <Box px="6" py="4">
+            <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
+              <Box as="dt" flexBasis="25%" color="gray.600">
+                Image
+              </Box>
+              <Box as="dd" flex="1" fontWeight="semibold">
+                <input
+                  type="file"
+                  border="none"
+                  accept="image/png, application/pdf, image/jpeg"
+                  p="0"
+                  pl="1"
+                  {...register('image')}
+                />
+              </Box>
+            </Flex>
+            <Flex as="dl" direction={{ base: 'column', md: 'row' }} py="2">
+              <Box as="dt" flexBasis="25%" color="gray.600">
+                Description
+              </Box>
+              <Box as="dd" flex="1" fontWeight="semibold" maxW="xl">
+                <Textarea rows={5} {...register('description')} />
+              </Box>
+            </Flex>
+          </Box>
         </Box>
-      </Box>
-      <PrivateComponent permission={Permissions.updateImaging}>
-        <Box textAlign="right" mt="4">
-          <Button
-            colorScheme="purple"
-            size="lg"
-            onClick={handleSubmit(onSubmit)}
-            isLoading={isLoading}
-          >
-            Submit
-          </Button>
-        </Box>
-      </PrivateComponent>
+      )} */}
     </Box>
   );
 };

@@ -43,3 +43,42 @@ export const getSoapRadiologyResultList = async (
 
   return await res.json();
 };
+
+export const getRadiologyResultDetail = async (cookies, id) => {
+  const formattedId = id.replace(/['"]+/g, '');
+
+  const res = await fetch(
+    `${process.env.REACT_APP_RADIOLOGY}/radiology/result/detail?id=${formattedId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get Radiology Result Detail');
+  }
+
+  return await res.json();
+};
+
+export const getRadiologyResultList = async (cookies, institution_id) => {
+  const formattedId = institution_id.replace(/['"]+/g, '');
+  const res = await fetch(
+    `${process.env.REACT_APP_RADIOLOGY}/radiology/result?institution_id=${formattedId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get Radiology Results List');
+  }
+
+  return await res.json();
+};
