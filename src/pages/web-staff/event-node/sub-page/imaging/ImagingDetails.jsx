@@ -38,18 +38,24 @@ export const ImagingDetails = () => {
       () => getRadiologyDetail(cookies, params?.id),
       { enabled: Boolean(params?.id) }
     );
+  console.log({ dataRadiologyDetails });
 
   const onSubmit = async value => {
     const data = new FormData();
     data.append('image', value.image[0]);
+    data.append('patient_id', dataRadiologyDetails?.data?.patient_id);
     data.append('institution_id', dataRadiologyDetails?.data?.institution_id);
     data.append('radiology_id', dataRadiologyDetails?.data?.id);
-    data.append('patient_id', dataRadiologyDetails?.data?.patient_id);
     data.append('description', value.description);
+
+    for (var a of data.entries()) {
+      console.log(a);
+    }
 
     try {
       setIsLoading(true);
-      await createRadiologyResult(cookies, data);
+      const res = await createRadiologyResult(cookies, data);
+      console.log({ res });
       setIsLoading(false);
       toast({
         position: 'top-right',
@@ -206,6 +212,7 @@ export const ImagingDetails = () => {
               <input
                 type="file"
                 border="none"
+                accept="image/png, application/pdf, image/jpeg"
                 p="0"
                 pl="1"
                 {...register('image')}

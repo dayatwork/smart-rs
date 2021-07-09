@@ -21,6 +21,8 @@ import {
   Th,
   Tbody,
   Td,
+  Badge,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import 'react-day-picker/lib/style.css';
 import { useQuery } from 'react-query';
@@ -34,6 +36,7 @@ import { EditPrescriptionDrawer } from './plan/EditPrescriptionDrawer';
 import { AppointmentModal } from './plan/AppointmentModal';
 import { getPatientPrescription } from '../../../../../../api/medical-record-services/soap';
 import { getSoapLaboratoryResultList } from '../../../../../../api/laboratory-services/result';
+// import { getSoapRadiologyResultList } from '../../../../../../api/radiology-services/result';
 import {
   PrivateComponent,
   Permissions,
@@ -62,13 +65,32 @@ export const Plan = ({ patientDetail, dataSoap }) => {
 
   const { data: dataLabResult, isSuccess: isSuccessLabResult } = useQuery(
     ['soap-lab-result', dataSoap?.id],
-    () => getSoapLaboratoryResultList(cookies, dataSoap?.id)
-    // { enabled: Boolean(dataSoap?.id) }
+    () =>
+      getSoapLaboratoryResultList(
+        cookies,
+        dataSoap?.id,
+        patientDetail?.patient_id
+      ),
+    { enabled: Boolean(dataSoap?.id) && Boolean(patientDetail?.patient_id) }
   );
 
-  console.log({ dataSoap });
-  console.log({ cookies });
+  // const { data: dataRadiologyResult, isSuccess: isSuccessRadiologyResult } =
+  //   useQuery(
+  //     ['soap-radiology-result', dataSoap?.id],
+  //     () =>
+  //       getSoapRadiologyResultList(
+  //         cookies,
+  //         dataSoap?.id,
+  //         patientDetail?.patient_id
+  //       ),
+  //     { enabled: Boolean(dataSoap?.id) && Boolean(patientDetail?.patient_id) }
+  //   );
+
+  // console.log({ dataSoap });
+  // console.log({ cookies });
   console.log({ dataLabResult });
+  // console.log({ dataRadiologyResult });
+  console.log({ patientDetail });
 
   return (
     <>
@@ -152,7 +174,6 @@ export const Plan = ({ patientDetail, dataSoap }) => {
               </Heading>
               <Accordion allowMultiple>
                 {dataLabResult?.data?.map((result, index) => {
-                  console.log({ result });
                   return (
                     <AccordionItem key={result.id}>
                       <h2>
@@ -164,27 +185,44 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
-                        {result.bloods[0] &&
-                        result.bloods[0]?.id &&
-                        result.bloods[0]?.blood_results[0] ? (
+                        {result?.blood_result_details?.length ? (
                           <>
-                            <Heading size="md" mb="2">
-                              Result
-                            </Heading>
-                            <Box mb="4">
-                              <Text
-                                fontSize="sm"
-                                fontWeight="semibold"
-                                color="gray.600"
-                              >
-                                Code
-                              </Text>
-                              <Text fontWeight="semibold">
-                                {result.bloods[0].code}
-                              </Text>
+                            <Box
+                              mb="4"
+                              w="xs"
+                              p="4"
+                              boxShadow="md"
+                              rounded="md"
+                            >
+                              <SimpleGrid columns={2}>
+                                <Text
+                                  // fontSize="sm"
+                                  fontWeight="semibold"
+                                  color="gray.600"
+                                >
+                                  Code
+                                </Text>
+                                <Text fontWeight="semibold">
+                                  {result?.blood?.code}
+                                </Text>
+                              </SimpleGrid>
+                              <SimpleGrid columns={2}>
+                                <Text
+                                  // fontSize="sm"
+                                  fontWeight="semibold"
+                                  color="gray.600"
+                                >
+                                  Status
+                                </Text>
+                                <Box>
+                                  <Badge display="inline-block">
+                                    {result?.status}
+                                  </Badge>
+                                </Box>
+                              </SimpleGrid>
                               <Button
                                 as={Link}
-                                to={`/events/blood-test-result/${result.bloods[0]?.blood_results[0]?.id}`}
+                                to={`/events/blood-test-result/${result.id}`}
                                 variant="link"
                                 colorScheme="purple"
                               >
@@ -207,16 +245,14 @@ export const Plan = ({ patientDetail, dataSoap }) => {
                                 </Tr>
                               </Thead>
                               <Tbody>
-                                {result.bloods[0]?.blood_results[0]?.blood_result_details?.map(
-                                  data => (
-                                    <Tr key={data.id}>
-                                      <Td>{data.name}</Td>
-                                      <Td isNumeric>{data.result}</Td>
-                                      <Td>{data.unit}</Td>
-                                      <Td>{data.normal_result}</Td>
-                                    </Tr>
-                                  )
-                                )}
+                                {result?.blood_result_details?.map(data => (
+                                  <Tr key={data?.id}>
+                                    <Td>{data?.subcategory?.name}</Td>
+                                    <Td isNumeric>{data?.result}</Td>
+                                    <Td>{data?.unit}</Td>
+                                    <Td>{data?.normal_result}</Td>
+                                  </Tr>
+                                ))}
                               </Tbody>
                             </Table>
                           </>
@@ -228,6 +264,74 @@ export const Plan = ({ patientDetail, dataSoap }) => {
               </Accordion>
             </>
           ) : null}
+          {/* {isSuccessRadiologyResult && dataRadiologyResult?.data?.length ? (
+            <>
+              <Heading fontSize="md" fontWeight="semibold" mb="4">
+                Lab Test Result
+              </Heading>
+              <Accordion allowMultiple>
+                {dataLabResult?.data?.map((result, index) => {
+                  return (
+                    <AccordionItem key={result.id}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            Lab Test {index + 1}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        {result?.result?.length ? (
+                          <>
+                            <Box
+                              mb="4"
+                              w="xs"
+                              p="4"
+                              boxShadow="md"
+                              rounded="md"
+                            >
+                              <SimpleGrid columns={2}>
+                                <Text
+                                  // fontSize="sm"
+                                  fontWeight="semibold"
+                                  color="gray.600"
+                                >
+                                  Status
+                                </Text>
+                                <Box>
+                                  <Badge display="inline-block">
+                                    {result?.status}
+                                  </Badge>
+                                </Box>
+                              </SimpleGrid>
+                              <Button
+                                as={Link}
+                                to={`/events/blood-test-result/${result.id}`}
+                                variant="link"
+                                colorScheme="purple"
+                              >
+                                Details
+                              </Button>
+                            </Box>
+                            {result?.result?.map((data, index) => (
+                              <Box>
+                                <Heading size="md">
+                                  Result {index > 0 ? index + 1 : null}
+                                </Heading>
+                                <Text>Description</Text>
+                                <Text>{data.description}</Text>
+                              </Box>
+                            ))}
+                          </>
+                        ) : null}
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
+            </>
+          ) : null} */}
         </Box>
       </Box>
     </>

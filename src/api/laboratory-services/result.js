@@ -17,10 +17,15 @@ export const getLaboratoryResultList = async (cookies, institution_id) => {
   return await res.json();
 };
 
-export const getSoapLaboratoryResultList = async (cookies, soap_id) => {
+export const getSoapLaboratoryResultList = async (
+  cookies,
+  soap_id,
+  patient_id
+) => {
   const formattedId = soap_id.replace(/['"]+/g, '');
+  const formattedPatientId = patient_id.replace(/['"]+/g, '');
   const res = await fetch(
-    `${process.env.REACT_APP_LAB_API}/blood/result/detail/soap?soap_id=${formattedId}`,
+    `${process.env.REACT_APP_LAB_API}/blood/result/detail/soap?soap_id=${formattedId}&patient_id=${formattedPatientId}`,
     {
       method: 'GET',
       headers: {
