@@ -134,7 +134,7 @@ export const SelectDoctor = ({
     { enabled: Boolean(selectedSchedule?.id) }
   );
 
-  console.log({ dataEstimatedTimes });
+  // console.log({ dataEstimatedTimes });
 
   const handleDayClick = (day, modifiers = {}) => {
     if (modifiers.disabled) {
@@ -282,7 +282,7 @@ export const SelectDoctor = ({
                 {dataSchedules?.data?.map(schedule => {
                   const totalData = schedule?.total_available?.total_data;
                   const available = schedule?.total_available?.status_available;
-                  console.log({ schedule });
+
                   return (
                     <Flex
                       cursor="pointer"
