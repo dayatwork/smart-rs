@@ -134,6 +134,8 @@ export const SelectDoctor = ({
     { enabled: Boolean(selectedSchedule?.id) }
   );
 
+  console.log({ dataEstimatedTimes });
+
   const handleDayClick = (day, modifiers = {}) => {
     if (modifiers.disabled) {
       return;
@@ -145,12 +147,6 @@ export const SelectDoctor = ({
   const handleResetClick = () => {
     setSelectedDayRange({ from: undefined, to: undefined });
   };
-
-  // console.log({ dataSchedules });
-  // console.log({ page });
-  // console.log({ selectedSchedule });
-  // console.log({ dataSchedules });
-  // <Icon as={GiTicket} color="white" w="20" h="20" />
 
   return (
     <>
@@ -284,6 +280,9 @@ export const SelectDoctor = ({
               </Flex>
               <Box>
                 {dataSchedules?.data?.map(schedule => {
+                  const totalData = schedule?.total_available?.total_data;
+                  const available = schedule?.total_available?.status_available;
+                  console.log({ schedule });
                   return (
                     <Flex
                       cursor="pointer"
@@ -368,18 +367,13 @@ export const SelectDoctor = ({
                             <Box
                               as="span"
                               fontWeight="bold"
-                              color={
-                                schedule?.total_available?.status_available !==
-                                0
-                                  ? 'green.600'
-                                  : 'red.600'
-                              }
+                              color={available !== 0 ? 'green.600' : 'red.600'}
                             >
-                              {schedule?.total_available?.status_available}
+                              {available}
                             </Box>{' '}
                             slot dari{' '}
                             <Box as="span" fontWeight="bold">
-                              {schedule?.total_available?.total_data}
+                              {totalData}
                             </Box>
                           </Text>
                         )}
@@ -534,21 +528,33 @@ export const SelectDoctor = ({
                   Waktu yang tersedia
                 </Text>
                 <SimpleGrid columns={timeGridColumns} gap="4">
-                  {dataEstimatedTimes?.data?.map(time => {
+                  {dataEstimatedTimes?.data.map(time => {
+                    const timeAvailableStatus = availableStatus(
+                      selectedSchedule.date,
+                      time.available_time
+                    );
                     return (
                       <Center
                         px="2"
                         as="button"
-                        disabled={time.status}
-                        cursor={time.status ? 'not-allowed' : 'pointer'}
+                        disabled={
+                          time.status || timeAvailableStatus !== 'available'
+                        }
+                        cursor={
+                          time.status || timeAvailableStatus !== 'available'
+                            ? 'not-allowed'
+                            : 'pointer'
+                        }
                         onClick={() => setSelectedTime(time)}
                         key={time.id}
                         bg={
-                          time.status
-                            ? 'red.100'
+                          time.status || timeAvailableStatus === 'expired'
+                            ? 'red.200'
                             : selectedTime?.id === time.id
                             ? 'secondary.dark'
-                            : 'green.100'
+                            : timeAvailableStatus === 'available-onsite'
+                            ? 'orange.200'
+                            : 'green.200'
                         }
                         boxShadow="md"
                         rounded="md"
@@ -568,6 +574,20 @@ export const SelectDoctor = ({
                     );
                   })}
                 </SimpleGrid>
+                <HStack mt="4" color="white" spacing="4">
+                  <HStack>
+                    <Box rounded="sm" w="4" h="4" bg="green.200"></Box>
+                    <Text>Tersedia</Text>
+                  </HStack>
+                  <HStack>
+                    <Box rounded="sm" w="4" h="4" bg="orange.200"></Box>
+                    <Text>Tersedia untuk booking onsite</Text>
+                  </HStack>
+                  <HStack>
+                    <Box rounded="sm" w="4" h="4" bg="red.200"></Box>
+                    <Text>Tidak tersedia</Text>
+                  </HStack>
+                </HStack>
               </Box>
             ) : (
               isSuccessEstimatedTimes && (
@@ -617,6 +637,32 @@ export const SelectDoctor = ({
       </Box>
     </>
   );
+};
+
+const isToday = currentDate => {
+  return new Date().toISOString().split('T')[0] !== currentDate;
+};
+
+const availableStatus = (currentDate, time) => {
+  const HOURS = 2;
+  if (isToday(currentDate)) {
+    return 'available';
+  }
+
+  const availableTime = new Date(`${currentDate}T${time}`).getTime();
+  const currentTime = new Date().getTime();
+
+  if (availableTime - currentTime < 0) {
+    return 'expired';
+  }
+
+  if (availableTime - currentTime > 1000 * 60 * 60 * HOURS) {
+    return 'available';
+  }
+
+  if (availableTime - currentTime <= 1000 * 60 * 60 * HOURS) {
+    return 'available-onsite';
+  }
 };
 
 const ScheduleDate = ({ range, handleDayClick, handleResetClick }) => {
