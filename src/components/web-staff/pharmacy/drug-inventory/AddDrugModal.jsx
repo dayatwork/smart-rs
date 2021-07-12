@@ -19,6 +19,7 @@ import {
   HStack,
   Text,
   SimpleGrid,
+  Select,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
@@ -27,6 +28,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import { createDrug } from '../../../../api/pharmacy-services/drug';
 import { InputDate } from '../../../../components/shared/input';
+import { drugType } from '../../../../data/drugType';
 
 export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
   const toast = useToast();
@@ -150,11 +152,19 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                   <FormControl id={`type-${index}`} mb="1">
                     <VisuallyHidden as="label">Type</VisuallyHidden>
                     <Flex>
-                      <Input
+                      {/* <Input
                         placeholder="type"
                         // mr="2"
                         {...register(`drugs[${index}].type`)}
-                      />
+                      /> */}
+                      <Select {...register(`drugs[${index}].type`)}>
+                        <option value="">Select type</option>
+                        {Object.entries(drugType).map(([key, value]) => (
+                          <option key={key} value={key}>
+                            {value}
+                          </option>
+                        ))}
+                      </Select>
                     </Flex>
                   </FormControl>
                   <FormControl id={`quantity-${index}`} mb="1">

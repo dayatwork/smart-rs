@@ -19,6 +19,7 @@ import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { HiPencilAlt } from 'react-icons/hi';
 
+import { drugType } from '../../../../data/drugType';
 import { AuthContext } from '../../../../contexts/authContext';
 import { getInstitutions } from '../../../../api/institution-services/institution';
 import { getDrugs } from '../../../../api/pharmacy-services/drug';
@@ -143,7 +144,7 @@ export const DrugInventoryPage = () => {
       {
         Header: 'Type',
         accessor: 'type',
-        Cell: ({ value }) => (value ? value : '-'),
+        Cell: ({ value }) => (value ? drugType[value] || '-' : '-'),
       },
       {
         Header: 'Price',

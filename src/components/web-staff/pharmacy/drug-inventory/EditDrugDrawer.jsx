@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormErrorMessage,
   DrawerFooter,
+  Select,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
@@ -22,6 +23,7 @@ import { useForm } from 'react-hook-form';
 
 import { editDrug } from '../../../../api/pharmacy-services/drug';
 import { InputDate } from '../../../../components/shared/input';
+import { drugType } from '../../../../data/drugType';
 
 export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
   const toast = useToast();
@@ -126,10 +128,21 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                 isInvalid={errors?.type ? true : false}
               >
                 <FormLabel>Type</FormLabel>
-                <Input
+                {/* <Input
                   defaultValue={selectedDrug?.type || ''}
                   {...register('type', { required: 'Drug Type is required' })}
-                />
+                /> */}
+                <Select
+                  defaultValue={selectedDrug?.type || ''}
+                  {...register('type', { required: 'Drug Type is required' })}
+                >
+                  <option value="">Select type</option>
+                  {Object.entries(drugType).map(([key, value]) => (
+                    <option key={key} value={key}>
+                      {value}
+                    </option>
+                  ))}
+                </Select>
                 <FormErrorMessage>
                   {errors.type && errors.type.message}
                 </FormErrorMessage>
