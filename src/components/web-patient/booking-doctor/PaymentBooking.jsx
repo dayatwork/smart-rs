@@ -596,6 +596,14 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
             py="1"
             px="0"
           />
+          {patient !== 'me' && (
+            <Description
+              title="Penanggung Jawab"
+              value={patientData?.responsible_status}
+              py="1"
+              px="0"
+            />
+          )}
         </Box>
         <Divider my="2" />
         {patient === 'me' && (

@@ -33,6 +33,7 @@ import {
 import { getPatientVitalSign } from '../../../api/medical-record-services/vital-sign';
 import { getPatientAllergies } from '../../../api/medical-record-services/allergies';
 import { getAllergiesByGroup } from '../../../api/master-data-services/allergies';
+import { getResponsibleList } from '../../../api/patient-services/responsible';
 import { InputDate } from '../../shared/input';
 
 export const PatientData = ({
@@ -41,6 +42,10 @@ export const PatientData = ({
   setPatientData,
   currentStepIndex,
   setCurrentStepIndex,
+  // selectedResponsible,
+  // setSelectedResponsible,
+  responsibleDefaultValue,
+  setResponsibleDefaultValue,
 }) => {
   const toast = useToast();
   const [cookies] = useCookies(['user']);
@@ -60,6 +65,20 @@ export const PatientData = ({
   const [options, setOptions] = useState([]);
   const [isLoadingFetchProfile, setIsLoadingFetchProfile] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
+  const [selectedResponsible, setSelectedResponsible] = useState(
+    responsibleDefaultValue?.email
+  );
+  // const [responsibleDefaultValue, setResponsibleDefaultValue] = useState({
+  //   fullname: '',
+  //   email: '',
+  //   phone_number: '',
+  //   identity_number: '',
+  //   gender: '',
+  //   marital_status: '',
+  //   address: '',
+  //   birth_date: new Date(),
+  // });
+
   const queryClient = useQueryClient();
   const patientDataGridColumns = useBreakpointValue({
     base: 1,
@@ -67,6 +86,10 @@ export const PatientData = ({
   });
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const profileInfoColumns = useBreakpointValue({ base: 1, md: 2 });
+
+  const { data: dataResponsibleList } = useQuery('responsible-list', () =>
+    getResponsibleList(cookies)
+  );
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
@@ -248,16 +271,17 @@ export const PatientData = ({
         height: dataPatientVitalSign?.data?.height,
         weight: dataPatientVitalSign?.data?.weight,
       });
-    } else {
-      setDefaultValues({
-        ...patientData,
-        birth_date: new Date(),
-      });
-      reset({
-        ...patientData,
-        birth_date: new Date(),
-      });
     }
+    // else {
+    //   setDefaultValues({
+    //     ...patientData,
+    //     birth_date: new Date(),
+    //   });
+    //   reset({
+    //     ...patientData,
+    //     birth_date: new Date(),
+    //   });
+    // }
   }, [
     patient,
     cookies,
@@ -267,6 +291,37 @@ export const PatientData = ({
     dataPatientVitalSign?.data?.height,
     dataPatientVitalSign?.data?.weight,
   ]);
+
+  useEffect(() => {
+    if (patient !== 'me') {
+      setDefaultValues({
+        fullname: responsibleDefaultValue?.name || '',
+        email: responsibleDefaultValue?.email || '',
+        phone_number: responsibleDefaultValue?.phone_number || '',
+        identity_number: responsibleDefaultValue?.identity_number || '',
+        gender: responsibleDefaultValue?.gender || '',
+        marital_status: responsibleDefaultValue?.marital_status || '',
+        responsible_status: responsibleDefaultValue?.responsible_status || '',
+        address: responsibleDefaultValue?.address || '',
+        birth_date: responsibleDefaultValue?.birth_date
+          ? new Date(responsibleDefaultValue?.birth_date)
+          : new Date(),
+      });
+      reset({
+        fullname: responsibleDefaultValue?.name || '',
+        email: responsibleDefaultValue?.email || '',
+        phone_number: responsibleDefaultValue?.phone_number || '',
+        identity_number: responsibleDefaultValue?.identity_number || '',
+        gender: responsibleDefaultValue?.gender || '',
+        marital_status: responsibleDefaultValue?.marital_status || '',
+        responsible_status: responsibleDefaultValue?.responsible_status || '',
+        address: responsibleDefaultValue?.address || '',
+        birth_date: responsibleDefaultValue?.birth_date
+          ? new Date(responsibleDefaultValue?.birth_date)
+          : new Date(),
+      });
+    }
+  }, [patient, responsibleDefaultValue, reset]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -309,8 +364,33 @@ export const PatientData = ({
     );
   }
 
+  // console.log({ responsibleDefaultValue });
+
   return (
     <>
+      {patient !== 'me' && (
+        <FormControl maxW="4xl" mx="auto" mb="6">
+          <FormLabel>Pilih Pasien (Jika sudah pernah mendaftar)</FormLabel>
+          <Select
+            bg="white"
+            onChange={e => {
+              setSelectedResponsible(e.target.value);
+              const patient = dataResponsibleList?.data?.patients?.find(
+                patient => patient.email === e.target.value
+              );
+              setResponsibleDefaultValue(patient);
+            }}
+            value={selectedResponsible}
+          >
+            <option value="">Pasien baru</option>
+            {dataResponsibleList?.data?.patients?.map(patient => (
+              <option key={patient.id} value={patient.email}>
+                {patient.name}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+      )}
       <SimpleGrid
         // columns={patient === 'me' ? 2 : 1}
         columns={patientDataGridColumns}
@@ -355,7 +435,7 @@ export const PatientData = ({
               <FormLabel>Email</FormLabel>
               <Input
                 // variant={patient === 'me' ? 'filled' : 'outline'}
-                readOnly={patient === 'me'}
+                readOnly={patient === 'me' || selectedResponsible}
                 // {...register('email', {
                 //   required: 'Email harus diisi',
                 // })}

@@ -52,6 +52,17 @@ const BookingDoctorPage = () => {
     to: undefined,
   });
   const [selectedPagination, setSelectedPagination] = useState({});
+  // const [selectedResponsible, setSelectedResponsible] = useState('');
+  const [responsibleDefaultValue, setResponsibleDefaultValue] = useState({
+    fullname: '',
+    email: '',
+    phone_number: '',
+    identity_number: '',
+    gender: '',
+    marital_status: '',
+    address: '',
+    birth_date: new Date(),
+  });
 
   return (
     <Flex
@@ -163,6 +174,10 @@ const BookingDoctorPage = () => {
                 currentStep={currentStep}
                 currentStepIndex={currentStepIndex}
                 setCurrentStepIndex={setCurrentStepIndex}
+                // selectedResponsible={selectedResponsible}
+                // setSelectedResponsible={setSelectedResponsible}
+                responsibleDefaultValue={responsibleDefaultValue}
+                setResponsibleDefaultValue={setResponsibleDefaultValue}
               />
             )}
             {currentStep.value === 'Step 4' && (
