@@ -279,181 +279,197 @@ export const SelectDoctor = ({
                 </HStack>
               </Flex>
               <Box>
-                {dataSchedules?.data?.map(schedule => {
-                  const totalData = schedule?.total_available?.total_data;
-                  const available = schedule?.total_available?.status_available;
+                {dataSchedules?.data
+                  ?.filter(schedule => {
+                    return !isExpired(schedule?.date, schedule.end_time);
+                  })
+                  ?.map(schedule => {
+                    const totalData = schedule?.total_available?.total_data;
+                    const available =
+                      schedule?.total_available?.status_available;
 
-                  return (
-                    <Flex
-                      cursor="pointer"
-                      onClick={() => {
-                        setSelectedSchedule(schedule);
-                        setSelectedTime('');
-                      }}
-                      key={schedule.id}
-                      bg={
-                        selectedSchedule?.id === schedule.id
-                          ? 'secondary.light'
-                          : 'white'
-                      }
-                      boxShadow="md"
-                      px={{ base: '3', md: '6' }}
-                      py={{ base: '2', md: '4' }}
-                      rounded="md"
-                      border="2px"
-                      borderColor={
-                        selectedSchedule?.id === schedule.id
-                          ? 'secondary.dark'
-                          : 'transparent'
-                      }
-                      mb="4"
-                      alignItems={{ base: 'start', md: 'center' }}
-                      _hover={{
-                        bgColor: 'secondary.light',
-                      }}
-                    >
-                      <Box
-                        py={{ base: '2', md: '0' }}
-                        w={{ base: '20', md: '28' }}
-                        h={{ base: '20', md: '28' }}
-                      >
-                        <Image
-                          rounded="full"
-                          src={doctorImg}
-                          alt="foto dokter"
-                        />
-                      </Box>
-                      <Box
-                        flexGrow="1"
-                        pl="6"
-                        pr={{ base: '2', md: '6' }}
-                        borderRight={{ base: '0', md: '2px' }}
-                        mr="6"
-                        borderColor="gray.300"
-                      >
-                        <Flex
-                          justify="space-between"
-                          mb={{ base: '1', lg: '3' }}
-                          direction={{ base: 'column', md: 'row' }}
-                        >
-                          <Box>
-                            <Text
-                              fontSize={{ base: 'xl', lg: '2xl' }}
-                              fontWeight="bold"
-                            >
-                              {schedule?.employee?.name}
-                            </Text>
-                            <Text
-                              mt="-1.5"
-                              color="secondary.dark"
-                              fontWeight="semibold"
-                            >
-                              {schedule?.employee?.profession === 'Doctor'
-                                ? 'Dokter'
-                                : schedule?.employee?.profession}
-                            </Text>
-                          </Box>
-                          <Text
-                            fontSize={{ base: 'lg', lg: '2xl' }}
-                            fontWeight="bold"
-                            color="secondary.dark"
-                          >
-                            Rp.50.000
-                          </Text>
-                        </Flex>
-                        {schedule?.total_available && (
-                          <Text mb="2">
-                            Tersedia{' '}
-                            <Box
-                              as="span"
-                              fontWeight="bold"
-                              color={available !== 0 ? 'green.600' : 'red.600'}
-                            >
-                              {available}
-                            </Box>{' '}
-                            slot dari{' '}
-                            <Box as="span" fontWeight="bold">
-                              {totalData}
-                            </Box>
-                          </Text>
-                        )}
-                        <Flex
-                          color="gray.600"
-                          fontSize="sm"
-                          fontWeight="medium"
-                          direction={{ base: 'column', lg: 'row' }}
-                          mb="1"
-                        >
-                          <HStack mr="6" spacing="1">
-                            <Icon
-                              color="secondary.dark"
-                              as={RiHospitalFill}
-                              w="5"
-                              h="5"
-                            />
-                            <span>{schedule?.institution?.name}</span>
-                          </HStack>
-                          <HStack mr="6" spacing="1">
-                            <Icon
-                              color="secondary.dark"
-                              as={RiCalendarEventFill}
-                              w="5"
-                              h="5"
-                            />
-                            <span>
-                              {schedule?.days}, {schedule?.date_name}
-                            </span>
-                          </HStack>
-                          <HStack mr="6" spacing="1">
-                            <Icon
-                              color="secondary.dark"
-                              as={RiTimerLine}
-                              w="5"
-                              h="5"
-                            />
-                            <span>
-                              {schedule?.start_time} - {schedule?.end_time}
-                            </span>
-                          </HStack>
-                        </Flex>
-                      </Box>
-                      <Center
-                        display={{ base: 'none', md: 'flex' }}
-                        w={{ base: '16', lg: '24' }}
-                        h={{ base: '16', lg: '24' }}
-                        p="4"
-                        border="2px"
-                        borderColor="secondary.dark"
-                        color={
+                    return (
+                      <Flex
+                        cursor="pointer"
+                        onClick={() => {
+                          setSelectedSchedule(schedule);
+                          setSelectedTime('');
+                        }}
+                        key={schedule.id}
+                        bg={
                           selectedSchedule?.id === schedule.id
-                            ? 'white'
-                            : 'secondary.dark'
-                        }
-                        bgColor={
-                          selectedSchedule?.id === schedule.id
-                            ? 'secondary.dark'
+                            ? 'secondary.light'
                             : 'white'
                         }
-                        rounded="lg"
+                        boxShadow="md"
+                        px={{ base: '3', md: '6' }}
+                        py={{ base: '2', md: '4' }}
+                        rounded="md"
+                        border="2px"
+                        borderColor={
+                          selectedSchedule?.id === schedule.id
+                            ? 'secondary.dark'
+                            : 'transparent'
+                        }
+                        mb="4"
+                        alignItems={{ base: 'start', md: 'center' }}
+                        _hover={{
+                          bgColor: 'secondary.light',
+                        }}
                       >
-                        <Box>
-                          <Icon
-                            as={GiTicket}
-                            w={{ base: '12', lg: '14' }}
-                            h={{ base: '12', lg: '14' }}
+                        <Box
+                          py={{ base: '2', md: '0' }}
+                          w={{ base: '20', md: '28' }}
+                          h={{ base: '20', md: '28' }}
+                        >
+                          <Image
+                            rounded="full"
+                            src={doctorImg}
+                            alt="foto dokter"
                           />
-                          <Text
-                            fontSize="sm"
-                            fontWeight="semibold"
-                            display={{ base: 'none', lg: 'block' }}
-                          >
-                            Booking
-                          </Text>
                         </Box>
-                      </Center>
-                    </Flex>
-                  );
-                })}
+                        <Box
+                          flexGrow="1"
+                          pl="6"
+                          pr={{ base: '2', md: '6' }}
+                          borderRight={{ base: '0', md: '2px' }}
+                          mr="6"
+                          borderColor="gray.300"
+                        >
+                          <Flex
+                            justify="space-between"
+                            mb={{ base: '1', lg: '3' }}
+                            direction={{ base: 'column', md: 'row' }}
+                          >
+                            <Box>
+                              <Text
+                                fontSize={{ base: 'xl', lg: '2xl' }}
+                                fontWeight="bold"
+                              >
+                                {schedule?.employee?.name}
+                              </Text>
+                              <Text
+                                mt="-1.5"
+                                color="secondary.dark"
+                                fontWeight="semibold"
+                              >
+                                {schedule?.employee?.profession === 'Doctor'
+                                  ? 'Dokter'
+                                  : schedule?.employee?.profession}
+                              </Text>
+                            </Box>
+                            <Text
+                              fontSize={{ base: 'lg', lg: '2xl' }}
+                              fontWeight="bold"
+                              color="secondary.dark"
+                            >
+                              Rp.50.000
+                            </Text>
+                          </Flex>
+                          {schedule?.total_available && (
+                            <>
+                              {isToday(schedule.date) ? (
+                                <Text mb="2">
+                                  Batas akhir booking 2 jam sebelum jadwal (
+                                  {totalData} jadwal)
+                                </Text>
+                              ) : (
+                                <Text mb="2">
+                                  Tersedia{' '}
+                                  <Box
+                                    as="span"
+                                    fontWeight="bold"
+                                    color={
+                                      available !== 0 ? 'green.600' : 'red.600'
+                                    }
+                                  >
+                                    {available}
+                                  </Box>{' '}
+                                  slot dari{' '}
+                                  <Box as="span" fontWeight="bold">
+                                    {totalData}
+                                  </Box>
+                                </Text>
+                              )}
+                            </>
+                          )}
+                          <Flex
+                            color="gray.600"
+                            fontSize="sm"
+                            fontWeight="medium"
+                            direction={{ base: 'column', lg: 'row' }}
+                            mb="1"
+                          >
+                            <HStack mr="6" spacing="1">
+                              <Icon
+                                color="secondary.dark"
+                                as={RiHospitalFill}
+                                w="5"
+                                h="5"
+                              />
+                              <span>{schedule?.institution?.name}</span>
+                            </HStack>
+                            <HStack mr="6" spacing="1">
+                              <Icon
+                                color="secondary.dark"
+                                as={RiCalendarEventFill}
+                                w="5"
+                                h="5"
+                              />
+                              <span>
+                                {schedule?.days}, {schedule?.date_name}
+                              </span>
+                            </HStack>
+                            <HStack mr="6" spacing="1">
+                              <Icon
+                                color="secondary.dark"
+                                as={RiTimerLine}
+                                w="5"
+                                h="5"
+                              />
+                              <span>
+                                {schedule?.start_time} - {schedule?.end_time}
+                              </span>
+                            </HStack>
+                          </Flex>
+                        </Box>
+                        <Center
+                          display={{ base: 'none', md: 'flex' }}
+                          w={{ base: '16', lg: '24' }}
+                          h={{ base: '16', lg: '24' }}
+                          p="4"
+                          border="2px"
+                          borderColor="secondary.dark"
+                          color={
+                            selectedSchedule?.id === schedule.id
+                              ? 'white'
+                              : 'secondary.dark'
+                          }
+                          bgColor={
+                            selectedSchedule?.id === schedule.id
+                              ? 'secondary.dark'
+                              : 'white'
+                          }
+                          rounded="lg"
+                        >
+                          <Box>
+                            <Icon
+                              as={GiTicket}
+                              w={{ base: '12', lg: '14' }}
+                              h={{ base: '12', lg: '14' }}
+                            />
+                            <Text
+                              fontSize="sm"
+                              fontWeight="semibold"
+                              display={{ base: 'none', lg: 'block' }}
+                            >
+                              Booking
+                            </Text>
+                          </Box>
+                        </Center>
+                      </Flex>
+                    );
+                  })}
               </Box>
               {/* {dataSchedules?.pagination?.length > 1 && (
                 <Flex align="center" justify="space-between" mt="4">
@@ -640,12 +656,18 @@ export const SelectDoctor = ({
 };
 
 const isToday = currentDate => {
-  return new Date().toISOString().split('T')[0] !== currentDate;
+  return new Date().toISOString().split('T')[0] === currentDate;
+};
+
+const isExpired = (date, time) => {
+  const selectedTime = new Date(`${date}T${time}`).getTime();
+  const currentTime = new Date().getTime();
+  return selectedTime - currentTime < 0;
 };
 
 const availableStatus = (currentDate, time) => {
   const HOURS = 2;
-  if (isToday(currentDate)) {
+  if (!isToday(currentDate)) {
     return 'available';
   }
 
