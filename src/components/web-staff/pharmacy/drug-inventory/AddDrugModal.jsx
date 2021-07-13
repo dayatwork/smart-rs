@@ -318,7 +318,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
             isLoading={isLoading}
             colorScheme="purple"
             onClick={handleSubmit(onSubmit)}
-            disabled={!getValues('drugs').length}
+            disabled={!getValues('drugs')?.length}
           >
             Create
           </Button>

@@ -20,10 +20,29 @@ import {
 import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { editDrug } from '../../../../api/pharmacy-services/drug';
 import { InputDate } from '../../../../components/shared/input';
 import { drugType } from '../../../../data/drugType';
+
+const schema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  price: yup
+    .number()
+    .positive('Price must be greater than 0')
+    .required('Price is required')
+    .typeError('Price must be a number'),
+  expired: yup.string().required('Expired date is required'),
+  type: yup.string().required('Type is required'),
+  quantity: yup
+    .number()
+    .min(0)
+    .required('Quantity is required')
+    .typeError('Quantity must be a number'),
+  description: yup.string(),
+});
 
 export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
   const toast = useToast();
@@ -35,7 +54,9 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
     clearErrors,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [cookies] = useCookies(['token']);
   const queryClient = useQueryClient();
