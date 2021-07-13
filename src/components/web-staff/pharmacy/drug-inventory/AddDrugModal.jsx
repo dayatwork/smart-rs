@@ -20,22 +20,56 @@ import {
   Text,
   SimpleGrid,
   Select,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { useForm, useFieldArray } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { createDrug } from '../../../../api/pharmacy-services/drug';
 import { InputDate } from '../../../../components/shared/input';
 import { drugType } from '../../../../data/drugType';
+
+const schema = yup.object().shape({
+  drugs: yup.array().of(
+    yup.object().shape({
+      name: yup.string().required('Name is required'),
+      price: yup
+        .number()
+        .positive('Price must be greater than 0')
+        .required('Price is required')
+        .typeError('Price must be a number'),
+      expired: yup.string().required('Expired date is required'),
+      type: yup.string().required('Type is required'),
+      quantity: yup
+        .number()
+        .positive('Quantity must be greater than 0')
+        .required('Quantity is required')
+        .typeError('Quantity must be a number'),
+      description: yup.string(),
+    })
+  ),
+});
 
 export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
-  const { register, handleSubmit, reset, clearErrors, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'drugs',
@@ -88,6 +122,8 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
     await mutate(drugs);
   };
 
+  console.log({ errors });
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <ModalOverlay />
@@ -110,8 +146,14 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
 
             {fields.map(({ id }, index) => {
               return (
-                <HStack key={id}>
-                  <FormControl id={`name-${index}`} mb="1">
+                <HStack key={id} align="baseline">
+                  <FormControl
+                    id={`name-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.name ? true : false
+                    }
+                  >
                     <VisuallyHidden as="label">Name</VisuallyHidden>
                     <Flex>
                       <Input
@@ -120,8 +162,19 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         {...register(`drugs[${index}].name`)}
                       />
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs && errors.drugs[index].name.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl id={`price-${index}`} mb="1">
+                  <FormControl
+                    id={`price-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.price
+                        ? true
+                        : false
+                    }
+                  >
                     <VisuallyHidden as="label">Price</VisuallyHidden>
                     <Flex>
                       <Input
@@ -131,8 +184,19 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         {...register(`drugs[${index}].price`)}
                       />
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs && errors.drugs[index]?.price?.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl id={`expired-${index}`} mb="1">
+                  <FormControl
+                    id={`expired-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.expired
+                        ? true
+                        : false
+                    }
+                  >
                     <VisuallyHidden as="label">Expired</VisuallyHidden>
                     <Flex>
                       <InputDate
@@ -148,8 +212,17 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         defaultValue={new Date()}
                       />
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs && errors.drugs[index]?.expired?.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl id={`type-${index}`} mb="1">
+                  <FormControl
+                    id={`type-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.type ? true : false
+                    }
+                  >
                     <VisuallyHidden as="label">Type</VisuallyHidden>
                     <Flex>
                       {/* <Input
@@ -166,8 +239,19 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         ))}
                       </Select>
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs && errors.drugs[index]?.type?.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl id={`quantity-${index}`} mb="1">
+                  <FormControl
+                    id={`quantity-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.quantity
+                        ? true
+                        : false
+                    }
+                  >
                     <VisuallyHidden as="label">Quantity</VisuallyHidden>
                     <Flex>
                       <Input
@@ -177,8 +261,19 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         {...register(`drugs[${index}].quantity`)}
                       />
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs && errors.drugs[index]?.quantity?.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl id={`description-${index}`} mb="1">
+                  <FormControl
+                    id={`description-${index}`}
+                    mb="1"
+                    isInvalid={
+                      errors?.drugs && errors?.drugs[index]?.description
+                        ? true
+                        : false
+                    }
+                  >
                     <VisuallyHidden as="label">Description</VisuallyHidden>
                     <Flex>
                       <Textarea
@@ -188,6 +283,10 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
                         {...register(`drugs[${index}].description`)}
                       />
                     </Flex>
+                    <FormErrorMessage mt="1">
+                      {errors.drugs &&
+                        errors.drugs[index]?.description?.message}
+                    </FormErrorMessage>
                   </FormControl>
                   <IconButton
                     onClick={() => remove(index)}
@@ -219,6 +318,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
             isLoading={isLoading}
             colorScheme="purple"
             onClick={handleSubmit(onSubmit)}
+            disabled={!getValues('drugs').length}
           >
             Create
           </Button>
