@@ -76,7 +76,7 @@ const UploadPaymentSlipPage = () => {
     { enabled: Boolean(params?.orderId) }
   );
 
-  console.log({ dataOrderDetail });
+  // console.log({ dataOrderDetail });
 
   const { data: dataPaymentMethod, isLoading: isLoadingPaymentMethod } =
     useQuery(
