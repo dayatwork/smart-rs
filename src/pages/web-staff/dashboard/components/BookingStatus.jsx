@@ -4,7 +4,13 @@ import { HiCheckCircle, HiClock, HiExclamationCircle } from 'react-icons/hi';
 
 import { StatCard } from './StatCard';
 
-export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
+export const BookingStatus = ({
+  total = 0,
+  checkedIn = 0,
+  examination = 0,
+  cancel = 0,
+}) => {
+  // console.log({ total, cancel, examination, checkedIn });
   return (
     <Box
       as="section"
@@ -41,7 +47,8 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiClock />}
               data={{
                 label: 'Total Booking',
-                value: dataBookingList?.data?.length || 0,
+                // value: dataBookingList?.data?.length || 0,
+                value: total,
                 change: -2.1,
               }}
             />
@@ -50,10 +57,11 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiExclamationCircle />}
               data={{
                 label: 'Total Cancel',
-                value:
-                  dataBookingList?.data?.filter(
-                    booking => booking.booking_status === 'cancel'
-                  )?.length || 0,
+                // value:
+                //   dataBookingList?.data?.filter(
+                //     booking => booking.booking_status === 'cancel'
+                //   )?.length || 0,
+                value: cancel,
                 change: 4.31,
               }}
             />
@@ -62,10 +70,11 @@ export const BookingStatus = ({ selectedInstitution, dataBookingList }) => {
               icon={<HiCheckCircle />}
               data={{
                 label: 'Total Checked In',
-                value:
-                  dataBookingList?.data?.filter(
-                    booking => booking.booking_status === 'done'
-                  )?.length || 0,
+                // value:
+                //   dataBookingList?.data?.filter(
+                //     booking => booking.booking_status === 'done'
+                //   )?.length || 0,
+                value: checkedIn + examination,
                 change: -4.5,
               }}
             />

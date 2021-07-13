@@ -20,7 +20,8 @@ import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
 import { BookingStatus, BookingChart } from './components';
 
 import { getInstitutions } from '../../../api/institution-services/institution';
-import { getBookingList } from '../../../api/booking-services/booking';
+// import { getBookingList } from '../../../api/booking-services/booking';
+import { getBookingStatistic } from '../../../api/booking-services/statistic';
 
 const DashboardPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -35,10 +36,39 @@ const DashboardPage = () => {
     { staleTime: Infinity }
   );
 
-  const { data: dataBookingList, isLoading: isLoadingBookingList } = useQuery(
-    ['booking-list', selectedInstitution],
-    () => getBookingList(cookies, selectedInstitution),
-    { enabled: Boolean(selectedInstitution) }
+  // const { data: dataBookingList, isLoading: isLoadingBookingList } = useQuery(
+  //   ['booking-list', selectedInstitution],
+  //   () => getBookingList(cookies, selectedInstitution),
+  //   { enabled: Boolean(selectedInstitution) }
+  // );
+
+  const { data: dataTotal, isLoading: isLoadingTotal } = useQuery(
+    ['booking-statistic'],
+    () => getBookingStatistic(cookies, selectedInstitution),
+    {
+      enabled: Boolean(selectedInstitution),
+    }
+  );
+  const { data: dataCancel, isLoading: isLoadingCancel } = useQuery(
+    ['booking-statistic', 'cancel'],
+    () => getBookingStatistic(cookies, selectedInstitution, 'cancel'),
+    {
+      enabled: Boolean(selectedInstitution),
+    }
+  );
+  const { data: dataCheckedIn, isLoading: isLoadingCheckedIn } = useQuery(
+    ['booking-statistic', 'done'],
+    () => getBookingStatistic(cookies, selectedInstitution, 'done'),
+    {
+      enabled: Boolean(selectedInstitution),
+    }
+  );
+  const { data: dataExamination, isLoading: isLoadingExamination } = useQuery(
+    ['booking-statistic', 'examination'],
+    () => getBookingStatistic(cookies, selectedInstitution, 'done'),
+    {
+      enabled: Boolean(selectedInstitution),
+    }
   );
 
   return (
@@ -74,7 +104,10 @@ const DashboardPage = () => {
                 </Select>
               </FormControl>
             )}
-            {isLoadingBookingList ? (
+            {isLoadingTotal ||
+            isLoadingCancel ||
+            isLoadingCheckedIn ||
+            isLoadingExamination ? (
               <Center py="10">
                 <Spinner
                   thickness="4px"
@@ -93,8 +126,12 @@ const DashboardPage = () => {
                 </Heading>
                 <>
                   <BookingStatus
-                    selectedInstitution={selectedInstitution}
-                    dataBookingList={dataBookingList}
+                    // selectedInstitution={selectedInstitution}
+                    // dataBookingList={dataBookingList}
+                    total={dataTotal?.total}
+                    cancel={dataCancel?.total}
+                    checkedIn={dataCheckedIn?.total}
+                    examination={dataExamination?.total}
                   />
                 </>
                 <Divider my={{ base: '2', '2xl': '4' }} />
@@ -106,7 +143,7 @@ const DashboardPage = () => {
                 </Heading>
                 <BookingChart
                   selectedInstitution={selectedInstitution}
-                  dataBookingList={dataBookingList}
+                  // dataBookingList={dataBookingList}
                 />
               </>
             )}
