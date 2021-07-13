@@ -70,6 +70,7 @@ export const DrugPriceListPage = () => {
     () => getDrugPriceList(cookies, selectedInstitution),
     { enabled: Boolean(selectedInstitution) }
   );
+  console.log({ dataDrugPrices });
 
   const handleEdit = useCallback(
     drugId => {
@@ -87,7 +88,7 @@ export const DrugPriceListPage = () => {
         return {
           id: drugPrice.id,
           drug_id: drugPrice.drug_id,
-          name: drugPrice.name,
+          name: drugPrice.drug_data?.name,
           tax: drugPrice.tax,
           price: drugPrice.price,
           currency: drugPrice.currency,

@@ -110,6 +110,8 @@ export const OrderDetail = ({ orderId, bookingStatus }) => {
     { enabled: Boolean(orderId) }
   );
 
+  // console.log({ dataOrderDetail });
+
   const { data: dataPaymentMethod, isLoading: isLoadingPaymentMethod } =
     useQuery(
       ['payment-method', dataOrderDetail?.data?.method?.id],

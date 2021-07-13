@@ -34,6 +34,7 @@ const BookingListPage = () => {
     isLoading: isLoadingBooking,
     isSuccess: isSuccessBooking,
   } = useQuery('user-booking-list', () => getUserBookingList(cookies.token));
+  // console.log({ dataBooking });
 
   const {
     data: dataBookingResponsible,
@@ -42,6 +43,7 @@ const BookingListPage = () => {
   } = useQuery('user-responsible-booking-list', () =>
     getUserResponsibleBookingList(cookies.token)
   );
+  // console.log({ dataBookingResponsible });
 
   const currentBooking = dataBooking?.data?.find(booking => {
     const bookingDate = new Date(booking.schedule.date)
