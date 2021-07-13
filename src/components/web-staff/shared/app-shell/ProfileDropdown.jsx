@@ -12,6 +12,8 @@ import {
   Menu,
   MenuList,
 } from '@chakra-ui/react';
+import { useCookies } from 'react-cookie';
+
 import { AuthContext } from '../../../../contexts/authContext';
 
 const UserAvatar = ({ src, name }) => (
@@ -43,12 +45,16 @@ const ProfileMenuButton = props => {
 };
 
 export const ProfileDropdown = () => {
+  const [, , removeCookie] = useCookies(['token']);
   const toast = useToast();
   const history = useHistory();
   const { logout, user } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout(() => {
+      removeCookie('token', { path: '/' });
+      removeCookie('user', { path: '/' });
+      removeCookie('employee', { path: '/' });
       toast({
         position: 'top-right',
         title: 'Success',

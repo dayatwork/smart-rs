@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import { AuthContext } from '../../../contexts/authContext';
 
@@ -42,12 +43,16 @@ const ProfileMenuButton = props => {
 };
 
 export const ProfileDropdown = () => {
+  const [, , removeCookie] = useCookies(['token']);
   const toast = useToast();
   const history = useHistory();
   const { logout, user } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout(() => {
+      removeCookie('token', { path: '/' });
+      removeCookie('user', { path: '/' });
+      removeCookie('employee', { path: '/' });
       toast({
         position: 'top-right',
         title: 'Success',

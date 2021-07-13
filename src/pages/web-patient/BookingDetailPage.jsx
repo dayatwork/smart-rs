@@ -73,6 +73,8 @@ const BookingDetailPage = () => {
       { enabled: Boolean(params.id) }
     );
 
+  console.log({ dataBookingDetail });
+
   const status = dataBookingDetail?.data?.booking_status?.toLowerCase();
 
   const { data: dataQR, isLoading: isLoadingQR } = useQuery(
@@ -82,6 +84,8 @@ const BookingDetailPage = () => {
       enabled: params.id && status !== 'cancel',
     }
   );
+
+  console.log({ dataQR });
 
   const handleCancel = async () => {
     if (

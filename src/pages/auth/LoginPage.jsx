@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -28,6 +28,8 @@ import { LoginForm } from '../../components/auth/LoginForm';
 
 const LoginPage = () => {
   const history = useHistory();
+  const location = useLocation();
+
   const toast = useToast();
   const [, setCookie] = useCookies(['token']);
   const formColumns = useBreakpointValue({ base: 5, lg: 2 });
@@ -73,7 +75,11 @@ const LoginPage = () => {
         isClosable: true,
       });
 
-      history.push('/');
+      if (location?.state?.from) {
+        history.push(location?.state?.from);
+      } else {
+        history.push('/');
+      }
     } catch (error) {
       toast({
         position: 'top-right',

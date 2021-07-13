@@ -7,6 +7,7 @@ import {
   Redirect,
   Route,
   Switch,
+  useLocation,
 } from 'react-router-dom';
 import { Center } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -123,6 +124,7 @@ const PatientSoapResultPage = Loadable(
 
 const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
   const { token, user } = useContext(AuthContext);
+  const location = useLocation();
 
   return (
     <>
@@ -131,7 +133,15 @@ const AuthenticatedRoute = ({ children, pageTitle = 'SMART-RS', ...rest }) => {
       </Helmet>
       <Route
         {...rest}
-        render={() => (token && user ? children : <Redirect to="/login" />)}
+        render={() =>
+          token && user ? (
+            children
+          ) : (
+            <Redirect
+              to={{ pathname: '/login', state: { from: location.pathname } }}
+            />
+          )
+        }
       />
     </>
   );
@@ -332,6 +342,7 @@ const App = () => {
   const [isLoadingEmployeeDetail, setIsLoadingEmployeeDetail] = useState(false);
 
   const logout = async callback => {
+    console.log('hit');
     removeCookie('token');
     removeCookie('user');
     removeCookie('employee');
