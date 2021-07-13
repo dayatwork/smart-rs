@@ -122,7 +122,7 @@ export const AddDrugModal = ({ isOpen, onClose, selectedInstitution }) => {
     await mutate(drugs);
   };
 
-  console.log({ errors });
+  // console.log({ errors });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl">

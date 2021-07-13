@@ -137,7 +137,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                 <FormLabel>Name</FormLabel>
                 <Input
                   defaultValue={selectedDrug?.name || ''}
-                  {...register('name', { required: 'Name is required' })}
+                  {...register('name')}
                 />
                 <FormErrorMessage>
                   {errors.name && errors.name.message}
@@ -155,7 +155,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                 /> */}
                 <Select
                   defaultValue={selectedDrug?.type || ''}
-                  {...register('type', { required: 'Drug Type is required' })}
+                  {...register('type')}
                 >
                   <option value="">Select type</option>
                   {Object.entries(drugType).map(([key, value]) => (
@@ -177,7 +177,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                 <Input
                   type="number"
                   defaultValue={selectedDrug?.price || ''}
-                  {...register('price', { required: 'Drug price is required' })}
+                  {...register('price')}
                 />
                 <FormErrorMessage>
                   {errors.price && errors.price.message}
@@ -218,9 +218,7 @@ export const EditDrugDrawer = ({ isOpen, onClose, selectedDrug }) => {
                 <Input
                   type="number"
                   defaultValue={selectedDrug?.quantity || ''}
-                  {...register('quantity', {
-                    required: 'Drug quantity is required',
-                  })}
+                  {...register('quantity')}
                 />
                 <FormErrorMessage>
                   {errors.quantity && errors.quantity.message}
