@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { Link, useParams, useHistory, Redirect } from 'react-router-dom';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -66,14 +66,15 @@ const BookingDetailPage = () => {
     isOpen: isCancelOpen,
   } = useDisclosure();
 
-  const { data: dataBookingDetail, isLoading: isLoadingBookingDetail } =
-    useQuery(
-      ['booking-detail', params.id],
-      () => getBookingDetail(cookies, params.id),
-      { enabled: Boolean(params.id) }
-    );
-
-  console.log({ dataBookingDetail });
+  const {
+    data: dataBookingDetail,
+    isLoading: isLoadingBookingDetail,
+    isSuccess: isSuccessBookingDetail,
+  } = useQuery(
+    ['booking-detail', params.id],
+    () => getBookingDetail(cookies, params.id),
+    { enabled: Boolean(params.id) }
+  );
 
   const status = dataBookingDetail?.data?.booking_status?.toLowerCase();
 
@@ -85,7 +86,7 @@ const BookingDetailPage = () => {
     }
   );
 
-  console.log({ dataQR });
+  // console.log({ dataQR });
 
   const handleCancel = async () => {
     if (
@@ -122,6 +123,13 @@ const BookingDetailPage = () => {
       });
     }
   };
+
+  if (
+    isSuccessBookingDetail &&
+    dataBookingDetail?.data?.patient?.user_id !== cookies.user.id
+  ) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
