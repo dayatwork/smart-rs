@@ -31,6 +31,7 @@ const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   price: yup
     .number()
+    .integer('Price must be integer')
     .positive('Price must be greater than 0')
     .required('Price is required')
     .typeError('Price must be a number'),
@@ -38,6 +39,7 @@ const schema = yup.object().shape({
   type: yup.string().required('Type is required'),
   quantity: yup
     .number()
+    .integer('Quantity must be integer')
     .min(0)
     .required('Quantity is required')
     .typeError('Quantity must be a number'),
