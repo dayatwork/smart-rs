@@ -13,14 +13,14 @@ import {
   FormLabel,
   Select,
   Badge,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  // useDisclosure,
+  // Modal,
+  // ModalOverlay,
+  // ModalContent,
+  // ModalHeader,
+  // ModalCloseButton,
+  // ModalBody,
+  // ModalFooter,
   useToast,
 } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from 'react-query';
@@ -37,6 +37,8 @@ import { BackButton } from '../../../../components/shared/BackButton';
 import { PrivateComponent, Permissions } from '../../../../access-control';
 
 export const DrugPackagePage = () => {
+  const history = useHistory();
+  const toast = useToast();
   const { employeeDetail, user } = useContext(AuthContext);
   const { path } = useRouteMatch();
   const [cookies] = useCookies(['token']);
@@ -45,18 +47,20 @@ export const DrugPackagePage = () => {
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
   );
-  const [selectedDrugOrder, setSelectedDrugOrder] = useState(null);
+  // const [selectedDrugOrder, setSelectedDrugOrder] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
     () => getInstitutions(cookies)
   );
 
-  const {
-    onOpen: onProcessPackageOpen,
-    isOpen: isProcessPackageOpen,
-    onClose: onProcessPackageClose,
-  } = useDisclosure();
+  // const {
+  //   onOpen: onProcessPackageOpen,
+  //   isOpen: isProcessPackageOpen,
+  //   onClose: onProcessPackageClose,
+  // } = useDisclosure();
 
   const {
     data: dataDrugPackages,
@@ -69,13 +73,49 @@ export const DrugPackagePage = () => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  const handleProcessPackaging = useCallback(
-    id => {
-      const drug = dataDrugPackages?.data.find(drug => drug.id === id);
-      setSelectedDrugOrder(drug);
-      onProcessPackageOpen();
+  // const handleProcessPackaging = useCallback(
+  //   id => {
+  //     const drug = dataDrugPackages?.data.find(drug => drug.id === id);
+  //     setSelectedDrugOrder(drug);
+  //     onProcessPackageOpen();
+  //   },
+  //   [dataDrugPackages?.data, onProcessPackageOpen]
+  // );
+
+  const handleStartPackaging = useCallback(
+    async (packageId, receiptId) => {
+      const data = {
+        id: packageId,
+        status: 'process',
+      };
+
+      try {
+        setIsLoading(true);
+        await processPackage(cookies)(data);
+        await queryClient.invalidateQueries('drugs-order');
+        setIsLoading(false);
+        toast({
+          position: 'top-right',
+          title: 'Success',
+          description: 'Success start packaging',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+        history.push(`/pharmacy/packaging/${packageId}`);
+      } catch (error) {
+        setIsLoading(false);
+        toast({
+          position: 'top-right',
+          title: 'Error',
+          description: 'Error start packaging',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
     },
-    [dataDrugPackages?.data, onProcessPackageOpen]
+    [cookies, history, queryClient, toast]
   );
 
   const data = React.useMemo(
@@ -96,6 +136,7 @@ export const DrugPackagePage = () => {
 
   // console.log({ dataDrugOrders });
   // console.log({ selectedDrugOrder });
+  // console.log({ dataDrugPackages });
 
   const columns = React.useMemo(
     () => [
@@ -208,7 +249,14 @@ export const DrugPackagePage = () => {
                 <Button
                   colorScheme="purple"
                   size="sm"
-                  onClick={() => handleProcessPackaging(row.original.id)}
+                  // onClick={() => handleProcessPackaging(row.original.id)}
+                  onClick={() =>
+                    handleStartPackaging(
+                      row.original.id,
+                      row.original.receipt_id
+                    )
+                  }
+                  disabled={isLoading}
                 >
                   Start
                 </Button>
@@ -219,7 +267,7 @@ export const DrugPackagePage = () => {
         },
       },
     ],
-    [clipboardValue, hasCopied, onCopy, path, handleProcessPackaging]
+    [clipboardValue, hasCopied, onCopy, path, handleStartPackaging, isLoading]
   );
 
   return (
@@ -227,12 +275,12 @@ export const DrugPackagePage = () => {
       {isFetchingDrugPackages && (
         <Spinner top="10" right="12" position="absolute" colorScheme="purple" />
       )}
-      <ConfirmProcessPackageModal
+      {/* <ConfirmProcessPackageModal
         onClose={onProcessPackageClose}
         isOpen={isProcessPackageOpen}
         selectedDrugPackage={selectedDrugOrder}
         selectedInstitution={selectedInstitution}
-      />
+      /> */}
       <BackButton to="/pharmacy" text="Back to Pharmacy" />
       <Heading
         mb={{ base: '3', '2xl': '6' }}
@@ -271,72 +319,72 @@ export const DrugPackagePage = () => {
   );
 };
 
-const ConfirmProcessPackageModal = ({
-  isOpen,
-  onClose,
-  selectedDrugPackage,
-  // selectedInstitution,
-}) => {
-  const toast = useToast();
-  const history = useHistory();
-  const [cookies] = useCookies(['token']);
-  const [isLoading, setIsLoading] = useState(false);
-  const queryClient = useQueryClient();
+// const ConfirmProcessPackageModal = ({
+//   isOpen,
+//   onClose,
+//   selectedDrugPackage,
+//   // selectedInstitution,
+// }) => {
+//   const toast = useToast();
+//   const history = useHistory();
+//   const [cookies] = useCookies(['token']);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const queryClient = useQueryClient();
 
-  const data = {
-    id: selectedDrugPackage?.id,
-    status: 'process',
-  };
+//   const data = {
+//     id: selectedDrugPackage?.id,
+//     status: 'process',
+//   };
 
-  const handleStartPackaging = async () => {
-    try {
-      setIsLoading(true);
-      await processPackage(cookies)(data);
-      await queryClient.invalidateQueries('drugs-order');
-      setIsLoading(false);
-      toast({
-        position: 'top-right',
-        title: 'Success',
-        description: 'Success start packaging',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
-      history.push(`/pharmacy/packaging/${selectedDrugPackage?.receipt_id}`);
-    } catch (error) {
-      setIsLoading(false);
-      toast({
-        position: 'top-right',
-        title: 'Error',
-        description: 'Error start packaging',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  };
+//   const handleStartPackaging = async () => {
+//     try {
+//       setIsLoading(true);
+//       await processPackage(cookies)(data);
+//       await queryClient.invalidateQueries('drugs-order');
+//       setIsLoading(false);
+//       toast({
+//         position: 'top-right',
+//         title: 'Success',
+//         description: 'Success start packaging',
+//         status: 'success',
+//         duration: 2000,
+//         isClosable: true,
+//       });
+//       history.push(`/pharmacy/packaging/${selectedDrugPackage?.receipt_id}`);
+//     } catch (error) {
+//       setIsLoading(false);
+//       toast({
+//         position: 'top-right',
+//         title: 'Error',
+//         description: 'Error start packaging',
+//         status: 'error',
+//         duration: 2000,
+//         isClosable: true,
+//       });
+//     }
+//   };
 
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Process Packaging</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>Start to process this packaging</ModalBody>
+//   return (
+//     <Modal isOpen={isOpen} onClose={onClose}>
+//       <ModalOverlay />
+//       <ModalContent>
+//         <ModalHeader>Process Packaging</ModalHeader>
+//         <ModalCloseButton />
+//         <ModalBody>Start to process this packaging</ModalBody>
 
-        <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            Close
-          </Button>
-          <Button
-            colorScheme="purple"
-            onClick={handleStartPackaging}
-            isLoading={isLoading}
-          >
-            Start
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
+//         <ModalFooter>
+//           <Button variant="ghost" mr={3} onClick={onClose}>
+//             Close
+//           </Button>
+//           <Button
+//             colorScheme="purple"
+//             onClick={handleStartPackaging}
+//             isLoading={isLoading}
+//           >
+//             Start
+//           </Button>
+//         </ModalFooter>
+//       </ModalContent>
+//     </Modal>
+//   );
+// };

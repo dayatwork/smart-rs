@@ -71,8 +71,8 @@ export const CollectMedicineDetails = ({ parentRoute, backButtonLabel }) => {
     );
   }
 
-  console.log({ dataDrugOrderDetail });
-  console.log({ dataDrugOrderQRCode });
+  // console.log({ dataDrugOrderDetail });
+  // console.log({ dataDrugOrderQRCode });
 
   return (
     <Box>
