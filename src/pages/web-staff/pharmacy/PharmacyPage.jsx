@@ -16,6 +16,8 @@ import {
   DrugReceiptDetailPage,
   DrugPackagePage,
   DrugPackageDetailPage,
+  CollectMedicineList,
+  CollectMedicineDetails,
 } from './sub-page';
 import { PrivateRoute, Permissions } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
@@ -96,6 +98,28 @@ const PharmacyPage = () => {
                 path={`${path}/packaging/:id`}
               >
                 <DrugPackageDetailPage />
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexReceipt}
+                exact
+                path={`${path}/collect-medicine`}
+                pageTitle="Collect Medicine | SMART-RS"
+              >
+                <CollectMedicineList
+                  parentRoute="/pharmacy"
+                  backButtonLabel="Back to Pharmacy"
+                />
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.updateReceipt}
+                exact
+                path={`${path}/collect-medicine/:id`}
+                pageTitle="Collect Medicine | SMART-RS"
+              >
+                <CollectMedicineDetails
+                  parentRoute="/pharmacy/collect-medicine"
+                  backButtonLabel="Back to Collect Medicine List"
+                />
               </PrivateRoute>
             </Switch>
           </ContentWrapper>

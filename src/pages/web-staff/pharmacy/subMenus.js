@@ -16,4 +16,9 @@ export const subMenus = [
     text: 'Packaging',
     permission: Permissions.indexPackaging,
   },
+  {
+    to: '/pharmacy/collect-medicine',
+    text: 'Collect Medicine',
+    permission: Permissions.indexReceipt,
+  },
 ];
