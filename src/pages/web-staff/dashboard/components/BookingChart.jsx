@@ -24,6 +24,12 @@ const formatData = data => {
   return formatted;
 };
 
+const addDays = (date, days) => {
+  const formattedDate = new Date(date);
+  formattedDate.setDate(formattedDate.getDate() + days);
+  return formattedDate;
+};
+
 export const BookingChart = ({ selectedInstitution }) => {
   const [cookies] = useCookies(['token']);
   const goBackDays = 7;
@@ -39,24 +45,27 @@ export const BookingChart = ({ selectedInstitution }) => {
 
   const startDate = datesSorted[datesSorted.length - 1];
   const endDate = datesSorted[0];
+  const newEndDate = addDays(endDate, 1).toISOString().split('T')[0];
 
   const { data: dataStatisticTotal } = useQuery(
     [
       'booking-graph-statistic',
       {
         startDate,
-        endDate,
+        endDate: newEndDate,
       },
     ],
     () =>
       getBookingStatisticByDay(cookies, {
         institution_id: selectedInstitution,
         startDate,
-        endDate,
+        endDate: newEndDate,
       }),
     {
       enabled:
-        Boolean(selectedInstitution) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedInstitution) &&
+        Boolean(startDate) &&
+        Boolean(newEndDate),
     }
   );
   const { data: dataStatisticCancel } = useQuery(
@@ -65,19 +74,21 @@ export const BookingChart = ({ selectedInstitution }) => {
       {
         institution_id: selectedInstitution,
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'cancel',
       },
     ],
     () =>
       getBookingStatisticByDay(cookies, {
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'cancel',
       }),
     {
       enabled:
-        Boolean(selectedInstitution) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedInstitution) &&
+        Boolean(startDate) &&
+        Boolean(newEndDate),
     }
   );
   const { data: dataStatisticCheckedIn } = useQuery(
@@ -86,19 +97,21 @@ export const BookingChart = ({ selectedInstitution }) => {
       {
         institution_id: selectedInstitution,
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'done',
       },
     ],
     () =>
       getBookingStatisticByDay(cookies, {
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'done',
       }),
     {
       enabled:
-        Boolean(selectedInstitution) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedInstitution) &&
+        Boolean(startDate) &&
+        Boolean(newEndDate),
     }
   );
   const { data: dataStatisticExamination } = useQuery(
@@ -107,19 +120,21 @@ export const BookingChart = ({ selectedInstitution }) => {
       {
         institution_id: selectedInstitution,
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'examination',
       },
     ],
     () =>
       getBookingStatisticByDay(cookies, {
         startDate,
-        endDate,
+        endDate: newEndDate,
         booking_status: 'examination',
       }),
     {
       enabled:
-        Boolean(selectedInstitution) && Boolean(startDate) && Boolean(endDate),
+        Boolean(selectedInstitution) &&
+        Boolean(startDate) &&
+        Boolean(newEndDate),
     }
   );
 
