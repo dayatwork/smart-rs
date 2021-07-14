@@ -8,6 +8,7 @@ export const SimpleStat = ({
   isCounting,
   icon,
   mode,
+  color,
   ...rest
 }) => {
   const { value } = useCountUp({
@@ -32,7 +33,7 @@ export const SimpleStat = ({
         <Text fontSize="2xl" fontWeight="semibold" color="gray.600">
           {label}
         </Text>
-        <Icon mt="2" as={icon} w="14" h="14" color="green.600" />
+        <Icon mt="2" as={icon} w="14" h="14" color={color} />
         <Text fontSize="5xl" fontWeight="bold">
           {value}
         </Text>
@@ -51,7 +52,7 @@ export const SimpleStat = ({
             {value}
           </Text>
         </Box>
-        <Icon as={icon} w="12" h="12" color="green.600" />
+        <Icon as={icon} w="12" h="12" color={color} />
       </Flex>
     </Box>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
-export const ContentWrapper = ({ children }) => {
+export const ContentWrapper = ({ children, ...rest }) => {
   return (
     <Box
       bgColor="gray.50"
@@ -11,6 +11,7 @@ export const ContentWrapper = ({ children }) => {
       pb={{ base: '14', '2xl': '24' }}
       h="full"
       overflow="auto"
+      {...rest}
     >
       {children}
     </Box>

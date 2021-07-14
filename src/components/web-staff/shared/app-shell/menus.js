@@ -92,4 +92,10 @@ export const extendedMenu = [
   {
     to: '/patient/soap-result/:soapId',
   },
+  {
+    to: '/dashboard/advertisement',
+  },
+  {
+    to: '/dashboard/advertisement/create',
+  },
 ];

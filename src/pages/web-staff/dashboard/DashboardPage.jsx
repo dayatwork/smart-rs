@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react';
 import {
   Box,
+  Button,
   Flex,
   FormControl,
   FormLabel,
   Heading,
   Select,
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import { Helmet } from 'react-helmet-async';
+import { HiSpeakerphone } from 'react-icons/hi';
 
 import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -39,12 +42,19 @@ const DashboardPage = () => {
       <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <ContentWrapper>
-            <Heading
-              mb={{ base: '3', '2xl': '6' }}
-              fontSize={{ base: '3xl', '2xl': '4xl' }}
-            >
-              Dashboard
-            </Heading>
+            <Flex justify="space-between" mb={{ base: '3', '2xl': '6' }}>
+              <Heading fontSize={{ base: '3xl', '2xl': '4xl' }}>
+                Dashboard
+              </Heading>
+              <Button
+                colorScheme="purple"
+                as={Link}
+                to="/dashboard/advertisement/create"
+                leftIcon={<HiSpeakerphone />}
+              >
+                Create Advertisement
+              </Button>
+            </Flex>
             {user?.role?.alias === 'super-admin' && (
               <FormControl id="name" mb="6" maxW="xs">
                 <FormLabel>Institution</FormLabel>

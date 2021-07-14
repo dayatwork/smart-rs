@@ -2,8 +2,6 @@ import React from 'react';
 import {
   Box,
   Heading,
-  Center,
-  Spinner,
   Grid,
   GridItem,
   useBreakpointValue,
@@ -18,7 +16,7 @@ export const BookingStatistics = ({ selectedInstitution, cookies }) => {
   const statColSpan = useBreakpointValue({ base: 4, '2xl': 1 });
   const graphColSpan = useBreakpointValue({ base: 4, '2xl': 3 });
 
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ['booking-statistic', selectedInstitution],
     () => getBookingStatistic(cookies, selectedInstitution),
     {
@@ -26,18 +24,20 @@ export const BookingStatistics = ({ selectedInstitution, cookies }) => {
     }
   );
 
-  if (isLoading) {
-    return (
-      <Center py="10">
-        <Spinner
-          thickness="4px"
-          emptyColor="gray.200"
-          color="purple.500"
-          size="xl"
-        />
-      </Center>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Center py="10">
+  //       <Spinner
+  //         thickness="4px"
+  //         emptyColor="gray.200"
+  //         color="purple.500"
+  //         size="xl"
+  //       />
+  //     </Center>
+  //   );
+  // }
+
+  console.log({ data });
 
   return (
     <Box>
@@ -48,10 +48,10 @@ export const BookingStatistics = ({ selectedInstitution, cookies }) => {
         Booking Statistics
       </Heading>
       <BookingStatus
-        total={data?.bookingData?.total}
-        cancel={data?.bookingData?.cancel}
-        checkedIn={data?.bookingData?.checked}
-        examination={data?.bookingData?.examination}
+        total={data?.bookingData?.total || 0}
+        cancel={data?.bookingData?.cancel || 0}
+        checkedIn={data?.bookingData?.checked || 0}
+        examination={data?.bookingData?.examination || 0}
         mb="4"
       />
       <BookingChart selectedInstitution={selectedInstitution} />

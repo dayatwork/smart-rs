@@ -89,6 +89,16 @@ const AccountSettingPage = Loadable(
 const DashboardPage = Loadable(
   lazy(() => import('./pages/web-staff/dashboard/DashboardPage'))
 );
+const CreateAdvertisementPage = Loadable(
+  lazy(() =>
+    import('./pages/web-staff/dashboard/sub-page/CreateAdvertisementPage')
+  )
+);
+const AdvertisementListPage = Loadable(
+  lazy(() =>
+    import('./pages/web-staff/dashboard/sub-page/AdvertisementListPage')
+  )
+);
 const MasterPage = Loadable(
   lazy(() => import('./pages/web-staff/master/MasterPage'))
 );
@@ -258,11 +268,18 @@ const AppRoutes = () => {
       {/* Web Staff Routes */}
       <PrivateRoute
         permission={Permissions.indexDashboard}
+        exact
         path="/dashboard"
         pageTitle="Dashboard | SMART-RS"
       >
         <DashboardPage />
       </PrivateRoute>
+      <AuthenticatedRoute exact path="/dashboard/advertisement">
+        <AdvertisementListPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/dashboard/advertisement/create">
+        <CreateAdvertisementPage />
+      </AuthenticatedRoute>
       <AuthenticatedRoute path="/master" pageTitle="Master | SMART-RS">
         <MasterPage />
       </AuthenticatedRoute>
