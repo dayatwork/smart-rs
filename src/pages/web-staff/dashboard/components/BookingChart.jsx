@@ -30,7 +30,7 @@ const addDays = (date, days) => {
   return formattedDate;
 };
 
-export const BookingChart = ({ selectedInstitution }) => {
+export const BookingChart = ({ selectedInstitution, ...rest }) => {
   const [cookies] = useCookies(['token']);
   const goBackDays = 7;
   const today = new Date();
@@ -177,8 +177,10 @@ export const BookingChart = ({ selectedInstitution }) => {
       rounded="xl"
       shadow="base"
       overflow="auto"
+      h="full"
+      {...rest}
     >
-      <Box h={{ base: '60', '2xl': '72' }} minW="md">
+      <Box h={{ base: '60', '2xl': '80' }} minW="md">
         <ChartBar data={chartBarData} />
       </Box>
     </Box>

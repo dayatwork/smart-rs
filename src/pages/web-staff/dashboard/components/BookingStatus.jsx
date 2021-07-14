@@ -9,11 +9,13 @@ export const BookingStatus = ({
   checkedIn = 0,
   examination = 0,
   cancel = 0,
+  ...rest
 }) => {
   // console.log({ total, cancel, examination, checkedIn });
   return (
     <Box
       as="section"
+      {...rest}
       // p="6"
     >
       <Box
@@ -40,6 +42,7 @@ export const BookingStatus = ({
               base: 'column',
               md: 'row',
             }}
+            // direction="column"
             divider={<StackDivider />}
           >
             <StatCard
