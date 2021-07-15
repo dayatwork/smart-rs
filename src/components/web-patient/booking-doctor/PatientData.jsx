@@ -46,6 +46,8 @@ export const PatientData = ({
   // setSelectedResponsible,
   responsibleDefaultValue,
   setResponsibleDefaultValue,
+  otherPatientId,
+  setOtherPatientId,
 }) => {
   const toast = useToast();
   const [cookies] = useCookies(['user']);
@@ -87,9 +89,8 @@ export const PatientData = ({
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const profileInfoColumns = useBreakpointValue({ base: 1, md: 2 });
 
-  const { data: dataResponsibleList } = useQuery('responsible-list', () =>
-    getResponsibleList(cookies)
-  );
+  const { data: dataResponsibleList, isLoading: isLoadingResponsibleList } =
+    useQuery('responsible-list', () => getResponsibleList(cookies));
 
   const { data: dataAllergies, isLoading: isLoadingAllergies } = useQuery(
     'allergies-group',
@@ -356,8 +357,8 @@ export const PatientData = ({
   //   }
   // }, [patient, reset, responsibleDefaultValue.birth_date]);
 
-  console.log({ responsibleDefaultValue });
-  console.log({ patientData });
+  // console.log({ responsibleDefaultValue });
+  // console.log({ patientData });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -400,6 +401,8 @@ export const PatientData = ({
     );
   }
 
+  // console.log({ dataResponsibleList });
+
   // console.log({ responsibleDefaultValue });
 
   return (
@@ -408,6 +411,7 @@ export const PatientData = ({
         <FormControl maxW="4xl" mx="auto" mb="6">
           <FormLabel>Pilih Pasien (Jika sudah pernah mendaftar)</FormLabel>
           <Select
+            disabled={isLoadingResponsibleList}
             bg="white"
             onChange={e => {
               if (e.target.value !== 'new') {
@@ -415,7 +419,9 @@ export const PatientData = ({
                 const patient = dataResponsibleList?.data?.patients?.find(
                   patient => patient.email === e.target.value
                 );
+                // console.log({ patient });
                 setResponsibleDefaultValue(patient);
+                setOtherPatientId(patient?.user_id);
               }
               setSelectedResponsible(e.target.value);
             }}

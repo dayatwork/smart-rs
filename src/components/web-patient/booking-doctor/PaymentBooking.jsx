@@ -59,8 +59,10 @@ export const PaymentBooking = ({
   selectedSchedule,
   selectedTime,
   selectedService,
+  otherPatientId,
 }) => {
   // console.log({ patientData });
+  // console.log({ otherPatientId });
   const history = useHistory();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -156,6 +158,7 @@ export const PaymentBooking = ({
         const orderData = {
           booking_order_id: res?.data?.booking_order?.id,
           type: '02',
+          patient_user_id: otherPatientId ? otherPatientId : null,
           address_id: null,
           event_node: 'Booking',
           estimate_time_id: selectedTime?.id,

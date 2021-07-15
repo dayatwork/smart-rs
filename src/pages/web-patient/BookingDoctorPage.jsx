@@ -63,6 +63,7 @@ const BookingDoctorPage = () => {
     address: '',
     birth_date: new Date(),
   });
+  const [otherPatientId, setOtherPatientId] = useState('');
 
   return (
     <Flex
@@ -178,6 +179,8 @@ const BookingDoctorPage = () => {
                 // setSelectedResponsible={setSelectedResponsible}
                 responsibleDefaultValue={responsibleDefaultValue}
                 setResponsibleDefaultValue={setResponsibleDefaultValue}
+                otherPatientId={otherPatientId}
+                setOtherPatientId={setOtherPatientId}
               />
             )}
             {currentStep.value === 'Step 4' && (
@@ -190,6 +193,7 @@ const BookingDoctorPage = () => {
                 selectedSchedule={selectedSchedule}
                 selectedTime={selectedTime}
                 selectedService={selectedService}
+                otherPatientId={otherPatientId}
               />
             )}
           </Box>
