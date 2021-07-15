@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Heading,
   HStack,
   Input,
@@ -19,18 +18,23 @@ import {
   Icon,
   Text,
   VStack,
+  Spinner,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { FaListUl } from 'react-icons/fa';
+// import { FaListUl } from 'react-icons/fa';
 import { useCookies } from 'react-cookie';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { useQuery, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useQueryClient } from 'react-query';
 
-import { createAdvertisement } from 'api/institution-services/advertisement';
+import {
+  getAdvertisementDetail,
+  updateAdvertisement,
+} from 'api/institution-services/advertisement';
 import { AppShell } from 'components/web-staff/shared/app-shell';
 import { ContentWrapper } from 'components/web-staff/shared/sub-menu';
 import { BackButton } from 'components/shared/BackButton';
@@ -44,21 +48,45 @@ const schema = yup.object().shape({
   content: yup.string().required('Content is required'),
 });
 
-const CreateAdvertisementPage = () => {
+const EditAdvertisementPage = () => {
+  const params = useParams();
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [image, setImage] = useState('');
+
+  const { data: dataAdvertisement, isLoading: isLoadingAdvertisement } =
+    useQuery(
+      ['advertisement', params?.id],
+      () => getAdvertisementDetail(cookies, params?.id),
+      { enabled: Boolean(params?.id) }
+    );
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    reset({
+      title: dataAdvertisement?.data?.title,
+      category: dataAdvertisement?.data?.category,
+      start_date: dataAdvertisement?.data?.start_date
+        ? new Date(dataAdvertisement?.data?.start_date)
+        : new Date(),
+      end_date: dataAdvertisement?.data?.end_date
+        ? new Date(dataAdvertisement?.data?.end_date)
+        : new Date(),
+      content: dataAdvertisement?.data?.content,
+    });
+  }, [dataAdvertisement?.data, reset]);
 
   const onSubmit = async value => {
     const { title, category, start_date, end_date, content } = value;
@@ -77,13 +105,15 @@ const CreateAdvertisementPage = () => {
 
     try {
       setIsLoading(true);
-      await createAdvertisement(cookies, data);
+      await updateAdvertisement(cookies, params?.id)(data);
       await queryClient.invalidateQueries(['advertisement']);
+      await queryClient.invalidateQueries(['advertisement', params?.id]);
       setIsLoading(false);
+      // console.log({ res });
       toast({
         position: 'top-right',
         title: 'Success',
-        description: `Advertisement created successfully`,
+        description: `Advertisement edited successfully`,
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -94,7 +124,7 @@ const CreateAdvertisementPage = () => {
       toast({
         position: 'top-right',
         title: 'Error',
-        description: `Error, Cannot create new advertisement`,
+        description: `Error, Cannot edit advertisement`,
         status: 'error',
         duration: 2000,
         isClosable: true,
@@ -118,16 +148,16 @@ const CreateAdvertisementPage = () => {
             boxShadow="lg"
           >
             <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
-              New Advertisement
+              Edit Advertisement
             </Heading>
-            <Button
+            {/* <Button
               colorScheme="purple"
               as={Link}
               to="/dashboard/advertisement"
               leftIcon={<FaListUl />}
             >
               Advertisement List
-            </Button>
+            </Button> */}
           </Flex>
           <ContentWrapper bg="gray.50">
             <Flex
@@ -137,7 +167,10 @@ const CreateAdvertisementPage = () => {
               // maxW="7xl"
               // mx="auto"
             >
-              <BackButton to="/dashboard" text="Back to Dashboard" />
+              <BackButton
+                to="/dashboard/advertisement"
+                text="Back to Advertisement List"
+              />
               <HStack spacing="4">
                 <Button
                   colorScheme="green"
@@ -151,106 +184,117 @@ const CreateAdvertisementPage = () => {
                 </Button>
               </HStack>
             </Flex>
-            <Card pb="8">
-              <CardHeader title="Advertisement Form" />
-              <CardContent px="12" py="8">
-                <SimpleGrid columns={2} gap="12">
-                  <Stack spacing="4">
-                    <FormControl
-                      id="title"
-                      isInvalid={errors?.title ? true : false}
-                    >
-                      <FormLabel>Title</FormLabel>
-                      <Input placeholder="Title" {...register('title')} />
-                      <FormErrorMessage>
-                        {errors?.title && errors?.title?.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <FormControl
-                      id="category"
-                      isInvalid={errors?.category ? true : false}
-                    >
-                      <FormLabel>Category</FormLabel>
-                      <Select {...register('category')}>
-                        <option value="">Choose Category</option>
-                        <option value="discount">Discount</option>
-                        <option value="news">News</option>
-                      </Select>
-                      <FormErrorMessage>
-                        {errors?.category && errors?.category?.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                    <SimpleGrid columns={2} gap="6">
+            {isLoadingAdvertisement ? (
+              <Center py="10">
+                <Spinner
+                  thickness="4px"
+                  emptyColor="gray.200"
+                  color="purple.500"
+                  size="xl"
+                />
+              </Center>
+            ) : (
+              <Card pb="8">
+                <CardHeader title="Advertisement Form" />
+                <CardContent px="12" py="8">
+                  <SimpleGrid columns={2} gap="12">
+                    <Stack spacing="4">
                       <FormControl
-                        id="start_date"
-                        isInvalid={errors?.start_date ? true : false}
+                        id="title"
+                        isInvalid={errors?.title ? true : false}
                       >
-                        <FormLabel>Start Date</FormLabel>
-                        <InputDate
-                          name="start_date"
-                          control={control}
-                          placeholder="Expired"
-                          selectYearMode
-                          startYear={new Date().getFullYear()}
-                          endYear={new Date().getFullYear() + 30}
-                          dayPickerProps={{
-                            disabledDays: { before: new Date() },
-                          }}
-                          defaultValue={new Date()}
-                        />
+                        <FormLabel>Title</FormLabel>
+                        <Input placeholder="Title" {...register('title')} />
                         <FormErrorMessage>
-                          {errors?.start_date && errors?.start_date?.message}
+                          {errors?.title && errors?.title?.message}
                         </FormErrorMessage>
                       </FormControl>
                       <FormControl
-                        id="end_date"
-                        isInvalid={errors?.end_date ? true : false}
+                        id="category"
+                        isInvalid={errors?.category ? true : false}
                       >
-                        <FormLabel>End Date</FormLabel>
-                        <InputDate
-                          name="end_date"
-                          control={control}
-                          placeholder="Expired"
-                          selectYearMode
-                          startYear={new Date().getFullYear()}
-                          endYear={new Date().getFullYear() + 30}
-                          dayPickerProps={{
-                            disabledDays: { before: new Date() },
-                          }}
-                          defaultValue={new Date()}
-                        />
+                        <FormLabel>Category</FormLabel>
+                        <Select {...register('category')}>
+                          <option value="">Choose Category</option>
+                          <option value="discount">Discount</option>
+                          <option value="news">News</option>
+                        </Select>
                         <FormErrorMessage>
-                          {errors?.end_date && errors?.end_date?.message}
+                          {errors?.category && errors?.category?.message}
                         </FormErrorMessage>
                       </FormControl>
-                    </SimpleGrid>
-                    <FormControl id="feature_image">
-                      <FormLabel>Feature Image</FormLabel>
-                      {/* <Input type="file" {...register('image')} /> */}
-                      <InputDropZone
-                        selectedFile={image}
-                        setSelectedFile={setImage}
-                      />
-                    </FormControl>
-                  </Stack>
+                      <SimpleGrid columns={2} gap="6">
+                        <FormControl
+                          id="start_date"
+                          isInvalid={errors?.start_date ? true : false}
+                        >
+                          <FormLabel>Start Date</FormLabel>
+                          <InputDate
+                            name="start_date"
+                            control={control}
+                            placeholder="Expired"
+                            selectYearMode
+                            startYear={new Date().getFullYear()}
+                            endYear={new Date().getFullYear() + 30}
+                            dayPickerProps={{
+                              disabledDays: { before: new Date() },
+                            }}
+                            defaultValue={new Date()}
+                          />
+                          <FormErrorMessage>
+                            {errors?.start_date && errors?.start_date?.message}
+                          </FormErrorMessage>
+                        </FormControl>
+                        <FormControl
+                          id="end_date"
+                          isInvalid={errors?.end_date ? true : false}
+                        >
+                          <FormLabel>End Date</FormLabel>
+                          <InputDate
+                            name="end_date"
+                            control={control}
+                            placeholder="Expired"
+                            selectYearMode
+                            startYear={new Date().getFullYear()}
+                            endYear={new Date().getFullYear() + 30}
+                            dayPickerProps={{
+                              disabledDays: { before: new Date() },
+                            }}
+                            defaultValue={new Date()}
+                          />
+                          <FormErrorMessage>
+                            {errors?.end_date && errors?.end_date?.message}
+                          </FormErrorMessage>
+                        </FormControl>
+                      </SimpleGrid>
+                      <FormControl id="feature_image">
+                        <FormLabel>Feature Image</FormLabel>
+                        {/* <Input type="file" {...register('image')} /> */}
+                        <InputDropZone
+                          selectedFile={image}
+                          setSelectedFile={setImage}
+                        />
+                      </FormControl>
+                    </Stack>
 
-                  <FormControl
-                    id="content"
-                    isInvalid={errors?.content ? true : false}
-                  >
-                    <FormLabel>Content</FormLabel>
-                    <Textarea
-                      placeholder="Content"
-                      rows={24}
-                      {...register('content')}
-                    />
-                    <FormErrorMessage>
-                      {errors?.content && errors?.content?.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                </SimpleGrid>
-              </CardContent>
-            </Card>
+                    <FormControl
+                      id="content"
+                      isInvalid={errors?.content ? true : false}
+                    >
+                      <FormLabel>Content</FormLabel>
+                      <Textarea
+                        placeholder="Content"
+                        rows={24}
+                        {...register('content')}
+                      />
+                      <FormErrorMessage>
+                        {errors?.content && errors?.content?.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  </SimpleGrid>
+                </CardContent>
+              </Card>
+            )}
           </ContentWrapper>
         </Flex>
       </Box>
@@ -258,7 +302,7 @@ const CreateAdvertisementPage = () => {
   );
 };
 
-export default CreateAdvertisementPage;
+export default EditAdvertisementPage;
 
 const InputDropZone = ({ selectedFile, setSelectedFile }) => {
   // const [selectedFile, setSelectedFile] = useState('');

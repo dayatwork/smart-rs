@@ -98,4 +98,7 @@ export const extendedMenu = [
   {
     to: '/dashboard/advertisement/create',
   },
+  {
+    to: '/dashboard/advertisement/edit/:id',
+  },
 ];

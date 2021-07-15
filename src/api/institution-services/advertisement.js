@@ -44,10 +44,10 @@ export const updateAdvertisement = (cookies, id) => async data => {
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         Authorization: `Bearer ${cookies?.token}`,
       },
-      body: JSON.stringify(data),
+      body: data,
     }
   );
 
