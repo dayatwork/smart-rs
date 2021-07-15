@@ -13,6 +13,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Image,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -49,11 +50,13 @@ const AdvertisementListPage = () => {
     () =>
       isSuccess &&
       dataAdvertisement?.data?.map(advertisement => {
+        console.log({ advertisement });
         return {
           id: advertisement?.id,
           title: advertisement?.title,
           start_date: advertisement?.start_date,
           end_date: advertisement?.end_date,
+          image: advertisement?.image,
         };
       }),
     [dataAdvertisement?.data, isSuccess]
@@ -70,6 +73,20 @@ const AdvertisementListPage = () => {
         Header: 'Title',
         accessor: 'title',
         Cell: ({ value }) => <Box width="full">{value}</Box>,
+      },
+      {
+        Header: 'Image',
+        accessor: 'image',
+        Cell: ({ value, row }) => (
+          <Image
+            w="100"
+            h="50"
+            objectFit="cover"
+            fallbackSrc="https://via.placeholder.com/100x50"
+            src={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${value}`}
+            alt={row.original.title}
+          />
+        ),
       },
       {
         Header: 'Start Date',

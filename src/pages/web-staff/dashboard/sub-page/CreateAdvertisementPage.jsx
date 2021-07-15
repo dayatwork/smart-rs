@@ -77,7 +77,7 @@ const CreateAdvertisementPage = () => {
 
     try {
       setIsLoading(true);
-      await createAdvertisement(cookies, data);
+      await createAdvertisement(cookies, data, category);
       await queryClient.invalidateQueries(['advertisement']);
       setIsLoading(false);
       toast({

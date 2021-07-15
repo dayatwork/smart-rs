@@ -1,4 +1,4 @@
-export const createAdvertisement = async (cookies, data) => {
+export const createAdvertisement = async (cookies, data, category) => {
   const res = await fetch(
     `${process.env.REACT_APP_INSTITUTION_API}/advertisement/create`,
     {
@@ -6,6 +6,7 @@ export const createAdvertisement = async (cookies, data) => {
       headers: {
         // 'Content-Type': 'application/json',
         Authorization: `Bearer ${cookies?.token}`,
+        subfolder: category,
       },
       body: data,
     }
@@ -36,7 +37,7 @@ export const getAdvertisements = async cookies => {
   return await res.json();
 };
 
-export const updateAdvertisement = (cookies, id) => async data => {
+export const updateAdvertisement = (cookies, id, category) => async data => {
   const formattedId = id.replace(/['"]+/g, '');
 
   const res = await fetch(
@@ -46,6 +47,7 @@ export const updateAdvertisement = (cookies, id) => async data => {
       headers: {
         // 'Content-Type': 'application/json',
         Authorization: `Bearer ${cookies?.token}`,
+        subfolder: category,
       },
       body: data,
     }

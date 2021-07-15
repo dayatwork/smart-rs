@@ -54,6 +54,7 @@ const EditAdvertisementPage = () => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [image, setImage] = useState('');
+  const [defaultImg, setDefaulImg] = useState('');
 
   const { data: dataAdvertisement, isLoading: isLoadingAdvertisement } =
     useQuery(
@@ -86,6 +87,7 @@ const EditAdvertisementPage = () => {
         : new Date(),
       content: dataAdvertisement?.data?.content,
     });
+    setDefaulImg(dataAdvertisement?.data?.image);
   }, [dataAdvertisement?.data, reset]);
 
   const onSubmit = async value => {
@@ -105,7 +107,7 @@ const EditAdvertisementPage = () => {
 
     try {
       setIsLoading(true);
-      await updateAdvertisement(cookies, params?.id)(data);
+      await updateAdvertisement(cookies, params?.id, category)(data);
       await queryClient.invalidateQueries(['advertisement']);
       await queryClient.invalidateQueries(['advertisement', params?.id]);
       setIsLoading(false);
@@ -273,6 +275,7 @@ const EditAdvertisementPage = () => {
                         <InputDropZone
                           selectedFile={image}
                           setSelectedFile={setImage}
+                          defaultPreview={defaultImg}
                         />
                       </FormControl>
                     </Stack>
@@ -304,7 +307,7 @@ const EditAdvertisementPage = () => {
 
 export default EditAdvertisementPage;
 
-const InputDropZone = ({ selectedFile, setSelectedFile }) => {
+const InputDropZone = ({ selectedFile, setSelectedFile, defaultPreview }) => {
   // const [selectedFile, setSelectedFile] = useState('');
 
   const onDrop = useCallback(
@@ -320,15 +323,20 @@ const InputDropZone = ({ selectedFile, setSelectedFile }) => {
   });
 
   const previewURL = selectedFile[0] && URL.createObjectURL(selectedFile[0]);
-
   return (
     <Center
+      cursor="pointer"
+      _hover={{ bg: 'gray.50' }}
       border="2px"
       borderStyle="dashed"
       borderColor={isDragActive ? 'purple.700' : 'gray.200'}
       bg={isDragActive ? 'purple.200' : 'white'}
       rounded="md"
-      py={previewURL && !isDragActive ? '4' : '24'}
+      py={
+        (previewURL && !isDragActive) || (defaultPreview && !isDragActive)
+          ? '4'
+          : '24'
+      }
       px={previewURL ? '4' : '0'}
       {...getRootProps()}
     >
@@ -339,6 +347,11 @@ const InputDropZone = ({ selectedFile, setSelectedFile }) => {
         <VStack>
           {selectedFile ? (
             <img src={previewURL} alt="preview" />
+          ) : defaultPreview ? (
+            <img
+              src={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${defaultPreview}`}
+              alt="preview"
+            />
           ) : (
             <>
               <Icon as={AiOutlineCloudUpload} w="14" h="14" color="gray.500" />
