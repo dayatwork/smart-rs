@@ -62,6 +62,8 @@ export const CreateNewBooking = ({ dataBooking }) => {
     );
   }
 
+  console.log({ dataBooking });
+
   return (
     <LinkBox
       boxShadow="xl"
@@ -253,7 +255,7 @@ export const CreateNewBooking = ({ dataBooking }) => {
               textTransform="uppercase"
               fontSize="sm"
             >
-              Pending
+              {dataBooking?.booking_orders[0]?.status}
             </Box>
           )}
         </HStack>
