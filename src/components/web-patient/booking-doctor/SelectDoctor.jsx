@@ -19,6 +19,7 @@ import {
   Spinner,
   Text,
   useBreakpointValue,
+  VStack,
 } from '@chakra-ui/react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useQuery } from 'react-query';
@@ -148,6 +149,9 @@ export const SelectDoctor = ({
     setSelectedDayRange({ from: undefined, to: undefined });
   };
 
+  console.log({ selectedService });
+  console.log({ selectedDayRange });
+
   return (
     <>
       <Helmet>
@@ -170,7 +174,7 @@ export const SelectDoctor = ({
               }}
               disabled={isLoadingService}
             >
-              <option>Pilih Layanan</option>
+              <option value="">Pilih Layanan</option>
               {dataServices?.data?.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
@@ -197,6 +201,32 @@ export const SelectDoctor = ({
           </FormControl>
         </GridItem>
         <GridItem colSpan={3}>
+          {(!selectedService ||
+            !selectedDayRange.from ||
+            !selectedDayRange.to) && (
+            <Center h="full">
+              <VStack>
+                {!selectedService && (
+                  <Text
+                    color="secondary.darker"
+                    fontSize="lg"
+                    fontWeight="bold"
+                  >
+                    Pilih Layanan
+                  </Text>
+                )}
+                {(!selectedDayRange.from || !selectedDayRange.to) && (
+                  <Text
+                    color="secondary.darker"
+                    fontSize="lg"
+                    fontWeight="bold"
+                  >
+                    Pilih Rentang Waktu
+                  </Text>
+                )}
+              </VStack>
+            </Center>
+          )}
           {isLoadingSchedules && (
             <Center h="full">
               <Spinner

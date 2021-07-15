@@ -294,34 +294,70 @@ export const PatientData = ({
 
   useEffect(() => {
     if (patient !== 'me') {
-      setDefaultValues({
-        fullname: responsibleDefaultValue?.name || '',
-        email: responsibleDefaultValue?.email || '',
-        phone_number: responsibleDefaultValue?.phone_number || '',
-        identity_number: responsibleDefaultValue?.identity_number || '',
-        gender: responsibleDefaultValue?.gender || '',
-        marital_status: responsibleDefaultValue?.marital_status || '',
-        responsible_status: responsibleDefaultValue?.responsible_status || '',
-        address: responsibleDefaultValue?.address || '',
-        birth_date: responsibleDefaultValue?.birth_date
-          ? new Date(responsibleDefaultValue?.birth_date)
-          : new Date(),
-      });
-      reset({
-        fullname: responsibleDefaultValue?.name || '',
-        email: responsibleDefaultValue?.email || '',
-        phone_number: responsibleDefaultValue?.phone_number || '',
-        identity_number: responsibleDefaultValue?.identity_number || '',
-        gender: responsibleDefaultValue?.gender || '',
-        marital_status: responsibleDefaultValue?.marital_status || '',
-        responsible_status: responsibleDefaultValue?.responsible_status || '',
-        address: responsibleDefaultValue?.address || '',
-        birth_date: responsibleDefaultValue?.birth_date
-          ? new Date(responsibleDefaultValue?.birth_date)
-          : new Date(),
-      });
+      if (responsibleDefaultValue !== 'new' || responsibleDefaultValue !== '') {
+        setDefaultValues({
+          fullname: responsibleDefaultValue?.name || '',
+          email: responsibleDefaultValue?.email || '',
+          phone_number: responsibleDefaultValue?.phone_number || '',
+          identity_number: responsibleDefaultValue?.identity_number || '',
+          gender: responsibleDefaultValue?.gender || '',
+          marital_status: responsibleDefaultValue?.marital_status || '',
+          responsible_status: responsibleDefaultValue?.responsible_status || '',
+          address: responsibleDefaultValue?.address || '',
+          birth_date: responsibleDefaultValue?.birth_date
+            ? new Date(responsibleDefaultValue?.birth_date)
+            : new Date(),
+        });
+        reset({
+          fullname: responsibleDefaultValue?.name || '',
+          email: responsibleDefaultValue?.email || '',
+          phone_number: responsibleDefaultValue?.phone_number || '',
+          identity_number: responsibleDefaultValue?.identity_number || '',
+          gender: responsibleDefaultValue?.gender || '',
+          marital_status: responsibleDefaultValue?.marital_status || '',
+          responsible_status: responsibleDefaultValue?.responsible_status || '',
+          address: responsibleDefaultValue?.address || '',
+          birth_date: responsibleDefaultValue?.birth_date
+            ? new Date(responsibleDefaultValue?.birth_date)
+            : new Date(),
+        });
+      }
+
+      if (selectedResponsible === 'new') {
+        reset({
+          fullname: '',
+          email: '',
+          phone_number: '',
+          identity_number: '',
+          gender: '',
+          marital_status: '',
+          responsible_status: '',
+          address: '',
+          birth_date: new Date(),
+        });
+      }
     }
-  }, [patient, responsibleDefaultValue, reset]);
+  }, [
+    patient,
+    responsibleDefaultValue,
+    selectedResponsible,
+    // responsibleDefaultValue?.birth_date,
+    reset,
+  ]);
+
+  // useEffect(() => {
+  //   if (patient !== 'me' && responsibleDefaultValue?.birth_date) {
+  //     setDefaultValues({
+  //       birth_date: new Date(responsibleDefaultValue.birth_date),
+  //     });
+  //     reset({
+  //       birth_date: new Date(responsibleDefaultValue.birth_date),
+  //     });
+  //   }
+  // }, [patient, reset, responsibleDefaultValue.birth_date]);
+
+  console.log({ responsibleDefaultValue });
+  console.log({ patientData });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -374,15 +410,21 @@ export const PatientData = ({
           <Select
             bg="white"
             onChange={e => {
+              if (e.target.value !== 'new') {
+                setSelectedResponsible(e.target.value);
+                const patient = dataResponsibleList?.data?.patients?.find(
+                  patient => patient.email === e.target.value
+                );
+                setResponsibleDefaultValue(patient);
+              }
               setSelectedResponsible(e.target.value);
-              const patient = dataResponsibleList?.data?.patients?.find(
-                patient => patient.email === e.target.value
-              );
-              setResponsibleDefaultValue(patient);
             }}
             value={selectedResponsible}
           >
-            <option value="">Pasien baru</option>
+            <option value="">Pilih Pasien</option>
+            <option value="new" style={{ fontWeight: 'bold' }}>
+              Pasien baru
+            </option>
             {dataResponsibleList?.data?.patients?.map(patient => (
               <option key={patient.id} value={patient.email}>
                 {patient.name}
@@ -391,178 +433,15 @@ export const PatientData = ({
           </Select>
         </FormControl>
       )}
-      <SimpleGrid
-        // columns={patient === 'me' ? 2 : 1}
-        columns={patientDataGridColumns}
-        gap="8"
-        maxW="4xl"
-        mx="auto"
-        pb={{ base: '20', md: '28' }}
-      >
-        <VStack
-          spacing="3"
-          bg="white"
-          boxShadow="md"
-          px={{ base: '6', md: '10' }}
-          pt="4"
-          pb="8"
-          rounded="md"
+      {(patient === 'me' || selectedResponsible) && (
+        <SimpleGrid
+          // columns={patient === 'me' ? 2 : 1}
+          columns={patientDataGridColumns}
+          gap="8"
+          maxW="4xl"
+          mx="auto"
+          pb={{ base: '20', md: '28' }}
         >
-          <Heading fontSize="xl" fontWeight="bold" mb="4">
-            Profile Info
-          </Heading>
-          <SimpleGrid
-            columns={patient === 'me' ? 1 : profileInfoColumns}
-            w="full"
-            rowGap="4"
-            columnGap={{ base: '6', md: '10' }}
-          >
-            <FormControl
-              id="fullname"
-              isInvalid={errors.fullname ? true : false}
-            >
-              <FormLabel>Nama Lengkap</FormLabel>
-              <Input
-                {...register('fullname', {
-                  required: 'Nama lengkap harus diisi',
-                })}
-              />
-              <FormErrorMessage>
-                {errors.fullname && errors.fullname.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl id="email" isInvalid={errors.email ? true : false}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                // variant={patient === 'me' ? 'filled' : 'outline'}
-                readOnly={patient === 'me' || selectedResponsible}
-                // {...register('email', {
-                //   required: 'Email harus diisi',
-                // })}
-                {...register('email', {
-                  required: 'Email harus diisi',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Email tidak valid',
-                  },
-                })}
-              />
-
-              <FormErrorMessage>
-                {errors.email && errors.email.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              id="phone_number"
-              isInvalid={errors.phone_number ? true : false}
-            >
-              <FormLabel>No Hp</FormLabel>
-              <Input
-                type="number"
-                {...register('phone_number', {
-                  required: 'Nomor HP harus diisi',
-                })}
-              />
-              <FormErrorMessage>
-                {errors.phone_number && errors.phone_number.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              id="birth_date"
-              isInvalid={errors.birth_date ? true : false}
-            >
-              <FormLabel>Tanggal Lahir</FormLabel>
-              <InputDate name="birth_date" control={control} />
-              <FormErrorMessage>
-                {errors.birth_date && errors.birth_date.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              id="identity_number"
-              isInvalid={errors.identity_number ? true : false}
-            >
-              <FormLabel>NIK</FormLabel>
-              <Input
-                type="number"
-                onInput={e =>
-                  setValue(
-                    'identity_number',
-                    e.target.value.slice(0, e.target.maxLength)
-                  )
-                }
-                maxLength="16"
-                {...register('identity_number', {
-                  required: 'NIK harus diisi',
-                  maxLength: 16,
-                })}
-              />
-              <FormErrorMessage>
-                {errors.identity_number && errors.identity_number.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl id="gender" isInvalid={errors.gender ? true : false}>
-              <FormLabel>Jenis Kelamin</FormLabel>
-              <Select
-                {...register('gender', {
-                  required: 'Jenis kelamin harus diisi',
-                })}
-              >
-                <option value="">Pilih jenis kelamin</option>
-                <option value="male">Laki-laki</option>
-                <option value="female">Perempuan</option>
-              </Select>
-              <FormErrorMessage>
-                {errors.gender && errors.gender.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl
-              id="marital_status"
-              isInvalid={errors.marital_status ? true : false}
-            >
-              <FormLabel>Status Perkawinan</FormLabel>
-              <Select
-                {...register('marital_status', {
-                  required: 'Status perkawinan harus diisi',
-                })}
-              >
-                <option value="">Pilih status perkawinan</option>
-                {maritalStatusData.map(status => (
-                  <option value={status.value} key={status.value}>
-                    {status.text}
-                  </option>
-                ))}
-              </Select>
-              <FormErrorMessage>
-                {errors.marital_status && errors.marital_status.message}
-              </FormErrorMessage>
-            </FormControl>
-            {patient !== 'me' && (
-              <FormControl id="responsible_status" w="full">
-                <FormLabel>Status Penanggung Jawab</FormLabel>
-                <Select
-                  {...register('responsible_status', {
-                    required: 'Status perkawinan harus diisi',
-                  })}
-                >
-                  <option>Pilih status penanggung jawab</option>
-                  <option value="husband">Suami</option>
-                  <option value="wife">Istri</option>
-                  <option value="father">Ayah</option>
-                  <option value="mother">Ibu</option>
-                  <option value="child">Anak</option>
-                  <option value="sibling">Saudara</option>
-                  <option value="friend">Teman</option>
-                  <option value="lainnya">Lainnya</option>
-                </Select>
-              </FormControl>
-            )}
-            <FormControl id="address" w="full">
-              <FormLabel>Alamat</FormLabel>
-              <Input type="text" {...register('address')} />
-            </FormControl>
-          </SimpleGrid>
-        </VStack>
-        {patient === 'me' && (
           <VStack
             spacing="3"
             bg="white"
@@ -573,67 +452,234 @@ export const PatientData = ({
             rounded="md"
           >
             <Heading fontSize="xl" fontWeight="bold" mb="4">
-              Health Info
+              Profile Info
             </Heading>
-            <FormControl
-              id="blood_type"
-              isInvalid={errors.blood_type ? true : false}
+            <SimpleGrid
+              columns={patient === 'me' ? 1 : profileInfoColumns}
+              w="full"
+              rowGap="4"
+              columnGap={{ base: '6', md: '10' }}
             >
-              <FormLabel>Golongan Darah</FormLabel>
-              <Select
-                isDisabled={isLoadingPatientVitalSign}
-                {...register('blood_type', {
-                  required: 'Golongan darah harus diisi',
-                })}
+              <FormControl
+                id="fullname"
+                isInvalid={errors.fullname ? true : false}
               >
-                <option value="">Pilih Golongan Darah</option>
-                {bloodType.map(type => (
-                  <option key={type.value} value={type.value}>
-                    {type.text}
-                  </option>
-                ))}
-              </Select>
-              <FormErrorMessage>
-                {errors.blood_type && errors.blood_type.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl id="height" isInvalid={errors.height ? true : false}>
-              <FormLabel>Tinggi Badan (cm)</FormLabel>
-              <Input
-                type="number"
-                isDisabled={isLoadingPatientVitalSign}
-                {...register('height', {
-                  required: 'Tinggi badan harus diisi',
-                })}
-              />
-              <FormErrorMessage>
-                {errors.height && errors.height.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl id="weight" isInvalid={errors.weight ? true : false}>
-              <FormLabel>Berat Badan (kg)</FormLabel>
-              <Input
-                type="number"
-                isDisabled={isLoadingPatientVitalSign}
-                {...register('weight', { required: 'Berat badan harus diisi' })}
-              />
-              <FormErrorMessage>
-                {errors.weight && errors.weight.message}
-              </FormErrorMessage>
-            </FormControl>
-            <FormControl id="allergies" mb="2">
-              <FormLabel>Alergi</FormLabel>
-              <ReactSelect
-                options={options}
-                isMulti
-                isLoading={isLoadingAllergies || isLoadingPatientAllergies}
-                value={allergies}
-                onChange={setAllergies}
-              ></ReactSelect>
-            </FormControl>
+                <FormLabel>Nama Lengkap</FormLabel>
+                <Input
+                  {...register('fullname', {
+                    required: 'Nama lengkap harus diisi',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.fullname && errors.fullname.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl id="email" isInvalid={errors.email ? true : false}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  // variant={patient === 'me' ? 'filled' : 'outline'}
+                  readOnly={patient === 'me' || selectedResponsible}
+                  // {...register('email', {
+                  //   required: 'Email harus diisi',
+                  // })}
+                  {...register('email', {
+                    required: 'Email harus diisi',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Email tidak valid',
+                    },
+                  })}
+                />
+
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="phone_number"
+                isInvalid={errors.phone_number ? true : false}
+              >
+                <FormLabel>No Hp</FormLabel>
+                <Input
+                  type="number"
+                  {...register('phone_number', {
+                    required: 'Nomor HP harus diisi',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.phone_number && errors.phone_number.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="birth_date"
+                isInvalid={errors.birth_date ? true : false}
+              >
+                <FormLabel>Tanggal Lahir</FormLabel>
+                <InputDate name="birth_date" control={control} />
+                <FormErrorMessage>
+                  {errors.birth_date && errors.birth_date.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="identity_number"
+                isInvalid={errors.identity_number ? true : false}
+              >
+                <FormLabel>NIK</FormLabel>
+                <Input
+                  type="number"
+                  onInput={e =>
+                    setValue(
+                      'identity_number',
+                      e.target.value.slice(0, e.target.maxLength)
+                    )
+                  }
+                  maxLength="16"
+                  {...register('identity_number', {
+                    required: 'NIK harus diisi',
+                    maxLength: 16,
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.identity_number && errors.identity_number.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl id="gender" isInvalid={errors.gender ? true : false}>
+                <FormLabel>Jenis Kelamin</FormLabel>
+                <Select
+                  {...register('gender', {
+                    required: 'Jenis kelamin harus diisi',
+                  })}
+                >
+                  <option value="">Pilih jenis kelamin</option>
+                  <option value="male">Laki-laki</option>
+                  <option value="female">Perempuan</option>
+                </Select>
+                <FormErrorMessage>
+                  {errors.gender && errors.gender.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="marital_status"
+                isInvalid={errors.marital_status ? true : false}
+              >
+                <FormLabel>Status Perkawinan</FormLabel>
+                <Select
+                  {...register('marital_status', {
+                    required: 'Status perkawinan harus diisi',
+                  })}
+                >
+                  <option value="">Pilih status perkawinan</option>
+                  {maritalStatusData.map(status => (
+                    <option value={status.value} key={status.value}>
+                      {status.text}
+                    </option>
+                  ))}
+                </Select>
+                <FormErrorMessage>
+                  {errors.marital_status && errors.marital_status.message}
+                </FormErrorMessage>
+              </FormControl>
+              {patient !== 'me' && (
+                <FormControl id="responsible_status" w="full">
+                  <FormLabel>Status Penanggung Jawab</FormLabel>
+                  <Select
+                    {...register('responsible_status', {
+                      required: 'Status perkawinan harus diisi',
+                    })}
+                  >
+                    <option>Pilih status penanggung jawab</option>
+                    <option value="husband">Suami</option>
+                    <option value="wife">Istri</option>
+                    <option value="father">Ayah</option>
+                    <option value="mother">Ibu</option>
+                    <option value="child">Anak</option>
+                    <option value="sibling">Saudara</option>
+                    <option value="friend">Teman</option>
+                    <option value="lainnya">Lainnya</option>
+                  </Select>
+                </FormControl>
+              )}
+              <FormControl id="address" w="full">
+                <FormLabel>Alamat</FormLabel>
+                <Input type="text" {...register('address')} />
+              </FormControl>
+            </SimpleGrid>
           </VStack>
-        )}
-      </SimpleGrid>
+          {patient === 'me' && (
+            <VStack
+              spacing="3"
+              bg="white"
+              boxShadow="md"
+              px={{ base: '6', md: '10' }}
+              pt="4"
+              pb="8"
+              rounded="md"
+            >
+              <Heading fontSize="xl" fontWeight="bold" mb="4">
+                Health Info
+              </Heading>
+              <FormControl
+                id="blood_type"
+                isInvalid={errors.blood_type ? true : false}
+              >
+                <FormLabel>Golongan Darah</FormLabel>
+                <Select
+                  isDisabled={isLoadingPatientVitalSign}
+                  {...register('blood_type', {
+                    required: 'Golongan darah harus diisi',
+                  })}
+                >
+                  <option value="">Pilih Golongan Darah</option>
+                  {bloodType.map(type => (
+                    <option key={type.value} value={type.value}>
+                      {type.text}
+                    </option>
+                  ))}
+                </Select>
+                <FormErrorMessage>
+                  {errors.blood_type && errors.blood_type.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl id="height" isInvalid={errors.height ? true : false}>
+                <FormLabel>Tinggi Badan (cm)</FormLabel>
+                <Input
+                  type="number"
+                  isDisabled={isLoadingPatientVitalSign}
+                  {...register('height', {
+                    required: 'Tinggi badan harus diisi',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.height && errors.height.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl id="weight" isInvalid={errors.weight ? true : false}>
+                <FormLabel>Berat Badan (kg)</FormLabel>
+                <Input
+                  type="number"
+                  isDisabled={isLoadingPatientVitalSign}
+                  {...register('weight', {
+                    required: 'Berat badan harus diisi',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.weight && errors.weight.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl id="allergies" mb="2">
+                <FormLabel>Alergi</FormLabel>
+                <ReactSelect
+                  options={options}
+                  isMulti
+                  isLoading={isLoadingAllergies || isLoadingPatientAllergies}
+                  value={allergies}
+                  onChange={setAllergies}
+                ></ReactSelect>
+              </FormControl>
+            </VStack>
+          )}
+        </SimpleGrid>
+      )}
       <Box
         h={{ base: '20', md: '28' }}
         bg="primary.500"
