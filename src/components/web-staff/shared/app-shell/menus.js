@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import { BsListCheck } from 'react-icons/bs';
 import { RiDashboardFill } from 'react-icons/ri';
+import { AiOutlineAreaChart } from 'react-icons/ai';
 
 import { Permissions } from '../../../../access-control';
 
@@ -18,6 +19,12 @@ export const menus = [
     text: 'Dashboard',
     icon: RiDashboardFill,
     permission: Permissions.indexDashboard,
+  },
+  {
+    to: '/analytics',
+    text: 'Analytics',
+    icon: AiOutlineAreaChart,
+    // permission: Permissions.indexDashboard,
   },
   {
     to: '/master',

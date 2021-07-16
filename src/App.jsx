@@ -94,6 +94,9 @@ const AdvertisementListPage = Loadable(
     import('./pages/web-staff/dashboard/sub-page/AdvertisementListPage')
   )
 );
+const AnalyticsPage = Loadable(
+  lazy(() => import('./pages/web-staff/analytics/AnalyticsPage'))
+);
 const CreateAdvertisementPage = Loadable(
   lazy(() =>
     import('./pages/web-staff/dashboard/sub-page/CreateAdvertisementPage')
@@ -287,6 +290,9 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/dashboard/advertisement/edit/:id">
         <EditAdvertisementPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/analytics">
+        <AnalyticsPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/master" pageTitle="Master | SMART-RS">
         <MasterPage />
