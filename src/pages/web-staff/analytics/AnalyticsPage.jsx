@@ -19,6 +19,7 @@ import { AppShell } from 'components/web-staff/shared/app-shell';
 import { ContentWrapper } from 'components/web-staff/shared/sub-menu';
 import {
   // BookingCharts,
+  CustomerStatisticsCharts,
   BusinessProcessCharts,
   LearningGrowthCharts,
 } from './components';
@@ -71,6 +72,7 @@ const AnalyticsPage = () => {
             <VStack align="stretch" spacing="10">
               <BusinessProcessCharts />
               <LearningGrowthCharts />
+              <CustomerStatisticsCharts />
             </VStack>
           </ContentWrapper>
         </Flex>

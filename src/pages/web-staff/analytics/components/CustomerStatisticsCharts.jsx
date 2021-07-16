@@ -7,30 +7,24 @@ function randomInRange(start, end) {
 }
 
 export const CustomerStatisticsCharts = () => {
-  const goBackDays = 49;
+  const goBackDays = 6;
   const today = new Date();
   const datesSorted = [new Date().toISOString().split('T')[0]];
-  const durasiPasien = [];
-  const durasiTunggu = [];
-  const durasiTemuDokter = [];
-  const BOR = [];
-  const LOS = [];
-  const GDR = [];
+  const totalPasien = [];
+  const pasienBaru = [];
+  const pasienLama = [];
+  const kepuasan = [];
 
-  for (let i = 0; i < 50; i++) {
-    const value1 = randomInRange(20, 200);
-    const value2 = randomInRange(5, 120);
-    const value3 = randomInRange(2, 20);
-    const value4 = randomInRange(55, 90);
-    const value5 = randomInRange(1, 20);
-    // const value6 = randomInRange(3, 7);
-    const value6 = randomInRange(3, 7);
-    durasiPasien.push(value1);
-    durasiTunggu.push(value2);
-    durasiTemuDokter.push(value3);
-    BOR.push(value4);
-    LOS.push(value5);
-    GDR.push(value6);
+  for (let i = 0; i < 7; i++) {
+    const value1 = randomInRange(190, 220);
+    const value2 = Math.floor(value1 * randomInRange(15, 25) * 0.01);
+    const value3 = value1 - value2;
+    const value4 = randomInRange(65, 95);
+
+    totalPasien.push(value1);
+    pasienBaru.push(value2);
+    pasienLama.push(value3);
+    kepuasan.push(value4);
   }
 
   for (let i = 0; i < goBackDays; i++) {
@@ -40,51 +34,10 @@ export const CustomerStatisticsCharts = () => {
     datesSorted.push(newDate);
   }
 
-  const series = [
-    {
-      name: 'Durasi Pasien di RS',
-      data: durasiPasien,
-    },
-    {
-      name: 'Durasi Tunggu',
-      data: durasiTunggu,
-    },
-    {
-      name: 'Durasi Temu Dokter',
-      data: durasiTemuDokter,
-    },
-  ];
-
-  const options = {
-    chart: {
-      height: 350,
-      type: 'area',
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: 'smooth',
-    },
-    xaxis: {
-      type: 'datetime',
-      categories: datesSorted,
-    },
-    tooltip: {
-      x: {
-        format: 'dd/MM/yy HH:mm',
-      },
-    },
-    title: {
-      text: 'Durasi',
-      align: 'left',
-    },
-  };
-
   const series1 = [
     {
-      name: 'BOR',
-      data: BOR,
+      name: 'Kepuasan Pelanggan',
+      data: kepuasan,
     },
   ];
 
@@ -108,83 +61,69 @@ export const CustomerStatisticsCharts = () => {
         format: 'dd/MM/yy HH:mm',
       },
     },
+    yaxis: {
+      min: 0,
+      max: 100,
+    },
     title: {
-      text: 'BOR',
+      text: 'Kepuasan Pelanggan',
       align: 'left',
     },
   };
 
-  const series2 = [
+  const series = [
     {
-      name: 'LOS',
-      data: LOS,
+      name: 'Pasien Lama',
+      data: pasienLama,
+    },
+    {
+      name: 'Pasien Baru',
+      data: pasienBaru,
     },
   ];
-
-  const options2 = {
+  const options = {
     chart: {
-      height: 100,
-      type: 'area',
+      type: 'bar',
+      height: 350,
+      stacked: true,
+      toolbar: {
+        show: true,
+      },
+      zoom: {
+        enabled: true,
+      },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: 'smooth',
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: 'bottom',
+            offsetX: -10,
+            offsetY: 0,
+          },
+        },
+      },
+    ],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        borderRadius: 10,
+      },
     },
     xaxis: {
       type: 'datetime',
       categories: datesSorted,
     },
-    yaxis: {
-      min: 0,
-      max: 22,
+    legend: {
+      position: 'right',
+      offsetY: 40,
     },
-    tooltip: {
-      x: {
-        format: 'dd/MM/yy HH:mm',
-      },
+    fill: {
+      opacity: 1,
     },
     title: {
-      text: 'LOS',
-      align: 'left',
-    },
-  };
-
-  const series3 = [
-    {
-      name: 'GDR',
-      data: GDR,
-    },
-  ];
-
-  const options3 = {
-    chart: {
-      height: 100,
-      type: 'area',
-      color: 'red',
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: 'smooth',
-    },
-    xaxis: {
-      type: 'datetime',
-      categories: datesSorted,
-    },
-    yaxis: {
-      min: 0,
-      max: 10,
-    },
-    tooltip: {
-      x: {
-        format: 'dd/MM/yy HH:mm',
-      },
-    },
-    title: {
-      text: 'GDR',
+      text: 'Pasien',
       align: 'left',
     },
   };
@@ -192,32 +131,20 @@ export const CustomerStatisticsCharts = () => {
   return (
     <Box bg="white" p="10" rounded="md" boxShadow="md">
       <Heading mb="6" textAlign="center">
-        Proses Bisnis
+        Pelanggan
       </Heading>
       <SimpleGrid columns={2} gap="14" px="14">
         <Box>
           <Heading size="lg" textAlign="center" mb="4">
-            Durasi
+            Pasien
           </Heading>
-          <Chart options={options} series={series} type="area" width="100%" />
+          <Chart options={options} series={series} type="bar" width="100%" />
         </Box>
         <Box>
           <Heading size="lg" textAlign="center" mb="4">
-            BOR
+            Kepuasan Pelanggan
           </Heading>
           <Chart options={options1} series={series1} type="area" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            LOS
-          </Heading>
-          <Chart options={options2} series={series2} type="area" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            GDR
-          </Heading>
-          <Chart options={options3} series={series3} type="area" width="100%" />
         </Box>
       </SimpleGrid>
     </Box>
