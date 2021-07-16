@@ -82,13 +82,16 @@ export const ScheduleListPage = () => {
         accessor: 'schedule_details',
         Cell: ({ value }) => (
           <Box>
-            {value.map(v => (
-              <Description
-                key={v.id}
-                title={v.days.join(', ')}
-                value={`${v.start_time} - ${v.end_time}`}
-              />
-            ))}
+            {value.map(v => {
+              console.log({ v });
+              return (
+                <Description
+                  key={v.id}
+                  title={v.days && v.days.length && v.days?.join(', ')}
+                  value={`${v.start_time} - ${v.end_time}`}
+                />
+              );
+            })}
           </Box>
         ),
       },
