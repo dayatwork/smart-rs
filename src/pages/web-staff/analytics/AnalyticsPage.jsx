@@ -22,6 +22,7 @@ import {
   CustomerStatisticsCharts,
   BusinessProcessCharts,
   LearningGrowthCharts,
+  FinanceCharts,
 } from './components';
 
 const AnalyticsPage = () => {
@@ -73,6 +74,7 @@ const AnalyticsPage = () => {
               <BusinessProcessCharts />
               <LearningGrowthCharts />
               <CustomerStatisticsCharts />
+              <FinanceCharts />
             </VStack>
           </ContentWrapper>
         </Flex>

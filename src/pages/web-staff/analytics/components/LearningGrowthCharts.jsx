@@ -70,7 +70,11 @@ export const LearningGrowthCharts = () => {
     xaxis: {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     },
+
     yaxis: {
+      title: {
+        text: 'Jumlah Staff (orang)',
+      },
       labels: {
         formatter: function (val) {
           return val.toFixed(0);
@@ -127,6 +131,9 @@ export const LearningGrowthCharts = () => {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     },
     yaxis: {
+      title: {
+        text: 'Produktivitas Staff (%)',
+      },
       labels: {
         formatter: function (val) {
           return val.toFixed(0);

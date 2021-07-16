@@ -70,11 +70,17 @@ export const BusinessProcessCharts = () => {
       type: 'datetime',
       categories: datesSorted,
     },
+    yaxis: {
+      title: {
+        text: 'Durasi (menit)',
+      },
+    },
     tooltip: {
       x: {
         format: 'dd/MM/yy HH:mm',
       },
     },
+
     title: {
       text: 'Durasi',
       align: 'left',
@@ -102,6 +108,11 @@ export const BusinessProcessCharts = () => {
     xaxis: {
       type: 'datetime',
       categories: datesSorted,
+    },
+    yaxis: {
+      title: {
+        text: 'Bed Occupancy Rate (%)',
+      },
     },
     tooltip: {
       x: {
@@ -137,6 +148,9 @@ export const BusinessProcessCharts = () => {
       categories: datesSorted,
     },
     yaxis: {
+      title: {
+        text: 'Length of Stay (hari)',
+      },
       min: 0,
       max: 22,
     },
@@ -177,12 +191,16 @@ export const BusinessProcessCharts = () => {
     yaxis: {
       min: 0,
       max: 10,
+      title: {
+        text: 'Gross Death Rate (%)',
+      },
     },
     tooltip: {
       x: {
         format: 'dd/MM/yy HH:mm',
       },
     },
+
     title: {
       text: 'GDR',
       align: 'left',

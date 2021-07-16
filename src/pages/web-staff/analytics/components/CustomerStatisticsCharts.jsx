@@ -64,7 +64,11 @@ export const CustomerStatisticsCharts = () => {
     yaxis: {
       min: 0,
       max: 100,
+      title: {
+        text: 'Kepuasan Pelanggan (%)',
+      },
     },
+
     title: {
       text: 'Kepuasan Pelanggan',
       align: 'left',
@@ -125,6 +129,11 @@ export const CustomerStatisticsCharts = () => {
     title: {
       text: 'Pasien',
       align: 'left',
+    },
+    yaxis: {
+      title: {
+        text: 'Jumlah Pasien (orang)',
+      },
     },
   };
 
