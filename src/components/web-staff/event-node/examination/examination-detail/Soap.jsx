@@ -639,6 +639,8 @@ export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
+  console.log({ dataSOAP });
+
   const handleCheckIn = async () => {
     const data = {
       id: dataSOAP?.id,

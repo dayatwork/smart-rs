@@ -17,15 +17,15 @@ import { useCookies } from 'react-cookie';
 
 import { AuthContext } from '../../../contexts/authContext';
 
-const UserAvatar = () => (
+const UserAvatar = ({ size }) => (
   <Avatar
-    size="sm"
+    size={size}
     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
     name="Manny Brooke"
   />
 );
 
-const ProfileMenuButton = props => {
+const ProfileMenuButton = ({ size, ...props }) => {
   const buttonProps = useMenuButton(props);
   return (
     <Flex
@@ -37,12 +37,12 @@ const ProfileMenuButton = props => {
       _focus={{ shadow: 'outline' }}
     >
       <Box srOnly>Open user menu</Box>
-      <UserAvatar />
+      <UserAvatar size={size} />
     </Flex>
   );
 };
 
-export const ProfileDropdown = () => {
+export const ProfileDropdown = ({ size = 'sm' }) => {
   const [, , removeCookie] = useCookies(['token']);
   const toast = useToast();
   const history = useHistory();
@@ -67,7 +67,7 @@ export const ProfileDropdown = () => {
 
   return (
     <Menu placement="bottom-end">
-      <ProfileMenuButton />
+      <ProfileMenuButton size={size} />
       <MenuList
         rounded="md"
         shadow="lg"
@@ -77,7 +77,7 @@ export const ProfileDropdown = () => {
         zIndex="10"
       >
         <HStack px="3" py="4">
-          <UserAvatar />
+          <UserAvatar size={size} />
           <Box lineHeight="1">
             <Text fontWeight="semibold">{user?.name || 'Anonim'}</Text>
             <Text mt="1" fontSize="xs" color="gray.500">

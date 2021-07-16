@@ -2,7 +2,7 @@ import { Box, Center } from '@chakra-ui/react';
 import * as React from 'react';
 import { FaBell } from 'react-icons/fa';
 
-const NotificationBadge = (props) => (
+const NotificationBadge = props => (
   <Center
     bg="red.500"
     fontSize="xs"
@@ -18,7 +18,7 @@ const NotificationBadge = (props) => (
   />
 );
 
-export const Notification = (props) => (
+export const Notification = ({ light, ...props }) => (
   <Center
     as="button"
     outline="0"
@@ -28,9 +28,15 @@ export const Notification = (props) => (
     rounded="md"
     _hover={{ bg: 'whiteAlpha.200' }}
     _focus={{ shadow: 'outline' }}
-    {...props}>
+    {...props}
+  >
     <Box srOnly>Click to see 9 notifications</Box>
     <NotificationBadge>9</NotificationBadge>
-    <Box as={FaBell} fontSize="lg" />
+    <Box
+      as={FaBell}
+      fontSize="lg"
+      //  color={light ? 'gray.100' : 'gray.900'}
+      color="white"
+    />
   </Center>
 );

@@ -32,7 +32,7 @@ export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
     { enabled: Boolean(selectedInstitution) }
   );
 
-  // console.log({ dataSoapList });
+  console.log({ dataSoapList });
 
   const data = React.useMemo(
     () =>
