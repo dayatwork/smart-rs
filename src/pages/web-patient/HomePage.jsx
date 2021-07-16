@@ -12,13 +12,15 @@ import {
   Skeleton,
   Stack,
   VisuallyHidden,
-  Link as ChakraLink,
+  // Link as ChakraLink,
   Text,
   Icon,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
-import { BsArrowRight } from 'react-icons/bs';
+// import { BsArrowRight } from 'react-icons/bs';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 import LogoRS from 'assets/Logo';
 import { AuthContext } from 'contexts/authContext';
@@ -27,6 +29,31 @@ import { AdvertisementCard } from 'components/web-patient/home';
 import { Notification, ProfileDropdown } from 'components/web-patient/shared';
 import { RiHistoryFill, RiStethoscopeFill } from 'react-icons/ri';
 import { HiHome, HiOutlineQuestionMarkCircle } from 'react-icons/hi';
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+
+    // partialVisibilityGutter: 40,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    // partialVisibilityGutter: 40,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    // partialVisibilityGutter: 40,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    // partialVisibilityGutter: 40,
+  },
+};
 
 export default function HomePage() {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -37,6 +64,7 @@ export default function HomePage() {
     () => getAdvertisements(cookies),
     { staleTime: Infinity }
   );
+
   return (
     <Box minH="100vh" position="relative" bg="gray.100" pb="10">
       <Box
@@ -44,7 +72,7 @@ export default function HomePage() {
         bg="gray.800"
         py="12"
         position="relative"
-        h="60vh"
+        h="50vh"
         bgImage="url(newbg.jpg)"
         bgSize="cover"
         bgPosition="center"
@@ -74,7 +102,13 @@ export default function HomePage() {
           zIndex={1}
           position="relative"
         >
-          <Flex flexDirection="column" color="white" h="full" mt="28">
+          <Flex
+            flexDirection="column"
+            color="white"
+            h="full"
+            // mt={{ base: '20', md: '38' }}
+            mt={{ base: '20', md: '28' }}
+          >
             <Heading size="3xl" fontWeight="bold" mb="4">
               Selamat Datang
             </Heading>
@@ -233,7 +267,7 @@ export default function HomePage() {
           md: '8',
         }}
         position="absolute"
-        top={{ base: '40vh', md: '55vh' }}
+        top={{ base: '30vh', md: '45vh' }}
         right="0"
         left="0"
       >
@@ -309,18 +343,23 @@ export default function HomePage() {
             <Skeleton height="400px" rounded="md" />
           </SimpleGrid>
         ) : (
-          <>
-            <SimpleGrid
+          <Carousel
+            responsive={responsive}
+            autoPlay
+            autoPlaySpeed={4000}
+            infinite
+          >
+            {/* <SimpleGrid
               columns={{
                 base: 1,
-                md: 3,
+                md: 4,
               }}
-              spacing="10"
+              spacing="4"
               mb="6"
-            >
-              {dataAdvertisement?.data?.slice(0, 3)?.map(advertisement => (
+            > */}
+            {dataAdvertisement?.data?.slice(0, 4)?.map(advertisement => (
+              <Box key={advertisement.id} px="4">
                 <AdvertisementCard
-                  key={advertisement.id}
                   category={advertisement.category}
                   media={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${advertisement.image}`}
                   title={advertisement.title}
@@ -331,9 +370,10 @@ export default function HomePage() {
                     href: '#',
                   }}
                 />
-              ))}
-            </SimpleGrid>
-            <ChakraLink
+              </Box>
+            ))}
+            {/* </SimpleGrid> */}
+            {/* <ChakraLink
               // as={Link}
               fontSize="lg"
               fontWeight="bold"
@@ -341,8 +381,8 @@ export default function HomePage() {
             >
               <span>View all news & promotion</span>
               <Box as={BsArrowRight} display="inline-block" ms="2" />
-            </ChakraLink>
-          </>
+            </ChakraLink> */}
+          </Carousel>
         )}
       </Box>
     </Box>

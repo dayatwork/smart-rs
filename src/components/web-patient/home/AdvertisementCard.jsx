@@ -39,7 +39,7 @@ export const AdvertisementCard = ({
     >
       <Flex direction="column">
         <Image
-          height="60"
+          height="44"
           objectFit="cover"
           alt={title}
           src={media}
