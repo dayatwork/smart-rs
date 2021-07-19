@@ -36,6 +36,14 @@
   width: 100%;
 }
 
+.Selectable .DayPickerInput input {
+  border: 1px solid #e2e8f0;
+  padding: 7px 16px;
+  border-radius: 6px;
+  outline-color: #4a90e2;
+  width: 100%;
+}
+
 .DayPickerInput-OverlayWrapper {
   position: relative;
 }

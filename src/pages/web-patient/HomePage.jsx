@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   Box,
   Button,
@@ -25,6 +27,8 @@ import 'react-multi-carousel/lib/styles.css';
 import LogoRS from 'assets/Logo';
 import { AuthContext } from 'contexts/authContext';
 import { getAdvertisements } from 'api/institution-services/advertisement';
+import { getInstitutions } from 'api/institution-services/institution';
+import { getServices } from 'api/master-data-services/service';
 import { AdvertisementCard } from 'components/web-patient/home';
 import { Notification, ProfileDropdown } from 'components/web-patient/shared';
 import { RiHistoryFill, RiStethoscopeFill } from 'react-icons/ri';
@@ -58,6 +62,9 @@ const responsive = {
 export default function HomePage() {
   const { employeeDetail, user } = useContext(AuthContext);
   const [cookies] = useCookies(['token']);
+  const [selectedService, setSelectedService] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedInstitution, setSelectedInstitution] = useState('');
 
   const { data: dataAdvertisement, isLoading } = useQuery(
     ['advertisement'],
@@ -65,8 +72,24 @@ export default function HomePage() {
     { staleTime: Infinity }
   );
 
+  const { data: dataServices, isLoading: isLoadingService } = useQuery(
+    'services',
+    () => getServices(cookies)
+  );
+  const { data: dataInstitutions, isLoading: isLoadingInstitutions } = useQuery(
+    'institutions',
+    () => getInstitutions(cookies)
+  );
+
+  // console.log({ dataServices });
+  // console.log({ selectedDay });
+  // console.log({ dataInstitutions });
+
   return (
     <Box minH="100vh" position="relative" bg="gray.100" pb="10">
+      <Helmet>
+        <style>{customStyle}</style>
+      </Helmet>
       <Box
         as="section"
         bg="gray.800"
@@ -292,20 +315,49 @@ export default function HomePage() {
         >
           <FormControl id="service">
             <VisuallyHidden>Layanan</VisuallyHidden>
-            <Select size="lg">
+            <Select
+              size="lg"
+              value={selectedService}
+              onChange={e => {
+                setSelectedService(e.target.value);
+              }}
+              disabled={isLoadingService}
+            >
               <option value="">Semua Layanan</option>
+              {dataServices?.data?.map(service => (
+                <option key={service.id} value={service.id}>
+                  {service.name}
+                </option>
+              ))}
             </Select>
           </FormControl>
           <FormControl id="schedule">
             <VisuallyHidden>Jadwal</VisuallyHidden>
-            <Select size="lg">
-              <option value="">Semua Jadwal</option>
-            </Select>
+            <DayPickerInput
+              onDayChange={setSelectedDay}
+              value={selectedDay}
+              placeholder="Semua Jadwal"
+              dayPickerProps={{
+                disabledDays: { before: new Date() },
+              }}
+            />
           </FormControl>
           <FormControl id="institution">
             <VisuallyHidden>Rumah Sakit</VisuallyHidden>
-            <Select size="lg">
+            <Select
+              size="lg"
+              value={selectedInstitution}
+              onChange={e => {
+                setSelectedInstitution(e.target.value);
+              }}
+              disabled={isLoadingInstitutions}
+            >
               <option value="">Semua Rumah Sakit</option>
+              {dataInstitutions?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
+                </option>
+              ))}
             </Select>
           </FormControl>
           <Box>
@@ -314,9 +366,17 @@ export default function HomePage() {
               colorScheme="primary"
               size="lg"
               as={Link}
-              to="/doctor/booking"
+              // to="/doctor/booking"
+              to={{
+                pathname: '/doctor/booking',
+                state: {
+                  selectedService,
+                  selectedDay,
+                  selectedInstitution,
+                },
+              }}
             >
-              Booking Dokter
+              Booking
             </Button>
           </Box>
         </Stack>
@@ -390,3 +450,28 @@ export default function HomePage() {
     </Box>
   );
 }
+
+const customStyle = `
+.DayPickerInput input {
+  border: 1px solid #e2e8f0;
+  padding: 11px 16px;
+  border-radius: 6px;
+  outline-color: #4a90e2;
+  width: 100%;
+}
+
+.DayPickerInput input::placeholder {
+  font-size: 18px;
+  color: #4B5563;
+}
+
+.DayPicker-Day--selected {
+  background-color: #F01159 !important;
+    color: #FFFFFF !important;
+}
+
+.DayPicker-Day--today {
+  // background-color: #F3F4F6 !important;
+    color: #F01159 !important;
+}
+`;

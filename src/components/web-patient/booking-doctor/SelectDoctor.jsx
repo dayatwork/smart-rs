@@ -35,11 +35,13 @@ import {
 import { Helmet } from 'react-helmet-async';
 import doctorImg from './doctor.jpg';
 
-import { getServices } from '../../../api/master-data-services/service';
+import { getServices } from 'api/master-data-services/service';
+import { getInstitutions } from 'api/institution-services/institution';
+
 import {
   getBookingSchedules,
   getScheduleEstimatedTimes,
-} from '../../../api/institution-services/service';
+} from 'api/institution-services/service';
 
 export const SelectDoctor = ({
   currentStep,
@@ -55,6 +57,8 @@ export const SelectDoctor = ({
   setSelectedDayRange,
   selectedTime,
   setSelectedTime,
+  selectedInstitution,
+  setSelectedInstitution,
 }) => {
   const [cookies] = useCookies(['token']);
   const selectDoctorGridTemplate = useBreakpointValue({
@@ -88,6 +92,10 @@ export const SelectDoctor = ({
     'services',
     () => getServices(cookies)
   );
+  const { data: dataInstitutions, isLoading: isLoadingInstitutions } = useQuery(
+    'institutions',
+    () => getInstitutions(cookies)
+  );
   // console.log({ dataServices });
 
   const {
@@ -103,6 +111,7 @@ export const SelectDoctor = ({
         last_date: endDate,
         limit,
         page,
+        institutionId: selectedInstitution,
       },
     ],
     () =>
@@ -112,6 +121,7 @@ export const SelectDoctor = ({
         serviceId: selectedService,
         limit,
         page,
+        institutionId: selectedInstitution,
       }),
     {
       enabled:
@@ -149,8 +159,12 @@ export const SelectDoctor = ({
     setSelectedDayRange({ from: undefined, to: undefined });
   };
 
-  console.log({ selectedService });
-  console.log({ selectedDayRange });
+  // console.log({ selectedService });
+  // console.log({ selectedDayRange });
+  // console.log({ dataSchedules })
+
+  // console.log({ dataSchedules });
+  // console.log({ availableSchedules });
 
   return (
     <>
@@ -163,7 +177,7 @@ export const SelectDoctor = ({
         pb={{ base: '20', md: '32' }}
       >
         <GridItem>
-          <FormControl id="first-name" mb="4">
+          <FormControl id="service" mb="4">
             <FormLabel>Pilih Layanan</FormLabel>
             <Select
               bg="white"
@@ -178,6 +192,24 @@ export const SelectDoctor = ({
               {dataServices?.data?.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl id="institution" mb="4">
+            <FormLabel>Pilih Rumah Sakit</FormLabel>
+            <Select
+              bg="white"
+              value={selectedInstitution}
+              onChange={e => {
+                setSelectedInstitution(e.target.value);
+              }}
+              disabled={isLoadingInstitutions}
+            >
+              <option value="">Semua Rumah Sakit</option>
+              {dataInstitutions?.data?.map(institution => (
+                <option key={institution.id} value={institution.id}>
+                  {institution.name}
                 </option>
               ))}
             </Select>

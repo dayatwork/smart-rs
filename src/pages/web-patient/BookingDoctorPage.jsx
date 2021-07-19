@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 
 import {
@@ -37,20 +38,27 @@ const bookingStep = [
 ];
 
 const BookingDoctorPage = () => {
+  const { state } = useLocation();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const currentStep = bookingStep[currentStepIndex];
 
   const [patient, setPatient] = useState('me');
   const [patientData, setPatientData] = useState({});
-  const [selectedService, setSelectedService] = useState('');
+  const [selectedService, setSelectedService] = useState(
+    state.selectedService || ''
+  );
+  const [selectedInstitution, setSelectedInstitution] = useState(
+    state.selectedInstitution || ''
+  );
   const [selectedSchedule, setSelectedSchedule] = useState({});
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDayRange, setSelectedDayRange] = useState({
     // from: '',
     // to: '',
-    from: undefined,
-    to: undefined,
+    from: state.selectedDay ? state.selectedDay : undefined,
+    to: state.selectedDay ? state.selectedDay : undefined,
   });
+
   const [selectedPagination, setSelectedPagination] = useState({});
   // const [selectedResponsible, setSelectedResponsible] = useState('');
   const [responsibleDefaultValue, setResponsibleDefaultValue] = useState({
@@ -152,6 +160,8 @@ const BookingDoctorPage = () => {
                 setSelectedTime={setSelectedTime}
                 selectedPagination={selectedPagination}
                 setSelectedPagination={setSelectedPagination}
+                selectedInstitution={selectedInstitution}
+                setSelectedInstitution={setSelectedInstitution}
               />
             )}
             {currentStep.value === 'Step 2' && (
