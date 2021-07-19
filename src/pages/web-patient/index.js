@@ -6,3 +6,4 @@ export { default as OrderDetailPage } from './OrderDetailPage';
 export { default as PatientExaminationResultsPage } from './ExaminationResultPage.jsx';
 export { default as PatientExaminationResultsDetailPage } from './ExaminationResultDetailPage';
 export { default as UploadPaymentSlipPage } from './UploadPaymentSlipPage';
+export { default as HomeMonitoringPage } from './HomeMonitoringPage';

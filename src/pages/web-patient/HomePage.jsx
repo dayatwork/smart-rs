@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -17,12 +17,21 @@ import {
   // Link as ChakraLink,
   Text,
   Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Avatar,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 // import { BsArrowRight } from 'react-icons/bs';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { HiOutlineEmojiHappy, HiOutlineEmojiSad } from 'react-icons/hi';
 
 import LogoRS from 'assets/Logo';
 import { AuthContext } from 'contexts/authContext';
@@ -65,6 +74,13 @@ export default function HomePage() {
   const [selectedService, setSelectedService] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedInstitution, setSelectedInstitution] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    const timer = setTimeout(() => onOpen(), 1000);
+
+    return () => clearTimeout(timer);
+  }, [onOpen]);
 
   const { data: dataAdvertisement, isLoading } = useQuery(
     ['advertisement'],
@@ -90,6 +106,7 @@ export default function HomePage() {
       <Helmet>
         <style>{customStyle}</style>
       </Helmet>
+      <HomeMonitoringModal isOpen={isOpen} onClose={onClose} />
       <Box
         as="section"
         bg="gray.800"
@@ -274,7 +291,7 @@ export default function HomePage() {
                 )}
                 <Notification
                   display={{ base: 'none', lg: 'inline-flex' }}
-                  light
+                  // light
                 />
                 <Box display={{ base: 'none', lg: 'block' }}>
                   <ProfileDropdown />
@@ -450,6 +467,74 @@ export default function HomePage() {
     </Box>
   );
 }
+
+const HomeMonitoringModal = ({ isOpen, onClose }) => {
+  return (
+    <Modal
+      closeOnOverlayClick={false}
+      isOpen={isOpen}
+      onClose={onClose}
+      size="lg"
+      motionPreset="slideInBottom"
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Home Monitoring</ModalHeader>
+        {/* <ModalCloseButton /> */}
+        <ModalBody pb={6}>
+          <Flex>
+            <Avatar
+              src="/images/doctor.jpg"
+              alt="doctor photo"
+              size="xl"
+              mr="10"
+            />
+            <Box mt="2">
+              <Text fontSize="2xl" fontWeight="semibold">
+                Are you feeling better?
+              </Text>
+              <Text fontWeight="semibold" color="gray.500">
+                {new Date().toLocaleDateString('id-ID', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </Text>
+            </Box>
+          </Flex>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button
+            leftIcon={
+              <HiOutlineEmojiHappy
+                style={{ width: 25, height: 25, marginLeft: -5 }}
+              />
+            }
+            colorScheme="green"
+            onClick={onClose}
+            mr={3}
+            // minW="300"
+          >
+            Yes
+          </Button>
+          <Button
+            leftIcon={
+              <HiOutlineEmojiSad
+                style={{ width: 25, height: 25, marginLeft: -5 }}
+              />
+            }
+            colorScheme="red"
+            as={Link}
+            to="/home-monitoring"
+          >
+            No
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
 
 const customStyle = `
 .DayPickerInput input {
