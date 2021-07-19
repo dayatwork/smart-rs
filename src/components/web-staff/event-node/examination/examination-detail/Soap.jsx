@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import {
   Accordion,
@@ -36,10 +36,17 @@ import { Subjective } from './soap/Subjective';
 import { Objective } from './soap/Objective';
 import { Assesment } from './soap/Assessment';
 import { Plan } from './soap/Plan';
+import { Monitoring } from './soap/Monitoring';
 import { SoapHistory } from './soap/SoapHistory';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
 
 export const Soap = ({ dataSoap }) => {
+  const subjectiveRef = useRef(null);
+  const objectiveRef = useRef(null);
+  const assessmentRef = useRef(null);
+  const planRef = useRef(null);
+  const monitoringRef = useRef(null);
+
   const [cookies] = useCookies(['token']);
   const [selectedSoapTemplate, setSelectedSoapTemplate] = useState(
     'general-practitioners'
@@ -192,6 +199,13 @@ export const Soap = ({ dataSoap }) => {
               bgColor="green.500"
               rounded="full"
               className="group-hover:bg-indigo-800"
+              onClick={() =>
+                subjectiveRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+              cursor="pointer"
             >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 S
@@ -210,6 +224,13 @@ export const Soap = ({ dataSoap }) => {
               bgColor="yellow.500"
               rounded="full"
               className="group-hover:bg-indigo-800"
+              onClick={() =>
+                objectiveRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+              cursor="pointer"
             >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 O
@@ -228,6 +249,13 @@ export const Soap = ({ dataSoap }) => {
               bgColor="pink.500"
               rounded="full"
               className="group-hover:bg-indigo-800"
+              onClick={() =>
+                assessmentRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+              cursor="pointer"
             >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 A
@@ -246,13 +274,20 @@ export const Soap = ({ dataSoap }) => {
               bgColor="blue.500"
               rounded="full"
               className="group-hover:bg-indigo-800"
+              onClick={() =>
+                planRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+              cursor="pointer"
             >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 P
               </Box>
             </Flex>
           </Flex>
-          {/* <Flex as="span" h="14" align="center">
+          <Flex as="span" h="14" align="center">
             <Flex
               as="span"
               position="relative"
@@ -264,12 +299,19 @@ export const Soap = ({ dataSoap }) => {
               bgColor="purple.500"
               rounded="full"
               className="group-hover:bg-indigo-800"
+              onClick={() =>
+                monitoringRef.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+              cursor="pointer"
             >
               <Box color="white" fontWeight="bold" fontSize="2xl">
                 M
               </Box>
             </Flex>
-          </Flex> */}
+          </Flex>
         </HStack>
       </Box>
 
@@ -280,7 +322,7 @@ export const Soap = ({ dataSoap }) => {
               <Box as="nav" aria-label="Progress">
                 <Box as="ol" overflow="hidden">
                   {/* Complete Step */}
-                  <Box as="li" position="relative" pb="10">
+                  <Box as="li" position="relative" pb="10" ref={subjectiveRef}>
                     <Box
                       ml="-px"
                       position="absolute"
@@ -350,7 +392,7 @@ export const Soap = ({ dataSoap }) => {
                   </Box>
 
                   {/* Current Step */}
-                  <Box as="li" position="relative" pb="10">
+                  <Box as="li" position="relative" pb="10" ref={objectiveRef}>
                     <Box
                       ml="-px"
                       position="absolute"
@@ -421,7 +463,7 @@ export const Soap = ({ dataSoap }) => {
                     </Flex>
                   </Box>
 
-                  <Box as="li" position="relative" pb="10">
+                  <Box as="li" position="relative" pb="10" ref={assessmentRef}>
                     <Box
                       ml="-px"
                       position="absolute"
@@ -491,8 +533,8 @@ export const Soap = ({ dataSoap }) => {
                     </Flex>
                   </Box>
 
-                  <Box as="li" position="relative" pb="10">
-                    {/* <Box
+                  <Box as="li" position="relative" pb="10" ref={planRef}>
+                    <Box
                       ml="-px"
                       position="absolute"
                       mt="0.5"
@@ -502,7 +544,7 @@ export const Soap = ({ dataSoap }) => {
                       h="full"
                       bgColor="gray.300"
                       aria-hidden="true"
-                    ></Box> */}
+                    ></Box>
                     <Flex
                       // as={Link}
                       // to="/"
@@ -563,8 +605,21 @@ export const Soap = ({ dataSoap }) => {
                     </Flex>
                   </Box>
 
-                  {/* <Box as="li" position="relative" pb="10">
+                  <Box as="li" position="relative" pb="10" ref={monitoringRef}>
+                    {/* <Box
+                      ml="-px"
+                      position="absolute"
+                      mt="0.5"
+                      top="4"
+                      left="6"
+                      w="0.5"
+                      h="full"
+                      bgColor="gray.300"
+                      aria-hidden="true"
+                    ></Box> */}
                     <Flex
+                      // as={Link}
+                      // to="/"
                       position="relative"
                       align="start"
                       className="group"
@@ -602,17 +657,20 @@ export const Soap = ({ dataSoap }) => {
                           letterSpacing="0.025em"
                           textTransform="uppercase"
                         >
-                          Medication (M)
+                          Monitoring (M)
                         </Box>
                         <Box as="span" fontSize="sm" color="gray.500">
                           Vitae sed mi luctus laoreet.
                         </Box>
                         <Box mt="4">
-                          <Medication />
+                          <Monitoring
+                            patientDetail={dataPatientDetail?.data}
+                            dataSoap={dataSoap}
+                          />
                         </Box>
                       </Flex>
                     </Flex>
-                  </Box> */}
+                  </Box>
                 </Box>
               </Box>
             </Box>

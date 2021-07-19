@@ -18,17 +18,22 @@ import { getInstitutions } from '../../../../../api/institution-services/institu
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { WaitingPatient } from './WaitingPatient';
 import { ActivePatient } from './ActivePatient';
+import { HomeMonitoringPatient } from './HomeMonitoringPatient';
 import { HistoryPatient } from './HistoryPatient';
 import { PrivateRoute, Permissions } from '../../../../../access-control';
 
 const subMenus = [
   {
     to: '/events/examination',
-    text: 'Waiting Patient',
+    text: 'Pasien Tunggu',
   },
   {
     to: '/events/examination/active',
-    text: 'Active Patient',
+    text: 'Pasien Aktif',
+  },
+  {
+    to: '/events/examination/home-monitoring',
+    text: 'Pasien Monitoring',
   },
   {
     to: '/events/examination/history',
@@ -78,7 +83,7 @@ export const ExaminationPage = () => {
           </Select>
         </FormControl>
       )}
-      <SimpleGrid columns="3">
+      <SimpleGrid columns="4">
         {subMenus.map(subMenu => (
           <Center
             key={subMenu.to}
@@ -110,6 +115,13 @@ export const ExaminationPage = () => {
           path={`${path}/active`}
         >
           <ActivePatient selectedInstitution={selectedInstitution} />
+        </PrivateRoute>
+        <PrivateRoute
+          permission={Permissions.indexExamination}
+          exact
+          path={`${path}/home-monitoring`}
+        >
+          <HomeMonitoringPatient selectedInstitution={selectedInstitution} />
         </PrivateRoute>
         <PrivateRoute
           permission={Permissions.indexExamination}

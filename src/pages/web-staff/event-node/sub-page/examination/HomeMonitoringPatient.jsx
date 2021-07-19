@@ -13,11 +13,14 @@ import {
 import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
-import { getSoaps } from '../../../../../api/medical-record-services/soap';
-import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
-import { PrivateComponent, Permissions } from '../../../../../access-control';
+import { getSoaps } from 'api/medical-record-services/soap';
+import PaginationTable from 'components/shared/tables/PaginationTable';
+import { PrivateComponent, Permissions } from 'access-control';
 
-export const ActivePatient = ({ selectedInstitution, fromPatientMenu }) => {
+export const HomeMonitoringPatient = ({
+  selectedInstitution,
+  fromPatientMenu,
+}) => {
   const [cookies] = useCookies(['token']);
   const [isToday, setIsToday] = useState(true);
 
