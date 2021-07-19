@@ -30,12 +30,14 @@ import QRCode from 'qrcode.react';
 import { BsCaretLeftFill } from 'react-icons/bs';
 import { GiTicket } from 'react-icons/gi';
 
-import { WebPatientNav, Wrapper } from '../../components/web-patient/shared';
+import { WebPatientNav, Wrapper } from 'components/web-patient/shared';
 import {
   getQRCode,
   cancelBooking,
   getBookingDetail,
-} from '../../api/booking-services/booking';
+} from 'api/booking-services/booking';
+import { getResponsibleList } from 'api/patient-services/responsible';
+
 import { OrderDetail } from './OrderDetail';
 import {
   RiCalendarEventFill,
@@ -75,6 +77,16 @@ const BookingDetailPage = () => {
     () => getBookingDetail(cookies, params.id),
     { enabled: Boolean(params.id) }
   );
+
+  const { data: dataResponsibleList, isSuccess: isSuccessResponsibleList } =
+    useQuery('responsible-list', () => getResponsibleList(cookies));
+
+  // console.log({ dataResponsibleList });
+  // console.log({ dataBookingDetail });
+  const responsibleListUserId = dataResponsibleList?.data?.patients?.map(
+    patient => patient.user_id
+  );
+  // console.log({ responsibleListUserId });
 
   const status = dataBookingDetail?.data?.booking_status?.toLowerCase();
 
@@ -126,7 +138,9 @@ const BookingDetailPage = () => {
 
   if (
     isSuccessBookingDetail &&
-    dataBookingDetail?.data?.patient?.user_id !== cookies.user.id
+    isSuccessResponsibleList &&
+    dataBookingDetail?.data?.patient?.user_id !== cookies.user.id &&
+    !responsibleListUserId.includes(dataBookingDetail?.data?.patient?.user_id)
   ) {
     return <Redirect to="/" />;
   }
