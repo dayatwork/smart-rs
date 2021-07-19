@@ -91,6 +91,9 @@ export const extendedMenu = [
     to: '/patient/active',
   },
   {
+    to: '/patient/home-monitoring',
+  },
+  {
     to: '/patient/history',
   },
   {

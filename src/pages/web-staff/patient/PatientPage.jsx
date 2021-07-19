@@ -19,6 +19,7 @@ import { AuthContext } from '../../../contexts/authContext';
 import { getInstitutions } from '../../../api/institution-services/institution';
 import { WaitingPatient } from '../event-node/sub-page/examination/WaitingPatient';
 import { ActivePatient } from '../event-node/sub-page/examination/ActivePatient';
+import { HomeMonitoringPatient } from '../event-node/sub-page/examination/HomeMonitoringPatient';
 import { HistoryPatient } from '../event-node/sub-page/examination/HistoryPatient';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
@@ -27,11 +28,15 @@ import { PrivateRoute, Permissions } from '../../../access-control';
 const subMenus = [
   {
     to: '/patient',
-    text: 'Waiting Patient',
+    text: 'Pasien Tunggu',
   },
   {
     to: '/patient/active',
-    text: 'Active Patient',
+    text: 'Pasien Aktif',
+  },
+  {
+    to: '/patient/home-monitoring',
+    text: 'Pasien Monitoring',
   },
   {
     to: '/patient/history',
@@ -87,7 +92,7 @@ const PatientPage = () => {
                   </Select>
                 </FormControl>
               )}
-              <SimpleGrid columns="3">
+              <SimpleGrid columns="4">
                 {subMenus.map(subMenu => (
                   <Center
                     key={subMenu.to}
@@ -124,6 +129,16 @@ const PatientPage = () => {
                   path={`${path}/active`}
                 >
                   <ActivePatient
+                    selectedInstitution={selectedInstitution}
+                    fromPatientMenu
+                  />
+                </PrivateRoute>
+                <PrivateRoute
+                  permission={Permissions.indexExamination}
+                  exact
+                  path={`${path}/home-monitoring`}
+                >
+                  <HomeMonitoringPatient
                     selectedInstitution={selectedInstitution}
                     fromPatientMenu
                   />
