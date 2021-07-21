@@ -81,6 +81,7 @@ const UploadPaymentSlipPage = Loadable(
 const HomeMonitoringPage = Loadable(
   lazy(() => import('./pages/web-patient/HomeMonitoringPage'))
 );
+const FAQPage = Loadable(lazy(() => import('./pages/web-patient/FAQPage')));
 
 const AccountSettingPage = Loadable(
   lazy(() => import('./pages/account-setting/AccountSettingPage'))
@@ -283,6 +284,9 @@ const AppRoutes = () => {
         pageTitle="Home Monitoring | SMART-RS"
       >
         <HomeMonitoringPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/faq" pageTitle="FAQ | SMART-RS">
+        <FAQPage />
       </AuthenticatedRoute>
 
       {/* Web Staff Routes */}

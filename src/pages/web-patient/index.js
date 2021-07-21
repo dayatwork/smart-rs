@@ -7,3 +7,4 @@ export { default as PatientExaminationResultsPage } from './ExaminationResultPag
 export { default as PatientExaminationResultsDetailPage } from './ExaminationResultDetailPage';
 export { default as UploadPaymentSlipPage } from './UploadPaymentSlipPage';
 export { default as HomeMonitoringPage } from './HomeMonitoringPage';
+export { default as FAQPage } from './FAQPage';
