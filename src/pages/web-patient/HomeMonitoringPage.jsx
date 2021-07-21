@@ -19,15 +19,15 @@ import { BsCaretLeftFill } from 'react-icons/bs';
 
 import { WebPatientNav, Wrapper } from 'components/web-patient/shared';
 import svg0 from '../../assets/severity/0.svg';
-import svg1 from '../../assets/severity/1.svg';
+// import svg1 from '../../assets/severity/1.svg';
 import svg2 from '../../assets/severity/2.svg';
 import svg3 from '../../assets/severity/3.svg';
-import svg4 from '../../assets/severity/4.svg';
+// import svg4 from '../../assets/severity/4.svg';
 import svg5 from '../../assets/severity/5.svg';
-import svg6 from '../../assets/severity/6.svg';
+// import svg6 from '../../assets/severity/6.svg';
 import svg7 from '../../assets/severity/7.svg';
-import svg8 from '../../assets/severity/8.svg';
-import svg9 from '../../assets/severity/9.svg';
+// import svg8 from '../../assets/severity/8.svg';
+// import svg9 from '../../assets/severity/9.svg';
 import svg10 from '../../assets/severity/10.svg';
 
 const HomeMonitoringPage = () => {
