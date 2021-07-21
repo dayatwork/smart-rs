@@ -77,7 +77,7 @@ export const LearningGrowthCharts = () => {
       },
       labels: {
         formatter: function (val) {
-          return val.toFixed(0);
+          return val && val.toFixed(0);
         },
       },
       max: 400,
@@ -136,7 +136,7 @@ export const LearningGrowthCharts = () => {
       },
       labels: {
         formatter: function (val) {
-          return val.toFixed(0);
+          return val && val.toFixed(0);
         },
       },
       max: 200,

@@ -49,7 +49,7 @@ export const FinanceCharts = () => {
       },
       labels: {
         formatter: function (val) {
-          return val.toFixed(2);
+          return val && val.toFixed(2);
         },
       },
     },
