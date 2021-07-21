@@ -45,18 +45,18 @@ const BookingDoctorPage = () => {
   const [patient, setPatient] = useState('me');
   const [patientData, setPatientData] = useState({});
   const [selectedService, setSelectedService] = useState(
-    state.selectedService || ''
+    state?.selectedService || ''
   );
   const [selectedInstitution, setSelectedInstitution] = useState(
-    state.selectedInstitution || ''
+    state?.selectedInstitution || ''
   );
   const [selectedSchedule, setSelectedSchedule] = useState({});
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedDayRange, setSelectedDayRange] = useState({
     // from: '',
     // to: '',
-    from: state.selectedDay ? state.selectedDay : undefined,
-    to: state.selectedDay ? state.selectedDay : undefined,
+    from: state?.selectedDay ? state?.selectedDay : undefined,
+    to: state?.selectedDay ? state?.selectedDay : undefined,
   });
 
   const [selectedPagination, setSelectedPagination] = useState({});

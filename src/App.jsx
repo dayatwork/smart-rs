@@ -133,6 +133,9 @@ const DivisionPage = Loadable(
 const FinancePage = Loadable(
   lazy(() => import('./pages/web-staff/finance/FinancePage'))
 );
+const InformationPage = Loadable(
+  lazy(() => import('./pages/web-staff/information/InformationPage'))
+);
 const PatientPage = Loadable(
   lazy(() => import('./pages/web-staff/patient/PatientPage'))
 );
@@ -329,6 +332,9 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/finance" pageTitle="Finance | SMART-RS">
         <FinancePage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute path="/information">
+        <InformationPage />
       </AuthenticatedRoute>
       <PrivateRoute
         permission={Permissions['read-detailExamination']}

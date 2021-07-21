@@ -8,7 +8,7 @@ import {
   FaUserCog,
 } from 'react-icons/fa';
 import { BsListCheck } from 'react-icons/bs';
-import { RiDashboardFill } from 'react-icons/ri';
+import { RiDashboardFill, RiInformationLine } from 'react-icons/ri';
 import { AiOutlineAreaChart } from 'react-icons/ai';
 
 import { Permissions } from '../../../../access-control';
@@ -83,6 +83,12 @@ export const menus = [
     text: 'Institution Management',
     icon: FaUsersCog,
     permission: Permissions.dashboardInstitutionManagement,
+  },
+  {
+    to: '/information',
+    text: 'Information',
+    icon: RiInformationLine,
+    // permission: Permissions.dashboardInstitutionManagement,
   },
 ];
 
