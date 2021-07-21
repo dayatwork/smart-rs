@@ -2,36 +2,45 @@ import React from 'react';
 import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
 
-function randomInRange(start, end) {
-  return Math.floor(Math.random() * (end - start + 1) + start);
-}
+import {
+  durasi_di_rs,
+  durasi_rawat_jalan,
+  durasi_temu_dokter,
+  BOR,
+  GDR,
+  LOS,
+} from './data';
+
+// function randomInRange(start, end) {
+//   return Math.floor(Math.random() * (end - start + 1) + start);
+// }
 
 export const BusinessProcessCharts = () => {
-  const goBackDays = 49;
+  const goBackDays = 30;
   const today = new Date();
   const datesSorted = [new Date().toISOString().split('T')[0]];
-  const durasiPasien = [];
-  const durasiTunggu = [];
-  const durasiTemuDokter = [];
-  const BOR = [];
-  const LOS = [];
-  const GDR = [];
+  // const durasiPasien = [];
+  // const durasiTunggu = [];
+  // const durasiTemuDokter = [];
+  // const BOR = [];
+  // const LOS = [];
+  // const GDR = [];
 
-  for (let i = 0; i < 50; i++) {
-    const value1 = randomInRange(20, 200);
-    const value2 = randomInRange(5, 120);
-    const value3 = randomInRange(2, 20);
-    const value4 = randomInRange(55, 90);
-    const value5 = randomInRange(1, 20);
-    // const value6 = randomInRange(3, 7);
-    const value6 = randomInRange(3, 7);
-    durasiPasien.push(value1);
-    durasiTunggu.push(value2);
-    durasiTemuDokter.push(value3);
-    BOR.push(value4);
-    LOS.push(value5);
-    GDR.push(value6);
-  }
+  // for (let i = 0; i < 50; i++) {
+  //   const value1 = randomInRange(20, 200);
+  //   const value2 = randomInRange(5, 120);
+  //   const value3 = randomInRange(2, 20);
+  //   const value4 = randomInRange(55, 90);
+  //   const value5 = randomInRange(1, 20);
+  //   // const value6 = randomInRange(3, 7);
+  //   const value6 = randomInRange(3, 7);
+  //   durasiPasien.push(value1);
+  //   durasiTunggu.push(value2);
+  //   durasiTemuDokter.push(value3);
+  //   BOR.push(value4);
+  //   LOS.push(value5);
+  //   GDR.push(value6);
+  // }
 
   for (let i = 0; i < goBackDays; i++) {
     const newDate = new Date(today.setDate(today.getDate() - 1))
@@ -43,15 +52,19 @@ export const BusinessProcessCharts = () => {
   const series = [
     {
       name: 'Durasi Pasien di RS',
-      data: durasiPasien,
+      // data: durasiPasien,
+      data: durasi_di_rs,
     },
     {
-      name: 'Durasi Tunggu',
-      data: durasiTunggu,
+      // name: 'Durasi Tunggu',
+      // data: durasiTunggu,
+      name: 'Durasi Rawat Jalan',
+      data: durasi_rawat_jalan,
     },
     {
       name: 'Durasi Temu Dokter',
-      data: durasiTemuDokter,
+      // data: durasiTemuDokter,
+      data: durasi_temu_dokter,
     },
   ];
 
@@ -71,6 +84,8 @@ export const BusinessProcessCharts = () => {
       categories: datesSorted,
     },
     yaxis: {
+      min: 0,
+      max: 240,
       title: {
         text: 'Durasi (menit)',
       },
