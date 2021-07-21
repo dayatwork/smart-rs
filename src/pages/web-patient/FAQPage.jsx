@@ -95,8 +95,8 @@ const FAQPage = () => {
                         flex="1"
                         textAlign="left"
                         fontSize="xl"
-                        fontWeight="semibold"
-                        textTransform="uppercase"
+                        fontWeight="bold"
+                        // textTransform="uppercase"
                       >
                         {faq.name}
                       </Box>
