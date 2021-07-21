@@ -142,8 +142,6 @@ const FAQList = ({ cookies }) => {
     isLoading: isLoadingFAQ,
   } = useQuery(['faq'], () => getFAQList(cookies));
 
-  console.log({ dataFAQ });
-
   const handleEdit = useCallback(
     faqId => {
       const faq = dataFAQ?.data.find(faq => faq.id === faqId);
@@ -166,8 +164,6 @@ const FAQList = ({ cookies }) => {
       })),
     [isSuccessFAQ, dataFAQ?.data]
   );
-
-  // console.log({ dataDrugs });
 
   const columns = React.useMemo(
     () => [
@@ -305,7 +301,6 @@ const AddFAQModal = ({ isOpen, onClose }) => {
   });
 
   const onSubmit = async values => {
-    console.log({ values });
     const data = {
       category_id: values.category_id,
       question: values.question,
@@ -512,8 +507,6 @@ const FAQCategoryList = ({ cookies }) => {
     isLoading: isLoadingFAQCategory,
   } = useQuery(['faq-category'], () => getFAQCategoryList(cookies));
 
-  console.log({ dataFAQCategory });
-
   const handleEdit = useCallback(
     categoryId => {
       const category = dataFAQCategory?.data.find(
@@ -536,8 +529,6 @@ const FAQCategoryList = ({ cookies }) => {
       })),
     [dataFAQCategory, isSuccessFAQCategory]
   );
-
-  // console.log({ dataDrugs });
 
   const columns = React.useMemo(
     () => [

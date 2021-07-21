@@ -74,7 +74,7 @@ export const updateFAQ = (cookies, id) => async data => {
   return await res.json();
 };
 
-export const deleteApplication = (cookies, id) => async () => {
+export const deleteFAQ = (cookies, id) => async () => {
   const formattedId = id.replace(/['"]+/g, '');
   const res = await fetch(
     `${process.env.REACT_APP_APPLICATION_API}/faq/delete?id=${formattedId}`,

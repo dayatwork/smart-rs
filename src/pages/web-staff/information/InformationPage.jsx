@@ -12,7 +12,7 @@ import { subMenus } from './subMenus';
 
 import { PrivateRoute, Permissions } from '../../../access-control';
 import { AuthContext } from '../../../contexts/authContext';
-import { FAQPage } from './sub-page';
+import { FAQPage, AboutUsPage, PrivacyPolicyPage } from './sub-page';
 
 const InformationPage = () => {
   const { path } = useRouteMatch();
@@ -61,6 +61,12 @@ const InformationPage = () => {
 
               <Route path={`${path}/faq`}>
                 <FAQPage />
+              </Route>
+              <Route path={`${path}/about`}>
+                <AboutUsPage />
+              </Route>
+              <Route path={`${path}/privacy-policy`}>
+                <PrivacyPolicyPage />
               </Route>
             </Switch>
           </ContentWrapper>
