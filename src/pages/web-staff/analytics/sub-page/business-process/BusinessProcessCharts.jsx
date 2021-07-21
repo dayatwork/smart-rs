@@ -110,6 +110,8 @@ export const BusinessProcessCharts = () => {
       categories: datesSorted,
     },
     yaxis: {
+      min: 0,
+      max: 100,
       title: {
         text: 'Bed Occupancy Rate (%)',
       },
@@ -152,7 +154,7 @@ export const BusinessProcessCharts = () => {
         text: 'Length of Stay (hari)',
       },
       min: 0,
-      max: 22,
+      max: 30,
     },
     tooltip: {
       x: {
@@ -190,7 +192,7 @@ export const BusinessProcessCharts = () => {
     },
     yaxis: {
       min: 0,
-      max: 10,
+      max: 100,
       title: {
         text: 'Gross Death Rate (%)',
       },
@@ -208,36 +210,31 @@ export const BusinessProcessCharts = () => {
   };
 
   return (
-    <Box bg="white" p="10" rounded="md" boxShadow="md">
-      <Heading mb="6" textAlign="center">
-        Proses Bisnis
-      </Heading>
-      <SimpleGrid columns={2} gap="14" px="14">
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            Durasi
-          </Heading>
-          <Chart options={options} series={series} type="area" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            BOR
-          </Heading>
-          <Chart options={options1} series={series1} type="area" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            LOS
-          </Heading>
-          <Chart options={options2} series={series2} type="area" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            GDR
-          </Heading>
-          <Chart options={options3} series={series3} type="area" width="100%" />
-        </Box>
-      </SimpleGrid>
-    </Box>
+    <SimpleGrid columns={2} gap="14">
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          Durasi
+        </Heading>
+        <Chart options={options} series={series} type="area" width="100%" />
+      </Box>
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          BOR
+        </Heading>
+        <Chart options={options1} series={series1} type="area" width="100%" />
+      </Box>
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          LOS
+        </Heading>
+        <Chart options={options2} series={series2} type="area" width="100%" />
+      </Box>
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          GDR
+        </Heading>
+        <Chart options={options3} series={series3} type="area" width="100%" />
+      </Box>
+    </SimpleGrid>
   );
 };

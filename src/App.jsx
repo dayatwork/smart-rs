@@ -300,7 +300,7 @@ const AppRoutes = () => {
       <AuthenticatedRoute exact path="/dashboard/advertisement/edit/:id">
         <EditAdvertisementPage />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/analytics">
+      <AuthenticatedRoute path="/analytics">
         <AnalyticsPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/master" pageTitle="Master | SMART-RS">

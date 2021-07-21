@@ -6,7 +6,7 @@ function randomInRange(start, end) {
   return Math.floor(Math.random() * (end - start + 1) + start);
 }
 
-export const CustomerStatisticsCharts = () => {
+export const CustomersCharts = () => {
   const goBackDays = 6;
   const today = new Date();
   const datesSorted = [new Date().toISOString().split('T')[0]];
@@ -138,24 +138,19 @@ export const CustomerStatisticsCharts = () => {
   };
 
   return (
-    <Box bg="white" p="10" rounded="md" boxShadow="md">
-      <Heading mb="6" textAlign="center">
-        Pelanggan
-      </Heading>
-      <SimpleGrid columns={2} gap="14" px="14">
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            Pasien
-          </Heading>
-          <Chart options={options} series={series} type="bar" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            Kepuasan Pelanggan
-          </Heading>
-          <Chart options={options1} series={series1} type="area" width="100%" />
-        </Box>
-      </SimpleGrid>
-    </Box>
+    <SimpleGrid columns={2} gap="14">
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          Pasien
+        </Heading>
+        <Chart options={options} series={series} type="bar" width="100%" />
+      </Box>
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          Kepuasan Pelanggan
+        </Heading>
+        <Chart options={options1} series={series1} type="area" width="100%" />
+      </Box>
+    </SimpleGrid>
   );
 };

@@ -145,24 +145,19 @@ export const LearningGrowthCharts = () => {
   };
 
   return (
-    <Box bg="white" p="10" rounded="md" boxShadow="md">
-      <Heading textAlign="center" mb="10">
-        Learning & Growth
-      </Heading>
-      <SimpleGrid columns={2} gap="14" px="14">
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            Jumlah Staff
-          </Heading>
-          <Chart options={options} series={series} type="bar" width="100%" />
-        </Box>
-        <Box>
-          <Heading size="lg" textAlign="center" mb="4">
-            Produktivitas Staff
-          </Heading>
-          <Chart options={options1} series={series1} type="line" width="100%" />
-        </Box>
-      </SimpleGrid>
-    </Box>
+    <SimpleGrid columns={2} gap="14">
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          Jumlah Staff
+        </Heading>
+        <Chart options={options} series={series} type="bar" width="100%" />
+      </Box>
+      <Box bg="white" p="10" rounded="md" boxShadow="md">
+        <Heading size="lg" textAlign="center" mb="4">
+          Produktivitas Staff
+        </Heading>
+        <Chart options={options1} series={series1} type="line" width="100%" />
+      </Box>
+    </SimpleGrid>
   );
 };
