@@ -31,7 +31,7 @@ import svg9 from '../../assets/severity/9.svg';
 import svg10 from '../../assets/severity/10.svg';
 
 const HomeMonitoringPage = () => {
-  const [feelingBetter, setFeelingBeeter] = useState('');
+  // const [feelingBetter, setFeelingBeeter] = useState('no');
   const [isMedicineHelp, setIsMedicineHelp] = useState('');
   const [severity, setSeverity] = useState('');
   const options1 = ['yes', 'no'];
@@ -40,54 +40,54 @@ const HomeMonitoringPage = () => {
       text: 'No Pain',
       icon: svg0,
     },
+    // {
+    //   text: 'Very Mild',
+    //   icon: svg1,
+    // },
     {
-      text: 'Very Mild',
-      icon: svg1,
-    },
-    {
-      text: 'Discomforting',
+      text: 'Mild Pain',
       icon: svg2,
     },
     {
-      text: 'Tolerable',
+      text: 'Moderate Pain ',
       icon: svg3,
     },
+    // {
+    //   text: 'Distressing',
+    //   icon: svg4,
+    // },
     {
-      text: 'Distressing',
-      icon: svg4,
-    },
-    {
-      text: 'Very Distressing',
+      text: 'Severe Pain',
       icon: svg5,
     },
+    // {
+    //   text: 'Intense',
+    //   icon: svg6,
+    // },
     {
-      text: 'Intense',
-      icon: svg6,
-    },
-    {
-      text: 'Very Intense',
+      text: 'Very Severe Pain',
       icon: svg7,
     },
+    // {
+    //   text: 'Horrible',
+    //   icon: svg8,
+    // },
+    // {
+    //   text: 'Unbearable',
+    //   icon: svg9,
+    // },
     {
-      text: 'Horrible',
-      icon: svg8,
-    },
-    {
-      text: 'Unbearable',
-      icon: svg9,
-    },
-    {
-      text: 'Unspeakable',
+      text: 'Worst Pain Possible',
       icon: svg10,
     },
   ];
 
-  const { getRootProps: getRootProps1, getRadioProps: getRadioProps1 } =
-    useRadioGroup({
-      name: 'feeling_better',
-      defaultValue: feelingBetter,
-      onChange: v => setFeelingBeeter(v),
-    });
+  // const { getRootProps: getRootProps1, getRadioProps: getRadioProps1 } =
+  //   useRadioGroup({
+  //     name: 'feeling_better',
+  //     defaultValue: feelingBetter,
+  //     onChange: v => setFeelingBeeter(v),
+  //   });
 
   const { getRootProps: getRootProps2, getRadioProps: getRadioProps2 } =
     useRadioGroup({
@@ -103,11 +103,11 @@ const HomeMonitoringPage = () => {
       onChange: v => setIsMedicineHelp(v),
     });
 
-  console.log({ feelingBetter });
+  // console.log({ feelingBetter });
   console.log({ isMedicineHelp });
   console.log({ severity });
 
-  const group1 = getRootProps1();
+  // const group1 = getRootProps1();
   const group2 = getRootProps2();
   const group3 = getRootProps3();
 
@@ -152,7 +152,7 @@ const HomeMonitoringPage = () => {
             </Box>
           </Flex>
           <Divider mt="6" mb="4" />
-          <Box>
+          {/* <Box>
             <Text fontSize="2xl" fontWeight="semibold">
               1. Are you feeling better today?
             </Text>
@@ -168,20 +168,23 @@ const HomeMonitoringPage = () => {
                 })}
               </HStack>
             </Box>
-          </Box>
+          </Box> */}
           <Box>
             <Text fontSize="2xl" fontWeight="semibold">
-              2. From scale 0 to 10, how would you rate your symptoms?
+              1. From scale 0 to 10, how would you rate your symptoms?
             </Text>
             <Box p="6">
-              <SimpleGrid columns={5} gap="2" {...group2}>
-                {severityOptions.map(({ text, icon }) => {
+              <SimpleGrid columns={6} gap="4" {...group2}>
+                {severityOptions.map(({ text, icon }, index) => {
                   const radio = getRadioProps2({ value: text });
                   return (
                     <RadioCard key={text} {...radio}>
                       <VStack>
+                        <Text>{index * 2}</Text>
                         <Image src={icon} w="16" />
-                        <Text>{text}</Text>
+                        <Text fontSize="sm" textTransform="none">
+                          {text}
+                        </Text>
                       </VStack>
                     </RadioCard>
                   );
@@ -191,7 +194,7 @@ const HomeMonitoringPage = () => {
           </Box>
           <Box>
             <Text fontSize="2xl" fontWeight="semibold">
-              3. Does drinking the medicine helps in alleviating the pain?
+              2. Does drinking the medicine helps in alleviating the pain?
             </Text>
             <Box p="6">
               <HStack {...group3}>
