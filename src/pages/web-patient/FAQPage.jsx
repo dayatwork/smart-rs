@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -8,14 +7,13 @@ import {
   AccordionPanel,
   Box,
   Center,
-  Divider,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Spinner,
-  Text,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { BsCaretLeftFill } from 'react-icons/bs';
 import { useCookies } from 'react-cookie';
 
 import { getFAQCategoryList, getFAQList } from 'api/application-services/faq';
@@ -23,6 +21,7 @@ import { WebPatientNav, Wrapper } from 'components/web-patient/shared';
 
 const FAQPage = () => {
   const [cookies] = useCookies(['token']);
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const {
     data: dataFAQCategory,
@@ -32,91 +31,152 @@ const FAQPage = () => {
     staleTime: Infinity,
   });
 
+  console.log({ dataFAQCategory });
+
   const {
     data: dataFAQ,
     // isSuccess: isSuccessFAQ,
     isLoading: isLoadingFAQ,
   } = useQuery(['faq'], () => getFAQList(cookies), { staleTime: Infinity });
 
-  const faqs = dataFAQCategory?.data?.map(category => ({
-    id: category?.id,
-    name: category?.name,
-    items: dataFAQ?.data?.filter(faq => faq.category_id === category.id),
-  }));
+  // const faqs = dataFAQCategory?.data?.map(category => ({
+  //   id: category?.id,
+  //   name: category?.name,
+  //   items: dataFAQ?.data?.filter(faq => faq.category_id === category.id),
+  // }));
+  const faqs = dataFAQ?.data?.filter(
+    faq => faq.category_id === selectedCategory
+  );
+
+  useEffect(() => {
+    if (dataFAQCategory?.data?.length) {
+      setSelectedCategory(dataFAQCategory?.data[0]?.id);
+    }
+  }, [dataFAQCategory?.data]);
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav />
-      <Wrapper>
-        <Box
-          as={Link}
-          to="/"
-          display="inline-flex"
-          alignItems="center"
-          color="secondary.dark"
-          fontSize="sm"
-          fontWeight="semibold"
-          mb="4"
-          rounded="lg"
-          px="2"
-          py="1"
-          _hover={{ bg: 'gray.50' }}
-        >
-          <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
-          Back to Home
-        </Box>
-        <Box maxW="4xl" mx="auto">
-          <Heading textAlign="center" mb="6">
-            Frequently asked questions
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
+            Frequency Asked Question
           </Heading>
-          {isLoadingFAQ || isLoadingFAQCategory ? (
-            <Center h="60">
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="secondary.light"
-                color="secondary.dark"
-                size="xl"
-              />
-            </Center>
-          ) : (
-            <Accordion
-              defaultIndex={dataFAQCategory?.data?.map((_, index) => index)}
-              allowMultiple
-              bg="white"
-              boxShadow="sm"
-              rounded="md"
-            >
-              {faqs?.map(faq => (
-                <AccordionItem key={faq.id}>
-                  <h2>
-                    <AccordionButton>
-                      <Box
-                        flex="1"
-                        textAlign="left"
-                        fontSize="xl"
-                        fontWeight="bold"
-                        // textTransform="uppercase"
-                      >
-                        {faq.name}
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    {faq?.items?.map((data, index) => (
-                      <Box key={data.id} mb="4">
-                        <Text fontWeight="semibold">{data.question}</Text>
-                        <Text>{data.answer}</Text>
-                        {faq.items.length - 1 !== index && <Divider py="1" />}
-                      </Box>
-                    ))}
-                  </AccordionPanel>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          )}
         </Box>
+      </Box>
+      <Wrapper>
+        {isLoadingFAQ || isLoadingFAQCategory ? (
+          <Center h="60">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="secondary.light"
+              color="secondary.dark"
+              size="xl"
+            />
+          </Center>
+        ) : (
+          <>
+            <Grid gridTemplateColumns="repeat(4,1fr)" gap="8">
+              <GridItem
+                mb="2"
+                fontSize="md"
+                pl="1"
+                fontWeight="bold"
+                color="gray.600"
+                textTransform="uppercase"
+              >
+                Category
+              </GridItem>
+              <GridItem
+                colSpan={3}
+                mb="2"
+                fontSize="md"
+                pl="1"
+                fontWeight="bold"
+                color="gray.600"
+                textTransform="uppercase"
+              >
+                FAQ
+              </GridItem>
+            </Grid>
+            <Grid gridTemplateColumns="repeat(4,1fr)" gap="8">
+              <GridItem>
+                <Box
+                  as="ul"
+                  listStyleType="none"
+                  bg="white"
+                  boxShadow="md"
+                  rounded="md"
+                  overflow="hidden"
+                >
+                  {dataFAQCategory?.data?.map(category => (
+                    <Box
+                      key={category.id}
+                      as="li"
+                      py="4"
+                      px="6"
+                      borderBottom="1px"
+                      borderColor="gray.200"
+                      fontSize="lg"
+                      fontWeight="semibold"
+                      bgColor={
+                        selectedCategory === category.id && 'secondary.dark'
+                      }
+                      color={selectedCategory === category.id && 'white'}
+                      cursor="pointer"
+                      _hover={{
+                        bgColor:
+                          selectedCategory === category.id
+                            ? 'secondary.darker'
+                            : 'secondary.light',
+                      }}
+                      onClick={() => setSelectedCategory(category.id)}
+                    >
+                      {category.name}
+                    </Box>
+                  ))}
+                </Box>
+              </GridItem>
+              <GridItem colSpan={3}>
+                <Box>
+                  <Accordion
+                    allowMultiple
+                    bg="white"
+                    boxShadow="sm"
+                    rounded="md"
+                  >
+                    {faqs?.map(faq => (
+                      <AccordionItem key={faq.id}>
+                        <h2>
+                          <AccordionButton>
+                            <Box
+                              flex="1"
+                              textAlign="left"
+                              fontSize="lg"
+                              fontWeight="bold"
+                              px="4"
+                              py="2"
+                              // textTransform="uppercase"
+                            >
+                              {faq.question}
+                            </Box>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel>
+                          <Box px="4" py="1">
+                            {faq.answer}
+                          </Box>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </Box>
+              </GridItem>
+            </Grid>
+          </>
+        )}
       </Wrapper>
     </Flex>
   );

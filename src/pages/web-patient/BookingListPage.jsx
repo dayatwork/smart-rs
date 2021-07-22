@@ -267,6 +267,13 @@ const BookingListPage = () => {
         <title>Doctor | SMART-RS</title>
       </Helmet>
       <WebPatientNav active="doctor" />
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
+            Riwayat Transaksi
+          </Heading>
+        </Box>
+      </Box>
       <Wrapper>
         {/* <Heading fontSize="2xl" mb="4">
           Pemeriksaan Dokter
@@ -274,9 +281,9 @@ const BookingListPage = () => {
         {/* Booking Step */}
         <CreateNewBooking dataBooking={currentBooking} />
 
-        <Heading fontSize="2xl" mb="6" mt="-4">
+        {/* <Heading fontSize="2xl" mb="6" mt="-4">
           Riwayat Transaksi
-        </Heading>
+        </Heading> */}
 
         <Box mb="4">
           <HStack mb="2">

@@ -83,7 +83,7 @@ const BookingDoctorPage = () => {
       overflow="hidden"
     >
       <WebPatientNav active="dokter" />
-      <Box bg="white" boxShadow="sm">
+      <Box bg="secondary.dark" boxShadow="sm">
         <Box pt="6" pb="3" maxW="7xl" mx="auto">
           <Flex
             direction={{ base: 'column', md: 'row' }}
@@ -91,7 +91,7 @@ const BookingDoctorPage = () => {
             align="center"
             px="4"
           >
-            <Heading fontSize="2xl" mb={{ base: '4', md: '0' }}>
+            <Heading fontSize="2xl" mb={{ base: '4', md: '0' }} color="white">
               Booking Dokter
             </Heading>
             {/* Booking Step */}
@@ -111,7 +111,8 @@ const BookingDoctorPage = () => {
             </Box>
           </Flex>
           <Text
-            color="red.500"
+            // color="red.500"
+            color="white"
             fontWeight="semibold"
             textAlign={{ base: 'center', md: 'right' }}
             mt="2"

@@ -58,8 +58,8 @@ export const Notification = props => (
     <MenuButton
       as={Button}
       bg="transparent"
-      _hover={{ bg: 'primary.500' }}
-      _active={{ bg: 'primary.800' }}
+      _hover={{ bg: props.light ? 'primary.500' : 'primary.100' }}
+      _active={{ bg: 'primary.500', color: 'white' }}
     >
       <Center
         // as="button"
@@ -74,7 +74,7 @@ export const Notification = props => (
       >
         <Box srOnly>Click to see 9 notifications</Box>
         <NotificationBadge>9</NotificationBadge>
-        <Box as={FaBell} fontSize="lg" fill="white" />
+        <Box as={FaBell} fontSize="lg" fill={props.light ? 'white' : 'gray'} />
       </Center>
     </MenuButton>
     <MenuList w="sm">

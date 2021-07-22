@@ -114,6 +114,13 @@ const HomeMonitoringPage = () => {
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav />
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
+            Home Monitoring
+          </Heading>
+        </Box>
+      </Box>
       <Wrapper>
         <Box
           as={Link}

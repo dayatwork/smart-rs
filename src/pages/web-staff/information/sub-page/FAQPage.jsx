@@ -157,6 +157,7 @@ const FAQList = ({ cookies }) => {
       dataFAQ?.data?.map(faq => ({
         id: faq.id,
         category_id: faq.category_id,
+        category_name: faq.category_name,
         question: faq.question,
         answer: faq.answer,
         created_at: faq.created_at,
@@ -173,8 +174,8 @@ const FAQList = ({ cookies }) => {
         Cell: ({ value }) => <Box>{value?.substring(0, 5)}...</Box>,
       },
       {
-        Header: 'Category ID',
-        accessor: 'category_id',
+        Header: 'Category',
+        accessor: 'category_name',
       },
       {
         Header: 'Question',

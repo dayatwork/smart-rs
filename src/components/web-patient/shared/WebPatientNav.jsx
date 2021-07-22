@@ -8,6 +8,7 @@ import { Logo, NavItem, Notification, ProfileDropdown } from '../shared';
 import { AuthContext } from '../../../contexts/authContext';
 import { MenuButton } from './MenuButton';
 import { MobileSidebarPatient } from './MobileSidebarPatient';
+import { MdQuestionAnswer } from 'react-icons/md';
 
 export const WebPatientNav = ({ active }) => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -22,8 +23,9 @@ export const WebPatientNav = ({ active }) => {
       <MobileSidebarPatient isOpen={isOpenMobile} onClose={onCloseMobile} />
       <Flex
         align="center"
-        bg="secondary.dark"
-        color="white"
+        // bg="secondary.dark"
+        bg="white"
+        // color="white"
         px={{ base: '4', md: '6' }}
         h="16"
         boxShadow="lg"
@@ -57,6 +59,12 @@ export const WebPatientNav = ({ active }) => {
               label="Riwayat Pelayanan"
               href="/examination"
             />
+            <NavItem.Desktop
+              active={active === 'faq'}
+              icon={<MdQuestionAnswer />}
+              label="FAQ"
+              href="/faq"
+            />
           </HStack>
 
           <HStack spacing="3">
@@ -66,10 +74,10 @@ export const WebPatientNav = ({ active }) => {
                 display={{ base: 'none', lg: 'inline-flex' }}
                 as={Link}
                 to="/dashboard"
-                bg="white"
+                // bg="white"
                 colorScheme="primary"
                 size="sm"
-                variant="ghost"
+                variant="solid"
               >
                 Dashboard Staff
               </Button>

@@ -41,7 +41,8 @@ import { getServices } from 'api/master-data-services/service';
 import { AdvertisementCard } from 'components/web-patient/home';
 import { Notification, ProfileDropdown } from 'components/web-patient/shared';
 import { RiHistoryFill, RiStethoscopeFill } from 'react-icons/ri';
-import { HiHome, HiOutlineQuestionMarkCircle } from 'react-icons/hi';
+import { HiHome } from 'react-icons/hi';
+import { MdQuestionAnswer } from 'react-icons/md';
 
 const responsive = {
   superLargeDesktop: {
@@ -245,7 +246,7 @@ export default function HomePage() {
                     rounded="md"
                   >
                     <Icon as={RiHistoryFill} w="5" h="5" />
-                    <Link to="/doctor">Riwayat Pesanan</Link>
+                    <Link to="/doctor">Riwayat Transaksi</Link>
                   </HStack>
                   <HStack
                     as="li"
@@ -268,7 +269,7 @@ export default function HomePage() {
                     py="1"
                     rounded="md"
                   >
-                    <Icon as={HiOutlineQuestionMarkCircle} w="5" h="5" />
+                    <Icon as={MdQuestionAnswer} w="5" h="5" />
                     <Link to="/faq">FAQ</Link>
                   </HStack>
                 </HStack>
@@ -291,7 +292,7 @@ export default function HomePage() {
                 )}
                 <Notification
                   display={{ base: 'none', lg: 'inline-flex' }}
-                  // light
+                  light
                 />
                 <Box display={{ base: 'none', lg: 'block' }}>
                   <ProfileDropdown />

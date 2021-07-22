@@ -88,10 +88,17 @@ const PatientExaminationResultsPage = () => {
         <title>Examination | SMART-RS</title>
       </Helmet>
       <WebPatientNav active="examination" />
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
+            Riwayat Pelayanan
+          </Heading>
+        </Box>
+      </Box>
       <Wrapper>
-        <Heading fontSize="2xl" mb="6">
+        {/* <Heading fontSize="2xl" mb="6">
           Examination Result
-        </Heading>
+        </Heading> */}
 
         <Box mb="4">
           {/* <Heading fontSize="lg" mb="2" fontWeight="medium">

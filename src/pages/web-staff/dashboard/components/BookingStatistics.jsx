@@ -37,7 +37,7 @@ export const BookingStatistics = ({ selectedInstitution, cookies }) => {
   //   );
   // }
 
-  console.log({ data });
+  // console.log({ data });
 
   return (
     <Box>
