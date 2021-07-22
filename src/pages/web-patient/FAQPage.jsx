@@ -56,7 +56,7 @@ const FAQPage = () => {
 
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
-      <WebPatientNav />
+      <WebPatientNav active="faq" />
       <Box bg="secondary.dark" py="10">
         <Box maxW="7xl" mx="auto">
           <Heading color="white" fontSize="2xl">

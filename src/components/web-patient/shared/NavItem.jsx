@@ -18,7 +18,7 @@ const DesktopNavItem = props => {
       _hover={{ bg: 'gray.200' }}
       // color="gray.200"
       // _hover={{ bg: 'whiteAlpha.200' }}
-      // _activeLink={{ bg: 'blackAlpha.300', color: 'white' }}
+      _activeLink={{ bg: 'secondary.dark', color: 'white' }}
     >
       {icon && (
         <Box aria-hidden fontSize="md">
