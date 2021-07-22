@@ -154,29 +154,35 @@ const BookingDetailPage = () => {
         handleCancel={handleCancel}
         isLoadingCancel={isLoadingCancel}
       />
-      <Wrapper>
-        <Box
-          as={Link}
-          to="/doctor"
-          display="inline-flex"
-          alignItems="center"
-          color="secondary.dark"
-          fontSize="sm"
-          fontWeight="semibold"
-          mb="4"
-          rounded="lg"
-          px="2"
-          py="1"
-          _hover={{ bg: 'gray.50' }}
-        >
-          <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
-          Back to list
-        </Box>
-
-        <Flex justify="space-between" align="center">
-          <Heading fontSize="2xl" mb="8">
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
             Detail Booking
           </Heading>
+        </Box>
+      </Box>
+      <Wrapper>
+        <Flex justify="space-between" align="center">
+          <Box
+            as={Link}
+            to="/doctor"
+            display="inline-flex"
+            alignItems="center"
+            color="secondary.dark"
+            fontSize="sm"
+            fontWeight="semibold"
+            mb="4"
+            rounded="lg"
+            px="2"
+            py="1"
+            _hover={{ bg: 'gray.50' }}
+          >
+            <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
+            Back to list
+          </Box>
+          {/* <Heading fontSize="2xl" mb="8">
+            Detail Booking
+          </Heading> */}
           {dataBookingDetail?.data?.booking_status?.toLowerCase() ===
             'booked' &&
             dataBookingDetail?.data?.booking_orders[0]?.status !== 'paid' && (

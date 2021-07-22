@@ -107,37 +107,19 @@ const PatientExaminationResultsDetailPage = () => {
     []
   );
 
-  if (isLoadingSoap || isLoadingPatientPrescriptions) {
-    return (
-      <Flex direction="column" bg="gray.100" minH="100vh">
-        <Helmet>
-          <title>Examination Detail | SMART-RS</title>
-        </Helmet>
-        <WebPatientNav active="doctor" />
-        <Wrapper>
-          <Heading fontSize="2xl" mb="6">
-            Examination Result Details
-          </Heading>
-          <Center h="60">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="secondary.light"
-              color="secondary.dark"
-              size="xl"
-            />
-          </Center>
-        </Wrapper>
-      </Flex>
-    );
-  }
-
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <Helmet>
         <title>Examination Detail | SMART-RS</title>
       </Helmet>
       <WebPatientNav active="examination" />
+      <Box bg="secondary.dark" py="10">
+        <Box maxW="7xl" mx="auto">
+          <Heading color="white" fontSize="2xl">
+            Hasil Pemeriksaan
+          </Heading>
+        </Box>
+      </Box>
       <Wrapper>
         <Box
           as={Link}
@@ -156,28 +138,40 @@ const PatientExaminationResultsDetailPage = () => {
           <Box as={BsCaretLeftFill} fontSize="xs" marginEnd="1" />
           Back to list
         </Box>
-        <Heading fontSize="2xl" mb="6">
+        {/* <Heading fontSize="2xl" mb="6">
           Examination Result Details
-        </Heading>
-        <Box px="6" py="4" bgColor="white" boxShadow="md">
-          <Box mb="4">
-            <Heading fontSize="xl">Examination Info</Heading>
-            <Property
-              label="Doctor Name"
-              value={dataSoap?.data?.doctor?.name || '-'}
+        </Heading> */}
+        {isLoadingSoap || isLoadingPatientPrescriptions ? (
+          <Center h="60">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="secondary.light"
+              color="secondary.dark"
+              size="xl"
             />
+          </Center>
+        ) : (
+          <Box px="6" py="4" bgColor="white" boxShadow="md">
+            <Box mb="4">
+              <Heading fontSize="xl">Examination Info</Heading>
+              <Property
+                label="Doctor Name"
+                value={dataSoap?.data?.doctor?.name || '-'}
+              />
+            </Box>
+            <Box>
+              <Heading fontSize="xl">Prescription</Heading>
+              <BookingTable
+                data={data || []}
+                columns={columns}
+                isLoading={isLoadingPatientPrescriptions}
+                skeletonCols={7}
+                noFilter
+              />
+            </Box>
           </Box>
-          <Box>
-            <Heading fontSize="xl">Prescription</Heading>
-            <BookingTable
-              data={data || []}
-              columns={columns}
-              isLoading={isLoadingPatientPrescriptions}
-              skeletonCols={7}
-              noFilter
-            />
-          </Box>
-        </Box>
+        )}
       </Wrapper>
     </Flex>
   );
