@@ -58,7 +58,7 @@ const FAQPage = () => {
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="faq" />
       <Box bg="secondary.dark" py="10">
-        <Box maxW="7xl" mx="auto">
+        <Box maxW="7xl" mx="auto" px="4">
           <Heading color="white" fontSize="2xl">
             Frequency Asked Question
           </Heading>

@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
-import { Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { HiHome } from 'react-icons/hi';
-import { RiStethoscopeFill, RiHistoryFill } from 'react-icons/ri';
+import {
+  RiStethoscopeFill,
+  RiHistoryFill,
+  RiDashboardFill,
+} from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
 import { Logo, NavItem, Notification, ProfileDropdown } from '../shared';
@@ -67,7 +71,9 @@ export const WebPatientNav = ({ active }) => {
             />
           </HStack>
 
-          <HStack spacing="3">
+          <Box display={{ base: 'flex', lg: 'none' }} w="14" />
+
+          <HStack spacing="3" display={{ base: 'none', lg: 'flex' }}>
             {(employeeDetail?.employee_id ||
               user?.role?.alias === 'super-admin') && (
               <Button
@@ -78,6 +84,7 @@ export const WebPatientNav = ({ active }) => {
                 colorScheme="primary"
                 size="sm"
                 variant="solid"
+                leftIcon={<RiDashboardFill />}
               >
                 Dashboard Staff
               </Button>

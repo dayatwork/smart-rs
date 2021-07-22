@@ -40,7 +40,11 @@ import { getInstitutions } from 'api/institution-services/institution';
 import { getServices } from 'api/master-data-services/service';
 import { AdvertisementCard } from 'components/web-patient/home';
 import { Notification, ProfileDropdown } from 'components/web-patient/shared';
-import { RiHistoryFill, RiStethoscopeFill } from 'react-icons/ri';
+import {
+  RiDashboardFill,
+  RiHistoryFill,
+  RiStethoscopeFill,
+} from 'react-icons/ri';
 import { HiHome } from 'react-icons/hi';
 import { MdQuestionAnswer } from 'react-icons/md';
 
@@ -286,6 +290,7 @@ export default function HomePage() {
                     colorScheme="primary"
                     size="sm"
                     variant="ghost"
+                    leftIcon={<RiDashboardFill />}
                   >
                     Dashboard Staff
                   </Button>

@@ -27,7 +27,7 @@ export const Logo = ({ mini, mobile, light, ...rest }) => {
     <Link to="/">
       <VisuallyHidden>Logo</VisuallyHidden>
       <Flex
-        bg={light ? 'white' : 'secondary.dark'}
+        // bg={light ? 'white' : 'secondary.dark'}
         h="16"
         px="4"
         align="center"

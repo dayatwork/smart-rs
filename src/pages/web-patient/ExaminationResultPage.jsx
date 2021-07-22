@@ -89,7 +89,7 @@ const PatientExaminationResultsPage = () => {
       </Helmet>
       <WebPatientNav active="examination" />
       <Box bg="secondary.dark" py="10">
-        <Box maxW="7xl" mx="auto">
+        <Box maxW="7xl" mx="auto" px="4">
           <Heading color="white" fontSize="2xl">
             Riwayat Pelayanan
           </Heading>
