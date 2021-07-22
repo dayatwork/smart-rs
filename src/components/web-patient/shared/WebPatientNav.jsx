@@ -1,5 +1,12 @@
 import React, { useContext } from 'react';
-import { Box, Button, Flex, HStack, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { HiHome } from 'react-icons/hi';
 import {
   RiStethoscopeFill,
@@ -7,6 +14,7 @@ import {
   RiDashboardFill,
 } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import LogoRS from 'assets/Logo';
 
 import { Logo, NavItem, Notification, ProfileDropdown } from '../shared';
 import { AuthContext } from '../../../contexts/authContext';
@@ -31,16 +39,38 @@ export const WebPatientNav = ({ active }) => {
         bg="white"
         // color="white"
         px={{ base: '4', md: '6' }}
-        h="16"
+        h="20"
         boxShadow="lg"
       >
         <Flex justify="space-between" align="center" w="7xl" mx="auto">
-          <HStack spacing="3">
+          <HStack spacing="3" mr="4">
             <MenuButton
               onClick={onOpenMobile}
               display={{ base: 'flex', lg: 'none' }}
             />
-            <Logo light display={{ base: 'none', lg: 'flex' }} />
+            {/* <Logo
+              light
+              display={{ base: 'none', lg: 'flex' }}
+              // width={65}
+              // height={65}
+            /> */}
+            <Flex>
+              <LogoRS width={65} height={65} />
+              <Box mr="4" ml="2">
+                <Text fontSize="2xl" color="primary.500" fontWeight="bold">
+                  SMART-RS
+                </Text>
+
+                <Text
+                  fontSize="lg"
+                  fontWeight="semibold"
+                  color="secondary.darker"
+                  mt="-1.5"
+                >
+                  Web Pasien
+                </Text>
+              </Box>
+            </Flex>
           </HStack>
           <Logo mini display={{ base: 'flex', lg: 'none' }} />
 
