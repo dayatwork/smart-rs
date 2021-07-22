@@ -2,10 +2,12 @@ import React, { useState, useContext } from 'react';
 import {
   Box,
   Button,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
   Heading,
+  HStack,
   Select,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
@@ -13,6 +15,7 @@ import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import { Helmet } from 'react-helmet-async';
 import { HiSpeakerphone } from 'react-icons/hi';
+import { MdQuestionAnswer } from 'react-icons/md';
 
 import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
@@ -46,15 +49,26 @@ const DashboardPage = () => {
               <Heading fontSize={{ base: '3xl', '2xl': '4xl' }}>
                 Dashboard
               </Heading>
-              <Button
-                colorScheme="purple"
-                as={Link}
-                to="/dashboard/advertisement/create"
-                leftIcon={<HiSpeakerphone />}
-              >
-                Create Advertisement
-              </Button>
+              <HStack>
+                <Button
+                  colorScheme="purple"
+                  as={Link}
+                  to="/dashboard/faq/create"
+                  leftIcon={<MdQuestionAnswer />}
+                >
+                  New FAQ
+                </Button>
+                <Button
+                  colorScheme="purple"
+                  as={Link}
+                  to="/dashboard/advertisement/create"
+                  leftIcon={<HiSpeakerphone />}
+                >
+                  New Advertisement
+                </Button>
+              </HStack>
             </Flex>
+            <Divider mb="6" />
             {user?.role?.alias === 'super-admin' && (
               <FormControl id="name" mb="6" maxW="xs">
                 <FormLabel>Institution</FormLabel>

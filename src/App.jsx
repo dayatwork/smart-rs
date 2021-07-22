@@ -98,9 +98,6 @@ const AdvertisementListPage = Loadable(
     import('./pages/web-staff/dashboard/sub-page/AdvertisementListPage')
   )
 );
-const AnalyticsPage = Loadable(
-  lazy(() => import('./pages/web-staff/analytics/AnalyticsPage'))
-);
 const CreateAdvertisementPage = Loadable(
   lazy(() =>
     import('./pages/web-staff/dashboard/sub-page/CreateAdvertisementPage')
@@ -111,6 +108,19 @@ const EditAdvertisementPage = Loadable(
     import('./pages/web-staff/dashboard/sub-page/EditAdvertisementPage')
   )
 );
+const FAQListPage = Loadable(
+  lazy(() => import('./pages/web-staff/dashboard/sub-page/FAQListPage'))
+);
+const CreateFAQPage = Loadable(
+  lazy(() => import('./pages/web-staff/dashboard/sub-page/CreateFAQPage'))
+);
+const EditFAQPage = Loadable(
+  lazy(() => import('./pages/web-staff/dashboard/sub-page/EditFAQPage'))
+);
+const AnalyticsPage = Loadable(
+  lazy(() => import('./pages/web-staff/analytics/AnalyticsPage'))
+);
+
 const MasterPage = Loadable(
   lazy(() => import('./pages/web-staff/master/MasterPage'))
 );
@@ -306,6 +316,15 @@ const AppRoutes = () => {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/dashboard/advertisement/edit/:id">
         <EditAdvertisementPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/dashboard/faq">
+        <FAQListPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/dashboard/faq/create">
+        <CreateFAQPage />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/dashboard/faq/edit/:id">
+        <EditFAQPage />
       </AuthenticatedRoute>
       <AuthenticatedRoute path="/analytics">
         <AnalyticsPage />

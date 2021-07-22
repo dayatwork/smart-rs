@@ -13,7 +13,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Image,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -22,81 +21,50 @@ import { HiPencilAlt, HiSpeakerphone, HiTrash } from 'react-icons/hi';
 import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 
-import {
-  getAdvertisements,
-  deleteAdvertisement,
-} from 'api/institution-services/advertisement';
+import { getFAQList, deleteFAQ } from 'api/application-services/faq';
 import { AppShell } from 'components/web-staff/shared/app-shell';
 import { ContentWrapper } from 'components/web-staff/shared/sub-menu';
 import { BackButton } from 'components/shared/BackButton';
 import PaginationTable from 'components/shared/tables/PaginationTable';
 
-const AdvertisementListPage = () => {
+const FAQListPage = () => {
   const [cookies] = useCookies(['token']);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedAdvertisement, setSelectedAdvertisement] = useState(null);
-
-  // console.log({ cookies });
+  const [selectedFAQ, setSelectedFAQ] = useState(null);
 
   const {
-    data: dataAdvertisement,
-    isSuccess,
-    isLoading,
-  } = useQuery(['advertisement'], () => getAdvertisements(cookies));
-
-  console.log({ dataAdvertisement });
+    data: dataFAQ,
+    isSuccess: isSuccessFAQ,
+    isLoading: isLoadingFAQ,
+  } = useQuery(['faq'], () => getFAQList(cookies));
 
   const data = React.useMemo(
     () =>
-      isSuccess &&
-      dataAdvertisement?.data?.map(advertisement => {
-        console.log({ advertisement });
-        return {
-          id: advertisement?.id,
-          title: advertisement?.title,
-          start_date: advertisement?.start_date,
-          end_date: advertisement?.end_date,
-          image: advertisement?.image,
-        };
-      }),
-    [dataAdvertisement?.data, isSuccess]
+      isSuccessFAQ &&
+      dataFAQ?.data?.map(faq => ({
+        id: faq.id,
+        category_id: faq.category_id,
+        question: faq.question,
+        answer: faq.answer,
+        // created_at: faq.created_at,
+        // updated_at: faq.updated_at,
+      })),
+    [isSuccessFAQ, dataFAQ?.data]
   );
 
   const columns = React.useMemo(
     () => [
-      // {
-      //   Header: 'ID',
-      //   accessor: 'id',
-      //   Cell: ({ value }) => <Box>{value?.substring(0, 5)}...</Box>,
-      // },
       {
-        Header: 'Title',
-        accessor: 'title',
-        Cell: ({ value }) => <Box width="full">{value}</Box>,
+        Header: 'Category ID',
+        accessor: 'category_id',
       },
       {
-        Header: 'Image',
-        accessor: 'image',
-        Cell: ({ value, row }) => (
-          <Image
-            w="100"
-            h="50"
-            objectFit="cover"
-            fallbackSrc="https://via.placeholder.com/100x50"
-            src={`${process.env.REACT_APP_UPLOADED_FILE_URL}/${value}`}
-            alt={row.original.title}
-          />
-        ),
+        Header: 'Question',
+        accessor: 'question',
       },
       {
-        Header: 'Start Date',
-        accessor: 'start_date',
-        Cell: ({ value }) => new Date(value).toLocaleDateString(),
-      },
-      {
-        Header: 'End Date',
-        accessor: 'end_date',
-        Cell: ({ value }) => new Date(value).toLocaleDateString(),
+        Header: 'Answer',
+        accessor: 'answer',
       },
 
       {
@@ -109,14 +77,14 @@ const AdvertisementListPage = () => {
               colorScheme="yellow"
               aria-label="Edit"
               as={Link}
-              to={`/dashboard/advertisement/edit/${row.original.id}`}
+              to={`/dashboard/faq/edit/${row.original.id}`}
             />
             <IconButton
               icon={<HiTrash />}
               colorScheme="red"
               aria-label="Delete"
               onClick={() => {
-                setSelectedAdvertisement(row.original.id);
+                setSelectedFAQ(row.original.id);
                 onOpen();
               }}
             />
@@ -127,12 +95,10 @@ const AdvertisementListPage = () => {
     [onOpen]
   );
 
-  // console.log({ dataAdvertisement });
-
   return (
     <AppShell>
       <Helmet>
-        <title>Advertisement | SMART-RS</title>
+        <title>FAQ | SMART-RS</title>
       </Helmet>
       <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full" direction="column">
@@ -144,24 +110,23 @@ const AdvertisementListPage = () => {
             bg="white"
             boxShadow="lg"
           >
-            <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>
-              Advertisement List
-            </Heading>
+            <Heading fontSize={{ base: '2xl', '2xl': '3xl' }}>FAQ List</Heading>
             <Button
               colorScheme="purple"
               as={Link}
-              to="/dashboard/advertisement/create"
+              to="/dashboard/faq/create"
               leftIcon={<HiSpeakerphone />}
             >
-              New Advertisement
+              New FAQ
             </Button>
           </Flex>
           <ContentWrapper bg="gray.50">
-            <DeleteAdvertisementAlert
+            <DeleteFAQAlert
               isOpen={isOpen}
               onClose={onClose}
-              selectedAdvertisement={selectedAdvertisement}
+              selectedFAQ={selectedFAQ}
               cookies={cookies}
+              setSelectedFAQ={setSelectedFAQ}
             />
             <Flex
               justify="space-between"
@@ -174,10 +139,10 @@ const AdvertisementListPage = () => {
             </Flex>
             <Box bg="white" px="6" py="8" boxShadow="md" rounded="md">
               <PaginationTable
-                skeletonCols={5}
+                skeletonCols={4}
                 columns={columns}
                 data={data || []}
-                isLoading={isLoading}
+                isLoading={isLoadingFAQ}
               />
             </Box>
           </ContentWrapper>
@@ -187,41 +152,43 @@ const AdvertisementListPage = () => {
   );
 };
 
-export default AdvertisementListPage;
+export default FAQListPage;
 
-const DeleteAdvertisementAlert = ({
+const DeleteFAQAlert = ({
   isOpen,
   onClose,
-  selectedAdvertisement,
+  selectedFAQ,
   cookies,
+  setSelectedFAQ,
 }) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const handleDelete = async () => {
-    if (!selectedAdvertisement) return;
+    if (!selectedFAQ) return;
 
     try {
       setIsLoading(true);
-      await deleteAdvertisement(cookies, selectedAdvertisement);
-      // console.log({ res });
-      await queryClient.invalidateQueries(['advertisement']);
+      await deleteFAQ(cookies, selectedFAQ);
+      await queryClient.invalidateQueries(['faq']);
       setIsLoading(false);
       toast({
         position: 'top-right',
         title: 'Success',
-        description: `Advertisement deleted successfully`,
+        description: `FAQ deleted successfully`,
         status: 'success',
         duration: 2000,
         isClosable: true,
       });
+      setSelectedFAQ(null);
+      onClose();
     } catch (error) {
       setIsLoading(false);
       toast({
         position: 'top-right',
         title: 'Error',
-        description: `Error, Cannot delete advertisement`,
+        description: `Error, Cannot delete FAQ`,
         status: 'error',
         duration: 2000,
         isClosable: true,
@@ -238,7 +205,7 @@ const DeleteAdvertisementAlert = ({
       <AlertDialogOverlay />
 
       <AlertDialogContent>
-        <AlertDialogHeader>Delete Advertisement</AlertDialogHeader>
+        <AlertDialogHeader>Delete FAQ</AlertDialogHeader>
         <AlertDialogBody>
           Are you sure? You can't undo this action afterwards.
         </AlertDialogBody>
