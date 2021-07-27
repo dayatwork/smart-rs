@@ -484,7 +484,7 @@ export const PatientData = ({
                 <FormLabel>Email</FormLabel>
                 <Input
                   // variant={patient === 'me' ? 'filled' : 'outline'}
-                  readOnly={patient === 'me' || selectedResponsible}
+                  readOnly={patient === 'me' || selectedResponsible !== 'new'}
                   // {...register('email', {
                   //   required: 'Email harus diisi',
                   // })}

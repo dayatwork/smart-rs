@@ -14,6 +14,7 @@ import { useQuery } from 'react-query';
 import { useCookies } from 'react-cookie';
 
 import { getSoaps } from 'api/medical-record-services/soap';
+// import { getPatientMonitoringList } from 'api/medical-record-services/patient-monitoring';
 import PaginationTable from 'components/shared/tables/PaginationTable';
 import { PrivateComponent, Permissions } from 'access-control';
 
@@ -35,6 +36,16 @@ export const HomeMonitoringPatient = ({
     { enabled: Boolean(selectedInstitution) }
   );
 
+  // const {
+  //   data: dataMonitoringList,
+  //   isSuccess: isSuccessMonitoringList,
+  //   isLoading: isLoadingMonitoringList,
+  //   isFetching: isFetchingMonitoringList,
+  // } = useQuery(['patient-monitoring-list'], () =>
+  //   getPatientMonitoringList(cookies)
+  // );
+
+  // console.log({ dataMonitoringList });
   // console.log({ dataSoapList });
 
   const data = React.useMemo(
@@ -67,6 +78,22 @@ export const HomeMonitoringPatient = ({
         }),
     [dataSoapList?.data, isSuccessSoapList, isToday]
   );
+
+  // const data = React.useMemo(
+  //   () =>
+  //     isSuccessMonitoringList &&
+  //     dataMonitoringList?.data?.map(monitoring => {
+  //         return {
+  //           id: monitoring?.id,
+  //           patient_id: monitoring?.patient_id,
+  //           patient_name: monitoring?.patient_data?.name,
+  //           patient_number: monitoring?.patient_data?.patient_number,
+  //           patient_status: monitoring?.patient_data?.critical,
+  //           doctor_id: monitoring?.doctor_id,
+  //         };
+  //       }),
+  //   [dataSoapList?.data, isSuccessSoapList, isToday]
+  // );
 
   const columns = React.useMemo(
     () => [

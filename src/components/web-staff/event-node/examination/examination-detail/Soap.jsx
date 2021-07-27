@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import {
   Accordion,
@@ -29,7 +29,11 @@ import { useCookies } from 'react-cookie';
 
 import { getHospitalPatientById } from '../../../../../api/patient-services/hospital-patient';
 import { getUsersByIdentity } from '../../../../../api/user-services/user-management';
-import { updateSoapStatus } from '../../../../../api/medical-record-services/soap';
+import {
+  updateSoapStatus,
+  getPatientPrescription,
+} from '../../../../../api/medical-record-services/soap';
+import { createPatientMonitoring } from '../../../../../api/medical-record-services/patient-monitoring';
 // import { getLaboratoryBloodList } from '../../../../../api/laboratory-services/blood';
 
 import { Subjective } from './soap/Subjective';
@@ -39,6 +43,7 @@ import { Plan } from './soap/Plan';
 import { Monitoring } from './soap/Monitoring';
 import { SoapHistory } from './soap/SoapHistory';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
+import { AuthContext } from 'contexts/authContext';
 
 export const Soap = ({ dataSoap }) => {
   const subjectiveRef = useRef(null);
@@ -91,6 +96,28 @@ export const Soap = ({ dataSoap }) => {
 
   // console.log({ dataLabPatient });
 
+  // console.log({ dataSoap });
+  const {
+    data: dataPrescription,
+    // isLoading: isLoadingPrescription,
+    // isSuccess: isSuccessPrescription,
+  } = useQuery(
+    ['prescription', dataSoap?.institution_id, dataSoap?.soap_plans[0]?.id],
+    () =>
+      getPatientPrescription(
+        cookies,
+        dataSoap?.institution_id,
+        dataSoap?.soap_plans[0]?.id
+      ),
+    {
+      enabled:
+        Boolean(dataSoap?.institution_id) &&
+        Boolean(dataSoap?.soap_plans[0]?.id),
+    }
+  );
+
+  // console.log({ dataPrescription });
+
   if (dataSoap?.status === 'completed') {
     return <Redirect to="/events/examination" />;
   }
@@ -102,6 +129,8 @@ export const Soap = ({ dataSoap }) => {
         isOpen={isOpenCompleteSOAP}
         onClose={onCloseCompleteSOAP}
         dataSOAP={dataSoap}
+        dataPrescription={dataPrescription}
+        dataPatientDetail={dataPatientDetail}
       />
       <Flex justify="space-between">
         <Flex
@@ -690,14 +719,42 @@ export const Soap = ({ dataSoap }) => {
   );
 };
 
-export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
+export const ConfirmCompleteSOAP = ({
+  isOpen,
+  onClose,
+  dataSOAP,
+  dataPrescription,
+  dataPatientDetail,
+}) => {
   const history = useHistory();
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { employeeDetail } = useContext(AuthContext);
 
-  console.log({ dataSOAP });
+  // console.log({ dataSOAP });
+  // console.log({ dataPrescription });
+  // console.log({ dataPatientDetail });
+  let start_date = '';
+  let end_date = '';
+
+  dataPrescription?.data?.forEach(prescription => {
+    if (!start_date) {
+      start_date = prescription.start_at;
+    } else if (prescription.start_at < start_date) {
+      start_date = prescription.start_at;
+    }
+
+    if (!end_date) {
+      end_date = prescription.end_at;
+    } else if (prescription.end_at > end_date) {
+      end_date = prescription.end_at;
+    }
+  });
+
+  // console.log({ start_date });
+  // console.log({ end_date });
 
   const handleCheckIn = async () => {
     const data = {
@@ -705,9 +762,25 @@ export const ConfirmCompleteSOAP = ({ isOpen, onClose, dataSOAP }) => {
       status: 'completed',
     };
 
+    // console.log({ data });
+
+    const dataMonitoring = {
+      soap_patient_id: dataSOAP?.id,
+      patient_id: dataPatientDetail?.data?.patient_id,
+      doctor_id: employeeDetail?.employee_id,
+      doctor_note: '',
+      type: 'monitoring',
+      status: 'active',
+      start_date: start_date ? start_date?.split('T')[0] : '',
+      end_date: end_date ? end_date?.split('T')[0] : '',
+    };
+
+    console.log({ dataMonitoring });
+
     try {
       setIsLoading(true);
       await updateSoapStatus(cookies, data);
+      await createPatientMonitoring(cookies)(dataMonitoring);
       await queryClient.invalidateQueries([
         'soap-list',
         'process',

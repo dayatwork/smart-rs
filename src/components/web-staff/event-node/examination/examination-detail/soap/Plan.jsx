@@ -93,7 +93,7 @@ export const Plan = ({ patientDetail, dataSoap }) => {
   // console.log({ dataSoap });
   // console.log({ cookies });
   // console.log({ dataLabResult });
-  console.log({ dataRadiologyResult });
+  // console.log({ dataRadiologyResult });
   // console.log({ patientDetail });
 
   return (
