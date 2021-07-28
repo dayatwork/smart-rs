@@ -133,7 +133,7 @@ export const SelectDoctor = ({
     }
   );
 
-  // console.log({ dataSchedules });
+  console.log({ dataSchedules });
 
   const {
     data: dataEstimatedTimes,
@@ -425,7 +425,7 @@ export const SelectDoctor = ({
                               fontWeight="bold"
                               color="secondary.dark"
                             >
-                              Rp.50.000
+                              Rp.10.000
                             </Text>
                           </Flex>
                           {schedule?.total_available && (
