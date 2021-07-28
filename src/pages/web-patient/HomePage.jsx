@@ -82,7 +82,7 @@ export default function HomePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    const timer = setTimeout(() => onOpen(), 1000);
+    const timer = setTimeout(() => onOpen(), 10000);
 
     return () => clearTimeout(timer);
   }, [onOpen]);
