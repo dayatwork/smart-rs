@@ -44,7 +44,7 @@ export const AdvertisementCard = ({
           alt={title}
           src={media}
           // fallbackSrc="https://placekitten.com/640/360"
-          fallbackSrc="http://via.placeholder.com/640x360"
+          fallbackSrc="https://via.placeholder.com/640x360"
         />
         <Flex
           direction="column"

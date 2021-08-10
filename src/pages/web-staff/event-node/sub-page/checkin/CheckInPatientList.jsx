@@ -75,9 +75,7 @@ export const CheckinPatientList = () => {
       isSuccessBookingList &&
       dataBookingList?.data
         ?.filter(booking =>
-          checkedIn
-            ? booking.booking_status === 'done'
-            : booking.booking_status === 'booked'
+          checkedIn ? booking.status === 'done' : booking.status === 'booked'
         )
         ?.filter(booking => {
           if (isPaid) {
@@ -104,7 +102,7 @@ export const CheckinPatientList = () => {
             schedule_time: booking?.schedule_time,
             doctor_name: booking?.doctor_name,
             poli: booking?.poli,
-            status: booking?.booking_status,
+            status: booking?.status,
             date: booking?.date,
             days: booking?.days,
             time: booking?.time,

@@ -120,7 +120,7 @@ export const BookedPatientList = () => {
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
-        ?.filter(booking => filter.includes(booking.booking_status))
+        ?.filter(booking => filter.includes(booking.status))
         .filter(booking => {
           // console.log({ booking });
           if (isToday) {
@@ -133,8 +133,8 @@ export const BookedPatientList = () => {
         })
         // ?.filter(
         //   booking =>
-        //     booking.booking_status === 'booked' ||
-        //     booking.booking_status === 'cancel'
+        //     booking.status === 'booked' ||
+        //     booking.status === 'cancel'
         // )
         .map(booking => {
           return {
@@ -145,7 +145,7 @@ export const BookedPatientList = () => {
             schedule_time: booking?.schedule_time,
             doctor_name: booking?.doctor_name,
             poli: booking?.poli,
-            status: booking?.booking_status,
+            status: booking?.status,
             date: booking?.date,
             days: booking?.days,
             time: booking?.time,

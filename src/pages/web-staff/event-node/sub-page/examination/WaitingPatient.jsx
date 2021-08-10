@@ -87,7 +87,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
     () =>
       isSuccessBookingList &&
       dataBookingList?.data
-        ?.filter(booking => booking.booking_status === 'done')
+        ?.filter(booking => booking.status === 'done')
         ?.filter(booking => {
           // console.log({ booking });
           if (isToday) {
@@ -109,7 +109,7 @@ export const WaitingPatient = ({ selectedInstitution, fromPatientMenu }) => {
             schedule_time: booking.schedule_time,
             doctor_name: booking.doctor_name,
             poli: booking.poli,
-            status: booking.booking_status,
+            status: booking.status,
             transaction_number: booking.transaction_number,
           };
         }),
