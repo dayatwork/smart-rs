@@ -88,7 +88,7 @@ const BookingDetailPage = () => {
   );
   // console.log({ responsibleListUserId });
 
-  const status = dataBookingDetail?.data?.booking_status?.toLowerCase();
+  const status = dataBookingDetail?.data?.status?.toLowerCase();
 
   const { data: dataQR, isLoading: isLoadingQR } = useQuery(
     ['patient-qr', params.id, status],
@@ -103,7 +103,7 @@ const BookingDetailPage = () => {
   const handleCancel = async () => {
     if (
       !params.id ||
-      dataBookingDetail?.data?.booking_status?.toLowerCase() !== 'booked'
+      dataBookingDetail?.data?.status?.toLowerCase() !== 'booked'
     ) {
       return;
     }
@@ -145,6 +145,8 @@ const BookingDetailPage = () => {
     return <Redirect to="/" />;
   }
 
+  console.log({ dataBookingDetail });
+
   return (
     <Flex direction="column" bg="gray.100" minH="100vh">
       <WebPatientNav active="doctor" />
@@ -183,8 +185,7 @@ const BookingDetailPage = () => {
           {/* <Heading fontSize="2xl" mb="8">
             Detail Booking
           </Heading> */}
-          {dataBookingDetail?.data?.booking_status?.toLowerCase() ===
-            'booked' &&
+          {dataBookingDetail?.data?.status?.toLowerCase() === 'booked' &&
             dataBookingDetail?.data?.booking_orders[0]?.status !== 'paid' && (
               <Button
                 onClick={onCancelOpen}

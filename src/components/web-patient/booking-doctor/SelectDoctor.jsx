@@ -313,7 +313,9 @@ export const SelectDoctor = ({
                     >
                       {[
                         ...Array(
-                          Math.ceil(dataSchedules?.total_data / limit)
+                          Math.ceil(
+                            dataSchedules?.pagination?.total_data / limit
+                          )
                         ).keys(),
                       ]?.map(v => (
                         <option key={v + 1} value={v + 1}>
@@ -328,23 +330,23 @@ export const SelectDoctor = ({
                       size="sm"
                       icon={<BiLeftArrowAlt />}
                       onClick={() => setPage(prev => prev - 1)}
-                      disabled={dataSchedules?.page === 1}
+                      disabled={dataSchedules?.pagination?.page === 1}
                     />
                     <IconButton
                       bgColor="white"
                       size="sm"
                       icon={<BiRightArrowAlt />}
                       onClick={() => setPage(prev => prev + 1)}
-                      disabled={dataSchedules?.total_page === page}
+                      disabled={dataSchedules?.pagination?.total_page === page}
                     />
                   </HStack>
                 </HStack>
               </Flex>
               <Box>
                 {dataSchedules?.data
-                  ?.filter(schedule => {
-                    return !isExpired(schedule?.date, schedule.end_time);
-                  })
+                  //   ?.filter(schedule => {
+                  //   return !isExpired(schedule?.date, schedule.end_time);
+                  //  })
                   ?.map(schedule => {
                     const totalData = schedule?.total_available?.total_data;
                     const available =

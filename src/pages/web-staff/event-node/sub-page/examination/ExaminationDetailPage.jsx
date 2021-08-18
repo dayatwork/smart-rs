@@ -51,7 +51,7 @@ export const ExaminationDetailPage = () => {
   } = useQuery(
     ['patient-soap', params.soapId],
     () => getSoapById(cookies, params.soapId),
-    { enabled: Boolean(params.soapId) },
+    { enabled: Boolean(params.soapId) }
   );
 
   return (
@@ -77,10 +77,17 @@ export const ExaminationDetailPage = () => {
         isCritical={isCritical}
       />
       {isErrorSoap && <Redirect to="/events/examination" />}
-      {isSuccessSoap && dataSoap.code === 404 && <Redirect to="/events/examination" />}
+      {isSuccessSoap && dataSoap.code === 404 && (
+        <Redirect to="/events/examination" />
+      )}
       {isLoadingSoap && (
         <Center h="40">
-          <Spinner thickness="4px" emptyColor="gray.200" color="purple.500" size="xl" />
+          <Spinner
+            thickness="4px"
+            emptyColor="gray.200"
+            color="purple.500"
+            size="xl"
+          />
         </Center>
       )}
       {dataSoap?.data && (
@@ -90,7 +97,8 @@ export const ExaminationDetailPage = () => {
           // px="10"
           mx="auto"
           overflowX="auto"
-          size="lg">
+          size="lg"
+        >
           <TabList>
             <Tab fontSize="2xl" fontWeight="semibold">
               Profile
@@ -145,7 +153,8 @@ const CriticalBar = ({ onOpen }) => {
         color="white"
         bg="red.600"
         justifyContent="center"
-        alignItems="center">
+        alignItems="center"
+      >
         <HStack direction="row" spacing="3">
           <Icon as={HiOutlineExclamation} w="10" h="10" />
           <Text fontWeight="medium" marginEnd="2">
@@ -157,7 +166,8 @@ const CriticalBar = ({ onOpen }) => {
           bg="transparent"
           border="1px"
           borderColor="white"
-          _hover={{ bg: 'red.500' }}>
+          _hover={{ bg: 'red.500' }}
+        >
           Ubah Status
         </Button>
       </Stack>
@@ -165,7 +175,12 @@ const CriticalBar = ({ onOpen }) => {
   );
 };
 
-const ChangeCriticalStatus = ({ isOpen, onClose, setIsCritical, isCritical }) => (
+const ChangeCriticalStatus = ({
+  isOpen,
+  onClose,
+  setIsCritical,
+  isCritical,
+}) => (
   <AlertDialog isOpen={isOpen} onClose={onClose}>
     <AlertDialogOverlay>
       <AlertDialogContent>
@@ -175,7 +190,9 @@ const ChangeCriticalStatus = ({ isOpen, onClose, setIsCritical, isCritical }) =>
 
         {isCritical ? (
           <>
-            <AlertDialogBody>Apakah pasien sudah melewati masa kritis</AlertDialogBody>
+            <AlertDialogBody>
+              Apakah pasien sudah melewati masa kritis
+            </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button onClick={onClose}>Cancel</Button>
@@ -185,7 +202,8 @@ const ChangeCriticalStatus = ({ isOpen, onClose, setIsCritical, isCritical }) =>
                   setIsCritical(false);
                   onClose();
                 }}
-                ml={3}>
+                ml={3}
+              >
                 Sudah
               </Button>
             </AlertDialogFooter>
@@ -202,7 +220,8 @@ const ChangeCriticalStatus = ({ isOpen, onClose, setIsCritical, isCritical }) =>
                   setIsCritical(true);
                   onClose();
                 }}
-                ml={3}>
+                ml={3}
+              >
                 Iya
               </Button>
             </AlertDialogFooter>

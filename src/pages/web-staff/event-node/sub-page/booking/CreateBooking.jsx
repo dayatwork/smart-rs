@@ -284,6 +284,8 @@ export const CreateBooking = () => {
     setSelectedTime('');
   };
 
+  console.log({ dataSchedules });
+
   return (
     <Box pb={{ base: '16', '2xl': '10' }}>
       <Helmet>
@@ -479,7 +481,9 @@ export const CreateBooking = () => {
                         >
                           {[
                             ...Array(
-                              Math.ceil(dataSchedules?.total_data / limit)
+                              Math.ceil(
+                                dataSchedules?.pagination?.total_data / limit
+                              )
                             ).keys(),
                           ]?.map(v => (
                             <option key={v + 1} value={v + 1}>

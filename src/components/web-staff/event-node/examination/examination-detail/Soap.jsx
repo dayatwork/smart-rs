@@ -118,9 +118,11 @@ export const Soap = ({ dataSoap }) => {
 
   // console.log({ dataPrescription });
 
-  if (dataSoap?.status === 'completed') {
-    return <Redirect to="/events/examination" />;
-  }
+  // JUST FOR TESTING!!!!!!!!!
+
+  // if (dataSoap?.status === 'completed') {
+  //   return <Redirect to="/events/examination" />;
+  // }
 
   return (
     <>
@@ -316,7 +318,7 @@ export const Soap = ({ dataSoap }) => {
               </Box>
             </Flex>
           </Flex>
-          <Flex as="span" h="14" align="center">
+          {/* <Flex as="span" h="14" align="center">
             <Flex
               as="span"
               position="relative"
@@ -340,7 +342,7 @@ export const Soap = ({ dataSoap }) => {
                 M
               </Box>
             </Flex>
-          </Flex>
+          </Flex> */}
         </HStack>
       </Box>
 
@@ -563,7 +565,7 @@ export const Soap = ({ dataSoap }) => {
                   </Box>
 
                   <Box as="li" position="relative" pb="10" ref={planRef}>
-                    <Box
+                    {/* <Box
                       ml="-px"
                       position="absolute"
                       mt="0.5"
@@ -573,7 +575,7 @@ export const Soap = ({ dataSoap }) => {
                       h="full"
                       bgColor="gray.300"
                       aria-hidden="true"
-                    ></Box>
+                    ></Box> */}
                     <Flex
                       // as={Link}
                       // to="/"
@@ -634,21 +636,8 @@ export const Soap = ({ dataSoap }) => {
                     </Flex>
                   </Box>
 
-                  <Box as="li" position="relative" pb="10" ref={monitoringRef}>
-                    {/* <Box
-                      ml="-px"
-                      position="absolute"
-                      mt="0.5"
-                      top="4"
-                      left="6"
-                      w="0.5"
-                      h="full"
-                      bgColor="gray.300"
-                      aria-hidden="true"
-                    ></Box> */}
+                  {/* <Box as="li" position="relative" pb="10" ref={monitoringRef}>
                     <Flex
-                      // as={Link}
-                      // to="/"
                       position="relative"
                       align="start"
                       className="group"
@@ -699,7 +688,7 @@ export const Soap = ({ dataSoap }) => {
                         </Box>
                       </Flex>
                     </Flex>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Box>
             </Box>

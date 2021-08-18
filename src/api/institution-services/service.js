@@ -199,13 +199,46 @@ export const getScheduleEstimatedTimes = async (cookies, scheduleDetailId) => {
 //   return await res.json();
 // };
 
+// export const getBookingSchedules = async (
+//   cookies,
+//   { serviceId, limit = 10, page = 1, first_date, last_date, institutionId }
+// ) => {
+//   const dateFilter =
+//     first_date && last_date
+//       ? `&first_date=${first_date}&last_date=${last_date}`
+//       : '';
+
+//   const pagination = limit && page ? `&limit=${limit}&page=${page}` : '';
+//   // const institutionId = 'cf5e9090-3657-41f6-903e-9ba95184f3ff';
+
+//   // const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list/doctor?service_id=${serviceId}${dateFilter}${pagination}&sort_date=asc&sort_start_time=asc`;
+//   const filterInstitution = institutionId
+//     ? `institution_id=${institutionId}&`
+//     : '';
+
+//   const URL = `${process.env.REACT_APP_INSTITUTION_API}/service/schedule/list/doctor?${filterInstitution}service_id=${serviceId}${dateFilter}${pagination}&sort_date=asc&sort_start_time=asc`;
+
+//   const res = await fetch(URL, {
+//     method: 'GET',
+//     headers: {
+//       Authorization: `Bearer ${cookies?.token}`,
+//     },
+//   });
+
+//   if (!res.ok) {
+//     throw new Error('Error Get Schedules List');
+//   }
+
+//   return await res.json();
+// };
+
 export const getBookingSchedules = async (
   cookies,
   { serviceId, limit = 10, page = 1, first_date, last_date, institutionId }
 ) => {
   const dateFilter =
     first_date && last_date
-      ? `&first_date=${first_date}&last_date=${last_date}`
+      ? `&start_date=${first_date}&end_date=${last_date}`
       : '';
 
   const pagination = limit && page ? `&limit=${limit}&page=${page}` : '';
