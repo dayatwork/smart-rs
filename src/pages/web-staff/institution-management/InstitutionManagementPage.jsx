@@ -21,6 +21,7 @@ import {
   LabCategoryPage,
   RadiologyCategoryPage,
   PaymentMethodPage,
+  CashierPage,
 } from './sub-page';
 import {
   PrivateRoute,
@@ -158,6 +159,14 @@ const InstitutionManagementPage = () => {
                 pageTitle="Payment Method | Institution Management | SMART-RS"
               >
                 <PaymentMethodPage />
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexInstitutionPaymentMethod}
+                exact
+                path={`${path}/cashier`}
+                pageTitle="Cashier | Institution Management | SMART-RS"
+              >
+                <CashierPage />
               </PrivateRoute>
             </Switch>
           </ContentWrapper>

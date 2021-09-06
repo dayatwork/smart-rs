@@ -9,6 +9,7 @@ import {
   ContentWrapper,
 } from '../../../components/web-staff/shared/sub-menu';
 import { subMenus } from './subMenus';
+import { IncomePage } from './sub-page';
 import { PaymentMethodPage } from '../institution-management/sub-page/PaymentMethodPage';
 import { PaymentList, PaymentDetails } from '../event-node/sub-page/payment';
 import { PrivateRoute, Permissions } from '../../../access-control';
@@ -81,6 +82,14 @@ const FinancePage = () => {
                 pageTitle="Detail Payment | SMART-RS"
               >
                 <PaymentDetails fromFinanceMenu />
+              </PrivateRoute>
+              <PrivateRoute
+                permission={Permissions.indexPayment}
+                exact
+                path={`${path}/income`}
+                pageTitle="Income | SMART-RS"
+              >
+                <IncomePage />
               </PrivateRoute>
             </Switch>
           </ContentWrapper>

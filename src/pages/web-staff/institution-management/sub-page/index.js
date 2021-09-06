@@ -9,3 +9,4 @@ export * from './RolePage';
 export * from './LabCategoryPage';
 export * from './RadiologyCategoryPage';
 export * from './PaymentMethodPage';
+export * from './CashierPage';

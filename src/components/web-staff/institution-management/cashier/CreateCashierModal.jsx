@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
+  Flex,
   FormControl,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,33 +12,42 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Input,
   useToast,
-  Flex,
   VisuallyHidden,
-  IconButton,
+  Input,
   HStack,
 } from '@chakra-ui/react';
-import { FaPlus, FaTrashAlt } from 'react-icons/fa';
-import { useMutation, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
+import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 
-import { createFMS } from '../../../../api/institution-services/fms';
+import { createCashier } from '../../../../api/institution-services/cashier';
 
-export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
+export const CreateCashierModal = ({
+  isOpen,
+  onClose,
+  selectedInstitution,
+}) => {
   const toast = useToast();
   const [cookies] = useCookies(['token']);
   const [isLoading, setIsLoading] = useState(false);
   const [, setErrMessage] = useState('');
-  const { register, handleSubmit, reset, clearErrors, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    control,
+    formState: { errors },
+  } = useForm();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'fms',
+    name: 'objectives',
   });
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(createFMS(cookies), {
+  const { mutate } = useMutation(createCashier(cookies), {
     onMutate: () => {
       setIsLoading(true);
     },
@@ -44,14 +55,14 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries('fms');
+        await queryClient.invalidateQueries('cashiers');
         setErrMessage('');
         reset();
         clearErrors();
         toast({
           position: 'top-right',
           title: 'Success',
-          description: `SMF berhasil dibuat`,
+          description: `Kasir berhasil ditambahkan`,
           status: 'success',
           duration: 4000,
           isClosable: true,
@@ -71,50 +82,72 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
   });
 
   const onSubmit = async values => {
-    const fms = {
+    const cashiers = {
       institution_id: selectedInstitution,
-      data: values.fms,
+      data: values.cashiers.map(cashier => ({
+        ...cashier,
+        user_id: null,
+        icon: null,
+      })),
     };
-    await mutate(fms);
+    await mutate(cashiers);
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create New FMS</ModalHeader>
+        <ModalHeader>Create New Cashier</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box mb="2">
             {fields.map(({ id }, index) => {
               return (
                 <Flex key={id} mb="2">
-                  <HStack>
-                    <VisuallyHidden as="label">FMS</VisuallyHidden>
-                    <FormControl id={`fms-name-${index}`}>
-                      <Input
-                        placeholder="name"
-                        mr="2"
-                        {...register(`fms[${index}].name`, { required: true })}
-                      />
-                    </FormControl>
-                    <FormControl id={`fms-description-${index}`}>
-                      <Input
-                        placeholder="description"
-                        mr="2"
-                        {...register(`fms[${index}].description`, {
-                          required: true,
-                        })}
-                      />
-                    </FormControl>
-                  </HStack>
-
+                  {/* <HStack> */}
+                  <FormControl
+                    id={`cashier-name-${index}`}
+                    isInvalid={
+                      errors?.cashiers && errors?.cashiers[index]?.name
+                        ? true
+                        : false
+                    }
+                  >
+                    <VisuallyHidden as="label">Name</VisuallyHidden>
+                    <Input
+                      placeholder="Name"
+                      mr="2"
+                      {...register(`cashiers[${index}].name`, {
+                        required: true,
+                      })}
+                    />
+                  </FormControl>
+                  <FormControl
+                    id={`cashier-description-${index}`}
+                    ml="2"
+                    isInvalid={
+                      errors?.cashiers && errors?.cashiers[index]?.description
+                        ? true
+                        : false
+                    }
+                  >
+                    <VisuallyHidden as="label">Description</VisuallyHidden>
+                    <Input
+                      placeholder="Description"
+                      mr="2"
+                      {...register(`cashiers[${index}].description`, {
+                        required: true,
+                      })}
+                    />
+                  </FormControl>
                   <IconButton
+                    ml="2"
                     onClick={() => remove(index)}
                     icon={<FaTrashAlt />}
                     p="3"
                     colorScheme="red"
                   />
+                  {/* </HStack> */}
                 </Flex>
               );
             })}
@@ -126,7 +159,7 @@ export const AddFmsModal = ({ isOpen, onClose, selectedInstitution }) => {
               onClick={() => append({})}
               // w="full"
             >
-              Add FMS
+              Add Cashier
             </Button>
           </Box>
         </ModalBody>

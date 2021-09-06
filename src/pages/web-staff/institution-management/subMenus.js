@@ -56,4 +56,9 @@ export const subMenus = [
     text: 'Payment Method',
     permission: Permissions.indexInstitutionPaymentMethod,
   },
+  {
+    to: '/institution-management/cashier',
+    text: 'Cashier',
+    permission: Permissions.indexInstitutionPaymentMethod,
+  },
 ];

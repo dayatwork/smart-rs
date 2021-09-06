@@ -11,4 +11,9 @@ export const subMenus = [
     text: 'Patient Payment',
     permission: Permissions.indexPayment,
   },
+  {
+    to: '/finance/income',
+    text: 'Income',
+    permission: Permissions.indexPayment,
+  },
 ];
