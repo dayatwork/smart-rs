@@ -1,4 +1,24 @@
 // v1/institution/type
+export const getInstitutionQRCode = async (cookies, institution_id) => {
+  const formattedId = institution_id.replace(/['"]+/g, '');
+  const res = await fetch(
+    `${process.env.REACT_APP_INSTITUTION_API}/institution/qr-code?id=${formattedId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error Get QR Code');
+  }
+
+  return await res.json();
+};
+
+// v1/institution/type
 export const getInstitutionTypes = async cookies => {
   const res = await fetch(
     `${process.env.REACT_APP_INSTITUTION_API}/institution/type`,

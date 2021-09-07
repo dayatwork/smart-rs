@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
@@ -10,6 +10,15 @@ import {
   HStack,
   Select,
   SimpleGrid,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  VStack,
+  Center,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -17,7 +26,10 @@ import { useQuery } from 'react-query';
 import { Helmet } from 'react-helmet-async';
 import { HiSpeakerphone } from 'react-icons/hi';
 import { MdQuestionAnswer } from 'react-icons/md';
+import QRCode from 'qrcode.react';
+import { exportComponentAsPNG } from 'react-component-export-image';
 
+import Logo from '../../../assets/Logo';
 import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
@@ -29,7 +41,10 @@ import {
   TotalIncome,
 } from './components';
 
-import { getInstitutions } from '../../../api/institution-services/institution';
+import {
+  getInstitutions,
+  getInstitutionQRCode,
+} from '../../../api/institution-services/institution';
 
 const DashboardPage = () => {
   const { employeeDetail, user } = useContext(AuthContext);
@@ -37,6 +52,7 @@ const DashboardPage = () => {
   const [selectedInstitution, setSelectedInstitution] = useState(
     employeeDetail?.institution_id || ''
   );
+  const { onOpen: onOpen, isOpen: isOpen, onClose: onClose } = useDisclosure();
 
   const { data: resInstitution, isSuccess: isSuccessInstitution } = useQuery(
     'institutions',
@@ -49,6 +65,11 @@ const DashboardPage = () => {
       <Helmet>
         <title>Dashboard | SMART-RS</title>
       </Helmet>
+      <CheckInModal
+        selectedInstitution={selectedInstitution}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       <Box height="full" overflow="hidden" position="relative" w="full">
         <Flex h="full">
           <ContentWrapper>
@@ -57,6 +78,9 @@ const DashboardPage = () => {
                 Dashboard
               </Heading>
               <HStack>
+                <Button colorScheme="purple" onClick={onOpen}>
+                  Generate QR Code
+                </Button>
                 <Button
                   colorScheme="purple"
                   as={Link}
@@ -137,3 +161,61 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
+export const CheckInModal = ({ isOpen, onClose, selectedInstitution }) => {
+  const [qr, setQr] = useState('');
+  const [cookies] = useCookies(['token']);
+  const qrRef = useRef();
+
+  useEffect(() => {
+    const fetchQr = async () => {
+      try {
+        const res = await getInstitutionQRCode(cookies, selectedInstitution);
+        setQr(res?.data?.qr);
+      } catch (error) {
+        console.log({ error });
+      }
+    };
+
+    fetchQr();
+  }, [cookies, selectedInstitution]);
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Print Institution QR Code</ModalHeader>
+        {/* <ModalCloseButton /> */}
+        <ModalBody>
+          <VStack spacing="0">
+            <Box bg="white" p="6" ref={qrRef}>
+              <Box bg="purple.500" boxShadow="md" py="4" px="6">
+                <Center pb="1" w="full">
+                  <Logo width={60} height={60} />
+                </Center>
+                <Box p="5" bg="white" borderRadius="lg">
+                  <QRCode value={qr} />
+                </Box>
+                <Center fontSize="3xl" fontWeight="bold" color="white" p="0">
+                  Scan Me
+                </Center>
+              </Box>
+            </Box>
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter>
+          <HStack>
+            <Button variant="ghost" onClick={onClose}>
+              Close
+            </Button>
+
+            <Button onClick={() => exportComponentAsPNG(qrRef)}>
+              Download
+            </Button>
+          </HStack>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
