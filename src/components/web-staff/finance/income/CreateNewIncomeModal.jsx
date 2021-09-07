@@ -62,7 +62,10 @@ export const CreateNewIncomeModal = ({
       setIsLoading(false);
       onClose();
       if (data) {
-        await queryClient.invalidateQueries('income-list');
+        await queryClient.invalidateQueries([
+          'income-list',
+          selectedInstitution,
+        ]);
         setErrMessage('');
         reset();
         clearErrors();

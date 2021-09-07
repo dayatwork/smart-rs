@@ -1,8 +1,8 @@
 // /statistic/total-patient?institution_id=
-export const getTotalPatients = async (cookies, institution_id) => {
+export const getTotalEmployees = async (cookies, institution_id) => {
   const formattedInstitutionId = institution_id.replace(/['"]+/g, '');
   const res = await fetch(
-    `${process.env.REACT_APP_PATIENT_API_V2}/statistic/total-patient?institution_id=${formattedInstitutionId}`,
+    `${process.env.REACT_APP_HUMAN_CAPITAL_API}/statistic/total-employee?institution_id=${formattedInstitutionId}`,
     {
       method: 'GET',
       headers: {
@@ -12,7 +12,7 @@ export const getTotalPatients = async (cookies, institution_id) => {
   );
 
   if (!res.ok) {
-    throw new Error('Error Get Total Patiens');
+    throw new Error('Error Get Total Employee');
   }
 
   return await res.json();

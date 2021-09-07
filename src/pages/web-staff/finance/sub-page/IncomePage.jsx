@@ -57,10 +57,10 @@ export const IncomePage = () => {
     isLoading,
     isFetching,
   } = useQuery(
-    'income-list',
+    ['income-list', selectedInstitution],
     () => getIncomeList(cookies, selectedInstitution),
     {
-      staleTime: 1000 * 60 * 10,
+      // staleTime: 1000 * 60 * 10,
       enabled: Boolean(selectedInstitution),
     }
   );

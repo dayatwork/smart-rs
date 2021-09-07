@@ -9,6 +9,7 @@ import {
   Heading,
   HStack,
   Select,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -20,7 +21,13 @@ import { MdQuestionAnswer } from 'react-icons/md';
 import { AuthContext } from '../../../contexts/authContext';
 import { AppShell } from '../../../components/web-staff/shared/app-shell';
 import { ContentWrapper } from '../../../components/web-staff/shared/sub-menu';
-import { InstitutionStatistics, BookingStatistics } from './components';
+import {
+  InstitutionStatistics,
+  BookingStatistics,
+  IncomeChart,
+  BookingChart,
+  TotalIncome,
+} from './components';
 
 import { getInstitutions } from '../../../api/institution-services/institution';
 
@@ -88,15 +95,33 @@ const DashboardPage = () => {
                 </Select>
               </FormControl>
             )}
+
             <InstitutionStatistics
               selectedInstitution={selectedInstitution}
               cookies={cookies}
             />
 
-            <BookingStatistics
-              selectedInstitution={selectedInstitution}
-              cookies={cookies}
-            />
+            <SimpleGrid columns={2} gap="6">
+              <BookingStatistics
+                selectedInstitution={selectedInstitution}
+                cookies={cookies}
+              />
+              <TotalIncome
+                selectedInstitution={selectedInstitution}
+                cookies={cookies}
+              />
+            </SimpleGrid>
+
+            <SimpleGrid columns={2} gap="6">
+              <BookingChart
+                selectedInstitution={selectedInstitution}
+                cookies={cookies}
+              />
+              <IncomeChart
+                selectedInstitution={selectedInstitution}
+                cookies={cookies}
+              />
+            </SimpleGrid>
           </ContentWrapper>
         </Flex>
       </Box>
