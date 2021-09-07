@@ -101,7 +101,11 @@ const DashboardPage = () => {
               cookies={cookies}
             />
 
-            <SimpleGrid columns={2} gap="6">
+            <SimpleGrid
+              columns={{ base: 1, lg: 2 }}
+              gap={{ base: '4', lg: '6' }}
+              mb="6"
+            >
               <BookingStatistics
                 selectedInstitution={selectedInstitution}
                 cookies={cookies}
@@ -112,7 +116,10 @@ const DashboardPage = () => {
               />
             </SimpleGrid>
 
-            <SimpleGrid columns={2} gap="6">
+            <SimpleGrid
+              columns={{ base: 1, lg: 2 }}
+              gap={{ base: '4', lg: '6' }}
+            >
               <BookingChart
                 selectedInstitution={selectedInstitution}
                 cookies={cookies}

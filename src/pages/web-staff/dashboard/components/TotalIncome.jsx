@@ -34,13 +34,7 @@ export const TotalIncome = ({ selectedInstitution, cookies }) => {
     }, 0) || 0;
 
   return (
-    <Box
-      bg="white"
-      mb="10"
-      p={{ base: '6', '2xl': '10' }}
-      rounded="xl"
-      shadow="base"
-    >
+    <Box bg="white" p={{ base: '6', '2xl': '10' }} rounded="xl" shadow="base">
       <VStack mx="auto" spacing={{ base: '1', '2xl': '3' }}>
         <Box
           color="gray.600"

@@ -37,7 +37,7 @@ export const InstitutionStatistics = ({ selectedInstitution, cookies }) => {
   // console.log({ dataTotalEmployees });
 
   return (
-    <SimpleGrid columns={3} mb="6" gap="6">
+    <SimpleGrid columns={3} mb="6" gap={{ base: '2', lg: '6' }}>
       <SimpleStat
         label="Total User"
         total={

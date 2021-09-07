@@ -23,18 +23,28 @@ export const SimpleStat = ({
         direction="column"
         align="center"
         py="4"
-        px="8"
+        px={{ base: '4', lg: '8' }}
         bg="white"
         boxShadow="md"
         rounded="md"
         maxW="full"
         {...rest}
       >
-        <Text fontSize="2xl" fontWeight="semibold" color="gray.600">
+        <Text
+          fontSize={{ base: 'lg', lg: '2xl' }}
+          fontWeight="semibold"
+          color="gray.600"
+        >
           {label}
         </Text>
-        <Icon mt="2" as={icon} w="14" h="14" color={color} />
-        <Text fontSize="5xl" fontWeight="bold">
+        <Icon
+          mt="2"
+          as={icon}
+          w={{ base: '10', lg: '14' }}
+          h={{ base: '10', lg: '14' }}
+          color={color}
+        />
+        <Text fontSize={{ base: '2xl', lg: '5xl' }} fontWeight="bold">
           {value}
         </Text>
       </Flex>

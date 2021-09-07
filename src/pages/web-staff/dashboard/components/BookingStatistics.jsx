@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 
 import { BookingStatus } from './BookingStatus';
@@ -15,14 +14,11 @@ export const BookingStatistics = ({ selectedInstitution, cookies }) => {
   );
 
   return (
-    <Box mb="6">
-      <BookingStatus
-        total={data?.bookingData?.total || 0}
-        cancel={data?.bookingData?.cancel || 0}
-        checkedIn={data?.bookingData?.checked || 0}
-        examination={data?.bookingData?.examination || 0}
-        mb="4"
-      />
-    </Box>
+    <BookingStatus
+      total={data?.bookingData?.total || 0}
+      cancel={data?.bookingData?.cancel || 0}
+      checkedIn={data?.bookingData?.checked || 0}
+      examination={data?.bookingData?.examination || 0}
+    />
   );
 };
