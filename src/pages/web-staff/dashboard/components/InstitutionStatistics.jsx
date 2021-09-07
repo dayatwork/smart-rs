@@ -40,7 +40,10 @@ export const InstitutionStatistics = ({ selectedInstitution, cookies }) => {
     <SimpleGrid columns={3} mb="6" gap="6">
       <SimpleStat
         label="Total User"
-        total={120}
+        total={
+          Number(dataTotalPatients?.data || 0) +
+          Number(dataTotalEmployees?.total || 0)
+        }
         isCounting={isSuccessTotalPatients}
         icon={FaUser}
         mode="stack"
