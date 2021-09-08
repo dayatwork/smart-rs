@@ -11,13 +11,17 @@ import {
   Spinner,
   Tooltip,
   useClipboard,
+  HStack,
+  useToast,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useCookies } from 'react-cookie';
+import { useForm } from 'react-hook-form';
 
 import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
 import { getHospitalPatients } from '../../../../../api/patient-services/hospital-patient';
+import { importPatient } from '../../../../../api/patient-services/patient';
 import PaginationTable from '../../../../../components/shared/tables/PaginationTable';
 import { BackButton } from '../../../../../components/shared/BackButton';
 import { PrivateComponent, Permissions } from '../../../../../access-control';
@@ -163,17 +167,103 @@ export const RegisteredPatientList = () => {
           skeletonCols={5}
           action={
             <PrivateComponent permission={Permissions.createRegistration}>
-              <Button
-                as={Link}
-                to="/events/registration/create"
-                colorScheme="purple"
-              >
-                Register New Patient
-              </Button>
+              <HStack spacing="4">
+                <ImportPatients
+                  cookies={cookies}
+                  selectedInstitution={selectedInstitution}
+                />
+
+                <Button
+                  as={Link}
+                  to="/events/registration/create"
+                  colorScheme="purple"
+                  // w="full"
+                  px="10"
+                >
+                  Register Patient
+                </Button>
+              </HStack>
             </PrivateComponent>
           }
         />
       )}
     </Box>
+  );
+};
+
+const ImportPatients = ({ cookies, selectedInstitution }) => {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    // formState: { errors },
+  } = useForm();
+  const queryClient = useQueryClient();
+
+  const fileWatch = watch('file');
+
+  const onSubmit = async values => {
+    console.log({ values });
+    console.log('hit');
+    const data = new FormData();
+    data.append('file', values.file[0]);
+
+    try {
+      setIsLoading(true);
+      await importPatient(cookies, data);
+      await queryClient.invalidateQueries([
+        'hospital-patients',
+        selectedInstitution,
+      ]);
+      setIsLoading(false);
+      reset();
+      toast({
+        position: 'top-right',
+        title: 'Success',
+        description: `Import successful`,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      setIsLoading(false);
+      toast({
+        position: 'top-right',
+        title: 'Error',
+        description: `Import failed`,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  };
+
+  return (
+    <HStack
+      as="form"
+      backgroundColor="gray.200"
+      py="1"
+      px="3"
+      rounded="lg"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <input
+        type="file"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        {...register('file')}
+      />
+      <Button
+        type="submit"
+        size="sm"
+        colorScheme="green"
+        disabled={fileWatch?.length === 0}
+        isLoading={isLoading}
+      >
+        Import
+      </Button>
+    </HStack>
   );
 };

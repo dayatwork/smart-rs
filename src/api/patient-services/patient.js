@@ -17,3 +17,22 @@ export const registerPatient = cookies => async data => {
 
   return await res.json();
 };
+
+export const importPatient = async (cookies, data) => {
+  const res = await fetch(
+    `${process.env.REACT_APP_PATIENT_API_V2}/import/patient`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${cookies?.token}`,
+      },
+      body: data,
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('Error import patient');
+  }
+
+  return await res.json();
+};
