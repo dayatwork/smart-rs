@@ -22,6 +22,7 @@ import { useCookies } from 'react-cookie';
 import { useQuery, useQueryClient } from 'react-query';
 import format from 'date-fns/format';
 import { Helmet } from 'react-helmet-async';
+import ReactSelect from 'react-select';
 
 import { AuthContext } from '../../../../../contexts/authContext';
 import { getInstitutions } from '../../../../../api/institution-services/institution';
@@ -324,7 +325,7 @@ export const CreateBooking = () => {
             <VStack spacing="6">
               <FormControl id="patient_id">
                 <FormLabel>Select Patient</FormLabel>
-                <Select
+                {/* <Select
                   bg="white"
                   onChange={e => {
                     searchPatient(e.target.value);
@@ -338,8 +339,24 @@ export const CreateBooking = () => {
                       {patient?.patient?.name} - {patient?.patient_number}
                     </option>
                   ))}
-                </Select>
-                <Box>
+                </Select> */}
+                <ReactSelect
+                  className="basic-single"
+                  classNamePrefix="select"
+                  // defaultValue={colourOptions[0]}
+                  // isDisabled={isDisabled}
+                  isLoading={isLoadingHospitalPatients}
+                  isClearable
+                  isSearchable
+                  name="color"
+                  options={dataHospitalPatients?.data?.map(patient => ({
+                    value: patient.patient_id,
+                    label: `${patient?.patient?.name} - ${patient?.patient_number}`,
+                  }))}
+                  placeholder="Select Patient"
+                  onChange={({ value }) => searchPatient(value)}
+                />
+                <Box mt="6">
                   {isLoadingSearchPatient && (
                     <Center py="6">
                       <Spinner
