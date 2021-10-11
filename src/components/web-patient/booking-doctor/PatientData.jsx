@@ -127,14 +127,14 @@ export const PatientData = ({
   useEffect(() => {
     setOptions([
       {
-        label: 'Obat-obatan',
+        label: 'Drug',
         options: dataAllergies?.data?.Drugs.map(drug => ({
           label: drug.name,
           value: drug.id,
         })),
       },
       {
-        label: 'Makanan',
+        label: 'Food',
         options: dataAllergies?.data?.Food?.map(food => ({
           label: food.name,
           value: food.id,
@@ -470,7 +470,7 @@ export const PatientData = ({
                 id="fullname"
                 isInvalid={errors.fullname ? true : false}
               >
-                <FormLabel>Nama Lengkap</FormLabel>
+                <FormLabel>Full Name</FormLabel>
                 <Input
                   {...register('fullname', {
                     required: 'Nama lengkap harus diisi',
@@ -505,7 +505,7 @@ export const PatientData = ({
                 id="phone_number"
                 isInvalid={errors.phone_number ? true : false}
               >
-                <FormLabel>No Hp</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <Input
                   type="number"
                   {...register('phone_number', {
@@ -520,7 +520,7 @@ export const PatientData = ({
                 id="birth_date"
                 isInvalid={errors.birth_date ? true : false}
               >
-                <FormLabel>Tanggal Lahir</FormLabel>
+                <FormLabel>Birth of Date</FormLabel>
                 <InputDate name="birth_date" control={control} />
                 <FormErrorMessage>
                   {errors.birth_date && errors.birth_date.message}
@@ -530,7 +530,7 @@ export const PatientData = ({
                 id="identity_number"
                 isInvalid={errors.identity_number ? true : false}
               >
-                <FormLabel>NIK</FormLabel>
+                <FormLabel>Identity Number</FormLabel>
                 <Input
                   type="number"
                   onInput={e =>
@@ -550,15 +550,15 @@ export const PatientData = ({
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="gender" isInvalid={errors.gender ? true : false}>
-                <FormLabel>Jenis Kelamin</FormLabel>
+                <FormLabel>Gender</FormLabel>
                 <Select
                   {...register('gender', {
                     required: 'Jenis kelamin harus diisi',
                   })}
                 >
-                  <option value="">Pilih jenis kelamin</option>
-                  <option value="male">Laki-laki</option>
-                  <option value="female">Perempuan</option>
+                  <option value="">Choose gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </Select>
                 <FormErrorMessage>
                   {errors.gender && errors.gender.message}
@@ -568,13 +568,13 @@ export const PatientData = ({
                 id="marital_status"
                 isInvalid={errors.marital_status ? true : false}
               >
-                <FormLabel>Status Perkawinan</FormLabel>
+                <FormLabel>Marital Status</FormLabel>
                 <Select
                   {...register('marital_status', {
                     required: 'Status perkawinan harus diisi',
                   })}
                 >
-                  <option value="">Pilih status perkawinan</option>
+                  <option value="">Choose marital status</option>
                   {maritalStatusData.map(status => (
                     <option value={status.value} key={status.value}>
                       {status.text}
@@ -587,26 +587,26 @@ export const PatientData = ({
               </FormControl>
               {patient !== 'me' && (
                 <FormControl id="responsible_status" w="full">
-                  <FormLabel>Status Penanggung Jawab</FormLabel>
+                  <FormLabel>Responsible Status</FormLabel>
                   <Select
                     {...register('responsible_status', {
                       required: 'Status perkawinan harus diisi',
                     })}
                   >
-                    <option>Pilih status penanggung jawab</option>
-                    <option value="husband">Suami</option>
-                    <option value="wife">Istri</option>
-                    <option value="father">Ayah</option>
-                    <option value="mother">Ibu</option>
-                    <option value="child">Anak</option>
-                    <option value="sibling">Saudara</option>
-                    <option value="friend">Teman</option>
-                    <option value="lainnya">Lainnya</option>
+                    <option>Choose responsible status</option>
+                    <option value="husband">Husband</option>
+                    <option value="wife">Wife</option>
+                    <option value="father">Father</option>
+                    <option value="mother">Mother</option>
+                    <option value="child">Child</option>
+                    <option value="sibling">Sibling</option>
+                    <option value="friend">Friend</option>
+                    <option value="lainnya">Others</option>
                   </Select>
                 </FormControl>
               )}
               <FormControl id="address" w="full">
-                <FormLabel>Alamat</FormLabel>
+                <FormLabel>Address</FormLabel>
                 <Input type="text" {...register('address')} />
               </FormControl>
             </SimpleGrid>
@@ -628,14 +628,14 @@ export const PatientData = ({
                 id="blood_type"
                 isInvalid={errors.blood_type ? true : false}
               >
-                <FormLabel>Golongan Darah</FormLabel>
+                <FormLabel>Blood Type</FormLabel>
                 <Select
                   isDisabled={isLoadingPatientVitalSign}
                   {...register('blood_type', {
                     required: 'Golongan darah harus diisi',
                   })}
                 >
-                  <option value="">Pilih Golongan Darah</option>
+                  <option value="">Choose blood type</option>
                   {bloodType.map(type => (
                     <option key={type.value} value={type.value}>
                       {type.text}
@@ -647,7 +647,7 @@ export const PatientData = ({
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="height" isInvalid={errors.height ? true : false}>
-                <FormLabel>Tinggi Badan (cm)</FormLabel>
+                <FormLabel>Height (cm)</FormLabel>
                 <Input
                   type="number"
                   isDisabled={isLoadingPatientVitalSign}
@@ -660,7 +660,7 @@ export const PatientData = ({
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="weight" isInvalid={errors.weight ? true : false}>
-                <FormLabel>Berat Badan (kg)</FormLabel>
+                <FormLabel>Weight (kg)</FormLabel>
                 <Input
                   type="number"
                   isDisabled={isLoadingPatientVitalSign}
@@ -673,7 +673,7 @@ export const PatientData = ({
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="allergies" mb="2">
-                <FormLabel>Alergi</FormLabel>
+                <FormLabel>Allergy</FormLabel>
                 <ReactSelect
                   options={options}
                   isMulti

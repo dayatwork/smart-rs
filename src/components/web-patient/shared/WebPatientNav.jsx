@@ -84,13 +84,13 @@ export const WebPatientNav = ({ active }) => {
             <NavItem.Desktop
               active={active === 'doctor'}
               icon={<RiHistoryFill />}
-              label="Riwayat Transaksi"
+              label="Transaction History"
               href="/doctor"
             />
             <NavItem.Desktop
               active={active === 'examination'}
               icon={<RiStethoscopeFill />}
-              label="Riwayat Pelayanan"
+              label="Service History"
               href="/examination"
             />
             <NavItem.Desktop

@@ -56,7 +56,7 @@ export const LoginForm = ({ onSubmit }) => {
         />
         <Box>
           <InputPassword
-            label="Kata Sandi"
+            label="Password"
             error={errors.password}
             {...register('password', {
               required: 'Password is required',
@@ -71,7 +71,7 @@ export const LoginForm = ({ onSubmit }) => {
               // color="primary.600"
               colorScheme="primary"
             >
-              Lupa kata sandi?
+              Forgot password?
             </Button>
           </Flex>
         </Box>

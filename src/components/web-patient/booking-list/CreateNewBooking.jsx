@@ -40,8 +40,8 @@ export const CreateNewBooking = ({ dataBooking }) => {
             fontWeight="medium"
             color="primary.600"
           >
-            Anda tidak memilik jadwal konsultasi untuk hari ini. Apakah Anda
-            ingin periksa ke dokter?
+            You do not have a consultation scheduled for today. Would you like
+            to see a doctor?
           </Text>
           <Button
             as={Link}
@@ -54,7 +54,7 @@ export const CreateNewBooking = ({ dataBooking }) => {
           >
             <BookingDoctorIcon width="30" height="30" />
             <Box as="span" ml="2">
-              Temui Dokter
+              See a doctor
             </Box>
           </Button>
         </Box>

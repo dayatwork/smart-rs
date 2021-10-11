@@ -155,7 +155,7 @@ export default function HomePage() {
             mt={{ base: '20', md: '28' }}
           >
             <Heading size="3xl" fontWeight="bold" mb="4">
-              Selamat Datang
+              Welcome
             </Heading>
             {/* <Heading size="2xl" fontWeight="bold" mb="4">
               di SMART RS
@@ -250,7 +250,7 @@ export default function HomePage() {
                     rounded="md"
                   >
                     <Icon as={RiHistoryFill} w="5" h="5" />
-                    <Link to="/doctor">Riwayat Transaksi</Link>
+                    <Link to="/doctor">Transaction History</Link>
                   </HStack>
                   <HStack
                     as="li"
@@ -262,7 +262,7 @@ export default function HomePage() {
                     rounded="md"
                   >
                     <Icon as={RiStethoscopeFill} w="5" h="5" />
-                    <Link to="/examination">Riwayat Pelayanan</Link>
+                    <Link to="/examination">Service History</Link>
                   </HStack>
                   <HStack
                     as="li"
@@ -346,7 +346,7 @@ export default function HomePage() {
               }}
               disabled={isLoadingService}
             >
-              <option value="">Semua Layanan</option>
+              <option value="">All Service</option>
               {dataServices?.data?.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
@@ -355,18 +355,18 @@ export default function HomePage() {
             </Select>
           </FormControl>
           <FormControl id="schedule">
-            <VisuallyHidden>Jadwal</VisuallyHidden>
+            <VisuallyHidden>Schedule</VisuallyHidden>
             <DayPickerInput
               onDayChange={setSelectedDay}
               value={selectedDay}
-              placeholder="Semua Jadwal"
+              placeholder="All Schedule"
               dayPickerProps={{
                 disabledDays: { before: new Date() },
               }}
             />
           </FormControl>
           <FormControl id="institution">
-            <VisuallyHidden>Rumah Sakit</VisuallyHidden>
+            <VisuallyHidden>Hospital</VisuallyHidden>
             <Select
               size="lg"
               value={selectedInstitution}
@@ -375,7 +375,7 @@ export default function HomePage() {
               }}
               disabled={isLoadingInstitutions}
             >
-              <option value="">Semua Rumah Sakit</option>
+              <option value="">All Hospitals</option>
               {dataInstitutions?.data?.map(institution => (
                 <option key={institution.id} value={institution.id}>
                   {institution.name}
@@ -399,7 +399,7 @@ export default function HomePage() {
                 },
               }}
             >
-              Booking
+              Search
             </Button>
           </Box>
         </Stack>

@@ -178,7 +178,7 @@ export const SelectDoctor = ({
       >
         <GridItem>
           <FormControl id="service" mb="4">
-            <FormLabel>Pilih Layanan</FormLabel>
+            <FormLabel>Choose Service</FormLabel>
             <Select
               bg="white"
               value={selectedService}
@@ -188,7 +188,7 @@ export const SelectDoctor = ({
               }}
               disabled={isLoadingService}
             >
-              <option value="">Pilih Layanan</option>
+              <option value="">Choose service</option>
               {dataServices?.data?.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
@@ -197,7 +197,7 @@ export const SelectDoctor = ({
             </Select>
           </FormControl>
           <FormControl id="institution" mb="4">
-            <FormLabel>Pilih Rumah Sakit</FormLabel>
+            <FormLabel>Choose Hospital</FormLabel>
             <Select
               bg="white"
               value={selectedInstitution}
@@ -206,7 +206,7 @@ export const SelectDoctor = ({
               }}
               disabled={isLoadingInstitutions}
             >
-              <option value="">Semua Rumah Sakit</option>
+              <option value="">All hospitals</option>
               {dataInstitutions?.data?.map(institution => (
                 <option key={institution.id} value={institution.id}>
                   {institution.name}
@@ -215,7 +215,7 @@ export const SelectDoctor = ({
             </Select>
           </FormControl>
           <FormControl mb="6">
-            <FormLabel>Pilih Rentang Tanggal</FormLabel>
+            <FormLabel>Choose Date Range</FormLabel>
             <Box
               border="1px"
               borderColor="gray.200"
@@ -244,7 +244,7 @@ export const SelectDoctor = ({
                     fontSize="lg"
                     fontWeight="bold"
                   >
-                    Pilih Layanan
+                    Choose Service
                   </Text>
                 )}
                 {(!selectedDayRange.from || !selectedDayRange.to) && (
@@ -253,7 +253,7 @@ export const SelectDoctor = ({
                     fontSize="lg"
                     fontWeight="bold"
                   >
-                    Pilih Rentang Waktu
+                    Choose Date Range
                   </Text>
                 )}
               </VStack>
@@ -280,7 +280,7 @@ export const SelectDoctor = ({
                 direction={{ base: 'column', md: 'row' }}
               >
                 <Heading fontWeight="semibold" fontSize="md" mb="2">
-                  Jadwal dokter yang tersedia
+                  Available Doctor
                 </Heading>
                 <HStack spacing="5">
                   <FormControl display="flex">
@@ -434,12 +434,12 @@ export const SelectDoctor = ({
                             <>
                               {isToday(schedule.date) ? (
                                 <Text mb="2">
-                                  Batas akhir booking 2 jam sebelum jadwal (
-                                  {totalData} jadwal)
+                                  Please book 2 hours earlier ({totalData}{' '}
+                                  slots)
                                 </Text>
                               ) : (
                                 <Text mb="2">
-                                  Tersedia{' '}
+                                  Available{' '}
                                   <Box
                                     as="span"
                                     fontWeight="bold"
@@ -449,7 +449,7 @@ export const SelectDoctor = ({
                                   >
                                     {available}
                                   </Box>{' '}
-                                  slot dari{' '}
+                                  slots from{' '}
                                   <Box as="span" fontWeight="bold">
                                     {totalData}
                                   </Box>
@@ -605,7 +605,7 @@ export const SelectDoctor = ({
             {dataEstimatedTimes?.data?.length ? (
               <Box>
                 <Text fontWeight="semibold" fontSize="md" mb="2" color="white">
-                  Waktu yang tersedia
+                  Available Time
                 </Text>
                 <SimpleGrid columns={timeGridColumns} gap="4">
                   {dataEstimatedTimes?.data.map(time => {
@@ -657,15 +657,15 @@ export const SelectDoctor = ({
                 <HStack mt="4" color="white" spacing="4">
                   <HStack>
                     <Box rounded="sm" w="4" h="4" bg="green.200"></Box>
-                    <Text>Tersedia</Text>
+                    <Text>Available</Text>
                   </HStack>
                   <HStack>
                     <Box rounded="sm" w="4" h="4" bg="orange.200"></Box>
-                    <Text>Tersedia untuk booking onsite</Text>
+                    <Text>Available for Booking Onsite</Text>
                   </HStack>
                   <HStack>
                     <Box rounded="sm" w="4" h="4" bg="red.200"></Box>
-                    <Text>Tidak tersedia</Text>
+                    <Text>Not Available</Text>
                   </HStack>
                 </HStack>
               </Box>
@@ -678,7 +678,7 @@ export const SelectDoctor = ({
                     mb="2"
                     color="white"
                   >
-                    Waktu yang tersedia
+                    Available Time
                   </Text>
 
                   <Text fontSize="lg" fontWeight="bold">

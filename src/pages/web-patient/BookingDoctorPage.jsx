@@ -17,23 +17,23 @@ import {
 const bookingStep = [
   {
     value: 'Step 1',
-    text: 'Pilih Dokter',
-    description: 'Pilih dokter dan tentukan jadwal pemeriksaan Anda',
+    text: 'Choose Doctor',
+    description: 'Choose a doctor and schedule',
   },
   {
     value: 'Step 2',
-    text: 'Pilih Pasien',
-    description: 'Pilih Pasien yang ingin Anda daftarkan',
+    text: 'Choose Patient',
+    description: 'Select the patient you want to register',
   },
   {
     value: 'Step 3',
-    text: 'Isi Data Pasien',
-    description: 'Data ini akan digunakan untuk keperluan pemeriksaan',
+    text: 'Patient Data',
+    description: 'This data will be used for examination purposes',
   },
   {
     value: 'Step 4',
-    text: 'Pembayaran',
-    description: 'Cek kembali detail booking dan lakukan pembayaran',
+    text: 'Payment',
+    description: 'Check the booking details and make the payment',
   },
 ];
 
@@ -92,7 +92,7 @@ const BookingDoctorPage = () => {
             px="4"
           >
             <Heading fontSize="2xl" mb={{ base: '4', md: '0' }} color="white">
-              Booking Dokter
+              Book Doctor
             </Heading>
             {/* Booking Step */}
             <Box w={{ base: 'sm', md: 'lg' }}>

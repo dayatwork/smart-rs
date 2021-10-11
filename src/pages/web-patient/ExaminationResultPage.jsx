@@ -39,7 +39,7 @@ const PatientExaminationResultsPage = () => {
   const columns1 = React.useMemo(
     () => [
       {
-        Header: 'Dokter',
+        Header: 'Doctor',
         accessor: 'doctor_name',
       },
       {
@@ -91,7 +91,7 @@ const PatientExaminationResultsPage = () => {
       <Box bg="secondary.dark" py="10">
         <Box maxW="7xl" mx="auto" px="4">
           <Heading color="white" fontSize="2xl">
-            Riwayat Pelayanan
+            Service History
           </Heading>
         </Box>
       </Box>

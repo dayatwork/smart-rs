@@ -46,7 +46,7 @@ export const SignupForm = ({ onSubmit }) => {
           fontSize="md"
           data-testid="signup-button"
         >
-          Daftar
+          Sign up
         </Button>
       </Stack>
     </Box>

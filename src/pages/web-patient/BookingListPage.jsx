@@ -75,19 +75,19 @@ const BookingListPage = () => {
   const columns1 = React.useMemo(
     () => [
       {
-        Header: 'Dokter',
+        Header: 'Doctor',
         accessor: 'doctor_name',
       },
       {
-        Header: 'Rumah Sakit',
+        Header: 'Hospital',
         accessor: 'institution_name',
       },
       {
-        Header: 'Layanan',
+        Header: 'Service',
         accessor: 'service_name',
       },
       {
-        Header: 'Jadwal',
+        Header: 'Schedule',
         Cell: ({ row }) => (
           <Box>
             {/* <Text>{row.original.days}</Text> */}
@@ -116,7 +116,7 @@ const BookingListPage = () => {
         },
       },
       {
-        Header: 'Status Pembayaran',
+        Header: 'Payment Status',
         accessor: 'payment_status',
         Cell: ({ value }) => {
           if (value?.toLowerCase() === 'paid') {
@@ -270,7 +270,7 @@ const BookingListPage = () => {
       <Box bg="secondary.dark" py="10">
         <Box maxW="7xl" mx="auto" px="4">
           <Heading color="white" fontSize="2xl">
-            Riwayat Transaksi
+            Transaction History
           </Heading>
         </Box>
       </Box>
@@ -289,7 +289,7 @@ const BookingListPage = () => {
           <HStack mb="2">
             <Icon color="secondary.dark" w="5" h="5" as={FaUser} />
             <Heading fontSize="lg" fontWeight="medium">
-              Pribadi
+              Personal
             </Heading>
           </HStack>
           <BookingTable
@@ -297,15 +297,15 @@ const BookingListPage = () => {
             columns={columns1}
             isLoading={isLoadingBooking}
             skeletonCols={7}
-            filterPlaceholder="Filter berdasarkan nama dokter..."
-            noDataPlaceholder="Belum ada riwayat transaksi"
+            filterPlaceholder="Filter by doctor name..."
+            noDataPlaceholder="No Transaction History"
           />
         </Box>
 
         <HStack mb="2">
           <Icon color="secondary.dark" w="5" h="5" as={FaUsers} />
           <Heading fontSize="lg" fontWeight="medium">
-            Tanggungan
+            Dependents
           </Heading>
         </HStack>
         <BookingTable
@@ -313,8 +313,8 @@ const BookingListPage = () => {
           columns={columns2}
           isLoading={isLoadingBookingResponsible}
           skeletonCols={7}
-          filterPlaceholder="Filter berdasarkan nama dokter..."
-          noDataPlaceholder="Belum ada riwayat transaksi"
+          filterPlaceholder="Filter by doctor name..."
+          noDataPlaceholder="No Transaction History"
         />
       </Wrapper>
     </Flex>

@@ -131,14 +131,14 @@ const LoginPage = () => {
             fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
             fontWeight="extrabold"
           >
-            Selamat Datang
+            Welcome
           </Heading>
           <Box mt="2" mb="10" align="center" maxW="md" fontWeight="medium">
-            <span>Silahkan masuk menggunakan akun Anda</span>
+            <span>Sign in to your account</span>
           </Box>
           <LoginForm onSubmit={onSubmit} />
           <Box mt="4" align="center" maxW="md" fontWeight="medium">
-            <span>Belum punya akun?</span>
+            <span>Don't have an account?</span>
 
             <Button
               variant="link"
@@ -148,7 +148,7 @@ const LoginPage = () => {
               colorScheme="primary"
               display={{ base: 'block', sm: 'revert' }}
             >
-              Daftar
+              Sign up
             </Button>
           </Box>
         </GridItem>

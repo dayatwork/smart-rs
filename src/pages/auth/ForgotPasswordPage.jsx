@@ -65,7 +65,7 @@ const ForgotPasswordPage = () => {
           </Text>
         </VStack>
         <Heading mt="6" textAlign="center" size="xl" fontWeight="extrabold">
-          Lupa kata sandi?
+          Forgot Password
         </Heading>
         <Text
           mt="4"
@@ -75,8 +75,7 @@ const ForgotPasswordPage = () => {
           fontWeight="medium"
           color="gray.600"
         >
-          Masukkan alamat email anda dan kami akan mengirimkan link untuk ubah
-          kata sandi
+          Enter your email and we will send you a link to reset your password
         </Text>
         <ForgotPasswordForm onSubmit={onSubmit} />
         <Box mt="4" align="center" maxW="md" fontWeight="medium">
@@ -89,7 +88,7 @@ const ForgotPasswordPage = () => {
               _hover={{ color: 'primary.600' }}
               display={{ base: 'block', sm: 'revert' }}
             >
-              Kembali ke halaman login
+              Back to login page
             </Box>
           </Link>
         </Box>

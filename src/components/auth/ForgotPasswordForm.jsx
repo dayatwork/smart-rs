@@ -48,7 +48,7 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
           fontSize="md"
           data-testid="forgot-button"
         >
-          Kirim
+          Send
         </Button>
       </Stack>
     </Box>

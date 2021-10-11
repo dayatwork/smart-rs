@@ -92,11 +92,11 @@ const SignupPage = () => {
             fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
             fontWeight="extrabold"
           >
-            Daftar
+            Sign Up
           </Heading>
           <SignupForm onSubmit={onSubmit} />
           <Box mt="4" align="center" maxW="md" fontWeight="medium">
-            <span>Sudah punya akun?</span>
+            <span>Already have an account?</span>
             <Link to="/login">
               <Box
                 as="span"

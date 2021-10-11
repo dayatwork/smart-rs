@@ -20,7 +20,7 @@ export const ChoosePatient = ({
     <>
       <Box maxW="xl" mx="auto" pb={{ base: '20', md: '28' }}>
         <Text fontSize="3xl" textAlign="center" mb="6" fontWeight="semibold">
-          Booking ini untuk:
+          Booking for:
         </Text>
         <ButtonRadioGroup
           defaultValue={patient}
@@ -31,14 +31,14 @@ export const ChoosePatient = ({
           setSelectedSchedule={setSelectedSchedule}
           options={[
             {
-              label: 'Saya',
-              description: 'Saya ingin mendaftarkan diri saya',
+              label: 'Me',
+              description: 'I want to register for myself',
               icon: <FaUser />,
               value: 'me',
             },
             {
-              label: 'Orang Lain',
-              description: 'Saya ingin mendaftarkan orang lain',
+              label: 'Others',
+              description: 'I want to register for others',
               icon: <FaUsers />,
               value: 'others',
             },

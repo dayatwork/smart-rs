@@ -253,7 +253,7 @@ export const PaymentBooking = ({
                   fontWeight="bold"
                   fontSize={{ base: 'md', md: 'lg' }}
                 >
-                  Deposit Pendaftaran
+                  Registration Deposit
                 </Text>
               </HStack>
             </Flex>
@@ -273,7 +273,7 @@ export const PaymentBooking = ({
             )}
             <Box px="6" pb="4">
               <Text mt="0" color="gray.500">
-                Biaya ini akan hangus jika anda tidak melakukan check in
+                No refund will be issued if no check-in made
               </Text>
               <FormControl id="payment_method" my="4">
                 <VisuallyHidden as="label">Metode Pembayaran</VisuallyHidden>
@@ -281,7 +281,7 @@ export const PaymentBooking = ({
                   value={selectedPaymentMethod}
                   onChange={e => setSelectedPaymentMethod(e.target.value)}
                 >
-                  <option value="">Pilih Metode Pembayaran</option>
+                  <option value="">Choose payment method</option>
                   {dataPaymentMethods?.data
                     ?.filter(paymentMethod => paymentMethod.active)
                     .map(paymentMethod => (
@@ -302,7 +302,7 @@ export const PaymentBooking = ({
                 onClick={handleBooking}
                 disabled={isLoadingServicePrice || !selectedPaymentMethod}
               >
-                Booking
+                Book
               </Button>
             </Box>
           </Box>
@@ -393,7 +393,7 @@ const DoctorDetails = ({
       <HStack spacing={{ base: '2', md: '4' }}>
         <Icon color="secondary.dark" as={FaUserMd} w="5" h="5" />
         <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
-          Detail Dokter
+          Doctor Detail
         </Text>
       </HStack>
       <HStack spacing="4">
@@ -408,7 +408,7 @@ const DoctorDetails = ({
           colorScheme="primary"
           size="sm"
         >
-          Ubah Jadwal
+          Change Schedule
         </Button>
       </HStack>
     </Flex>
@@ -496,7 +496,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
       <HStack spacing={{ base: '2', md: '4' }}>
         <Icon color="secondary.dark" as={FaUserAlt} w="5" h="5" />
         <Text as="h3" fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }}>
-          Detail Patient
+          Patient Detail
         </Text>
       </HStack>
 
@@ -543,19 +543,19 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
             <Text>Profile Information</Text>
           </HStack>
           <Description
-            title="Nama Pasien"
+            title="Name"
             value={patientData?.fullname}
             py="1"
             px="0"
           />
           <Description
-            title="NIK"
+            title="Identity Number"
             value={patientData?.identity_number}
             py="1"
             px="0"
           />
           <Description
-            title="Jenis Kelamin"
+            title="Gender"
             value={
               patientData?.gender === 'male'
                 ? 'Laki-laki'
@@ -567,7 +567,7 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
             px="0"
           />
           <Description
-            title="Tanggal Lahir"
+            title="Birth of Date"
             value={patientData?.birth_date}
             py="1"
             px="0"
@@ -588,20 +588,20 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
 
           <Description title="Email" value={patientData?.email} py="1" px="0" />
           <Description
-            title="No. Hp"
+            title="Phone Number"
             value={patientData?.phone_number}
             py="1"
             px="0"
           />
           <Description
-            title="Alamat"
+            title="Address"
             value={patientData?.address}
             py="1"
             px="0"
           />
           {patient !== 'me' && (
             <Description
-              title="Penanggung Jawab"
+              title="Person Responsible"
               value={patientData?.responsible_status}
               py="1"
               px="0"
@@ -622,25 +622,25 @@ const PatientDetails = ({ patientData, setCurrentStepIndex, patient }) => (
               <Text>Health Information</Text>
             </HStack>
             <Description
-              title="Golongan Darah"
+              title="Blood Type"
               value={patientData?.blood_type}
               py="1"
               px="0"
             />
             <Description
-              title="Tinggi Badan"
+              title="Height"
               value={`${patientData?.height} cm`}
               py="1"
               px="0"
             />
             <Description
-              title="Berat Badan"
+              title="Weight"
               value={`${patientData?.weight} kg`}
               py="1"
               px="0"
             />
             <Description
-              title="Alergi"
+              title="Allergy"
               value={patientData.allergies
                 .map(alergy => alergy.label)
                 .join(', ')}
