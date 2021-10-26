@@ -414,7 +414,7 @@ export default function HomePage() {
         <Heading size="lg" mb="6" fontWeight="bold">
           News & Promotion
         </Heading>
-        {isLoading ? (
+        {/* {isLoading ? (
           <SimpleGrid
             columns={{
               base: 1,
@@ -434,14 +434,7 @@ export default function HomePage() {
             autoPlaySpeed={4000}
             infinite
           >
-            {/* <SimpleGrid
-              columns={{
-                base: 1,
-                md: 4,
-              }}
-              spacing="4"
-              mb="6"
-            > */}
+     
             {dataAdvertisement?.data?.slice(0, 4)?.map(advertisement => (
               <Box key={advertisement.id} px="4">
                 <AdvertisementCard
@@ -457,18 +450,9 @@ export default function HomePage() {
                 />
               </Box>
             ))}
-            {/* </SimpleGrid> */}
-            {/* <ChakraLink
-              // as={Link}
-              fontSize="lg"
-              fontWeight="bold"
-              color="primary.600"
-            >
-              <span>View all news & promotion</span>
-              <Box as={BsArrowRight} display="inline-block" ms="2" />
-            </ChakraLink> */}
+
           </Carousel>
-        )}
+        )} */}
       </Box>
     </Box>
   );

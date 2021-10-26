@@ -54,22 +54,22 @@ const LoginPage = () => {
     const { email, password } = values;
 
     try {
-      const data = await login({ email, password });
+      const res = await login({ email, password });
 
-      if (data.code !== 200) {
-        throw new Error(data.message);
+      if (res.code !== 200) {
+        throw new Error(res.message);
       }
 
-      setCookie('token', data.token, { path: '/' });
+      setCookie('token', res.data.token, { path: '/' });
 
-      if (data.token) {
-        await fetchUserDetails(data.token);
+      if (res.data.token) {
+        await fetchUserDetails(res.data.token);
       }
 
       toast({
         position: 'top-right',
-        title: data?.title,
-        description: data?.message,
+        title: res?.title,
+        description: res?.message,
         status: 'success',
         duration: 4000,
         isClosable: true,
