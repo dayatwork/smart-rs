@@ -464,12 +464,11 @@ const App = () => {
           user?.institution_id,
           user?.id
         );
-        // console.log({ resEmployee });
         const employeeDetail = {
-          employee_id: resEmployee?.data?.employee_data?.id,
-          institution_id: resEmployee?.data?.employee_data?.institution_id,
-          employee_number: resEmployee?.data?.employee_data?.employee_number,
-          profession: resEmployee?.data?.employee_data?.profession,
+          employee_id: resEmployee?.data?.id,
+          institution_id: resEmployee?.data?.institution_id,
+          employee_number: resEmployee?.data?.employee_number,
+          profession: resEmployee?.data?.profession,
         };
         setCookie('employee', JSON.stringify(employeeDetail), { path: '/' });
         setIsLoadingEmployeeDetail(false);
